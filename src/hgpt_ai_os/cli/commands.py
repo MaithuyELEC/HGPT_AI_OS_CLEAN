@@ -124,3 +124,22 @@ def lucid_approve_day11():
 
     print("Lucid Day11 approved.")
     print("Status: APPROVED")
+
+
+def lucid_status_day11():
+    import json
+    from pathlib import Path
+
+    status_path = Path("outputs/marketing/day11/_approval_status.json")
+
+    if not status_path.exists():
+        print("No Lucid Day11 status found.")
+        return
+
+    status = json.loads(status_path.read_text(encoding="utf-8"))
+
+    print("Lucid Day11 Status")
+    print("==================")
+
+    for key, value in status.items():
+        print(f"{key}: {value}")
