@@ -1,0 +1,4 @@
+SYSTEM_NAME = "HGPT AI OS"
+COMPANY = "HGPT Steel"
+AUTHOR = "MaithuyELEC"
+VERSION = "0.1.0"

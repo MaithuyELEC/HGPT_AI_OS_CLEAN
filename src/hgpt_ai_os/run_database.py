@@ -16,11 +16,11 @@ def main():
     repo = Repository(engine)
 
     # CREATE
-    repo.create_user(
-        username="admin",
-        fullname="Mai Thuy",
-        role="Chief Engineer"
-    )
+    # repo.create_user(
+#     username="admin",
+#     fullname="Mai Thuy",
+#     role="Chief Engineer"
+# )
 
     print_users(repo)
 
