@@ -1,29 +1,27 @@
-import json
-from datetime import datetime
-from pathlib import Path
-
-from hgpt_ai_os.agents.marketing.marketing_agent import MarketingAgent
+from hgpt_ai_os.planner.planner_engine import PlannerEngine
 
 
 class LucidOrchestrator:
 
-    def create_day11_pack(self):
-        marketing = MarketingAgent()
-        output_dir = marketing.create_day11_content()
+    def run(self):
 
-        status = {
-            "module": "Lucid Marketing",
-            "day": "Day11",
-            "status": "WAITING_APPROVAL",
-            "created_at": datetime.now().isoformat(),
-            "output_dir": str(output_dir),
-            "next_action": "MaithuyELEC review and approve"
-        }
+        planner = PlannerEngine()
 
-        status_path = Path(output_dir) / "_approval_status.json"
-        status_path.write_text(
-            json.dumps(status, ensure_ascii=False, indent=2),
-            encoding="utf-8"
-        )
+        task = planner.next_task()
 
-        return output_dir
+        if not task:
+            print("No TODO task.")
+            return
+
+        print("=" * 50)
+        print("HGPT LUCID")
+        print("=" * 50)
+        print(f"Day      : {task['day']}")
+        print(f"Topic    : {task['topic']}")
+        print(f"Platform : {task['platform']}")
+        print(f"Folder   : {task['folder']}")
+        print("=" * 50)
+
+        planner.update_status(task["row"], "RUNNING")
+
+        print("Planner updated -> RUNNING")
