@@ -1,12 +1,10 @@
 {
   "module": "Lucid Marketing",
   "day": "Day11",
-  "status": "POSTED",
-  "created_at": "2026-06-21T20:06:06.232825",
+  "status": "APPROVED",
+  "created_at": "2026-06-21T20:20:48.216144",
   "output_dir": "outputs/marketing/day11",
   "next_action": "MaithuyELEC review and approve",
-  "approved_at": "2026-06-21T20:12:06.849060",
-  "approved_by": "MaithuyELEC",
-  "posted_at": "2026-06-21T20:18:21.702160",
-  "posted_by": "MaithuyELEC"
+  "approved_at": "2026-06-21T20:20:48.478121",
+  "approved_by": "MaithuyELEC"
 }
