@@ -143,3 +143,42 @@ def lucid_status_day11():
 
     for key, value in status.items():
         print(f"{key}: {value}")
+
+
+def lucid_ready_day11():
+    import json
+    import shutil
+    from pathlib import Path
+
+    base_dir = Path("outputs/marketing/day11")
+    status_path = base_dir / "_approval_status.json"
+    ready_dir = base_dir / "READY_TO_POST"
+
+    if not status_path.exists():
+        print("Approval status file not found.")
+        return
+
+    status = json.loads(status_path.read_text(encoding="utf-8"))
+
+    if status.get("status") != "APPROVED":
+        print("Day11 is not approved yet.")
+        print("Run: hgpt lucid approve day11")
+        return
+
+    ready_dir.mkdir(parents=True, exist_ok=True)
+
+    for file in base_dir.glob("*.docx"):
+        shutil.copy(file, ready_dir / file.name)
+
+    (ready_dir / "POSTING_INSTRUCTION.txt").write_text(
+        "Day11 content is APPROVED and READY TO POST.\n\n"
+        "1. Open facebook.docx\n"
+        "2. Copy content to Facebook\n"
+        "3. Open tiktok.docx\n"
+        "4. Copy script/caption to TikTok\n"
+        "5. Use image_prompt.docx for image generation\n"
+        "6. Use video_prompt.docx for video generation\n",
+        encoding="utf-8"
+    )
+
+    print(f"Ready-to-post package created: {ready_dir}")

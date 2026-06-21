@@ -1,0 +1,8 @@
+Day11 content is APPROVED and READY TO POST.
+
+1. Open facebook.docx
+2. Copy content to Facebook
+3. Open tiktok.docx
+4. Copy script/caption to TikTok
+5. Use image_prompt.docx for image generation
+6. Use video_prompt.docx for video generation
