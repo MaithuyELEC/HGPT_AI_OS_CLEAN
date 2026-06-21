@@ -99,3 +99,28 @@ def lucid_day11():
 
     print(f"Lucid Day11 pack created: {output_dir}")
     print("Status: WAITING_APPROVAL")
+
+
+def lucid_approve_day11():
+    import json
+    from datetime import datetime
+    from pathlib import Path
+
+    status_path = Path("outputs/marketing/day11/_approval_status.json")
+
+    if not status_path.exists():
+        print("Approval status file not found.")
+        return
+
+    status = json.loads(status_path.read_text(encoding="utf-8"))
+    status["status"] = "APPROVED"
+    status["approved_at"] = datetime.now().isoformat()
+    status["approved_by"] = "MaithuyELEC"
+
+    status_path.write_text(
+        json.dumps(status, ensure_ascii=False, indent=2),
+        encoding="utf-8"
+    )
+
+    print("Lucid Day11 approved.")
+    print("Status: APPROVED")
