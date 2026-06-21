@@ -80,3 +80,12 @@ def task_complete(task_id: str):
         return
 
     print(f"Task completed: {task.id} | {task.name} | {task.status}")
+
+
+def marketing_day11():
+    from hgpt_ai_os.agents.marketing.marketing_agent import MarketingAgent
+
+    agent = MarketingAgent()
+    output_dir = agent.create_day11_content()
+
+    print(f"Marketing Day11 content created: {output_dir}")

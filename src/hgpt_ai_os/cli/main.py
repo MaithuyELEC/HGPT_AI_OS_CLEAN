@@ -2,6 +2,7 @@ import argparse
 
 from hgpt_ai_os.cli.commands import (
     maintenance_run,
+    marketing_day11,
     show_help,
     show_status,
     show_version,
@@ -30,6 +31,9 @@ def main():
     task = sub.add_parser("task")
     task.add_argument("action", choices=["create", "list", "run", "complete"])
     task.add_argument("value", nargs="?")
+
+    marketing = sub.add_parser("marketing")
+    marketing.add_argument("action", choices=["day11"])
 
     args = parser.parse_args()
 
@@ -67,6 +71,10 @@ def main():
                 print("Task ID is required.")
             else:
                 task_complete(args.value)
+
+    elif args.command == "marketing":
+        if args.action == "day11":
+            marketing_day11()
 
     else:
         parser.print_help()
