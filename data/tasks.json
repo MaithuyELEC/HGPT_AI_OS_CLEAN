@@ -4,5 +4,11 @@
     "name": "Day11 content draft",
     "status": "PENDING",
     "created_at": "2026-06-21T19:31:04.314614"
+  },
+  {
+    "id": "091ce4cd-6c16-41e6-a882-0d117d2fea33",
+    "name": "SMOKE TEST - HGPT_AI_OS",
+    "status": "PENDING",
+    "created_at": "2026-06-21T19:34:22.329181"
   }
 ]
