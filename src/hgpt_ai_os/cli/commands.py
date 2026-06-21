@@ -89,3 +89,13 @@ def marketing_day11():
     output_dir = agent.create_day11_content()
 
     print(f"Marketing Day11 content created: {output_dir}")
+
+
+def lucid_day11():
+    from hgpt_ai_os.agents.lucid.lucid_agent import LucidAgent
+
+    agent = LucidAgent()
+    output_dir = agent.create_day11_pack()
+
+    print(f"Lucid Day11 pack created: {output_dir}")
+    print("Status: WAITING_APPROVAL")

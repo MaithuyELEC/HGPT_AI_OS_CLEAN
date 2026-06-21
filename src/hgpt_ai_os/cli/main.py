@@ -1,6 +1,7 @@
 import argparse
 
 from hgpt_ai_os.cli.commands import (
+    lucid_day11,
     maintenance_run,
     marketing_day11,
     show_help,
@@ -34,6 +35,9 @@ def main():
 
     marketing = sub.add_parser("marketing")
     marketing.add_argument("action", choices=["day11"])
+
+    lucid = sub.add_parser("lucid")
+    lucid.add_argument("action", choices=["day11"])
 
     args = parser.parse_args()
 
@@ -75,6 +79,10 @@ def main():
     elif args.command == "marketing":
         if args.action == "day11":
             marketing_day11()
+
+    elif args.command == "lucid":
+        if args.action == "day11":
+            lucid_day11()
 
     else:
         parser.print_help()
