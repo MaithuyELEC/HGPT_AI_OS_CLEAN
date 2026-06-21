@@ -92,9 +92,9 @@ def marketing_day11():
 
 
 def lucid_day11():
-    from hgpt_ai_os.agents.lucid.lucid_agent import LucidAgent
+    from hgpt_ai_os.orchestrator.lucid_orchestrator import LucidOrchestrator
 
-    agent = LucidAgent()
+    agent = LucidOrchestrator()
     output_dir = agent.create_day11_pack()
 
     print(f"Lucid Day11 pack created: {output_dir}")

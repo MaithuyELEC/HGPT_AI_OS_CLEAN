@@ -5,7 +5,7 @@ from pathlib import Path
 from hgpt_ai_os.agents.marketing.marketing_agent import MarketingAgent
 
 
-class LucidAgent:
+class LucidOrchestrator:
 
     def create_day11_pack(self):
         marketing = MarketingAgent()
