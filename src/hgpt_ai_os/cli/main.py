@@ -4,6 +4,7 @@ from hgpt_ai_os.cli.commands import (
     lucid_approve_day11,
     lucid_day11,
     lucid_ready_day11,
+    lucid_posted_day11,
     lucid_status_day11,
     maintenance_run,
     marketing_day11,
@@ -40,7 +41,7 @@ def main():
     marketing.add_argument("action", choices=["day11"])
 
     lucid = sub.add_parser("lucid")
-    lucid.add_argument("action", choices=["day11", "approve", "status", "ready"])
+    lucid.add_argument("action", choices=["day11", "approve", "status", "ready", "posted"])
     lucid.add_argument("value", nargs="?")
 
     args = parser.parse_args()
@@ -96,6 +97,12 @@ def main():
                 lucid_approve_day11()
             else:
                 print("Usage: hgpt lucid approve day11")
+
+        elif args.action == "posted":
+            if args.value == "day11":
+                lucid_posted_day11()
+            else:
+                print("Usage: hgpt lucid posted day11")
 
         elif args.action == "ready":
             if args.value == "day11":

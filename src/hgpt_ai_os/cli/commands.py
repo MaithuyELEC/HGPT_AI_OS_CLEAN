@@ -182,3 +182,38 @@ def lucid_ready_day11():
     )
 
     print(f"Ready-to-post package created: {ready_dir}")
+
+
+def lucid_posted_day11():
+    import json
+    from datetime import datetime
+    from pathlib import Path
+
+    status_path = Path("outputs/marketing/day11/_approval_status.json")
+
+    if not status_path.exists():
+        print("Approval status file not found.")
+        return
+
+    status = json.loads(status_path.read_text(encoding="utf-8"))
+
+    if status.get("status") != "APPROVED":
+        print("Day11 is not approved yet.")
+        return
+
+    status["status"] = "POSTED"
+    status["posted_at"] = datetime.now().isoformat()
+    status["posted_by"] = "MaithuyELEC"
+
+    status_path.write_text(
+        json.dumps(status, ensure_ascii=False, indent=2),
+        encoding="utf-8"
+    )
+
+    log_dir = Path("outputs/marketing/logs")
+    log_dir.mkdir(parents=True, exist_ok=True)
+
+    with open(log_dir / "posting_log.txt", "a", encoding="utf-8") as f:
+        f.write(f"{datetime.now().isoformat()} | Day11 | POSTED | MaithuyELEC\n")
+
+    print("Lucid Day11 marked as POSTED.")
