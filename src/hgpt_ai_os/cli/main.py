@@ -5,13 +5,14 @@ from hgpt_ai_os.cli.commands import (
     show_help,
     show_status,
     show_version,
+    task_complete,
     task_create,
     task_list,
+    task_run,
 )
 
 
 def main():
-
     parser = argparse.ArgumentParser(
         prog="hgpt",
         description="HGPT AI Operating System",
@@ -23,16 +24,12 @@ def main():
     sub.add_parser("version")
     sub.add_parser("status")
 
-    task = sub.add_parser("task")
-    task.add_argument("action", choices=["create", "list"])
-    task.add_argument("name", nargs="?")
-
     maintenance = sub.add_parser("maintenance")
+    maintenance.add_argument("action", choices=["run"])
 
-    maintenance.add_argument(
-        "action",
-        choices=["run"],
-    )
+    task = sub.add_parser("task")
+    task.add_argument("action", choices=["create", "list", "run", "complete"])
+    task.add_argument("value", nargs="?")
 
     args = parser.parse_args()
 
@@ -45,21 +42,31 @@ def main():
     elif args.command == "status":
         show_status()
 
-    elif args.command == "task":
+    elif args.command == "maintenance":
+        if args.action == "run":
+            maintenance_run()
 
+    elif args.command == "task":
         if args.action == "create":
-            if not args.name:
+            if not args.value:
                 print("Task name is required.")
             else:
-                task_create(args.name)
+                task_create(args.value)
 
         elif args.action == "list":
             task_list()
 
-    elif args.command == "maintenance":
+        elif args.action == "run":
+            if not args.value:
+                print("Task ID is required.")
+            else:
+                task_run(args.value)
 
-        if args.action == "run":
-            maintenance_run()
+        elif args.action == "complete":
+            if not args.value:
+                print("Task ID is required.")
+            else:
+                task_complete(args.value)
 
     else:
         parser.print_help()

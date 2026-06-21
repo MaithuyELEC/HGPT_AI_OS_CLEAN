@@ -10,5 +10,11 @@
     "name": "SMOKE TEST - HGPT_AI_OS",
     "status": "PENDING",
     "created_at": "2026-06-21T19:34:22.329181"
+  },
+  {
+    "id": "8fce4cdc-b0c2-49a9-81b0-bd5fafc294ae",
+    "name": "CORE EXECUTION TEST",
+    "status": "DONE",
+    "created_at": "2026-06-21T19:49:59.987920"
   }
 ]
