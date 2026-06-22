@@ -1,0 +1,16 @@
+{
+  "id": "CX001",
+  "title": "QC phát hiện lỗi kích thước",
+  "category": "QAQC",
+  "tags": [
+    "dimension",
+    "inspection",
+    "steel"
+  ],
+  "author": "MaithuyELEC",
+  "version": "1.0",
+  "status": "approved",
+  "source_path": "qaqc/CX001.md",
+  "related": [],
+  "extra": {}
+}
