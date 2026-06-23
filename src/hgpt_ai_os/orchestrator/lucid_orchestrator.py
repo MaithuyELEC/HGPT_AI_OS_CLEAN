@@ -3,6 +3,7 @@ from pathlib import Path
 from docx import Document
 
 from hgpt_ai_os.planner.planner_engine import PlannerEngine
+from hgpt_ai_os.knowledge.engine import KnowledgeEngine
 
 
 class LucidOrchestrator:
@@ -10,6 +11,7 @@ class LucidOrchestrator:
     def run(self):
 
         planner = PlannerEngine()
+        knowledge = KnowledgeEngine()
 
         task = planner.next_task()
 
