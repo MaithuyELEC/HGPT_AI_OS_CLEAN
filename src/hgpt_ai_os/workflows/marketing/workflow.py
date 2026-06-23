@@ -1,4 +1,4 @@
-from hgpt_ai_os.agents.marketing.marketing_agent import MarketingAgent
+from src.hgpt_ai_os.agents.marketing.marketing_agent import MarketingAgent
 
 
 class MarketingWorkflow:
