@@ -1,17 +1,15 @@
 class ContentGenerator:
 
-    def generate_facebook(self, topic: str):
+    def generate_facebook(self, topic: str, context: str = ""):
 
         return f"""
 HOOK
 
 {topic}
 
-NỘI DUNG
+TRI THỨC THAM CHIẾU
 
-Đây là một bước tiến quan trọng trong hành trình xây dựng HGPT Digital Factory.
-
-Từ thực tế sản xuất, chúng tôi nhận thấy dữ liệu và tri thức mới là tài sản quan trọng nhất của nhà máy.
+{context}
 
 ĐIỀU HỌC ĐƯỢC
 
@@ -32,42 +30,34 @@ Hãy sửa quy trình tạo ra lỗi.
 #SteelKnowledgeBase
 """
 
-    def generate_tiktok(self, topic: str):
+    def generate_tiktok(self, topic: str, context: str = ""):
 
         return f"""
 HOOK
 
 {topic}
 
-BODY
+TRI THỨC
 
-Đây là một phần trong hành trình xây dựng HGPT Digital Factory.
-
-Mỗi ngày một bước nhỏ.
-Mỗi bước nhỏ tạo nên nhà máy số.
+{context}
 
 CTA
 
-Theo dõi MaithuyELEC và Lucid để đồng hành cùng hành trình này.
+Theo dõi MaithuyELEC và Lucid.
 """
 
-    def generate_seo(self, topic: str):
+    def generate_seo(self, topic: str, context: str = ""):
 
         return f"""
 TITLE
 
 {topic}
 
+CONTEXT
+
+{context}
+
 META DESCRIPTION
 
-Kiến thức thực tế từ hành trình xây dựng HGPT Digital Factory.
-
-KEYWORDS
-
-HGPT Steel
-Digital Factory
-AI Factory
-Steel Structure
-QAQC
-Kaizen
+Kiến thức thực tế từ HGPT Digital Factory.
 """
