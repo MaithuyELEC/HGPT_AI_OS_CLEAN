@@ -1,7 +1,7 @@
 import argparse
 
-from src.hgpt_ai_os.builder.generator import ProjectGenerator
-from src.hgpt_ai_os.workflows.marketing.workflow import MarketingWorkflow
+from hgpt_ai_os.builder.generator import ProjectGenerator
+from hgpt_ai_os.workflows.marketing.workflow import MarketingWorkflow
 
 
 def main():
