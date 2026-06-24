@@ -25,7 +25,9 @@ class LucidOrchestrator:
 
         planner.update_status(task["row"], "RUNNING")
 
-        retriever = KnowledgeRetriever()
+        try:
+
+            retriever = KnowledgeRetriever()
 
         items = retriever.retrieve(
             task["topic"],
@@ -80,6 +82,15 @@ class LucidOrchestrator:
             task["row"],
             "GENERATED"
         )
+
+        except Exception:
+
+            planner.update_status(
+                task["row"],
+                "TODO"
+            )
+
+            raise
 
         print("=" * 60)
         print("HGPT LUCID AUTO")
