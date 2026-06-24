@@ -48,3 +48,7 @@ class LucidOrchestrator:
         print("Task :", task["topic"])
         print("Status : GENERATED")
         print("Output :", out)
+
+
+if __name__ == "__main__":
+    LucidOrchestrator().run()
