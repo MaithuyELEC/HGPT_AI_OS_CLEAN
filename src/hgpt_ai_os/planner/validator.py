@@ -1,4 +1,10 @@
-from dataclasses import dataclass
+REQUIRED_COLUMNS = [
+    "ID",
+    "Day",
+    "Platform",
+    "Status",
+    "Output Folder",
+]from dataclasses import dataclass
 from typing import List, Dict, Any
 
 
