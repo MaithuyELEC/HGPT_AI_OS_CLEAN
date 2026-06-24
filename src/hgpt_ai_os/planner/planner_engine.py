@@ -1,6 +1,9 @@
 from openpyxl import load_workbook
 from pathlib import Path
 
+from hgpt_ai_os.planner.loader import PlannerLoader
+from hgpt_ai_os.planner.validator import PlannerValidator
+
 
 class PlannerEngine:
 
@@ -15,19 +18,31 @@ class PlannerEngine:
         return wb["MarketingPlan"]
 
     def next_task(self):
-        ws = self.marketing()
 
-        for row in ws.iter_rows(min_row=2):
-            if str(row[4].value).upper() == "TODO":
+        loader = PlannerLoader(str(self.planner))
+        rows = loader.load()
+
+        validator = PlannerValidator()
+        result = validator.validate_rows(rows)
+
+        if not result.ok:
+            raise RuntimeError(
+                "\n".join(result.errors)
+            )
+
+        for row_no, row in enumerate(rows, start=2):
+
+            if str(row.get("Status", "")).upper() == "TODO":
+
                 return {
-                    "row": row[0].row,
-                    "id": row[0].value,
-                    "day": row[1].value,
-                    "topic": row[2].value,
-                    "platform": row[3].value,
-                    "status": row[4].value,
-                    "folder": row[5].value,
-                    "priority": row[6].value,
+                    "row": row_no,
+                    "id": row.get("ID"),
+                    "day": row.get("Day"),
+                    "topic": row.get("Topic"),
+                    "platform": row.get("Platform"),
+                    "status": row.get("Status"),
+                    "folder": row.get("Output Folder"),
+                    "priority": row.get("Priority"),
                 }
 
         return None
