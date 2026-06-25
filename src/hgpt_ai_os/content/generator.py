@@ -1,28 +1,75 @@
 class ContentGenerator:
 
-    def generate_facebook(self, topic: str, context: str = ""):
-
+    def generate_facebook(self, topic, context=""):
         return f"""
 HOOK
 
 {topic}
 
-TRI THỨC THAM CHIẾU
+KNOWLEDGE
 
 {context}
 
-ĐIỀU HỌC ĐƯỢC
+LESSON
 
-Không sửa lỗi.
-Hãy sửa quy trình tạo ra lỗi.
+Do not fix the mistake.
+Fix the process that created the mistake.
 
-ỨNG DỤNG
+CTA
 
-- Chuẩn hóa dữ liệu
-- Chuẩn hóa SOP
-- Chuẩn hóa QAQC
-- Chuẩn hóa bảo trì
+What do you think?
 
+#MaithuyELEC
+#LucidAI
+#HGPTSteel
+#DigitalFactory
+"""
+
+    def generate_tiktok(self, topic, context=""):
+        return f"""
+HOOK
+
+{topic}
+
+CONTENT
+
+{context}
+
+CTA
+
+Follow MaithuyELEC.
+"""
+
+    def generate_image_prompt(self, topic, context=""):
+        return f"""
+Ultra realistic industrial photography.
+
+Topic:
+{topic}
+
+Knowledge:
+{context}
+
+Style:
+Clean steel factory.
+"""
+
+    def generate_video_prompt(self, topic, context=""):
+        return f"""
+Create a 30 second cinematic video.
+
+Topic:
+{topic}
+
+Knowledge:
+{context}
+
+Ending:
+HGPT Digital Factory.
+"""
+
+    def generate_hashtags(self):
+        return """
 #MaithuyELEC
 #LucidAI
 #HGPTSteel
@@ -30,34 +77,24 @@ Hãy sửa quy trình tạo ra lỗi.
 #SteelKnowledgeBase
 """
 
-    def generate_tiktok(self, topic: str, context: str = ""):
-
-        return f"""
-HOOK
-
-{topic}
-
-TRI THỨC
-
-{context}
-
-CTA
-
-Theo dõi MaithuyELEC và Lucid.
+    def generate_checklist(self):
+        return """
+[ ] Facebook
+[ ] TikTok
+[ ] Image Prompt
+[ ] Video Prompt
+[ ] Hashtags
+[ ] Review
+[ ] Ready To Post
 """
 
-    def generate_seo(self, topic: str, context: str = ""):
-
+    def generate_seo(self, topic, context=""):
         return f"""
 TITLE
 
 {topic}
 
-CONTEXT
+DESCRIPTION
 
 {context}
-
-META DESCRIPTION
-
-Kiến thức thực tế từ HGPT Digital Factory.
 """
