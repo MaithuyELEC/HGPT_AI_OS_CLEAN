@@ -9,14 +9,30 @@ class ContentContextEngine:
         self.selector = HookSelector()
         self.loader = KnowledgeLoader()
 
+    def _load_or_default(self, file, default):
+        text = self.loader.load(file)
+        return text.strip() if text.strip() else default
+
     def build(self, topic: str, context: str = "") -> ContentContext:
+
+        problem = context.strip() if context.strip() else (
+            f"Trong quá trình {topic}, nếu chỉ xử lý hiện tượng "
+            "mà không tìm nguyên nhân gốc thì lỗi sẽ tiếp tục tái diễn."
+        )
+
         return ContentContext(
             title=topic,
             hook=self.selector.select(topic),
-            problem=context,
+            problem=problem,
             analysis=self.loader.load("facebook/framework.md"),
-            solution="Chuẩn hóa quy trình, SOP và Knowledge Base.",
-            lesson="Đừng chỉ sửa lỗi. Hãy sửa quy trình tạo ra lỗi.",
+            solution=self._load_or_default(
+                "facebook/solution.md",
+                "Chuẩn hóa quy trình, SOP và Knowledge Base."
+            ),
+            lesson=self._load_or_default(
+                "facebook/lesson.md",
+                "Đừng chỉ sửa lỗi. Hãy sửa quy trình tạo ra lỗi."
+            ),
             action=self.loader.load("facebook/cta.md"),
             hashtags=self.loader.load("hashtags/default.txt").splitlines(),
         )
