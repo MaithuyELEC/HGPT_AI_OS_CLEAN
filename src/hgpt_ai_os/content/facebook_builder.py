@@ -9,15 +9,10 @@ class FacebookBuilder:
         self.template = TemplateEngine()
         self.context_engine = ContentContextEngine()
 
-    def build(
-        self,
-        topic: str = "",
-        context: str = "",
-        content: ContentContext | None = None,
-    ):
+    def build(self, topic="", context="", content: ContentContext | None = None):
 
         if content is None:
-            content = self.context_engine.create(topic, context)
+            content = self.context_engine.build(topic, context)
 
         return self.template.render(
             "templates/facebook/default.md",

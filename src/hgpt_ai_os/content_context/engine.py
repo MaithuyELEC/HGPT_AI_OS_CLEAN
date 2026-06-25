@@ -9,8 +9,7 @@ class ContentContextEngine:
         self.selector = HookSelector()
         self.loader = KnowledgeLoader()
 
-    def create(self, topic: str, context: str = "") -> ContentContext:
-
+    def build(self, topic: str, context: str = "") -> ContentContext:
         return ContentContext(
             title=topic,
             hook=self.selector.select(topic),
@@ -19,10 +18,5 @@ class ContentContextEngine:
             solution="Chuẩn hóa quy trình, SOP và Knowledge Base.",
             lesson="Đừng chỉ sửa lỗi. Hãy sửa quy trình tạo ra lỗi.",
             action=self.loader.load("facebook/cta.md"),
-            hashtags=[
-                "#MaithuyELEC",
-                "#LucidAI",
-                "#HGPTSteel",
-                "#DigitalFactory",
-            ],
+            hashtags=self.loader.load("hashtags/default.txt").splitlines(),
         )
