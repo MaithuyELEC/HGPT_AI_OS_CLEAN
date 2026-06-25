@@ -1,14 +1,11 @@
 
-93
-from pathlib import Path
-from docx import Document
-
-from hgpt_ai_os.planner.planner_engine import PlannerEngine
-
-from hgpt_ai_os.knowledge.retriever import KnowledgeRetriever
-from hgpt_ai_os.knowledge.bundle import KnowledgeBundle
-
 from hgpt_ai_os.content.generator import ContentGenerator
+from hgpt_ai_os.knowledge.bundle import KnowledgeBundle
+from hgpt_ai_os.knowledge.retriever import KnowledgeRetriever
+from hgpt_ai_os.planner.planner_engine import PlannerEngine
+from docx import Document
+from pathlib import Path
+93
 
 
 class LucidOrchestrator:
@@ -25,7 +22,9 @@ class LucidOrchestrator:
 
         planner.update_status(task["row"], "RUNNING")
 
-        retriever = KnowledgeRetriever()
+        try:
+
+            retriever = KnowledgeRetriever()
 
         items = retriever.retrieve(
             task["topic"],
@@ -80,6 +79,15 @@ class LucidOrchestrator:
             task["row"],
             "GENERATED"
         )
+
+        except Exception:
+
+            planner.update_status(
+                task["row"],
+                "TODO"
+            )
+
+            raise
 
         print("=" * 60)
         print("HGPT LUCID AUTO")
