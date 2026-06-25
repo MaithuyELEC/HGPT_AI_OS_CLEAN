@@ -58,9 +58,20 @@ class LucidOrchestrator:
             exist_ok=True
         )
 
+        tiktok = generator.generate_tiktok(task["topic"], context)
+        image_prompt = generator.generate_image_prompt(task["topic"], context)
+        video_prompt = generator.generate_video_prompt(task["topic"], context)
+        hashtags = generator.generate_hashtags()
+        checklist = generator.generate_checklist()
+
         files = {
             "facebook.docx": facebook,
             "seo.docx": seo,
+            "tiktok.docx": tiktok,
+            "image_prompt.docx": image_prompt,
+            "video_prompt.docx": video_prompt,
+            "hashtags.docx": hashtags,
+            "approval_checklist.docx": checklist,
         }
 
         for name, content in files.items():
