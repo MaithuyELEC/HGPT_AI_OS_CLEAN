@@ -40,6 +40,11 @@ class PlannerEngine:
                     "day": row.get("Day"),
                     "topic": row.get("Topic"),
                     "platform": row.get("Platform"),
+                    "platforms": [
+                        p.strip().lower()
+                        for p in str(row.get("Platform", "Facebook")).split(",")
+                        if p.strip()
+                    ],
                     "status": row.get("Status"),
                     "folder": row.get("Output Folder"),
                     "priority": row.get("Priority"),

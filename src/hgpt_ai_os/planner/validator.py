@@ -22,6 +22,11 @@ VALID_STATUS = {
 VALID_PLATFORMS = {
     "Facebook",
     "TikTok",
+    "Image",
+    "Video",
+    "SEO",
+    "Hashtags",
+    "Approval",
     "LinkedIn",
     "YouTube",
     "Blog",
@@ -86,9 +91,20 @@ class PlannerValidator:
                     f"Row {idx}: Day must be integer"
                 )
 
-            if platform not in VALID_PLATFORMS:
+            platforms = [
+                p.strip()
+                for p in str(platform).split(",")
+                if p.strip()
+            ]
+
+            invalid = [
+                p for p in platforms
+                if p not in VALID_PLATFORMS
+            ]
+
+            if invalid:
                 errors.append(
-                    f"Row {idx}: invalid Platform '{platform}'"
+                    f"Row {idx}: invalid Platform {invalid}"
                 )
 
             if status not in VALID_STATUS:

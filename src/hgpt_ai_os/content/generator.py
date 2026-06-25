@@ -1,72 +1,28 @@
+from hgpt_ai_os.content_context.engine import ContentContextEngine
+from hgpt_ai_os.content.factory.builder_factory import BuilderFactory
+
+
 class ContentGenerator:
 
+    def __init__(self):
+        self.context_engine = ContentContextEngine()
+
+    def generate(self, platform: str, topic: str, context: str = ""):
+        ctx = self.context_engine.build(topic, context)
+        builder = BuilderFactory.create(platform)
+        return builder.build(content=ctx)
+
     def generate_facebook(self, topic, context=""):
-        return f"""
-HOOK
-
-{topic}
-
-KNOWLEDGE
-
-{context}
-
-LESSON
-
-Do not fix the mistake.
-Fix the process that created the mistake.
-
-CTA
-
-What do you think?
-
-#MaithuyELEC
-#LucidAI
-#HGPTSteel
-#DigitalFactory
-"""
+        return self.generate("facebook", topic, context)
 
     def generate_tiktok(self, topic, context=""):
-        return f"""
-HOOK
-
-{topic}
-
-CONTENT
-
-{context}
-
-CTA
-
-Follow MaithuyELEC.
-"""
+        return self.generate("tiktok", topic, context)
 
     def generate_image_prompt(self, topic, context=""):
-        return f"""
-Ultra realistic industrial photography.
-
-Topic:
-{topic}
-
-Knowledge:
-{context}
-
-Style:
-Clean steel factory.
-"""
+        return self.generate("image", topic, context)
 
     def generate_video_prompt(self, topic, context=""):
-        return f"""
-Create a 30 second cinematic video.
-
-Topic:
-{topic}
-
-Knowledge:
-{context}
-
-Ending:
-HGPT Digital Factory.
-"""
+        return self.generate("video", topic, context)
 
     def generate_hashtags(self):
         return """
