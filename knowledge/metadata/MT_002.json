@@ -1,0 +1,14 @@
+{
+    "id": "MT_002",
+    "title": "MT 002",
+    "category": "maintenance",
+    "tags": [
+        "maintenance"
+    ],
+    "author": "MaithuyELEC",
+    "version": "1.0",
+    "status": "active",
+    "source_path": "maintenance/MT_002.md",
+    "related": [],
+    "extra": {}
+}

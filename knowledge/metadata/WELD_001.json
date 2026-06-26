@@ -1,14 +1,14 @@
 {
-    "id": "CX001",
-    "title": "CX001",
-    "category": "qaqc",
+    "id": "WELD_001",
+    "title": "WELD 001",
+    "category": "welding",
     "tags": [
-        "qaqc"
+        "welding"
     ],
     "author": "MaithuyELEC",
     "version": "1.0",
     "status": "active",
-    "source_path": "qaqc/CX001.md",
+    "source_path": "welding/WELD_001.md",
     "related": [],
     "extra": {}
 }

@@ -1,14 +1,14 @@
 {
-    "id": "CX001",
-    "title": "CX001",
-    "category": "qaqc",
+    "id": "DEFAULT",
+    "title": "default",
+    "category": "hashtags",
     "tags": [
-        "qaqc"
+        "hashtags"
     ],
     "author": "MaithuyELEC",
     "version": "1.0",
     "status": "active",
-    "source_path": "qaqc/CX001.md",
+    "source_path": "hashtags/default.md",
     "related": [],
     "extra": {}
 }

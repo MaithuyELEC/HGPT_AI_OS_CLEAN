@@ -1,14 +1,14 @@
 {
-    "id": "CX001",
-    "title": "CX001",
-    "category": "qaqc",
+    "id": "README",
+    "title": "README",
+    "category": "library",
     "tags": [
-        "qaqc"
+        "library"
     ],
     "author": "MaithuyELEC",
     "version": "1.0",
     "status": "active",
-    "source_path": "qaqc/CX001.md",
+    "source_path": "library/README.md",
     "related": [],
     "extra": {}
 }

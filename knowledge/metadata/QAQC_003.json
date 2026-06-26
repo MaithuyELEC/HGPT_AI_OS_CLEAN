@@ -1,6 +1,6 @@
 {
-    "id": "CX001",
-    "title": "CX001",
+    "id": "QAQC_003",
+    "title": "QAQC 003",
     "category": "qaqc",
     "tags": [
         "qaqc"
@@ -8,7 +8,7 @@
     "author": "MaithuyELEC",
     "version": "1.0",
     "status": "active",
-    "source_path": "qaqc/CX001.md",
+    "source_path": "qaqc/QAQC_003.md",
     "related": [],
     "extra": {}
 }
