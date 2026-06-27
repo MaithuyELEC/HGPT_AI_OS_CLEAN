@@ -1,0 +1,128 @@
+# Lucid Auto v1.0.1
+
+> AI Production Operating System for Steel Fabrication.
+
+---
+
+# Overview
+
+Lucid Auto là hệ thống AI Production được phát triển để tự động hóa quá trình tạo nội dung kỹ thuật, xây dựng Knowledge Base và tiến tới Digital Factory cho HGPT Steel.
+
+---
+
+# Features
+
+- AI Content Generation
+- Knowledge Engine
+- Production CLI
+- DOCX Export
+- Marketing Automation
+- Steel Knowledge Base
+- QA/QC Knowledge
+- SOP Generation (Roadmap)
+- AI Agents (Roadmap)
+
+---
+
+# Project Structure
+
+```text
+HGPT_AI_OS_CLEAN/
+├── src/
+├── knowledge/
+├── outputs/
+├── templates/
+├── planner/
+├── installer/
+├── docs/
+└── README.md
+```
+
+---
+
+# Requirements
+
+- Python 3.12+
+- macOS / Windows / Linux
+- Git
+
+---
+
+# Installation
+
+```bash
+git clone https://github.com/MaithuyELEC/HGPT_AI_OS_CLEAN.git
+
+cd HGPT_AI_OS_CLEAN
+
+python -m venv .venv
+
+source .venv/bin/activate
+```
+
+---
+
+# Quick Start
+
+```bash
+export PYTHONPATH=src
+
+python -m hgpt_ai_os.production
+```
+
+---
+
+# Example
+
+```text
+Topic:
+Sai khe hở Fit-up trước khi hàn
+```
+
+Output
+
+```
+outputs/
+└── marketing/
+    └── Day019/
+```
+
+---
+
+# Roadmap
+
+✅ Lucid Auto v1.0.1
+
+⬜ Installer
+
+⬜ Knowledge Engine v2
+
+⬜ SOP Generator
+
+⬜ AI Agents
+
+⬜ Digital Factory
+
+---
+
+# Version
+
+Current Release
+
+```
+v1.0.1
+```
+
+---
+
+# Author
+
+MaithuyELEC
+
+HGPT Steel
+
+---
+
+# License
+
+See LICENSE.
