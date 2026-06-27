@@ -61,20 +61,55 @@ def build_outputs(day: int, topic: str) -> Path:
     print("STATUS    : PRODUCTION SUCCESS")
     print(f"Knowledge : {len(items)} item(s)")
     print(f"Output    : {output_dir}")
+
+    import subprocess
+
+    if sys.platform == "darwin":
+        subprocess.run(["open", str(output_dir)])
+
     print(f"Elapsed   : {time.time() - start:.2f} seconds")
     print("=" * 60)
 
     return output_dir
 
 
+
+def next_day() -> int:
+    root = OUTPUT_ROOT
+
+    if not root.exists():
+        return 1
+
+    days = []
+
+    for d in root.iterdir():
+        if d.is_dir() and d.name.startswith("Day"):
+            try:
+                days.append(int(d.name[3:]))
+            except ValueError:
+                pass
+
+    return max(days, default=0) + 1
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--day", type=int, required=True)
-    parser.add_argument("--topic", type=str, required=True)
+    parser.add_argument("--topic", type=str)
     args = parser.parse_args()
 
+    topic = args.topic
+
+    if not topic:
+        topic = input("Topic: ").strip()
+
+    if not topic:
+        print("ERROR : Topic is required.", file=sys.stderr)
+        return 1
+
+    day = next_day()
+
     try:
-        build_outputs(args.day, args.topic)
+        build_outputs(day, topic)
     except Exception as exc:
         print("STATUS : PRODUCTION FAILED", file=sys.stderr)
         print(f"ERROR  : {exc}", file=sys.stderr)
