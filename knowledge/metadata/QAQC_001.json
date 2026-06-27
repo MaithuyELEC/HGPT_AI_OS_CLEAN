@@ -1,14 +1,19 @@
 {
-    "id": "QAQC_001",
-    "title": "QAQC 001",
-    "category": "qaqc",
-    "tags": [
-        "qaqc"
-    ],
-    "author": "MaithuyELEC",
-    "version": "1.0",
-    "status": "active",
-    "source_path": "qaqc/QAQC_001.md",
-    "related": [],
-    "extra": {}
+  "id": "QAQC_001",
+  "title": "Sai khe hở Fit-up trước khi hàn",
+  "category": "qaqc",
+  "tags": [
+    "fit-up",
+    "root gap",
+    "assembly",
+    "welding",
+    "beam",
+    "aws d1.1"
+  ],
+  "author": "MaithuyELEC",
+  "version": "2.0",
+  "status": "active",
+  "source_path": "qaqc/QAQC_001.md",
+  "related": ["WELD_001"],
+  "extra": {}
 }

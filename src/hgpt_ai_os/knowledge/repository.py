@@ -103,7 +103,7 @@ class FileKnowledgeRepository(KnowledgeRepository):
 
     def search(self, query: str) -> list[KnowledgePackage]:
 
-        query = query.lower()
+        keywords = query.lower().replace("-", " ").split()
 
         result = []
 
@@ -113,13 +113,18 @@ class FileKnowledgeRepository(KnowledgeRepository):
                 meta.title,
                 meta.category,
                 *meta.tags,
-            ]).lower()
+            ]).lower().replace("-", " ")
 
-            if query in text:
+            score = sum(1 for keyword in keywords if keyword in text)
 
-                doc = self.get_by_id(meta.id)
+            if score == 0:
+                continue
 
-                if doc:
-                    result.append(doc)
+            doc = self.get_by_id(meta.id)
 
-        return result
+            if doc:
+                result.append((score, doc))
+
+        result.sort(key=lambda item: item[0], reverse=True)
+
+        return [doc for _, doc in result]
