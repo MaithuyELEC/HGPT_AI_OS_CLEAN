@@ -34,5 +34,23 @@ class ContentContextEngine:
                 "Đừng chỉ sửa lỗi. Hãy sửa quy trình tạo ra lỗi."
             ),
             action=self.loader.load("facebook/cta.md"),
-            hashtags=self.loader.load("hashtags/default.txt").splitlines(),
-        )
+hashtags=self.loader.load("hashtags/default.txt").splitlines(),
+
+image_prompt=f"""Create an ultra realistic industrial engineering photo.
+
+Topic:
+{topic}
+
+Knowledge:
+{problem}
+""",
+
+video_prompt=f"""Create a 30-second industrial cinematic video.
+
+Topic:
+{topic}
+
+Knowledge:
+{problem}
+""",
+)
