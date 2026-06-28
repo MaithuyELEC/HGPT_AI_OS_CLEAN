@@ -1,11 +1,13 @@
 from hgpt_ai_os.content_context.engine import ContentContextEngine
 from hgpt_ai_os.content.factory.builder_factory import BuilderFactory
+from hgpt_ai_os.content.template_engine import TemplateEngine
 
 
 class ContentGenerator:
 
     def __init__(self):
         self.context_engine = ContentContextEngine()
+        self.template = TemplateEngine()
 
     def generate(self, platform: str, topic: str, context: str = ""):
         ctx = self.context_engine.build(topic, context)
@@ -25,32 +27,22 @@ class ContentGenerator:
         return self.generate("video", topic, context)
 
     def generate_hashtags(self):
-        return """
-#MaithuyELEC
-#LucidAI
-#HGPTSteel
-#DigitalFactory
-#SteelKnowledgeBase
-"""
+        return self.template.render(
+            "templates/content/hashtags.md",
+            {},
+        )
 
     def generate_checklist(self):
-        return """
-[ ] Facebook
-[ ] TikTok
-[ ] Image Prompt
-[ ] Video Prompt
-[ ] Hashtags
-[ ] Review
-[ ] Ready To Post
-"""
+        return self.template.render(
+            "templates/content/checklist.md",
+            {},
+        )
 
     def generate_seo(self, topic, context=""):
-        return f"""
-TITLE
-
-{topic}
-
-DESCRIPTION
-
-{context}
-"""
+        return self.template.render(
+            "templates/content/seo.md",
+            {
+                "TOPIC": topic,
+                "CONTEXT": context,
+            },
+        )
