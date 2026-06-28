@@ -14,12 +14,14 @@ class VideoBuilder:
         if content is None:
             content = self.context_engine.build(topic, context)
 
+        prompt = content.video_prompt
+
         return self.template.render(
             "templates/video/default.md",
             {
                 "HOOK": content.hook,
                 "TOPIC": content.title,
-                "VIDEO_PROMPT": content.video_prompt,
+                "VIDEO_PROMPT": prompt,
                 "HASHTAGS": " ".join(content.hashtags),
             },
         )
