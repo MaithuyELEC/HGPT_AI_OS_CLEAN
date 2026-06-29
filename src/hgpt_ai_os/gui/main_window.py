@@ -1,18 +1,24 @@
 from __future__ import annotations
+
 import os
 import platform
 import subprocess
 from pathlib import Path
+
+from PySide6.QtGui import QTextCursor
 from PySide6.QtWidgets import (
-    QMainWindow,
-    QWidget,
-    QVBoxLayout,
+    QFrame,
+    QGridLayout,
     QHBoxLayout,
     QLabel,
     QLineEdit,
-    QPushButton,
-    QTextEdit,
+    QMainWindow,
     QProgressBar,
+    QPushButton,
+    QSizePolicy,
+    QTextEdit,
+    QWidget,
+    QVBoxLayout,
 )
 
 from .worker import ProductionWorker
@@ -23,52 +29,281 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("LUCID AUTO")
-        self.resize(900, 650)
+        self.resize(1040, 720)
+        self.setMinimumSize(920, 620)
 
         self.worker = None
 
         central = QWidget()
+        central.setObjectName("root")
         self.setCentralWidget(central)
 
         layout = QVBoxLayout(central)
+        layout.setContentsMargins(24, 22, 24, 16)
+        layout.setSpacing(16)
 
-        title = QLabel("🚀 LUCID AUTO")
-        title.setStyleSheet("font-size:24px;font-weight:bold;")
-        layout.addWidget(title)
+        self._build_header(layout)
+        self._build_input_area(layout)
+        self._build_status_area(layout)
+        self._build_progress_area(layout)
+        self._build_console_area(layout)
+        self._build_output_area(layout)
+        self._apply_theme()
 
-        row = QHBoxLayout()
+        self.btn.clicked.connect(self.generate)
+        self.clear_btn.clicked.connect(self.clear_console)
+        self.output_btn.clicked.connect(self.open_output_folder)
+
+    def _build_header(self, layout):
+        header = QFrame()
+        header.setObjectName("header")
+        header_layout = QGridLayout(header)
+        header_layout.setContentsMargins(22, 18, 22, 18)
+        header_layout.setHorizontalSpacing(14)
+        header_layout.setVerticalSpacing(4)
+
+        title = QLabel("LUCID AUTO")
+        title.setObjectName("appTitle")
+
+        subtitle = QLabel("HGPT Steel Digital Factory")
+        subtitle.setObjectName("subtitle")
+
+        version = QLabel("Production Engine v1.0.1")
+        version.setObjectName("version")
+
+        header_layout.addWidget(title, 0, 0)
+        header_layout.addWidget(subtitle, 1, 0)
+        header_layout.addWidget(version, 0, 1, 2, 1)
+        header_layout.setColumnStretch(0, 1)
+
+        layout.addWidget(header)
+
+    def _build_input_area(self, layout):
+        panel = QFrame()
+        panel.setObjectName("panel")
+        row = QHBoxLayout(panel)
+        row.setContentsMargins(18, 16, 18, 16)
+        row.setSpacing(12)
+
+        label = QLabel("Topic")
+        label.setObjectName("fieldLabel")
 
         self.topic = QLineEdit()
-        self.topic.setPlaceholderText("Nhập chủ đề...")
+        self.topic.setPlaceholderText("Enter production topic...")
+        self.topic.setClearButtonEnabled(True)
+        self.topic.returnPressed.connect(self.generate)
 
         self.btn = QPushButton("Generate")
+        self.btn.setObjectName("primaryButton")
+        self.btn.setMinimumWidth(124)
 
-        row.addWidget(self.topic)
+        self.clear_btn = QPushButton("Clear")
+        self.clear_btn.setMinimumWidth(96)
+
+        row.addWidget(label)
+        row.addWidget(self.topic, 1)
         row.addWidget(self.btn)
+        row.addWidget(self.clear_btn)
 
-        layout.addLayout(row)
+        layout.addWidget(panel)
 
+    def _build_status_area(self, layout):
+        panel = QFrame()
+        panel.setObjectName("statusPanel")
+        row = QHBoxLayout(panel)
+        row.setContentsMargins(18, 12, 18, 12)
+        row.setSpacing(12)
+
+        self.engine_status = QLabel("Engine Ready")
+        self.engine_status.setObjectName("engineStatus")
+
+        self.run_status = QLabel("Waiting for Topic")
+        self.run_status.setObjectName("runStatus")
+
+        row.addWidget(self.engine_status)
+        row.addStretch(1)
+        row.addWidget(self.run_status)
+
+        layout.addWidget(panel)
+
+    def _build_progress_area(self, layout):
         self.progress = QProgressBar()
+        self.progress.setObjectName("progress")
         self.progress.setRange(0, 0)
+        self.progress.setTextVisible(False)
+        self.progress.setFixedHeight(8)
         self.progress.hide()
 
         layout.addWidget(self.progress)
 
+    def _build_console_area(self, layout):
         self.console = QTextEdit()
+        self.console.setObjectName("console")
         self.console.setReadOnly(True)
+        self.console.setLineWrapMode(QTextEdit.NoWrap)
+        self.console.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.console.setText("Waiting for Topic...")
 
-        layout.addWidget(self.console)
+        layout.addWidget(self.console, 1)
 
-        self.btn.clicked.connect(self.generate)
+    def _build_output_area(self, layout):
+        panel = QFrame()
+        panel.setObjectName("outputPanel")
+        row = QHBoxLayout(panel)
+        row.setContentsMargins(18, 12, 18, 12)
+        row.setSpacing(12)
+
+        label = QLabel("Output Root")
+        label.setObjectName("fieldLabel")
+
+        self.output_path = QLabel("outputs/marketing")
+        self.output_path.setObjectName("outputPath")
+
+        self.output_btn = QPushButton("Open Output Folder")
+        self.output_btn.setMinimumWidth(158)
+
+        row.addWidget(label)
+        row.addWidget(self.output_path, 1)
+        row.addWidget(self.output_btn)
+
+        layout.addWidget(panel)
+
+    def _apply_theme(self):
+        self.setStyleSheet(
+            """
+            QWidget#root {
+                background: #f4f7fa;
+                color: #1f2933;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+                font-size: 13px;
+            }
+            QFrame#header {
+                background: #ffffff;
+                border: 1px solid #c7d3df;
+                border-radius: 8px;
+            }
+            QLabel#appTitle {
+                color: #19364d;
+                font-size: 28px;
+                font-weight: 800;
+                letter-spacing: 0px;
+            }
+            QLabel#subtitle {
+                color: #52606d;
+                font-size: 14px;
+                font-weight: 600;
+            }
+            QLabel#version {
+                color: #19364d;
+                font-size: 13px;
+                font-weight: 700;
+                padding: 8px 12px;
+                border: 1px solid #b8c7d4;
+                border-radius: 6px;
+                background: #eef3f7;
+            }
+            QFrame#panel,
+            QFrame#statusPanel,
+            QFrame#outputPanel {
+                background: #ffffff;
+                border: 1px solid #d5dee7;
+                border-radius: 8px;
+            }
+            QLabel#fieldLabel {
+                color: #334e68;
+                font-size: 12px;
+                font-weight: 700;
+                text-transform: uppercase;
+            }
+            QLineEdit {
+                min-height: 36px;
+                padding: 0 12px;
+                color: #1f2933;
+                background: #ffffff;
+                border: 1px solid #b8c7d4;
+                border-radius: 6px;
+                selection-background-color: #2f5f7f;
+            }
+            QLineEdit:focus {
+                border: 1px solid #2f5f7f;
+                background: #fbfdff;
+            }
+            QPushButton {
+                min-height: 36px;
+                padding: 0 16px;
+                color: #19364d;
+                background: #eef3f7;
+                border: 1px solid #b8c7d4;
+                border-radius: 6px;
+                font-weight: 700;
+            }
+            QPushButton:hover {
+                background: #e2ebf2;
+            }
+            QPushButton:pressed {
+                background: #d5e1ea;
+            }
+            QPushButton:disabled {
+                color: #8a99a8;
+                background: #eef1f4;
+                border-color: #d5dee7;
+            }
+            QPushButton#primaryButton {
+                color: #ffffff;
+                background: #2f5f7f;
+                border-color: #274f6a;
+            }
+            QPushButton#primaryButton:hover {
+                background: #274f6a;
+            }
+            QLabel#engineStatus {
+                color: #19364d;
+                font-weight: 800;
+            }
+            QLabel#runStatus {
+                color: #52606d;
+                font-weight: 700;
+            }
+            QProgressBar#progress {
+                background: #d5dee7;
+                border: 0;
+                border-radius: 4px;
+            }
+            QProgressBar#progress::chunk {
+                background: #2f5f7f;
+                border-radius: 4px;
+            }
+            QTextEdit#console {
+                color: #dbe7ef;
+                background: #111820;
+                border: 1px solid #25313c;
+                border-radius: 8px;
+                padding: 12px;
+                font-family: "SF Mono", Menlo, Consolas, monospace;
+                font-size: 12px;
+                selection-background-color: #2f5f7f;
+            }
+            QLabel#outputPath {
+                color: #1f2933;
+                font-family: "SF Mono", Menlo, Consolas, monospace;
+                background: #f4f7fa;
+                border: 1px solid #d5dee7;
+                border-radius: 6px;
+                padding: 8px 10px;
+            }
+            """
+        )
 
     def generate(self):
         topic = self.topic.text().strip()
 
         if not topic:
-            self.console.append("Vui lòng nhập Topic.")
+            self.run_status.setText("Waiting for Topic")
+            self.append_console("Warning: Topic is required before generation.")
             return
 
         self.console.clear()
+        self.run_status.setText("Running")
 
         self.progress.show()
 
@@ -76,7 +311,7 @@ class MainWindow(QMainWindow):
 
         self.worker = ProductionWorker(topic)
 
-        self.worker.log.connect(self.console.append)
+        self.worker.log.connect(self.append_console)
 
         self.worker.finished.connect(self.finished)
 
@@ -88,12 +323,25 @@ class MainWindow(QMainWindow):
         self.btn.setEnabled(True)
 
         if ok:
-            self.console.append("\n==========")
-            self.console.append("✅ Production Completed")
+            self.run_status.setText("Completed")
+            self.append_console("")
+            self.append_console("==========")
+            self.append_console("Production Completed")
             self.open_output_folder()
         else:
-            self.console.append("\n==========")
-            self.console.append("❌ Production Failed")
+            self.run_status.setText("Failed")
+            self.append_console("")
+            self.append_console("==========")
+            self.append_console("Production Failed")
+
+    def clear_console(self):
+        self.console.clear()
+        self.console.setText("Waiting for Topic...")
+        self.run_status.setText("Waiting for Topic")
+
+    def append_console(self, text):
+        self.console.append(text)
+        self.console.moveCursor(QTextCursor.End)
 
     def open_output_folder(self):
         output = Path.cwd() / "outputs" / "marketing"
@@ -108,4 +356,4 @@ class MainWindow(QMainWindow):
         elif system == "Windows":
             os.startfile(str(output))
         else:
-            subprocess.Popen(["xdg-open", str(output)])       
+            subprocess.Popen(["xdg-open", str(output)])
