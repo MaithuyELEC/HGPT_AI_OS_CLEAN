@@ -390,103 +390,7 @@
 		</data>
 		<key>Resources/base_library.zip</key>
 		<data>
-		W92vI1j0VUMZ/j0Y0wpliOc0GE0=
-		</data>
-		<key>Resources/docx/py.typed</key>
-		<data>
-		2jmj7l5rSw0yVb/vlWAYkK/YBwk=
-		</data>
-		<key>Resources/docx/templates/default-comments.xml</key>
-		<data>
-		KQkJLKlIAq86QdzhxBzA5v+RlvI=
-		</data>
-		<key>Resources/docx/templates/default-docx-template/[Content_Types].xml</key>
-		<data>
-		R9B7ZpKcEoyrSF5lUmUNDxL3fzQ=
-		</data>
-		<key>Resources/docx/templates/default-docx-template/_rels/.rels</key>
-		<data>
-		oF466fmRz278X8Z8E9EawiSLxrw=
-		</data>
-		<key>Resources/docx/templates/default-docx-template/customXml/_rels/item1.xml.rels</key>
-		<data>
-		SKvRWEi9sKKI9BXiJlOZN7X5tHY=
-		</data>
-		<key>Resources/docx/templates/default-docx-template/customXml/item1.xml</key>
-		<data>
-		mrdpmFG/ZSbjBPNeZvZKwmSS5k0=
-		</data>
-		<key>Resources/docx/templates/default-docx-template/customXml/itemProps1.xml</key>
-		<data>
-		m+aFwApAzMRgd1znNx+Gpqtk1jc=
-		</data>
-		<key>Resources/docx/templates/default-docx-template/docProps/app.xml</key>
-		<data>
-		ExB6KxDpEH2KoHyj7VSDNNh9/Io=
-		</data>
-		<key>Resources/docx/templates/default-docx-template/docProps/core.xml</key>
-		<data>
-		FA7wqJo2MTmB+C+hKW4xbYDwtSs=
-		</data>
-		<key>Resources/docx/templates/default-docx-template/docProps/thumbnail.jpeg</key>
-		<data>
-		jAeDRD6yyUCmW4StDKONL0AUlSo=
-		</data>
-		<key>Resources/docx/templates/default-docx-template/word/_rels/document.xml.rels</key>
-		<data>
-		0yAUcNcS7XQhr+td5cOl0f9xvqk=
-		</data>
-		<key>Resources/docx/templates/default-docx-template/word/document.xml</key>
-		<data>
-		jLRqkGUxYe2OahgRfyyiqNxbZug=
-		</data>
-		<key>Resources/docx/templates/default-docx-template/word/fontTable.xml</key>
-		<data>
-		AeVHkKoB/nxU+s105kVkbrtVGsM=
-		</data>
-		<key>Resources/docx/templates/default-docx-template/word/numbering.xml</key>
-		<data>
-		g+fiUNyFQxl9Lg52qlEaTLsa2xA=
-		</data>
-		<key>Resources/docx/templates/default-docx-template/word/settings.xml</key>
-		<data>
-		kgnVHffLpbHCClXdb1VzpWNjiP0=
-		</data>
-		<key>Resources/docx/templates/default-docx-template/word/styles.xml</key>
-		<data>
-		rGoj1pP77Feo8p/fJiLaSypYN08=
-		</data>
-		<key>Resources/docx/templates/default-docx-template/word/stylesWithEffects.xml</key>
-		<data>
-		G8OVsetYhXcmnDGNorzuPm+0NKQ=
-		</data>
-		<key>Resources/docx/templates/default-docx-template/word/theme/theme1.xml</key>
-		<data>
-		DHvfQpYyrV57TOrUuoWZpbUPiaU=
-		</data>
-		<key>Resources/docx/templates/default-docx-template/word/webSettings.xml</key>
-		<data>
-		IMfDfveRdOMlDDHTa7HULPSctFI=
-		</data>
-		<key>Resources/docx/templates/default-footer.xml</key>
-		<data>
-		Hel8ZimZp6CYnpqIoq8Wx1aX0WQ=
-		</data>
-		<key>Resources/docx/templates/default-header.xml</key>
-		<data>
-		spK/Bo17X8CKlmPLst5UrQBJ3Zk=
-		</data>
-		<key>Resources/docx/templates/default-settings.xml</key>
-		<data>
-		6QaHJIcvmHZ1HHJMWlIVSqz4yO0=
-		</data>
-		<key>Resources/docx/templates/default-styles.xml</key>
-		<data>
-		sqJBvgOml2zN1m37FdBMAlhtgmQ=
-		</data>
-		<key>Resources/docx/templates/default.docx</key>
-		<data>
-		BYdftR5bFDIfJlEhLAS42pvRXKY=
+		tbV2MLNNMiOJQnvw1HqhwCIxgBA=
 		</data>
 		<key>Resources/icon-windowed.icns</key>
 		<data>
@@ -691,42 +595,6 @@
 		<key>Resources/knowledge/welding/WELD_001.md</key>
 		<data>
 		V2kmjCRwcd358CRkOUHDo0bPSqQ=
-		</data>
-		<key>Resources/lxml/isoschematron/resources/rng/iso-schematron.rng</key>
-		<data>
-		Go1op5prM1pmBGPMmbTo7uFqB6E=
-		</data>
-		<key>Resources/lxml/isoschematron/resources/xsl/RNG2Schtrn.xsl</key>
-		<data>
-		gw8JUVGbfoiM4PnGl4RuYCHn/sA=
-		</data>
-		<key>Resources/lxml/isoschematron/resources/xsl/XSD2Schtrn.xsl</key>
-		<data>
-		+27UKlCTWg5312vRXldA7ijU6zI=
-		</data>
-		<key>Resources/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/iso_abstract_expand.xsl</key>
-		<data>
-		47+62eTQoIRbDwHznw46HeAk23A=
-		</data>
-		<key>Resources/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/iso_dsdl_include.xsl</key>
-		<data>
-		OGl2iT6BakNol6cYdYs6u/JoaeE=
-		</data>
-		<key>Resources/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/iso_schematron_message.xsl</key>
-		<data>
-		JnOKlPhxa+9BjjlodWBP5w4YSI0=
-		</data>
-		<key>Resources/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/iso_schematron_skeleton_for_xslt1.xsl</key>
-		<data>
-		QekDoEjBN2P/f6ofaCbqkTKe9ms=
-		</data>
-		<key>Resources/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/iso_svrl_for_xslt1.xsl</key>
-		<data>
-		0b3cqpseVdF8eLWXy1wcOB5WjeY=
-		</data>
-		<key>Resources/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/readme.txt</key>
-		<data>
-		70CMM3nNaMhY+q1Fr/J9H9teBhk=
 		</data>
 		<key>Resources/planner/HGPT_MASTER_PLANNER.xlsx</key>
 		<data>
@@ -1294,11 +1162,6 @@
 			<key>symlink</key>
 			<string>../Resources/base_library.zip</string>
 		</dict>
-		<key>Frameworks/docx</key>
-		<dict>
-			<key>symlink</key>
-			<string>../Resources/docx</string>
-		</dict>
 		<key>Frameworks/knowledge</key>
 		<dict>
 			<key>symlink</key>
@@ -1332,74 +1195,6 @@
 			<key>requirement</key>
 			<string>cdhash H"fe47a88fb0dfad2cb3c1d56739cd28abbb255044"</string>
 		</dict>
-		<key>Frameworks/lxml/_elementpath.cpython-312-darwin.so</key>
-		<dict>
-			<key>cdhash</key>
-			<data>
-			k/KCoOyYWE5opBz9uWwEeKKomko=
-			</data>
-			<key>requirement</key>
-			<string>cdhash H"93f282a0ec98584e68a41cfdb96c0478a2a89a4a"</string>
-		</dict>
-		<key>Frameworks/lxml/builder.cpython-312-darwin.so</key>
-		<dict>
-			<key>cdhash</key>
-			<data>
-			2jiuDrLVOh4DYmA1edTzKMQzCeA=
-			</data>
-			<key>requirement</key>
-			<string>cdhash H"da38ae0eb2d53a1e0362603579d4f328c43309e0"</string>
-		</dict>
-		<key>Frameworks/lxml/etree.cpython-312-darwin.so</key>
-		<dict>
-			<key>cdhash</key>
-			<data>
-			jwYT6bn9Q5KcFCHvoTssHbvxEkw=
-			</data>
-			<key>requirement</key>
-			<string>cdhash H"8f0613e9b9fd43929c1421efa13b2c1dbbf1124c"</string>
-		</dict>
-		<key>Frameworks/lxml/html/_difflib.cpython-312-darwin.so</key>
-		<dict>
-			<key>cdhash</key>
-			<data>
-			z2C9SxR4piyRoHP1RD7TBpWFAjo=
-			</data>
-			<key>requirement</key>
-			<string>cdhash H"cf60bd4b1478a62c91a073f5443ed3069585023a"</string>
-		</dict>
-		<key>Frameworks/lxml/html/diff.cpython-312-darwin.so</key>
-		<dict>
-			<key>cdhash</key>
-			<data>
-			t/XoNvrCjYZoAODOWRIEMhR4vd0=
-			</data>
-			<key>requirement</key>
-			<string>cdhash H"b7f5e836fac28d866800e0ce591204321478bddd"</string>
-		</dict>
-		<key>Frameworks/lxml/isoschematron</key>
-		<dict>
-			<key>symlink</key>
-			<string>../../Resources/lxml/isoschematron</string>
-		</dict>
-		<key>Frameworks/lxml/objectify.cpython-312-darwin.so</key>
-		<dict>
-			<key>cdhash</key>
-			<data>
-			AXRK3hcM+Uvc2jvyBmzoTnAsraw=
-			</data>
-			<key>requirement</key>
-			<string>cdhash H"01744ade170cf94bdcda3bf2066ce84e702cadac"</string>
-		</dict>
-		<key>Frameworks/lxml/sax.cpython-312-darwin.so</key>
-		<dict>
-			<key>cdhash</key>
-			<data>
-			CilvEll83Swo1MSP1FgfQ9sDoo0=
-			</data>
-			<key>requirement</key>
-			<string>cdhash H"0a296f12597cdd2c28d4c48fd4581f43db03a28d"</string>
-		</dict>
 		<key>Frameworks/planner</key>
 		<dict>
 			<key>symlink</key>
@@ -1409,15 +1204,6 @@
 		<dict>
 			<key>symlink</key>
 			<string>python3__dot__12</string>
-		</dict>
-		<key>Frameworks/python3__dot__12/lib-dynload/_asyncio.cpython-312-darwin.so</key>
-		<dict>
-			<key>cdhash</key>
-			<data>
-			Qzy5utkus34RETxlUSLB7mWGTUY=
-			</data>
-			<key>requirement</key>
-			<string>cdhash H"433cb9bad92eb37e11113c655122c1ee65864d46"</string>
 		</dict>
 		<key>Frameworks/python3__dot__12/lib-dynload/_bisect.cpython-312-darwin.so</key>
 		<dict>
@@ -1518,15 +1304,6 @@
 			<key>requirement</key>
 			<string>cdhash H"3c580481584099eb2cfe4756cb7855c685978df1"</string>
 		</dict>
-		<key>Frameworks/python3__dot__12/lib-dynload/_ctypes.cpython-312-darwin.so</key>
-		<dict>
-			<key>cdhash</key>
-			<data>
-			w/rizXUmaPGBHlixhV58NdpTfEg=
-			</data>
-			<key>requirement</key>
-			<string>cdhash H"c3fae2cd752668f1811e58b1855e7c35da537c48"</string>
-		</dict>
 		<key>Frameworks/python3__dot__12/lib-dynload/_datetime.cpython-312-darwin.so</key>
 		<dict>
 			<key>cdhash</key>
@@ -1563,15 +1340,6 @@
 			<key>requirement</key>
 			<string>cdhash H"c404370c2ff33321d46c586f704b91efd0daf626"</string>
 		</dict>
-		<key>Frameworks/python3__dot__12/lib-dynload/_json.cpython-312-darwin.so</key>
-		<dict>
-			<key>cdhash</key>
-			<data>
-			zl9JmUSdtwOJGHh1SJ2GCcamfv8=
-			</data>
-			<key>requirement</key>
-			<string>cdhash H"ce5f4999449db70389187875489d8609c6a67eff"</string>
-		</dict>
 		<key>Frameworks/python3__dot__12/lib-dynload/_lzma.cpython-312-darwin.so</key>
 		<dict>
 			<key>cdhash</key>
@@ -1599,15 +1367,6 @@
 			<key>requirement</key>
 			<string>cdhash H"644af60afd5fd839f84dedf6c123892cc7ccf1f7"</string>
 		</dict>
-		<key>Frameworks/python3__dot__12/lib-dynload/_multiprocessing.cpython-312-darwin.so</key>
-		<dict>
-			<key>cdhash</key>
-			<data>
-			LoQOEokLMMBffe1ZrSmLfLw0Md0=
-			</data>
-			<key>requirement</key>
-			<string>cdhash H"2e840e12890b30c05f7ded59ad298b7cbc3431dd"</string>
-		</dict>
 		<key>Frameworks/python3__dot__12/lib-dynload/_opcode.cpython-312-darwin.so</key>
 		<dict>
 			<key>cdhash</key>
@@ -1626,15 +1385,6 @@
 			<key>requirement</key>
 			<string>cdhash H"d1f31d0a541b357df8a4daa07ba5bd4af272fafc"</string>
 		</dict>
-		<key>Frameworks/python3__dot__12/lib-dynload/_posixshmem.cpython-312-darwin.so</key>
-		<dict>
-			<key>cdhash</key>
-			<data>
-			ExaGfVoUhxDUYHOvoUu1IGC2Arc=
-			</data>
-			<key>requirement</key>
-			<string>cdhash H"1316867d5a148710d46073afa14bb52060b602b7"</string>
-		</dict>
 		<key>Frameworks/python3__dot__12/lib-dynload/_posixsubprocess.cpython-312-darwin.so</key>
 		<dict>
 			<key>cdhash</key>
@@ -1643,15 +1393,6 @@
 			</data>
 			<key>requirement</key>
 			<string>cdhash H"3669f382a314bfec929b8ab748519e4dbcbeb177"</string>
-		</dict>
-		<key>Frameworks/python3__dot__12/lib-dynload/_queue.cpython-312-darwin.so</key>
-		<dict>
-			<key>cdhash</key>
-			<data>
-			cpCdbN1VukxtQTF/FQHCv3TeP/U=
-			</data>
-			<key>requirement</key>
-			<string>cdhash H"72909d6cdd55ba4c6d41317f1501c2bf74de3ff5"</string>
 		</dict>
 		<key>Frameworks/python3__dot__12/lib-dynload/_random.cpython-312-darwin.so</key>
 		<dict>
@@ -1787,15 +1528,6 @@
 			</data>
 			<key>requirement</key>
 			<string>cdhash H"ff053bf44e87a5687e82359565ef2c9cc7fd580e"</string>
-		</dict>
-		<key>Frameworks/python3__dot__12/lib-dynload/mmap.cpython-312-darwin.so</key>
-		<dict>
-			<key>cdhash</key>
-			<data>
-			HElPlEreZPlPK/6QtQMNmChnNEA=
-			</data>
-			<key>requirement</key>
-			<string>cdhash H"1c494f944ade64f94f2bfe90b5030d9828673440"</string>
 		</dict>
 		<key>Frameworks/python3__dot__12/lib-dynload/pyexpat.cpython-312-darwin.so</key>
 		<dict>
@@ -2693,175 +2425,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			R2FD0DTjkE4/dZZWk7Yf6zlkXBCCq8/MU6JSdXzapUE=
-			</data>
-		</dict>
-		<key>Resources/docx/py.typed</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-comments.xml</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			sjwuBPWGUH9WHjxVeHa1LuqOm3o+lNiZAwzVV0kajIw=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-docx-template/[Content_Types].xml</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			iIp82dldCZhDakmXWfMFMDUM4az4TTwH70ftarpInp4=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-docx-template/_rels/.rels</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			+Lwgt+HVkmKrvcSPn/pqyldGhoi71A3GJ4F3MnMlJrM=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-docx-template/customXml/_rels/item1.xml.rels</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			Mvpt31vf/e7JfnfQgFko9NJBHyOjM10e4ESbdAzh2E0=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-docx-template/customXml/item1.xml</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			qGCG/8XY6D69bHGlXR0u+qMbE3l39fOnUjZuECNhIUQ=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-docx-template/customXml/itemProps1.xml</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			xUIwexPsKai1RiF7s3k2q0gi4ESyZdKVKYXsPWr+0k4=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-docx-template/docProps/app.xml</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			vmZJgcMUHN38WTYr6yh+vyDQdzZg4t1vqsWWilkwoIE=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-docx-template/docProps/core.xml</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			EL/SDqXZyKsCNqL05J+ZzbIHqsZxHkeAz3o5CzIqHUA=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-docx-template/docProps/thumbnail.jpeg</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			ljZxONxEzgm/LI8Pjkk0ihR40sXAr2m7wrvDi2PNzq0=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-docx-template/word/_rels/document.xml.rels</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			Tyt7R9in0Q1E47rW0Dgpui51XMiymi01pJ7vee17EdY=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-docx-template/word/document.xml</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			9RVLPF2udJq7DjgeEOoC4Z4TdlAGXEsfEbBZxtdTQL8=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-docx-template/word/fontTable.xml</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			eThft/YCR1B+yv/Ckunr1S6gZXuGNPYpum/MxUAR1rs=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-docx-template/word/numbering.xml</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			ymBdZOm6Iy/Y/0AdcAZp97XENRhlscFrkf1aSqyb4kk=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-docx-template/word/settings.xml</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			MVItLTw2auxXFMkhzlVrSDjKf6oz+nlaZtwyV1xxCyc=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-docx-template/word/styles.xml</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			CeNQuV4SHntjhBSFpq2s8vrNSWwYkpey26Y0u7KJiog=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-docx-template/word/stylesWithEffects.xml</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			Rjrgkozw2Ed12/jPGNbDAp9nB8gb9ZD21t2HV6XpPxU=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-docx-template/word/theme/theme1.xml</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			46irfbnKevylb18oIKVui2YAFsZHdzVVsGCwoCrHaUE=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-docx-template/word/webSettings.xml</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			NJ023nQ00J+GmH/2cdiBSWSgWIweYwwG5WLNp+den5U=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-footer.xml</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			V9Gkf2J3fxHVNphYHX2FfxuSdHUh1/tArHv1ZlUHAxU=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-header.xml</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			oMHJ5mr6Sd1PZkmEQEJ4lmr7VCwZiFOAvmJSsOKK4UI=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-settings.xml</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			eXOLlF4o4eqDOLeEi5qjwTv5mmDk3V5CMseQD7/bCug=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default-styles.xml</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			WnjtOZLsCnP4hYSaYhMfR7JW4ixDxRcr3eBPI8QRx94=
-			</data>
-		</dict>
-		<key>Resources/docx/templates/default.docx</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			IJS1vd/+nPlz1h/gM4hBOATwNBYHGElKZdt+mNpA010=
+			27QUwJD9XqzukZvsQEdcSd0sspw8WGznwxCFVH4StqU=
 			</data>
 		</dict>
 		<key>Resources/icon-windowed.icns</key>
@@ -3240,99 +2804,6 @@
 		<dict>
 			<key>symlink</key>
 			<string>../Frameworks/libssl.3.dylib</string>
-		</dict>
-		<key>Resources/lxml/_elementpath.cpython-312-darwin.so</key>
-		<dict>
-			<key>symlink</key>
-			<string>../../Frameworks/lxml/_elementpath.cpython-312-darwin.so</string>
-		</dict>
-		<key>Resources/lxml/builder.cpython-312-darwin.so</key>
-		<dict>
-			<key>symlink</key>
-			<string>../../Frameworks/lxml/builder.cpython-312-darwin.so</string>
-		</dict>
-		<key>Resources/lxml/etree.cpython-312-darwin.so</key>
-		<dict>
-			<key>symlink</key>
-			<string>../../Frameworks/lxml/etree.cpython-312-darwin.so</string>
-		</dict>
-		<key>Resources/lxml/html</key>
-		<dict>
-			<key>symlink</key>
-			<string>../../Frameworks/lxml/html</string>
-		</dict>
-		<key>Resources/lxml/isoschematron/resources/rng/iso-schematron.rng</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			VsWxPyi3iViJDDbjJJw0wWkEHkLrz9zoCA8zJLor9N4=
-			</data>
-		</dict>
-		<key>Resources/lxml/isoschematron/resources/xsl/RNG2Schtrn.xsl</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			ObebsB8Wt+d3uIA/U5NU85TpnQ3PxPX38TdOAqosMac=
-			</data>
-		</dict>
-		<key>Resources/lxml/isoschematron/resources/xsl/XSD2Schtrn.xsl</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			QweRrIIM+zFcgg98GXA2CaWfIbgVE0XKEeYSfvv67A0=
-			</data>
-		</dict>
-		<key>Resources/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/iso_abstract_expand.xsl</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			xSZ/Ekq/I+62ZpiE5AqYYHwFW/qh855zt9V4/s7rbkY=
-			</data>
-		</dict>
-		<key>Resources/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/iso_dsdl_include.xsl</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			x42QJ+dxQ1waPzydsCoQnp2Xj15y53nW43O7BuoDRHk=
-			</data>
-		</dict>
-		<key>Resources/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/iso_schematron_message.xsl</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			Tr9BnO6pzjVWwhqJfm10UlvAy95EgfSCz2iMlrVGT6Q=
-			</data>
-		</dict>
-		<key>Resources/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/iso_schematron_skeleton_for_xslt1.xsl</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			ue8q/88X4e/jsJizo31GRNBxNhdxkEE9fY20oq0Iqwk=
-			</data>
-		</dict>
-		<key>Resources/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/iso_svrl_for_xslt1.xsl</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			BBAdsVSi5zAzeGepuN6gS1saQINDqITXKplmmj4dTWg=
-			</data>
-		</dict>
-		<key>Resources/lxml/isoschematron/resources/xsl/iso-schematron-xslt1/readme.txt</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			OGLiFswuLJEW5EPYKOeoauuCJFEtVa6jyzBE1OcJI98=
-			</data>
-		</dict>
-		<key>Resources/lxml/objectify.cpython-312-darwin.so</key>
-		<dict>
-			<key>symlink</key>
-			<string>../../Frameworks/lxml/objectify.cpython-312-darwin.so</string>
-		</dict>
-		<key>Resources/lxml/sax.cpython-312-darwin.so</key>
-		<dict>
-			<key>symlink</key>
-			<string>../../Frameworks/lxml/sax.cpython-312-darwin.so</string>
 		</dict>
 		<key>Resources/planner/HGPT_MASTER_PLANNER.xlsx</key>
 		<dict>
