@@ -1,12 +1,10 @@
 from __future__ import annotations
 
-import os
 import subprocess
 import sys
-from pathlib import Path
 
 from PySide6.QtCore import QThread, Signal
-
+from pathlib import Path
 
 class ProductionWorker(QThread):
     log = Signal(str)
@@ -18,16 +16,12 @@ class ProductionWorker(QThread):
 
     def run(self):
         cmd = [
-            sys.executable,
-            "-m",
-            "hgpt_ai_os.production",
-            "--topic",
-            self.topic,
-        ]
-
-        env = os.environ.copy()
-        env["PYTHONPATH"] = str(Path.cwd() / "src")
-
+        sys.executable,
+        str(Path.cwd() / "production.py"),
+        "--topic",
+        self.topic,
+]
+   
         try:
             process = subprocess.Popen(
                 cmd,
@@ -35,7 +29,6 @@ class ProductionWorker(QThread):
                 stderr=subprocess.STDOUT,
                 text=True,
                 bufsize=1,
-                env=env,
             )
 
             assert process.stdout is not None
