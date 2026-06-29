@@ -7,6 +7,7 @@ from pathlib import Path
 
 from hgpt_ai_os.content.generator import ContentGenerator
 from hgpt_ai_os.content.export.docx_exporter import DocxExporter
+from hgpt_ai_os.core.resource_path import resource_path
 from hgpt_ai_os.knowledge.bundle import KnowledgeBundle
 from hgpt_ai_os.knowledge.retriever import KnowledgeRetriever
 
@@ -26,7 +27,8 @@ def build_outputs(day: int, topic: str) -> Path:
     print("-" * 60)
 
     print("[01/07] Load Knowledge                   PASS")
-    retriever = KnowledgeRetriever()
+    knowledge_root = resource_path("knowledge") if getattr(sys, "frozen", False) else "knowledge"
+    retriever = KnowledgeRetriever(knowledge_root)
     items = retriever.retrieve(topic, top_k=5)
 
     print("[02/07] Build Knowledge Context          PASS")
