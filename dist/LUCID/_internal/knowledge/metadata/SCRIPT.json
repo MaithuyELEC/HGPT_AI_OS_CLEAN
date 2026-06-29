@@ -1,0 +1,14 @@
+{
+    "id": "SCRIPT",
+    "title": "script",
+    "category": "tiktok",
+    "tags": [
+        "tiktok"
+    ],
+    "author": "MaithuyELEC",
+    "version": "1.0",
+    "status": "active",
+    "source_path": "tiktok/script.md",
+    "related": [],
+    "extra": {}
+}

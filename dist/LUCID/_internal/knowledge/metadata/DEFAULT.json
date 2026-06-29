@@ -1,0 +1,14 @@
+{
+    "id": "DEFAULT",
+    "title": "default",
+    "category": "hashtags",
+    "tags": [
+        "hashtags"
+    ],
+    "author": "MaithuyELEC",
+    "version": "1.0",
+    "status": "active",
+    "source_path": "hashtags/default.md",
+    "related": [],
+    "extra": {}
+}

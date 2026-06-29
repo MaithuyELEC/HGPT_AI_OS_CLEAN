@@ -1,0 +1,14 @@
+{
+    "id": "BUNDLE",
+    "title": "bundle",
+    "category": "facebook",
+    "tags": [
+        "facebook"
+    ],
+    "author": "MaithuyELEC",
+    "version": "1.0",
+    "status": "active",
+    "source_path": "facebook/bundle.md",
+    "related": [],
+    "extra": {}
+}

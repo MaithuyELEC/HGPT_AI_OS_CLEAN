@@ -1,0 +1,11 @@
+class Icon:
+    OK = "✅"
+    FAIL = "❌"
+    RUN = "⚙️"
+    AI = "🧠"
+    DOC = "📄"
+    VIDEO = "🎬"
+    IMAGE = "🖼"
+    KNOWLEDGE = "📚"
+    EXPORT = "📦"
+    SETTINGS = "⚙"

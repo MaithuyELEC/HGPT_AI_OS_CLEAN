@@ -1,0 +1,68 @@
+from PySide6.QtWidgets import (
+    QMainWindow,
+    QWidget,
+    QHBoxLayout,
+    QLabel,
+    QListWidget,
+    QVBoxLayout,
+)
+
+from PySide6.QtCore import Qt
+
+
+class MainWindow(QMainWindow):
+
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("LUCID - AI Engineering Platform")
+        self.resize(1600, 900)
+
+        root = QWidget()
+        self.setCentralWidget(root)
+
+        layout = QHBoxLayout(root)
+
+        sidebar = QListWidget()
+        sidebar.setFixedWidth(230)
+
+        sidebar.addItems([
+            "🏠 Dashboard",
+            "📝 Marketing",
+            "🎬 Video Studio",
+            "🖼 Image Studio",
+            "📚 Knowledge",
+            "📄 SOP",
+            "✅ QA/QC",
+            "🔧 Maintenance",
+            "📊 Planner",
+            "⚙ Settings",
+        ])
+
+        workspace = QWidget()
+        work_layout = QVBoxLayout(workspace)
+
+        title = QLabel("LUCID")
+        title.setAlignment(Qt.AlignCenter)
+        title.setStyleSheet("""
+            font-size:32px;
+            font-weight:bold;
+            color:#00E5FF;
+        """)
+
+        subtitle = QLabel(
+            "AI Engineering Platform\nDeveloped by MaithuyELEC"
+        )
+        subtitle.setAlignment(Qt.AlignCenter)
+        subtitle.setStyleSheet("""
+            font-size:16px;
+            color:white;
+        """)
+
+        work_layout.addStretch()
+        work_layout.addWidget(title)
+        work_layout.addWidget(subtitle)
+        work_layout.addStretch()
+
+        layout.addWidget(sidebar)
+        layout.addWidget(workspace)

@@ -1,0 +1,111 @@
+from __future__ import annotations
+import os
+import platform
+import subprocess
+from pathlib import Path
+from PySide6.QtWidgets import (
+    QMainWindow,
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QTextEdit,
+    QProgressBar,
+)
+
+from .worker import ProductionWorker
+
+
+class MainWindow(QMainWindow):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("LUCID AUTO")
+        self.resize(900, 650)
+
+        self.worker = None
+
+        central = QWidget()
+        self.setCentralWidget(central)
+
+        layout = QVBoxLayout(central)
+
+        title = QLabel("🚀 LUCID AUTO")
+        title.setStyleSheet("font-size:24px;font-weight:bold;")
+        layout.addWidget(title)
+
+        row = QHBoxLayout()
+
+        self.topic = QLineEdit()
+        self.topic.setPlaceholderText("Nhập chủ đề...")
+
+        self.btn = QPushButton("Generate")
+
+        row.addWidget(self.topic)
+        row.addWidget(self.btn)
+
+        layout.addLayout(row)
+
+        self.progress = QProgressBar()
+        self.progress.setRange(0, 0)
+        self.progress.hide()
+
+        layout.addWidget(self.progress)
+
+        self.console = QTextEdit()
+        self.console.setReadOnly(True)
+
+        layout.addWidget(self.console)
+
+        self.btn.clicked.connect(self.generate)
+
+    def generate(self):
+        topic = self.topic.text().strip()
+
+        if not topic:
+            self.console.append("Vui lòng nhập Topic.")
+            return
+
+        self.console.clear()
+
+        self.progress.show()
+
+        self.btn.setEnabled(False)
+
+        self.worker = ProductionWorker(topic)
+
+        self.worker.log.connect(self.console.append)
+
+        self.worker.finished.connect(self.finished)
+
+        self.worker.start()
+
+    def finished(self, ok):
+        self.progress.hide()
+
+        self.btn.setEnabled(True)
+
+        if ok:
+            self.console.append("\n==========")
+            self.console.append("✅ Production Completed")
+            self.open_output_folder()
+        else:
+            self.console.append("\n==========")
+            self.console.append("❌ Production Failed")
+
+    def open_output_folder(self):
+        output = Path.cwd() / "outputs" / "marketing"
+
+        if not output.exists():
+            return
+
+        system = platform.system()
+
+        if system == "Darwin":
+            subprocess.Popen(["open", str(output)])
+        elif system == "Windows":
+            os.startfile(str(output))
+        else:
+            subprocess.Popen(["xdg-open", str(output)])       

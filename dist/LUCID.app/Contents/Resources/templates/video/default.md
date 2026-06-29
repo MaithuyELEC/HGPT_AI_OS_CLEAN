@@ -1,0 +1,9 @@
+{{HOOK}}
+
+TITLE:
+{{TOPIC}}
+
+VIDEO PROMPT:
+{{VIDEO_PROMPT}}
+
+{{HASHTAGS}}

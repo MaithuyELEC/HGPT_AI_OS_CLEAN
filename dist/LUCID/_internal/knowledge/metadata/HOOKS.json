@@ -1,0 +1,14 @@
+{
+    "id": "HOOKS",
+    "title": "hooks",
+    "category": "facebook",
+    "tags": [
+        "facebook"
+    ],
+    "author": "MaithuyELEC",
+    "version": "1.0",
+    "status": "active",
+    "source_path": "facebook/hooks.md",
+    "related": [],
+    "extra": {}
+}

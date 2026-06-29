@@ -1,0 +1,14 @@
+{
+    "id": "CHECKLIST",
+    "title": "checklist",
+    "category": "approval",
+    "tags": [
+        "approval"
+    ],
+    "author": "MaithuyELEC",
+    "version": "1.0",
+    "status": "active",
+    "source_path": "approval/checklist.md",
+    "related": [],
+    "extra": {}
+}
