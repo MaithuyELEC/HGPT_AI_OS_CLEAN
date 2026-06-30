@@ -47,6 +47,7 @@ class MainWindow(QMainWindow):
         self._build_status_area(layout)
         self._build_progress_area(layout)
         self._build_console_area(layout)
+        self._build_summary_area(layout)
         self._build_output_area(layout)
         self._apply_theme()
 
@@ -154,6 +155,50 @@ class MainWindow(QMainWindow):
 
         layout.addWidget(self.console, 1)
 
+    def _build_summary_area(self, layout):
+        self.summary_panel = QFrame()
+        self.summary_panel.setObjectName("summaryPanel")
+        summary_layout = QGridLayout(self.summary_panel)
+        summary_layout.setContentsMargins(18, 14, 18, 14)
+        summary_layout.setHorizontalSpacing(18)
+        summary_layout.setVerticalSpacing(8)
+
+        title = QLabel("Job Summary")
+        title.setObjectName("summaryTitle")
+
+        self.summary_topic = QLabel("—")
+        self.summary_status = QLabel("—")
+        self.summary_knowledge = QLabel("—")
+        self.summary_output = QLabel("—")
+        self.summary_elapsed = QLabel("—")
+
+        values = (
+            ("Topic", self.summary_topic),
+            ("Status", self.summary_status),
+            ("Knowledge", self.summary_knowledge),
+            ("Elapsed Time", self.summary_elapsed),
+            ("Output Folder", self.summary_output),
+        )
+
+        summary_layout.addWidget(title, 0, 0, 1, 4)
+
+        for index, (label_text, value_widget) in enumerate(values, start=1):
+            label = QLabel(label_text)
+            label.setObjectName("summaryLabel")
+            value_widget.setObjectName("summaryValue")
+
+            row = 1 + (index - 1) // 2
+            column = 0 if index % 2 else 2
+
+            summary_layout.addWidget(label, row, column)
+            summary_layout.addWidget(value_widget, row, column + 1)
+
+        summary_layout.setColumnStretch(1, 1)
+        summary_layout.setColumnStretch(3, 1)
+        self.summary_panel.hide()
+
+        layout.addWidget(self.summary_panel)
+
     def _build_output_area(self, layout):
         panel = QFrame()
         panel.setObjectName("outputPanel")
@@ -223,10 +268,26 @@ class MainWindow(QMainWindow):
             }
             QFrame#panel,
             QFrame#statusPanel,
+            QFrame#summaryPanel,
             QFrame#outputPanel {
                 background: #ffffff;
                 border: 1px solid #d5dee7;
                 border-radius: 8px;
+            }
+            QLabel#summaryTitle {
+                color: #19364d;
+                font-size: 13px;
+                font-weight: 800;
+            }
+            QLabel#summaryLabel {
+                color: #71808f;
+                font-size: 12px;
+                font-weight: 700;
+            }
+            QLabel#summaryValue {
+                color: #1f2933;
+                font-size: 12px;
+                font-weight: 600;
             }
             QLabel#fieldLabel {
                 color: #334e68;
@@ -322,6 +383,7 @@ class MainWindow(QMainWindow):
             return
 
         self.console.clear()
+        self.summary_panel.hide()
         self.run_status.setText("Running")
 
         self.progress.show()
@@ -343,6 +405,7 @@ class MainWindow(QMainWindow):
 
         if ok:
             self.run_status.setText("Completed")
+            self.update_summary()
             self.append_console("")
             self.append_console("==========")
             self.append_console("Production Completed")
@@ -357,10 +420,19 @@ class MainWindow(QMainWindow):
         self.console.clear()
         self.console.setText("Waiting for Topic...")
         self.run_status.setText("Waiting for Topic")
+        self.summary_panel.hide()
 
     def append_console(self, text):
         self.console.append(text)
         self.console.moveCursor(QTextCursor.End)
+
+    def update_summary(self):
+        self.summary_topic.setText(self.topic.text().strip() or "—")
+        self.summary_status.setText("Completed")
+        self.summary_knowledge.setText("—")
+        self.summary_elapsed.setText("—")
+        self.summary_output.setText("~/Documents/LUCID/outputs/marketing")
+        self.summary_panel.show()
 
     def open_output_folder(self):
         output = Path.cwd() / "outputs" / "marketing"
