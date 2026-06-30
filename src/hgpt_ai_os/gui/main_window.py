@@ -5,6 +5,7 @@ import platform
 import subprocess
 from pathlib import Path
 
+from PySide6.QtCore import Qt
 from PySide6.QtGui import QTextCursor
 from PySide6.QtWidgets import (
     QFrame,
@@ -12,6 +13,8 @@ from PySide6.QtWidgets import (
     QHBoxLayout,
     QLabel,
     QLineEdit,
+    QListWidget,
+    QListWidgetItem,
     QMainWindow,
     QProgressBar,
     QPushButton,
@@ -48,6 +51,7 @@ class MainWindow(QMainWindow):
         self._build_progress_area(layout)
         self._build_console_area(layout)
         self._build_summary_area(layout)
+        self._build_generated_files_area(layout)
         self._build_output_area(layout)
         self._apply_theme()
 
@@ -199,6 +203,27 @@ class MainWindow(QMainWindow):
 
         layout.addWidget(self.summary_panel)
 
+    def _build_generated_files_area(self, layout):
+        self.files_panel = QFrame()
+        self.files_panel.setObjectName("filesPanel")
+        files_layout = QVBoxLayout(self.files_panel)
+        files_layout.setContentsMargins(18, 14, 18, 14)
+        files_layout.setSpacing(8)
+
+        title = QLabel("Generated Files")
+        title.setObjectName("summaryTitle")
+
+        self.files_list = QListWidget()
+        self.files_list.setObjectName("filesList")
+        self.files_list.setMaximumHeight(96)
+        self.files_list.itemDoubleClicked.connect(self.open_generated_file)
+
+        files_layout.addWidget(title)
+        files_layout.addWidget(self.files_list)
+        self.files_panel.hide()
+
+        layout.addWidget(self.files_panel)
+
     def _build_output_area(self, layout):
         panel = QFrame()
         panel.setObjectName("outputPanel")
@@ -269,6 +294,7 @@ class MainWindow(QMainWindow):
             QFrame#panel,
             QFrame#statusPanel,
             QFrame#summaryPanel,
+            QFrame#filesPanel,
             QFrame#outputPanel {
                 background: #ffffff;
                 border: 1px solid #d5dee7;
@@ -288,6 +314,23 @@ class MainWindow(QMainWindow):
                 color: #1f2933;
                 font-size: 12px;
                 font-weight: 600;
+            }
+            QListWidget#filesList {
+                color: #1f2933;
+                background: #f4f7fa;
+                border: 1px solid #d5dee7;
+                border-radius: 6px;
+                padding: 4px;
+                font-family: "SF Mono", Menlo, Consolas, monospace;
+                font-size: 12px;
+            }
+            QListWidget#filesList::item {
+                padding: 5px 6px;
+            }
+            QListWidget#filesList::item:selected {
+                color: #ffffff;
+                background: #2f5f7f;
+                border-radius: 4px;
             }
             QLabel#fieldLabel {
                 color: #334e68;
@@ -384,6 +427,7 @@ class MainWindow(QMainWindow):
 
         self.console.clear()
         self.summary_panel.hide()
+        self.files_panel.hide()
         self.run_status.setText("Running")
 
         self.progress.show()
@@ -406,6 +450,7 @@ class MainWindow(QMainWindow):
         if ok:
             self.run_status.setText("Completed")
             self.update_summary()
+            self.update_generated_files()
             self.append_console("")
             self.append_console("==========")
             self.append_console("Production Completed")
@@ -421,6 +466,7 @@ class MainWindow(QMainWindow):
         self.console.setText("Waiting for Topic...")
         self.run_status.setText("Waiting for Topic")
         self.summary_panel.hide()
+        self.files_panel.hide()
 
     def append_console(self, text):
         self.console.append(text)
@@ -433,6 +479,44 @@ class MainWindow(QMainWindow):
         self.summary_elapsed.setText("—")
         self.summary_output.setText("~/Documents/LUCID/outputs/marketing")
         self.summary_panel.show()
+
+    def update_generated_files(self):
+        output = Path.cwd() / "outputs" / "marketing"
+        documents = sorted(output.glob("*.docx")) if output.exists() else []
+
+        self.files_list.clear()
+
+        if not documents:
+            item = QListWidgetItem("No generated documents.")
+            item.setFlags(item.flags() & ~Qt.ItemIsSelectable & ~Qt.ItemIsEnabled)
+            self.files_list.addItem(item)
+        else:
+            for document in documents:
+                item = QListWidgetItem(document.name)
+                item.setData(Qt.UserRole, str(document))
+                self.files_list.addItem(item)
+
+        self.files_panel.show()
+
+    def open_generated_file(self, item):
+        path = item.data(Qt.UserRole)
+
+        if not path:
+            return
+
+        document = Path(path)
+
+        if not document.exists():
+            return
+
+        system = platform.system()
+
+        if system == "Darwin":
+            subprocess.Popen(["open", str(document)])
+        elif system == "Windows":
+            os.startfile(str(document))
+        else:
+            subprocess.Popen(["xdg-open", str(document)])
 
     def open_output_folder(self):
         output = Path.cwd() / "outputs" / "marketing"
