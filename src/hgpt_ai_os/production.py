@@ -12,7 +12,13 @@ from hgpt_ai_os.knowledge.bundle import KnowledgeBundle
 from hgpt_ai_os.knowledge.retriever import KnowledgeRetriever
 
 
-OUTPUT_ROOT = Path("outputs/marketing")
+OUTPUT_ROOT = (
+    Path.home()
+    / "Documents"
+    / "LUCID"
+    / "outputs"
+    / "marketing"
+)
 
 
 def build_outputs(day: int, topic: str) -> Path:

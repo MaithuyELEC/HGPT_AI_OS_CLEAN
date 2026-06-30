@@ -65,15 +65,23 @@ class MainWindow(QMainWindow):
         title = QLabel("LUCID AUTO")
         title.setObjectName("appTitle")
 
-        subtitle = QLabel("HGPT Steel Digital Factory")
-        subtitle.setObjectName("subtitle")
+        platform_label = QLabel("AI Engineering Platform")
+        platform_label.setObjectName("platformLabel")
 
-        version = QLabel("Production Engine v1.0.1")
+        powered_by = QLabel("Powered by MaithuyELEC")
+        powered_by.setObjectName("poweredBy")
+
+        factory = QLabel("HGPT Steel Digital Factory")
+        factory.setObjectName("factoryCaption")
+
+        version = QLabel("Production Ready\nv1.0.0")
         version.setObjectName("version")
 
         header_layout.addWidget(title, 0, 0)
-        header_layout.addWidget(subtitle, 1, 0)
-        header_layout.addWidget(version, 0, 1, 2, 1)
+        header_layout.addWidget(platform_label, 1, 0)
+        header_layout.addWidget(powered_by, 2, 0)
+        header_layout.addWidget(factory, 3, 0)
+        header_layout.addWidget(version, 0, 1, 4, 1)
         header_layout.setColumnStretch(0, 1)
 
         layout.addWidget(header)
@@ -156,7 +164,7 @@ class MainWindow(QMainWindow):
         label = QLabel("Output Root")
         label.setObjectName("fieldLabel")
 
-        self.output_path = QLabel("outputs/marketing")
+        self.output_path = QLabel("~/Documents/LUCID/outputs/marketing")
         self.output_path.setObjectName("outputPath")
 
         self.output_btn = QPushButton("Open Output Folder")
@@ -188,9 +196,19 @@ class MainWindow(QMainWindow):
                 font-weight: 800;
                 letter-spacing: 0px;
             }
-            QLabel#subtitle {
+            QLabel#platformLabel {
                 color: #52606d;
                 font-size: 14px;
+                font-weight: 600;
+            }
+            QLabel#poweredBy {
+                color: #19364d;
+                font-size: 13px;
+                font-weight: 700;
+            }
+            QLabel#factoryCaption {
+                color: #71808f;
+                font-size: 12px;
                 font-weight: 600;
             }
             QLabel#version {
@@ -201,6 +219,7 @@ class MainWindow(QMainWindow):
                 border: 1px solid #b8c7d4;
                 border-radius: 6px;
                 background: #eef3f7;
+                qproperty-alignment: AlignCenter;
             }
             QFrame#panel,
             QFrame#statusPanel,

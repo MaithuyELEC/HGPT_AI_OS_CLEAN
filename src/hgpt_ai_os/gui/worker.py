@@ -46,10 +46,7 @@ class ProductionWorker(QThread):
         try:
             from hgpt_ai_os import production
 
-            if getattr(sys, "frozen", False):
-                production.OUTPUT_ROOT = (
-                    Path.home() / "Documents" / "LUCID" / "outputs" / "marketing"
-                )
+            
 
             stream = SignalStream(self.log.emit)
 
