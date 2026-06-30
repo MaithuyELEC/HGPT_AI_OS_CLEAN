@@ -24,7 +24,7 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
-from .worker import ProductionWorker
+from .worker import ProductionResult, ProductionWorker
 
 
 class MainWindow(QMainWindow):
@@ -36,6 +36,7 @@ class MainWindow(QMainWindow):
         self.setMinimumSize(920, 620)
 
         self.worker = None
+        self.production_result = None
 
         central = QWidget()
         central.setObjectName("root")
@@ -428,6 +429,7 @@ class MainWindow(QMainWindow):
         self.console.clear()
         self.summary_panel.hide()
         self.files_panel.hide()
+        self.production_result = None
         self.run_status.setText("Running")
 
         self.progress.show()
@@ -442,15 +444,16 @@ class MainWindow(QMainWindow):
 
         self.worker.start()
 
-    def finished(self, ok):
+    def finished(self, result):
         self.progress.hide()
 
         self.btn.setEnabled(True)
+        self.production_result = result
 
-        if ok:
+        if result.success:
             self.run_status.setText("Completed")
-            self.update_summary()
-            self.update_generated_files()
+            self.update_summary(result)
+            self.update_generated_files(result)
             self.append_console("")
             self.append_console("==========")
             self.append_console("Production Completed")
@@ -472,26 +475,31 @@ class MainWindow(QMainWindow):
         self.console.append(text)
         self.console.moveCursor(QTextCursor.End)
 
-    def update_summary(self):
+    def update_summary(self, result: ProductionResult):
         self.summary_topic.setText(self.topic.text().strip() or "—")
         self.summary_status.setText("Completed")
-        self.summary_knowledge.setText("—")
-        self.summary_elapsed.setText("—")
-        self.summary_output.setText("~/Documents/LUCID/outputs/marketing")
+        self.summary_knowledge.setText(
+            "—" if result.knowledge_count is None else str(result.knowledge_count)
+        )
+        self.summary_elapsed.setText(
+            "—"
+            if result.elapsed_seconds is None
+            else f"{result.elapsed_seconds:.2f} seconds"
+        )
+        self.summary_output.setText(
+            "—" if result.output_dir is None else str(result.output_dir)
+        )
         self.summary_panel.show()
 
-    def update_generated_files(self):
-        output = Path.cwd() / "outputs" / "marketing"
-        documents = sorted(output.glob("*.docx")) if output.exists() else []
-
+    def update_generated_files(self, result: ProductionResult):
         self.files_list.clear()
 
-        if not documents:
+        if not result.generated_files:
             item = QListWidgetItem("No generated documents.")
             item.setFlags(item.flags() & ~Qt.ItemIsSelectable & ~Qt.ItemIsEnabled)
             self.files_list.addItem(item)
         else:
-            for document in documents:
+            for document in result.generated_files:
                 item = QListWidgetItem(document.name)
                 item.setData(Qt.UserRole, str(document))
                 self.files_list.addItem(item)
@@ -519,9 +527,12 @@ class MainWindow(QMainWindow):
             subprocess.Popen(["xdg-open", str(document)])
 
     def open_output_folder(self):
-        output = Path.cwd() / "outputs" / "marketing"
+        if self.production_result is None:
+            return
 
-        if not output.exists():
+        output = self.production_result.output_dir
+
+        if output is None or not output.exists():
             return
 
         system = platform.system()
