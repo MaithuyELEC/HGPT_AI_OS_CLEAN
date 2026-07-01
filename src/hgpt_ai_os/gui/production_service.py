@@ -15,7 +15,7 @@ class ProductionService:
 
         self.started_at = time.perf_counter()
         day = production.next_day()
-        output_dir = production.build_outputs(day, topic)
+        output_dir = production.build_outputs(day, topic, open_output_folder=False)
         generated_files = (
             sorted(output_dir.glob("*.docx")) if output_dir.exists() else []
         )
@@ -38,7 +38,6 @@ class ProductionService:
         )
 
     def capture_metadata(self, line: str):
-        # TODO: Replace capture_metadata() when Production Engine exposes structured metadata.
         if not line.startswith("Knowledge :"):
             return
 

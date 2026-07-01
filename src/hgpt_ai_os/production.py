@@ -21,7 +21,7 @@ OUTPUT_ROOT = (
 )
 
 
-def build_outputs(day: int, topic: str) -> Path:
+def build_outputs(day: int, topic: str, open_output_folder: bool = True) -> Path:
     start = time.time()
 
     print("=" * 60)
@@ -70,9 +70,9 @@ def build_outputs(day: int, topic: str) -> Path:
     print(f"Knowledge : {len(items)} item(s)")
     print(f"Output    : {output_dir}")
 
-    import subprocess
+    if open_output_folder and sys.platform == "darwin":
+        import subprocess
 
-    if sys.platform == "darwin":
         subprocess.run(["open", str(output_dir)])
 
     print(f"Elapsed   : {time.time() - start:.2f} seconds")

@@ -25,7 +25,9 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
 )
 
-from .worker import ProductionResult, ProductionWorker
+from hgpt_ai_os.core.production_result import ProductionResult
+
+from .worker import ProductionWorker
 
 
 class MainWindow(QMainWindow):
@@ -511,15 +513,25 @@ class MainWindow(QMainWindow):
         self.worker = ProductionWorker(topic)
 
         self.worker.log.connect(self.append_console)
-
         self.worker.finished.connect(self.finished)
+        self.worker.finished.connect(self.worker.deleteLater)
 
         self.worker.start()
 
     def finished(self, result):
+        self.worker = None
         self.progress.hide()
-
         self.set_controls_enabled(True)
+
+        if not isinstance(result, ProductionResult):
+            result = ProductionResult(
+                success=False,
+                output_dir=None,
+                generated_files=[],
+                knowledge_count=None,
+                elapsed_seconds=None,
+            )
+
         self.production_result = result
 
         if result.success:
@@ -608,16 +620,14 @@ class MainWindow(QMainWindow):
         document = Path(path)
 
         if not document.exists():
+            QMessageBox.warning(
+                self,
+                "File Not Found",
+                "The selected generated file could not be found.",
+            )
             return
 
-        system = platform.system()
-
-        if system == "Darwin":
-            subprocess.Popen(["open", str(document)])
-        elif system == "Windows":
-            os.startfile(str(document))
-        else:
-            subprocess.Popen(["xdg-open", str(document)])
+        self._open_path(document, "File Open Failed")
 
     def open_output_folder(self):
         if self.production_result is not None:
@@ -628,13 +638,28 @@ class MainWindow(QMainWindow):
             return
 
         if output is None or not output.exists():
+            QMessageBox.warning(
+                self,
+                "Output Folder Not Found",
+                "The output folder could not be found.",
+            )
             return
 
-        system = platform.system()
+        self._open_path(output, "Output Folder Open Failed")
 
-        if system == "Darwin":
-            subprocess.Popen(["open", str(output)])
-        elif system == "Windows":
-            os.startfile(str(output))
-        else:
-            subprocess.Popen(["xdg-open", str(output)])
+    def _open_path(self, path: Path, title: str):
+        try:
+            system = platform.system()
+
+            if system == "Darwin":
+                subprocess.Popen(["open", str(path)])
+            elif system == "Windows":
+                os.startfile(str(path))
+            else:
+                subprocess.Popen(["xdg-open", str(path)])
+        except OSError as exc:
+            QMessageBox.warning(
+                self,
+                title,
+                f"Could not open:\n{path}\n\n{exc}",
+            )

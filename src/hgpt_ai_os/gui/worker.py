@@ -7,8 +7,6 @@ from contextlib import redirect_stderr, redirect_stdout
 
 from PySide6.QtCore import QThread, Signal
 
-from hgpt_ai_os.core.production_result import ProductionResult
-
 from .production_service import ProductionService
 
 
