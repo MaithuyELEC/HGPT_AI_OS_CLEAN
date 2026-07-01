@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import io
+import logging
+import traceback
 from contextlib import redirect_stderr, redirect_stdout
 
 from PySide6.QtCore import QThread, Signal
@@ -8,6 +10,9 @@ from PySide6.QtCore import QThread, Signal
 from hgpt_ai_os.core.production_result import ProductionResult
 
 from .production_service import ProductionService
+
+
+logger = logging.getLogger(__name__)
 
 
 class SignalStream(io.TextIOBase):
@@ -61,6 +66,8 @@ class ProductionWorker(QThread):
             self.finished.emit(result)
 
         except Exception:
+            logger.exception("Production failed")
+            self.log.emit(traceback.format_exc())
             self.log.emit("STATUS : PRODUCTION FAILED")
             self.log.emit("ERROR  : Production could not be completed.")
             self.finished.emit(service.failed_result())

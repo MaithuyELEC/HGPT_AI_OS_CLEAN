@@ -480,8 +480,10 @@ class MainWindow(QMainWindow):
             QMessageBox.critical(
                 self,
                 "Production Failed",
-                "Production could not be completed. Please review the production log.",
+                "Production could not be completed. Please try again or contact support.",
             )
+
+        
 
     def clear_console(self):
         self.console.clear()
@@ -498,8 +500,8 @@ class MainWindow(QMainWindow):
         self.topic.setEnabled(enabled)
         self.btn.setEnabled(enabled)
         self.clear_btn.setEnabled(enabled)
-        self.output_btn.setEnabled(enabled)
-        self.files_list.setEnabled(enabled)
+        self.output_btn.setEnabled(True)
+        self.files_list.setEnabled(True)
 
     def update_summary(self, result: ProductionResult):
         self.summary_topic.setText(self.topic.text().strip() or "—")
