@@ -5,14 +5,14 @@ import platform
 import subprocess
 from pathlib import Path
 
-from PySide6.QtCore import Qt
-from PySide6.QtGui import QTextCursor
+from PySide6.QtCore import QSettings, Qt
+from PySide6.QtGui import QKeySequence, QShortcut, QTextCursor
 from PySide6.QtWidgets import (
+    QComboBox,
     QFrame,
     QGridLayout,
     QHBoxLayout,
     QLabel,
-    QLineEdit,
     QListWidget,
     QListWidgetItem,
     QMainWindow,
@@ -29,6 +29,8 @@ from .worker import ProductionResult, ProductionWorker
 
 
 class MainWindow(QMainWindow):
+    MAX_TOPIC_HISTORY = 10
+
     def __init__(self):
         super().__init__()
 
@@ -38,6 +40,13 @@ class MainWindow(QMainWindow):
 
         self.worker = None
         self.production_result = None
+        self.settings = QSettings("MaithuyELEC", "LUCID AUTO")
+        self.topic_history = self._load_topic_history()
+        self.last_output_folder = self.settings.value("last_output_folder", "", str)
+        self.total_jobs_generated = int(
+            self.settings.value("total_jobs_generated", 0, int)
+        )
+        self.shortcuts = []
 
         central = QWidget()
         central.setObjectName("root")
@@ -60,6 +69,8 @@ class MainWindow(QMainWindow):
         self.btn.clicked.connect(self.generate)
         self.clear_btn.clicked.connect(self.clear_console)
         self.output_btn.clicked.connect(self.open_output_folder)
+        self._install_shortcuts()
+        self._restore_last_output_folder()
 
     def _build_header(self, layout):
         header = QFrame()
@@ -103,10 +114,12 @@ class MainWindow(QMainWindow):
         label = QLabel("Topic")
         label.setObjectName("fieldLabel")
 
-        self.topic = QLineEdit()
+        self.topic = QComboBox()
+        self.topic.setEditable(True)
         self.topic.setPlaceholderText("Enter production topic...")
-        self.topic.setClearButtonEnabled(True)
-        self.topic.returnPressed.connect(self.generate)
+        self.topic.addItems(self.topic_history)
+        self.topic.lineEdit().setClearButtonEnabled(True)
+        self.topic.lineEdit().returnPressed.connect(self.generate)
 
         self.btn = QPushButton("Generate")
         self.btn.setObjectName("primaryButton")
@@ -177,6 +190,7 @@ class MainWindow(QMainWindow):
         self.summary_knowledge = QLabel("—")
         self.summary_output = QLabel("—")
         self.summary_elapsed = QLabel("—")
+        self.summary_total_jobs = QLabel(str(self.total_jobs_generated))
 
         values = (
             ("Topic", self.summary_topic),
@@ -184,6 +198,7 @@ class MainWindow(QMainWindow):
             ("Knowledge", self.summary_knowledge),
             ("Elapsed Time", self.summary_elapsed),
             ("Output Folder", self.summary_output),
+            ("Total Jobs Generated", self.summary_total_jobs),
         )
 
         summary_layout.addWidget(title, 0, 0, 1, 4)
@@ -340,7 +355,8 @@ class MainWindow(QMainWindow):
                 font-weight: 700;
                 text-transform: uppercase;
             }
-            QLineEdit {
+            QLineEdit,
+            QComboBox {
                 min-height: 36px;
                 padding: 0 12px;
                 color: #1f2933;
@@ -349,9 +365,14 @@ class MainWindow(QMainWindow):
                 border-radius: 6px;
                 selection-background-color: #2f5f7f;
             }
-            QLineEdit:focus {
+            QLineEdit:focus,
+            QComboBox:focus {
                 border: 1px solid #2f5f7f;
                 background: #fbfdff;
+            }
+            QComboBox::drop-down {
+                border: 0;
+                width: 26px;
             }
             QPushButton {
                 min-height: 36px;
@@ -419,11 +440,52 @@ class MainWindow(QMainWindow):
             """
         )
 
+    def _install_shortcuts(self):
+        for sequence in ("Ctrl+Return", "Ctrl+Enter", "Meta+Return", "Meta+Enter"):
+            shortcut = QKeySequence(sequence)
+            if not shortcut.isEmpty():
+                self.shortcuts.append(QShortcut(shortcut, self, self.generate))
+
+    def _load_topic_history(self):
+        value = self.settings.value("topic_history", [], list)
+        if isinstance(value, str):
+            value = [value]
+        return [topic for topic in value if topic][: self.MAX_TOPIC_HISTORY]
+
+    def _save_topic(self, topic):
+        self.topic_history = [
+            topic,
+            *[item for item in self.topic_history if item != topic],
+        ][: self.MAX_TOPIC_HISTORY]
+        self.settings.setValue("topic_history", self.topic_history)
+        self.topic.blockSignals(True)
+        self.topic.clear()
+        self.topic.addItems(self.topic_history)
+        self.topic.setCurrentText(topic)
+        self.topic.blockSignals(False)
+
+    def _restore_last_output_folder(self):
+        if self.last_output_folder:
+            self.output_path.setText(self.last_output_folder)
+
+    def _save_last_output_folder(self, output_dir):
+        if output_dir is None:
+            return
+
+        self.last_output_folder = str(output_dir)
+        self.settings.setValue("last_output_folder", self.last_output_folder)
+        self.output_path.setText(self.last_output_folder)
+
+    def _increment_total_jobs(self):
+        self.total_jobs_generated += 1
+        self.settings.setValue("total_jobs_generated", self.total_jobs_generated)
+        self.summary_total_jobs.setText(str(self.total_jobs_generated))
+
     def generate(self):
         if self.worker is not None and self.worker.isRunning():
             return
 
-        topic = self.topic.text().strip()
+        topic = self.topic.currentText().strip()
 
         if not topic:
             self.run_status.setText("Waiting for Topic")
@@ -436,6 +498,7 @@ class MainWindow(QMainWindow):
             self.topic.setFocus()
             return
 
+        self._save_topic(topic)
         self.console.clear()
         self.summary_panel.hide()
         self.files_panel.hide()
@@ -461,6 +524,8 @@ class MainWindow(QMainWindow):
 
         if result.success:
             self.run_status.setText("Completed")
+            self._increment_total_jobs()
+            self._save_last_output_folder(result.output_dir)
             self.update_summary(result)
             self.update_generated_files(result)
             self.append_console("")
@@ -504,7 +569,7 @@ class MainWindow(QMainWindow):
         self.files_list.setEnabled(True)
 
     def update_summary(self, result: ProductionResult):
-        self.summary_topic.setText(self.topic.text().strip() or "—")
+        self.summary_topic.setText(self.topic.currentText().strip() or "—")
         self.summary_status.setText("Completed")
         self.summary_knowledge.setText(
             "—" if result.knowledge_count is None else str(result.knowledge_count)
@@ -555,10 +620,12 @@ class MainWindow(QMainWindow):
             subprocess.Popen(["xdg-open", str(document)])
 
     def open_output_folder(self):
-        if self.production_result is None:
+        if self.production_result is not None:
+            output = self.production_result.output_dir
+        elif self.last_output_folder:
+            output = Path(self.last_output_folder)
+        else:
             return
-
-        output = self.production_result.output_dir
 
         if output is None or not output.exists():
             return
