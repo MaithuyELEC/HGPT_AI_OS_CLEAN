@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import io
-import traceback
 from contextlib import redirect_stderr, redirect_stdout
 
 from PySide6.QtCore import QThread, Signal
@@ -63,5 +62,5 @@ class ProductionWorker(QThread):
 
         except Exception:
             self.log.emit("STATUS : PRODUCTION FAILED")
-            self.log.emit(traceback.format_exc())
+            self.log.emit("ERROR  : Production could not be completed.")
             self.finished.emit(service.failed_result())

@@ -16,6 +16,7 @@ from PySide6.QtWidgets import (
     QListWidget,
     QListWidgetItem,
     QMainWindow,
+    QMessageBox,
     QProgressBar,
     QPushButton,
     QSizePolicy,
@@ -419,11 +420,20 @@ class MainWindow(QMainWindow):
         )
 
     def generate(self):
+        if self.worker is not None and self.worker.isRunning():
+            return
+
         topic = self.topic.text().strip()
 
         if not topic:
             self.run_status.setText("Waiting for Topic")
             self.append_console("Warning: Topic is required before generation.")
+            QMessageBox.warning(
+                self,
+                "Topic Required",
+                "Please enter a topic before starting production.",
+            )
+            self.topic.setFocus()
             return
 
         self.console.clear()
@@ -433,8 +443,7 @@ class MainWindow(QMainWindow):
         self.run_status.setText("Running")
 
         self.progress.show()
-
-        self.btn.setEnabled(False)
+        self.set_controls_enabled(False)
 
         self.worker = ProductionWorker(topic)
 
@@ -447,7 +456,7 @@ class MainWindow(QMainWindow):
     def finished(self, result):
         self.progress.hide()
 
-        self.btn.setEnabled(True)
+        self.set_controls_enabled(True)
         self.production_result = result
 
         if result.success:
@@ -458,11 +467,21 @@ class MainWindow(QMainWindow):
             self.append_console("==========")
             self.append_console("Production Completed")
             self.open_output_folder()
+            QMessageBox.information(
+                self,
+                "Production Completed",
+                "Production completed successfully.",
+            )
         else:
             self.run_status.setText("Failed")
             self.append_console("")
             self.append_console("==========")
             self.append_console("Production Failed")
+            QMessageBox.critical(
+                self,
+                "Production Failed",
+                "Production could not be completed. Please review the production log.",
+            )
 
     def clear_console(self):
         self.console.clear()
@@ -474,6 +493,13 @@ class MainWindow(QMainWindow):
     def append_console(self, text):
         self.console.append(text)
         self.console.moveCursor(QTextCursor.End)
+
+    def set_controls_enabled(self, enabled):
+        self.topic.setEnabled(enabled)
+        self.btn.setEnabled(enabled)
+        self.clear_btn.setEnabled(enabled)
+        self.output_btn.setEnabled(enabled)
+        self.files_list.setEnabled(enabled)
 
     def update_summary(self, result: ProductionResult):
         self.summary_topic.setText(self.topic.text().strip() or "—")
