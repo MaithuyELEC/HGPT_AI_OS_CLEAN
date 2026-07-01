@@ -80,7 +80,7 @@ class MainWindow(QMainWindow):
         header_layout = QGridLayout(header)
         header_layout.setContentsMargins(22, 18, 22, 18)
         header_layout.setHorizontalSpacing(14)
-        header_layout.setVerticalSpacing(4)
+        header_layout.setVerticalSpacing(7)
 
         title = QLabel("LUCID AUTO")
         title.setObjectName("appTitle")
@@ -94,7 +94,7 @@ class MainWindow(QMainWindow):
         factory = QLabel("HGPT Steel Digital Factory")
         factory.setObjectName("factoryCaption")
 
-        version = QLabel("Production Ready\nv1.0.0")
+        version = QLabel("Production\nv1.0")
         version.setObjectName("version")
 
         header_layout.addWidget(title, 0, 0)
@@ -144,7 +144,7 @@ class MainWindow(QMainWindow):
         row.setContentsMargins(18, 12, 18, 12)
         row.setSpacing(12)
 
-        self.engine_status = QLabel("Engine Ready")
+        self.engine_status = QLabel("●  Engine Ready")
         self.engine_status.setObjectName("engineStatus")
 
         self.run_status = QLabel("Waiting for Topic")
@@ -172,7 +172,14 @@ class MainWindow(QMainWindow):
         self.console.setReadOnly(True)
         self.console.setLineWrapMode(QTextEdit.NoWrap)
         self.console.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.console.setText("Waiting for Topic...")
+        self.console.setText(
+            "==================================================\n"
+            "LUCID AUTO v1.0\n"
+            "Production Ready\n"
+            "\n"
+            "Ready to generate production content.\n"
+            "=================================================="
+        )
 
         layout.addWidget(self.console, 1)
 
@@ -304,7 +311,7 @@ class MainWindow(QMainWindow):
                 color: #19364d;
                 font-size: 13px;
                 font-weight: 700;
-                padding: 8px 12px;
+                padding: 10px 14px;
                 border: 1px solid #b8c7d4;
                 border-radius: 6px;
                 background: #eef3f7;
@@ -564,7 +571,14 @@ class MainWindow(QMainWindow):
 
     def clear_console(self):
         self.console.clear()
-        self.console.setText("Waiting for Topic...")
+        self.console.setText(
+            "==================================================\n"
+            "LUCID AUTO v1.0\n"
+            "Production Ready\n"
+            "\n"
+            "Ready to generate production content.\n"
+            "=================================================="
+        )
         self.run_status.setText("Waiting for Topic")
         self.summary_panel.hide()
         self.files_panel.hide()
@@ -608,6 +622,7 @@ class MainWindow(QMainWindow):
                 item = QListWidgetItem(document.name)
                 item.setData(Qt.UserRole, str(document))
                 self.files_list.addItem(item)
+            self.files_list.setCurrentRow(0)
 
         self.files_panel.show()
 
