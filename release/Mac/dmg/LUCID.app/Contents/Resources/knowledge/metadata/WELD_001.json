@@ -1,0 +1,14 @@
+{
+    "id": "WELD_001",
+    "title": "WELD 001",
+    "category": "welding",
+    "tags": [
+        "welding"
+    ],
+    "author": "MaithuyELEC",
+    "version": "1.0",
+    "status": "active",
+    "source_path": "welding/WELD_001.md",
+    "related": [],
+    "extra": {}
+}

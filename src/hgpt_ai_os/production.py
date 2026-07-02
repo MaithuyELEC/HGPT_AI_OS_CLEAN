@@ -8,8 +8,9 @@ from pathlib import Path
 from hgpt_ai_os.content.generator import ContentGenerator
 from hgpt_ai_os.content.export.docx_exporter import DocxExporter
 from hgpt_ai_os.core.resource_path import resource_path
+from hgpt_ai_os.intelligence import KnowledgeSearch, TopicAnalyzer
 from hgpt_ai_os.knowledge.bundle import KnowledgeBundle
-from hgpt_ai_os.knowledge.retriever import KnowledgeRetriever
+from hgpt_ai_os.version import APP_VERSION
 
 
 OUTPUT_ROOT = (
@@ -25,26 +26,37 @@ def build_outputs(day: int, topic: str, open_output_folder: bool = True) -> Path
     start = time.time()
 
     print("=" * 60)
-    print("LUCID AUTO v1.0.1")
+    print(f"LUCID AUTO {APP_VERSION}")
     print("HGPT STEEL PRODUCTION CLI")
     print("=" * 60)
     print(f"Day   : {day:03d}")
     print(f"Topic : {topic}")
     print("-" * 60)
 
-    print("[01/07] Load Knowledge                   PASS")
-    knowledge_root = resource_path("knowledge") if getattr(sys, "frozen", False) else "knowledge"
-    retriever = KnowledgeRetriever(knowledge_root)
-    items = retriever.retrieve(topic, top_k=5)
+    print("[01/08] Analyze Topic                    PASS")
+    analysis = TopicAnalyzer().analyze(topic)
+    print(f"Analysis  : {analysis.category} | {analysis.process}")
+    print(f"Operation : {analysis.operation or 'Unknown'}")
+    print(f"Risk      : {analysis.risk or 'None'}")
+    print(
+        "Standards : "
+        + (", ".join(analysis.standards) if analysis.standards else "None")
+    )
 
-    print("[02/07] Build Knowledge Context          PASS")
+    knowledge_root = resource_path("knowledge") if getattr(sys, "frozen", False) else "knowledge"
+    print("[02/08] Search Knowledge                 PASS")
+    items = KnowledgeSearch(knowledge_root).search(analysis, top_k=5)
+    if not items:
+        print("Knowledge Search : 0 item(s), continuing normally")
+
+    print("[03/08] Build Knowledge Context          PASS")
     bundle = KnowledgeBundle(query=topic, items=items)
     context = bundle.context()
 
-    print("[03/07] Initialize Generator             PASS")
+    print("[04/08] Initialize Generator             PASS")
     generator = ContentGenerator()
 
-    print("[04/07] Generate Content                 PASS")
+    print("[05/08] Generate Content                 PASS")
     files = {
         "facebook.docx": generator.generate_facebook(topic, context),
         "tiktok.docx": generator.generate_tiktok(topic, context),
@@ -55,16 +67,16 @@ def build_outputs(day: int, topic: str, open_output_folder: bool = True) -> Path
         "approval_checklist.docx": generator.generate_checklist(),
     }
 
-    print("[05/07] Prepare Output Folder            PASS")
+    print("[06/08] Prepare Output Folder            PASS")
     output_dir = OUTPUT_ROOT / f"Day{day:03d}"
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    print("[06/07] Export DOCX                      PASS")
+    print("[07/08] Export DOCX                      PASS")
     exporter = DocxExporter()
     for filename, content in files.items():
         exporter.save(output_dir / filename, topic, content)
 
-    print("[07/07] Production Completed             PASS")
+    print("[08/08] Production Completed             PASS")
     print("-" * 60)
     print("STATUS    : PRODUCTION SUCCESS")
     print(f"Knowledge : {len(items)} item(s)")

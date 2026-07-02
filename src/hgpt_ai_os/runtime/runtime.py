@@ -1,5 +1,6 @@
 from hgpt_ai_os.database.engine import DatabaseEngine
 from hgpt_ai_os.queue import TaskQueue
+from hgpt_ai_os.version import APP_RELEASE
 
 
 class Runtime:
@@ -16,4 +17,4 @@ class Runtime:
         }
 
     def version(self):
-        return "HGPT AI OS Runtime v0.4.0"
+        return f"HGPT AI OS Runtime {APP_RELEASE}"

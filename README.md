@@ -1,4 +1,4 @@
-# Lucid Auto v1.0.1
+# Lucid Auto v1.0.0 RC14
 
 > AI Production Operating System for Steel Fabrication.
 
@@ -33,7 +33,9 @@ HGPT_AI_OS_CLEAN/
 ├── outputs/
 ├── templates/
 ├── planner/
+├── assets/
 ├── installer/
+├── release/
 ├── docs/
 └── README.md
 ```
@@ -72,6 +74,41 @@ python -m hgpt_ai_os.production
 
 ---
 
+# Release Build
+
+macOS:
+
+```bash
+./build_mac.sh
+```
+
+Windows:
+
+```cmd
+build_windows.bat
+```
+
+Release artifacts are staged under `release/Mac/` and `release/Windows/`.
+
+Packaging also prepares:
+
+```text
+release/
+├── Mac/
+│   ├── LUCID.app
+│   └── LUCID-v1.0.0.dmg
+├── Windows/
+│   ├── LUCID.exe
+│   └── LUCID/
+├── Installer/
+└── ReleaseNotes/
+```
+
+PyInstaller bundles `knowledge/`, `templates/`, `planner/`, `assets/`, `config/`, and `outputs/`.
+Installer metadata and build artifact names read the release from `src/hgpt_ai_os/version.py`.
+
+---
+
 # Example
 
 ```text
@@ -91,9 +128,9 @@ outputs/
 
 # Roadmap
 
-✅ Lucid Auto v1.0.1
+✅ Lucid Auto v1.0.0 RC14
 
-⬜ Installer
+✅ Installer packaging assets
 
 ⬜ Knowledge Engine v2
 
@@ -110,7 +147,7 @@ outputs/
 Current Release
 
 ```
-v1.0.1
+v1.0.0 RC14
 ```
 
 ---

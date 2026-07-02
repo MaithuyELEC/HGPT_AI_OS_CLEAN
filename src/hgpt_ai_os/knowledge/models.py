@@ -36,3 +36,11 @@ class KnowledgePackage:
     @property
     def tags(self):
         return self.metadata.tags
+
+
+@dataclass
+class KnowledgeResult:
+    item: KnowledgePackage
+    score: float
+    matched_keywords: List[str] = field(default_factory=list)
+    matched_rules: List[str] = field(default_factory=list)

@@ -1,20 +1,22 @@
 from dataclasses import dataclass
 from typing import List
 
-from hgpt_ai_os.knowledge.models import KnowledgePackage
+from hgpt_ai_os.knowledge.models import KnowledgePackage, KnowledgeResult
 
 
 @dataclass
 class KnowledgeBundle:
 
     query: str
-    items: List[KnowledgePackage]
+    items: List[KnowledgePackage | KnowledgeResult]
 
     def context(self):
 
         chunks = []
 
-        for item in self.items:
+        for bundle_item in self.items:
+
+            item = self._knowledge_package(bundle_item)
 
             chunks.append(
                 f"""
@@ -28,3 +30,12 @@ TAGS: {", ".join(item.tags)}
             )
 
         return "\n".join(chunks)
+
+    def _knowledge_package(
+        self,
+        item: KnowledgePackage | KnowledgeResult,
+    ) -> KnowledgePackage:
+        if isinstance(item, KnowledgeResult):
+            return item.item
+
+        return item

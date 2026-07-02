@@ -1,0 +1,14 @@
+{
+    "id": "CTA",
+    "title": "cta",
+    "category": "facebook",
+    "tags": [
+        "facebook"
+    ],
+    "author": "MaithuyELEC",
+    "version": "1.0",
+    "status": "active",
+    "source_path": "facebook/cta.md",
+    "related": [],
+    "extra": {}
+}

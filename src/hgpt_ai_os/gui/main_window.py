@@ -3,10 +3,11 @@ from __future__ import annotations
 import os
 import platform
 import subprocess
+import sys
 from pathlib import Path
 
-from PySide6.QtCore import QSettings, Qt
-from PySide6.QtGui import QKeySequence, QShortcut, QTextCursor
+from PySide6.QtCore import QSettings, Qt, qVersion
+from PySide6.QtGui import QAction, QKeySequence, QShortcut, QTextCursor
 from PySide6.QtWidgets import (
     QComboBox,
     QFrame,
@@ -26,12 +27,16 @@ from PySide6.QtWidgets import (
 )
 
 from hgpt_ai_os.core.production_result import ProductionResult
+from hgpt_ai_os.version import APP_BUILD as RELEASE_BUILD
+from hgpt_ai_os.version import APP_VERSION as RELEASE_VERSION
 
 from .worker import ProductionWorker
 
 
 class MainWindow(QMainWindow):
     MAX_TOPIC_HISTORY = 10
+    APP_VERSION = RELEASE_VERSION
+    APP_BUILD = RELEASE_BUILD
 
     def __init__(self):
         super().__init__()
@@ -45,10 +50,15 @@ class MainWindow(QMainWindow):
         self.settings = QSettings("MaithuyELEC", "LUCID AUTO")
         self.topic_history = self._load_topic_history()
         self.last_output_folder = self.settings.value("last_output_folder", "", str)
+        self.auto_open_output_folder = self.settings.value(
+            "auto_open_output_folder", False, bool
+        )
         self.total_jobs_generated = int(
             self.settings.value("total_jobs_generated", 0, int)
         )
         self.shortcuts = []
+
+        self._build_menu()
 
         central = QWidget()
         central.setObjectName("root")
@@ -73,6 +83,22 @@ class MainWindow(QMainWindow):
         self.output_btn.clicked.connect(self.open_output_folder)
         self._install_shortcuts()
         self._restore_last_output_folder()
+        self._restore_window_state()
+
+    def _build_menu(self):
+        preferences_menu = self.menuBar().addMenu("Preferences")
+
+        self.auto_open_action = QAction("Auto Open Output Folder", self)
+        self.auto_open_action.setCheckable(True)
+        self.auto_open_action.setChecked(self.auto_open_output_folder)
+        self.auto_open_action.toggled.connect(self._set_auto_open_output_folder)
+        preferences_menu.addAction(self.auto_open_action)
+
+        help_menu = self.menuBar().addMenu("Help")
+
+        about_action = QAction("About LUCID", self)
+        about_action.triggered.connect(self.show_about_dialog)
+        help_menu.addAction(about_action)
 
     def _build_header(self, layout):
         header = QFrame()
@@ -94,7 +120,7 @@ class MainWindow(QMainWindow):
         factory = QLabel("HGPT Steel Digital Factory")
         factory.setObjectName("factoryCaption")
 
-        version = QLabel("Production\nv1.0")
+        version = QLabel(f"Production\n{self.APP_VERSION}")
         version.setObjectName("version")
 
         header_layout.addWidget(title, 0, 0)
@@ -174,7 +200,7 @@ class MainWindow(QMainWindow):
         self.console.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self.console.setText(
             "==================================================\n"
-            "LUCID AUTO v1.0\n"
+            f"LUCID AUTO {self.APP_VERSION}\n"
             "Production Ready\n"
             "\n"
             "Ready to generate production content.\n"
@@ -490,6 +516,35 @@ class MainWindow(QMainWindow):
         self.settings.setValue("total_jobs_generated", self.total_jobs_generated)
         self.summary_total_jobs.setText(str(self.total_jobs_generated))
 
+    def _set_auto_open_output_folder(self, enabled):
+        self.auto_open_output_folder = enabled
+        self.settings.setValue("auto_open_output_folder", enabled)
+
+    def _restore_window_state(self):
+        geometry = self.settings.value("window_geometry")
+        if geometry:
+            self.restoreGeometry(geometry)
+
+    def closeEvent(self, event):
+        self.settings.setValue("window_geometry", self.saveGeometry())
+        super().closeEvent(event)
+
+    def show_about_dialog(self):
+        QMessageBox.about(
+            self,
+            "About LUCID",
+            "\n".join(
+                (
+                    "LUCID AUTO",
+                    f"Version: {self.APP_VERSION}",
+                    f"Build: {self.APP_BUILD}",
+                    f"Python version: {sys.version.split()[0]}",
+                    f"Qt version: {qVersion()}",
+                    "Production Ready",
+                )
+            ),
+        )
+
     def generate(self):
         if self.worker is not None and self.worker.isRunning():
             return
@@ -550,7 +605,14 @@ class MainWindow(QMainWindow):
             self.append_console("")
             self.append_console("==========")
             self.append_console("Production Completed")
-            self.open_output_folder()
+            if result.output_dir is None or not Path(result.output_dir).exists():
+                QMessageBox.warning(
+                    self,
+                    "Output Folder Not Found",
+                    "The output folder could not be found.",
+                )
+            elif self.auto_open_output_folder:
+                self.open_output_folder()
             QMessageBox.information(
                 self,
                 "Production Completed",
@@ -573,7 +635,7 @@ class MainWindow(QMainWindow):
         self.console.clear()
         self.console.setText(
             "==================================================\n"
-            "LUCID AUTO v1.0\n"
+            f"LUCID AUTO {self.APP_VERSION}\n"
             "Production Ready\n"
             "\n"
             "Ready to generate production content.\n"

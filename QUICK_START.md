@@ -61,7 +61,7 @@ set PYTHONPATH=src
 ## 6. Run Production
 
 ```bash
-python -m hgpt_ai_os.production
+python -m hgpt_ai_os.production --topic "Sai khe hở Fit-up trước khi hàn"
 ```
 
 ---
@@ -87,3 +87,14 @@ outputs/
 
 * Read INSTALL.md for complete installation.
 * Read README.md for project overview.
+* Run `./build_mac.sh` or `build_windows.bat` for one-command release packaging.
+
+## Packaging Output
+
+```text
+release/
+├── Mac/
+├── Windows/
+├── Installer/
+└── ReleaseNotes/
+```

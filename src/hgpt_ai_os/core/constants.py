@@ -1,4 +1,6 @@
+from hgpt_ai_os.version import APP_VERSION
+
 SYSTEM_NAME = "HGPT AI OS"
 COMPANY = "HGPT Steel"
 AUTHOR = "MaithuyELEC"
-VERSION = "0.9.0"
+VERSION = APP_VERSION

@@ -1,0 +1,14 @@
+{
+    "id": "VIDEO",
+    "title": "video",
+    "category": "prompts",
+    "tags": [
+        "prompts"
+    ],
+    "author": "MaithuyELEC",
+    "version": "1.0",
+    "status": "active",
+    "source_path": "prompts/video.md",
+    "related": [],
+    "extra": {}
+}

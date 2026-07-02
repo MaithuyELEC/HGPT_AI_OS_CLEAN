@@ -1,0 +1,14 @@
+{
+    "id": "README",
+    "title": "README",
+    "category": "library",
+    "tags": [
+        "library"
+    ],
+    "author": "MaithuyELEC",
+    "version": "1.0",
+    "status": "active",
+    "source_path": "library/README.md",
+    "related": [],
+    "extra": {}
+}

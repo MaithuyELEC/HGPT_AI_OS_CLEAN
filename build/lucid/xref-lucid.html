@@ -360,6 +360,7 @@ imported by:
  &#8226;   <a href="#PySide6.QtNetwork">PySide6.QtNetwork</a>
  &#8226;   <a href="#PySide6.QtWidgets">PySide6.QtWidgets</a>
  &#8226;   <a href="#app.py">app.py</a>
+ &#8226;   <a href="#hgpt_ai_os.gui.main_window">hgpt_ai_os.gui.main_window</a>
  &#8226;   <a href="#hgpt_ai_os.gui.worker">hgpt_ai_os.gui.worker</a>
 
   </div>
@@ -410,6 +411,7 @@ imported by:
     <a href="#PySide6.QtGui">PySide6.QtGui</a>
  &#8226;   <a href="#PySide6.QtWidgets">PySide6.QtWidgets</a>
  &#8226;   <a href="#app.py">app.py</a>
+ &#8226;   <a href="#hgpt_ai_os.gui.main_window">hgpt_ai_os.gui.main_window</a>
 
   </div>
 
@@ -570,9 +572,14 @@ imported by:
  &#8226;   <a href="#docx.text.paragraph">docx.text.paragraph</a>
  &#8226;   <a href="#docx.text.run">docx.text.run</a>
  &#8226;   <a href="#docx.types">docx.types</a>
+ &#8226;   <a href="#hgpt_ai_os.core.production_result">hgpt_ai_os.core.production_result</a>
  &#8226;   <a href="#hgpt_ai_os.core.resource_path">hgpt_ai_os.core.resource_path</a>
  &#8226;   <a href="#hgpt_ai_os.gui.main_window">hgpt_ai_os.gui.main_window</a>
+ &#8226;   <a href="#hgpt_ai_os.gui.production_service">hgpt_ai_os.gui.production_service</a>
  &#8226;   <a href="#hgpt_ai_os.gui.worker">hgpt_ai_os.gui.worker</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence.knowledge_ranker">hgpt_ai_os.intelligence.knowledge_ranker</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence.knowledge_search">hgpt_ai_os.intelligence.knowledge_search</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence.topic_analyzer">hgpt_ai_os.intelligence.topic_analyzer</a>
  &#8226;   <a href="#hgpt_ai_os.knowledge.loader">hgpt_ai_os.knowledge.loader</a>
  &#8226;   <a href="#hgpt_ai_os.knowledge.repository">hgpt_ai_os.knowledge.repository</a>
  &#8226;   <a href="#hgpt_ai_os.production">hgpt_ai_os.production</a>
@@ -3526,6 +3533,8 @@ imports:
 imported by:
     <a href="#hgpt_ai_os.content_context.models">hgpt_ai_os.content_context.models</a>
  &#8226;   <a href="#hgpt_ai_os.core.config">hgpt_ai_os.core.config</a>
+ &#8226;   <a href="#hgpt_ai_os.core.production_result">hgpt_ai_os.core.production_result</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence.topic_analyzer">hgpt_ai_os.intelligence.topic_analyzer</a>
  &#8226;   <a href="#hgpt_ai_os.knowledge.bundle">hgpt_ai_os.knowledge.bundle</a>
  &#8226;   <a href="#hgpt_ai_os.knowledge.models">hgpt_ai_os.knowledge.models</a>
  &#8226;   <a href="#pprint">pprint</a>
@@ -9561,10 +9570,12 @@ imported by:
  &#8226;   <a href="#hgpt_ai_os.core">hgpt_ai_os.core</a>
  &#8226;   <a href="#hgpt_ai_os.database">hgpt_ai_os.database</a>
  &#8226;   <a href="#hgpt_ai_os.gui">hgpt_ai_os.gui</a>
- &#8226;   <a href="#hgpt_ai_os.gui.worker">hgpt_ai_os.gui.worker</a>
+ &#8226;   <a href="#hgpt_ai_os.gui.production_service">hgpt_ai_os.gui.production_service</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence">hgpt_ai_os.intelligence</a>
  &#8226;   <a href="#hgpt_ai_os.knowledge">hgpt_ai_os.knowledge</a>
  &#8226;   <a href="#hgpt_ai_os.production">hgpt_ai_os.production</a>
  &#8226;   <a href="#hgpt_ai_os.queue">hgpt_ai_os.queue</a>
+ &#8226;   <a href="#hgpt_ai_os.version">hgpt_ai_os.version</a>
 
   </div>
 
@@ -9980,6 +9991,7 @@ imported by:
     <a href="#hgpt_ai_os.core.config">hgpt_ai_os.core.config</a>
  &#8226;   <a href="#hgpt_ai_os.core.constants">hgpt_ai_os.core.constants</a>
  &#8226;   <a href="#hgpt_ai_os.core.events">hgpt_ai_os.core.events</a>
+ &#8226;   <a href="#hgpt_ai_os.core.production_result">hgpt_ai_os.core.production_result</a>
  &#8226;   <a href="#hgpt_ai_os.core.registry">hgpt_ai_os.core.registry</a>
  &#8226;   <a href="#hgpt_ai_os.core.resource_path">hgpt_ai_os.core.resource_path</a>
  &#8226;   <a href="#hgpt_ai_os.core.runtime">hgpt_ai_os.core.runtime</a>
@@ -10014,6 +10026,7 @@ imported by:
 <span class="moduletype">SourceModule</span>  <div class="import">
 imports:
     <a href="#hgpt_ai_os.core">hgpt_ai_os.core</a>
+ &#8226;   <a href="#hgpt_ai_os.version">hgpt_ai_os.version</a>
 
   </div>
   <div class="import">
@@ -10037,6 +10050,26 @@ imports:
 imported by:
     <a href="#hgpt_ai_os.core">hgpt_ai_os.core</a>
  &#8226;   <a href="#hgpt_ai_os.core.runtime">hgpt_ai_os.core.runtime</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="hgpt_ai_os.core.production_result"></a>
+  <a target="code" href="/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/core/production_result.py" type="text/plain"><tt>hgpt_ai_os.core.production_result</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#__future__">__future__</a>
+ &#8226;   <a href="#dataclasses">dataclasses</a>
+ &#8226;   <a href="#hgpt_ai_os.core">hgpt_ai_os.core</a>
+ &#8226;   <a href="#pathlib">pathlib</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#hgpt_ai_os.gui.main_window">hgpt_ai_os.gui.main_window</a>
+ &#8226;   <a href="#hgpt_ai_os.gui.production_service">hgpt_ai_os.gui.production_service</a>
 
   </div>
 
@@ -10165,6 +10198,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#hgpt_ai_os.gui.main_window">hgpt_ai_os.gui.main_window</a>
+ &#8226;   <a href="#hgpt_ai_os.gui.production_service">hgpt_ai_os.gui.production_service</a>
  &#8226;   <a href="#hgpt_ai_os.gui.worker">hgpt_ai_os.gui.worker</a>
 
   </div>
@@ -10176,19 +10210,45 @@ imported by:
   <a target="code" href="/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/gui/main_window.py" type="text/plain"><tt>hgpt_ai_os.gui.main_window</tt></a>
 <span class="moduletype">SourceModule</span>  <div class="import">
 imports:
-    <a href="#PySide6.QtWidgets">PySide6.QtWidgets</a>
+    <a href="#PySide6.QtCore">PySide6.QtCore</a>
+ &#8226;   <a href="#PySide6.QtGui">PySide6.QtGui</a>
+ &#8226;   <a href="#PySide6.QtWidgets">PySide6.QtWidgets</a>
  &#8226;   <a href="#__future__">__future__</a>
+ &#8226;   <a href="#hgpt_ai_os.core.production_result">hgpt_ai_os.core.production_result</a>
  &#8226;   <a href="#hgpt_ai_os.gui">hgpt_ai_os.gui</a>
  &#8226;   <a href="#hgpt_ai_os.gui.worker">hgpt_ai_os.gui.worker</a>
+ &#8226;   <a href="#hgpt_ai_os.version">hgpt_ai_os.version</a>
  &#8226;   <a href="#os">os</a>
  &#8226;   <a href="#pathlib">pathlib</a>
  &#8226;   <a href="#platform">platform</a>
  &#8226;   <a href="#subprocess">subprocess</a>
+ &#8226;   <a href="#sys">sys</a>
 
   </div>
   <div class="import">
 imported by:
     <a href="#app.py">app.py</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="hgpt_ai_os.gui.production_service"></a>
+  <a target="code" href="/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/gui/production_service.py" type="text/plain"><tt>hgpt_ai_os.gui.production_service</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#__future__">__future__</a>
+ &#8226;   <a href="#hgpt_ai_os">hgpt_ai_os</a>
+ &#8226;   <a href="#hgpt_ai_os.core.production_result">hgpt_ai_os.core.production_result</a>
+ &#8226;   <a href="#hgpt_ai_os.gui">hgpt_ai_os.gui</a>
+ &#8226;   <a href="#hgpt_ai_os.production">hgpt_ai_os.production</a>
+ &#8226;   <a href="#time">time</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#hgpt_ai_os.gui.worker">hgpt_ai_os.gui.worker</a>
 
   </div>
 
@@ -10202,12 +10262,10 @@ imports:
     <a href="#PySide6.QtCore">PySide6.QtCore</a>
  &#8226;   <a href="#__future__">__future__</a>
  &#8226;   <a href="#contextlib">contextlib</a>
- &#8226;   <a href="#hgpt_ai_os">hgpt_ai_os</a>
  &#8226;   <a href="#hgpt_ai_os.gui">hgpt_ai_os.gui</a>
- &#8226;   <a href="#hgpt_ai_os.production">hgpt_ai_os.production</a>
+ &#8226;   <a href="#hgpt_ai_os.gui.production_service">hgpt_ai_os.gui.production_service</a>
  &#8226;   <a href="#io">io</a>
- &#8226;   <a href="#pathlib">pathlib</a>
- &#8226;   <a href="#sys">sys</a>
+ &#8226;   <a href="#logging">logging</a>
  &#8226;   <a href="#traceback">traceback</a>
 
   </div>
@@ -10220,11 +10278,96 @@ imported by:
 </div>
 
 <div class="node">
+  <a name="hgpt_ai_os.intelligence"></a>
+  <a target="code" href="/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/intelligence/__init__.py" type="text/plain"><tt>hgpt_ai_os.intelligence</tt></a>
+<span class="moduletype">Package</span>  <div class="import">
+imports:
+    <a href="#hgpt_ai_os">hgpt_ai_os</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence.knowledge_ranker">hgpt_ai_os.intelligence.knowledge_ranker</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence.knowledge_search">hgpt_ai_os.intelligence.knowledge_search</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence.topic_analyzer">hgpt_ai_os.intelligence.topic_analyzer</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#hgpt_ai_os.intelligence.knowledge_ranker">hgpt_ai_os.intelligence.knowledge_ranker</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence.knowledge_search">hgpt_ai_os.intelligence.knowledge_search</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence.topic_analyzer">hgpt_ai_os.intelligence.topic_analyzer</a>
+ &#8226;   <a href="#hgpt_ai_os.production">hgpt_ai_os.production</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="hgpt_ai_os.intelligence.knowledge_ranker"></a>
+  <a target="code" href="/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/intelligence/knowledge_ranker.py" type="text/plain"><tt>hgpt_ai_os.intelligence.knowledge_ranker</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#__future__">__future__</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence">hgpt_ai_os.intelligence</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence.topic_analyzer">hgpt_ai_os.intelligence.topic_analyzer</a>
+ &#8226;   <a href="#hgpt_ai_os.knowledge.models">hgpt_ai_os.knowledge.models</a>
+ &#8226;   <a href="#re">re</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#hgpt_ai_os.intelligence">hgpt_ai_os.intelligence</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence.knowledge_search">hgpt_ai_os.intelligence.knowledge_search</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="hgpt_ai_os.intelligence.knowledge_search"></a>
+  <a target="code" href="/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/intelligence/knowledge_search.py" type="text/plain"><tt>hgpt_ai_os.intelligence.knowledge_search</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#__future__">__future__</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence">hgpt_ai_os.intelligence</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence.knowledge_ranker">hgpt_ai_os.intelligence.knowledge_ranker</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence.topic_analyzer">hgpt_ai_os.intelligence.topic_analyzer</a>
+ &#8226;   <a href="#hgpt_ai_os.knowledge.retriever">hgpt_ai_os.knowledge.retriever</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#hgpt_ai_os.intelligence">hgpt_ai_os.intelligence</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="hgpt_ai_os.intelligence.topic_analyzer"></a>
+  <a target="code" href="/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/intelligence/topic_analyzer.py" type="text/plain"><tt>hgpt_ai_os.intelligence.topic_analyzer</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#__future__">__future__</a>
+ &#8226;   <a href="#dataclasses">dataclasses</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence">hgpt_ai_os.intelligence</a>
+ &#8226;   <a href="#re">re</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#hgpt_ai_os.intelligence">hgpt_ai_os.intelligence</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence.knowledge_ranker">hgpt_ai_os.intelligence.knowledge_ranker</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence.knowledge_search">hgpt_ai_os.intelligence.knowledge_search</a>
+
+  </div>
+
+</div>
+
+<div class="node">
   <a name="hgpt_ai_os.knowledge"></a>
   <a target="code" href="/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/knowledge/__init__.py" type="text/plain"><tt>hgpt_ai_os.knowledge</tt></a>
 <span class="moduletype">Package</span>  <div class="import">
 imports:
     <a href="#hgpt_ai_os">hgpt_ai_os</a>
+ &#8226;   <a href="#hgpt_ai_os.knowledge.models">hgpt_ai_os.knowledge.models</a>
 
   </div>
   <div class="import">
@@ -10309,7 +10452,9 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#hgpt_ai_os.knowledge.bundle">hgpt_ai_os.knowledge.bundle</a>
+    <a href="#hgpt_ai_os.intelligence.knowledge_ranker">hgpt_ai_os.intelligence.knowledge_ranker</a>
+ &#8226;   <a href="#hgpt_ai_os.knowledge">hgpt_ai_os.knowledge</a>
+ &#8226;   <a href="#hgpt_ai_os.knowledge.bundle">hgpt_ai_os.knowledge.bundle</a>
  &#8226;   <a href="#hgpt_ai_os.knowledge.loader">hgpt_ai_os.knowledge.loader</a>
  &#8226;   <a href="#hgpt_ai_os.knowledge.repository">hgpt_ai_os.knowledge.repository</a>
 
@@ -10349,7 +10494,7 @@ imports:
   </div>
   <div class="import">
 imported by:
-    <a href="#hgpt_ai_os.production">hgpt_ai_os.production</a>
+    <a href="#hgpt_ai_os.intelligence.knowledge_search">hgpt_ai_os.intelligence.knowledge_search</a>
 
   </div>
 
@@ -10366,8 +10511,9 @@ imports:
  &#8226;   <a href="#hgpt_ai_os.content.export.docx_exporter">hgpt_ai_os.content.export.docx_exporter</a>
  &#8226;   <a href="#hgpt_ai_os.content.generator">hgpt_ai_os.content.generator</a>
  &#8226;   <a href="#hgpt_ai_os.core.resource_path">hgpt_ai_os.core.resource_path</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence">hgpt_ai_os.intelligence</a>
  &#8226;   <a href="#hgpt_ai_os.knowledge.bundle">hgpt_ai_os.knowledge.bundle</a>
- &#8226;   <a href="#hgpt_ai_os.knowledge.retriever">hgpt_ai_os.knowledge.retriever</a>
+ &#8226;   <a href="#hgpt_ai_os.version">hgpt_ai_os.version</a>
  &#8226;   <a href="#pathlib">pathlib</a>
  &#8226;   <a href="#subprocess">subprocess</a>
  &#8226;   <a href="#sys">sys</a>
@@ -10377,7 +10523,7 @@ imports:
   <div class="import">
 imported by:
     <a href="#hgpt_ai_os">hgpt_ai_os</a>
- &#8226;   <a href="#hgpt_ai_os.gui.worker">hgpt_ai_os.gui.worker</a>
+ &#8226;   <a href="#hgpt_ai_os.gui.production_service">hgpt_ai_os.gui.production_service</a>
 
   </div>
 
@@ -10431,6 +10577,24 @@ imports:
   <div class="import">
 imported by:
     <a href="#hgpt_ai_os.queue">hgpt_ai_os.queue</a>
+
+  </div>
+
+</div>
+
+<div class="node">
+  <a name="hgpt_ai_os.version"></a>
+  <a target="code" href="/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/version.py" type="text/plain"><tt>hgpt_ai_os.version</tt></a>
+<span class="moduletype">SourceModule</span>  <div class="import">
+imports:
+    <a href="#hgpt_ai_os">hgpt_ai_os</a>
+
+  </div>
+  <div class="import">
+imported by:
+    <a href="#hgpt_ai_os.core.constants">hgpt_ai_os.core.constants</a>
+ &#8226;   <a href="#hgpt_ai_os.gui.main_window">hgpt_ai_os.gui.main_window</a>
+ &#8226;   <a href="#hgpt_ai_os.production">hgpt_ai_os.production</a>
 
   </div>
 
@@ -11537,6 +11701,7 @@ imported by:
  &#8226;   <a href="#asyncio.log">asyncio.log</a>
  &#8226;   <a href="#concurrent.futures._base">concurrent.futures._base</a>
  &#8226;   <a href="#hashlib">hashlib</a>
+ &#8226;   <a href="#hgpt_ai_os.gui.worker">hgpt_ai_os.gui.worker</a>
  &#8226;   <a href="#http.cookiejar">http.cookiejar</a>
  &#8226;   <a href="#multiprocessing.util">multiprocessing.util</a>
  &#8226;   <a href="#unittest._log">unittest._log</a>
@@ -13498,10 +13663,10 @@ imported by:
  &#8226;   <a href="#hgpt_ai_os.content.knowledge_loader">hgpt_ai_os.content.knowledge_loader</a>
  &#8226;   <a href="#hgpt_ai_os.content.template_engine">hgpt_ai_os.content.template_engine</a>
  &#8226;   <a href="#hgpt_ai_os.core.config">hgpt_ai_os.core.config</a>
+ &#8226;   <a href="#hgpt_ai_os.core.production_result">hgpt_ai_os.core.production_result</a>
  &#8226;   <a href="#hgpt_ai_os.core.resource_path">hgpt_ai_os.core.resource_path</a>
  &#8226;   <a href="#hgpt_ai_os.database.engine">hgpt_ai_os.database.engine</a>
  &#8226;   <a href="#hgpt_ai_os.gui.main_window">hgpt_ai_os.gui.main_window</a>
- &#8226;   <a href="#hgpt_ai_os.gui.worker">hgpt_ai_os.gui.worker</a>
  &#8226;   <a href="#hgpt_ai_os.knowledge.engine">hgpt_ai_os.knowledge.engine</a>
  &#8226;   <a href="#hgpt_ai_os.knowledge.loader">hgpt_ai_os.knowledge.loader</a>
  &#8226;   <a href="#hgpt_ai_os.knowledge.repository">hgpt_ai_os.knowledge.repository</a>
@@ -14013,6 +14178,8 @@ imported by:
  &#8226;   <a href="#gettext">gettext</a>
  &#8226;   <a href="#glob">glob</a>
  &#8226;   <a href="#hgpt_ai_os.content.hook_selector">hgpt_ai_os.content.hook_selector</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence.knowledge_ranker">hgpt_ai_os.intelligence.knowledge_ranker</a>
+ &#8226;   <a href="#hgpt_ai_os.intelligence.topic_analyzer">hgpt_ai_os.intelligence.topic_analyzer</a>
  &#8226;   <a href="#html">html</a>
  &#8226;   <a href="#http.client">http.client</a>
  &#8226;   <a href="#http.cookiejar">http.cookiejar</a>
@@ -14902,7 +15069,7 @@ imported by:
  &#8226;   <a href="#glob">glob</a>
  &#8226;   <a href="#gzip">gzip</a>
  &#8226;   <a href="#hgpt_ai_os.core.resource_path">hgpt_ai_os.core.resource_path</a>
- &#8226;   <a href="#hgpt_ai_os.gui.worker">hgpt_ai_os.gui.worker</a>
+ &#8226;   <a href="#hgpt_ai_os.gui.main_window">hgpt_ai_os.gui.main_window</a>
  &#8226;   <a href="#hgpt_ai_os.production">hgpt_ai_os.production</a>
  &#8226;   <a href="#http.client">http.client</a>
  &#8226;   <a href="#http.server">http.server</a>
@@ -15206,6 +15373,7 @@ imported by:
  &#8226;   <a href="#email.utils">email.utils</a>
  &#8226;   <a href="#gc">gc</a>
  &#8226;   <a href="#gzip">gzip</a>
+ &#8226;   <a href="#hgpt_ai_os.gui.production_service">hgpt_ai_os.gui.production_service</a>
  &#8226;   <a href="#hgpt_ai_os.production">hgpt_ai_os.production</a>
  &#8226;   <a href="#http.cookiejar">http.cookiejar</a>
  &#8226;   <a href="#http.server">http.server</a>

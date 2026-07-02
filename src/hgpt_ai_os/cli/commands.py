@@ -2,9 +2,10 @@ from hgpt_ai_os.runtime import Runtime
 from hgpt_ai_os.kernel.kernel import HGPTKernel
 from hgpt_ai_os.agents.maintenance.maintenance_agent import MaintenanceAgent
 from hgpt_ai_os.task.manager import TaskManager
+from hgpt_ai_os.version import APP_VERSION
 
 APP_NAME = "HGPT AI OS"
-VERSION = "0.3.0"
+VERSION = APP_VERSION
 
 _task_manager = TaskManager()
 

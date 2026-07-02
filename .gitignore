@@ -12,6 +12,7 @@ dist/
 
 # Generated outputs
 outputs/
+!outputs/.gitkeep
 
 # Local data
 data/
