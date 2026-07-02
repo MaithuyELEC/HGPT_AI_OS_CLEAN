@@ -24,3 +24,10 @@ data/
 
 # Development tools
 codex/
+
+# Build artifacts
+build/
+dist/
+release/
+*.dmg
+*.exe
