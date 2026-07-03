@@ -1,6 +1,7 @@
 # -*- mode: python ; coding: utf-8 -*-
 
 from pathlib import Path
+from PyInstaller.utils.hooks import collect_all, collect_data_files
 
 block_cipher = None
 
@@ -18,17 +19,22 @@ datas = [
     ("src/hgpt_ai_os/config", "hgpt_ai_os/config"),
 ]
 
+qt_datas, qt_binaries, qt_hiddenimports = collect_all("PySide6")
+qt_datas += collect_data_files(
+    "PySide6",
+    includes=[
+        "Qt/plugins/platforms/*",
+        "Qt/plugins/styles/*",
+        "Qt/plugins/imageformats/*",
+        "Qt/plugins/iconengines/*",
+    ],
+)
 a = Analysis(
     ['src/hgpt_ai_os/gui/app.py'],
     pathex=['src'],
-    binaries=[],
-    datas=datas,
-    hiddenimports=[
-        'PySide6',
-        'PySide6.QtCore',
-        'PySide6.QtGui',
-        'PySide6.QtWidgets',
-    ],
+    binaries=qt_binaries,
+    datas=datas + qt_datas,
+    hiddenimports=qt_hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
