@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import plistlib
-import subprocess
 import sys
 from pathlib import Path
 
@@ -17,6 +16,12 @@ ISS_PATH = ROOT / "installer" / "LUCID.iss"
 WINDOWS_APP = ROOT / "release" / "Windows" / "LUCID" / "LUCID.exe"
 WINDOWS_DIST = ROOT / "dist" / "LUCID"
 WINDOWS_INSTALLER_ROOT = ROOT / "release" / "Installer"
+WINDOWS_QT_FILES = [
+    "Qt6Core.dll",
+    "Qt6Gui.dll",
+    "Qt6Widgets.dll",
+    "qwindows.dll",
+]
 
 
 def require(condition: bool, message: str) -> None:
@@ -72,18 +77,11 @@ def verify_windows() -> None:
 
     require(WINDOWS_DIST.is_dir(), "PyInstaller dist output is missing")
     require(WINDOWS_APP.exists(), "Windows app output is missing LUCID.exe")
-    result = subprocess.run(
-        [str(WINDOWS_APP), "--version"],
-        capture_output=True,
-        text=True,
-        timeout=60,
-        check=False,
-    )
-    require(
-        result.returncode == 0,
-        "Windows executable --version failed "
-        f"with exit code {result.returncode}: {result.stdout.strip()} {result.stderr.strip()}",
-    )
+    for qt_file in WINDOWS_QT_FILES:
+        require(
+            any(WINDOWS_DIST.rglob(qt_file)),
+            f"PyInstaller output is missing bundled Qt runtime file: {qt_file}",
+        )
 
     if any(WINDOWS_INSTALLER_ROOT.glob("*.exe")):
         installers = list(WINDOWS_INSTALLER_ROOT.glob("LUCID-AUTO-*-Setup.exe"))

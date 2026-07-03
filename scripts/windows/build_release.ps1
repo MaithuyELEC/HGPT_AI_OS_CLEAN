@@ -34,6 +34,8 @@ $installerPath = Join-Path $installerDir $installerName
 $checksumPath = "$installerPath.sha256"
 
 python scripts\ensure_release_icons.py
+python -m pip install -r requirements.txt
+python -c "from PySide6.QtWidgets import QApplication; import PySide6; print('PySide6 ready:', PySide6.__file__)"
 python -m PyInstaller --clean --noconfirm lucid.spec
 
 Remove-Item -Recurse -Force -LiteralPath $windowsReleaseDir -ErrorAction SilentlyContinue
