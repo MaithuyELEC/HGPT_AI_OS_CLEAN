@@ -1,0 +1,109 @@
+from __future__ import annotations
+
+import plistlib
+import subprocess
+import sys
+from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+version_ns = {}
+exec((ROOT / "src" / "hgpt_ai_os" / "version.py").read_text(), version_ns)
+APP_VERSION = version_ns["APP_VERSION"].removeprefix("v")
+APP_BUILD = version_ns["APP_BUILD"].removeprefix("RC")
+MAC_DMG_ROOT = ROOT / "release" / "Mac" / "dmg"
+MAC_APP = MAC_DMG_ROOT / "LUCID AUTO.app"
+ISS_PATH = ROOT / "installer" / "LUCID.iss"
+WINDOWS_APP = ROOT / "release" / "Windows" / "LUCID" / "LUCID.exe"
+WINDOWS_DIST = ROOT / "dist" / "LUCID"
+WINDOWS_INSTALLER_ROOT = ROOT / "release" / "Installer"
+
+
+def require(condition: bool, message: str) -> None:
+    if not condition:
+        raise SystemExit(f"installer verification failed: {message}")
+
+
+def verify_macos() -> None:
+    apps_link = MAC_DMG_ROOT / "Applications"
+    plist_path = MAC_APP / "Contents" / "Info.plist"
+
+    require(apps_link.is_symlink(), "DMG staging is missing Applications shortcut")
+    require(apps_link.readlink() == Path("/Applications"), "Applications shortcut must target /Applications")
+    require(plist_path.is_file(), "macOS bundle is missing Info.plist")
+    require((MAC_APP / "Contents" / "Resources" / "LUCID.icns").is_file(), "macOS bundle is missing LUCID.icns")
+    require((MAC_APP / "Contents" / "MacOS" / "LUCID").is_file(), "macOS bundle is missing executable")
+
+    with plist_path.open("rb") as plist_file:
+        plist = plistlib.load(plist_file)
+
+    expected = {
+        "CFBundleDisplayName": "LUCID AUTO",
+        "CFBundleExecutable": "LUCID",
+        "CFBundleIconFile": "LUCID.icns",
+        "CFBundleIdentifier": "com.lucidauto.desktop",
+        "CFBundleName": "LUCID AUTO",
+        "CFBundleShortVersionString": APP_VERSION,
+        "CFBundleVersion": APP_BUILD,
+        "LSApplicationCategoryType": "public.app-category.productivity",
+    }
+    for key, value in expected.items():
+        require(plist.get(key) == value, f"Info.plist {key} must be {value!r}")
+
+
+def verify_windows() -> None:
+    require(ISS_PATH.is_file(), "missing Inno Setup script")
+    text = ISS_PATH.read_text(encoding="utf-8")
+
+    required_fragments = [
+        'AppPublisher={#MyAppPublisher}',
+        "AppVerName={#MyAppName} {#MyAppRelease}",
+        "UninstallDisplayIcon={app}\\{#MyAppExeName}",
+        "UninstallDisplayName={#MyAppName} {#MyAppRelease}",
+        "VersionInfoVersion={#MyAppVersion}",
+        "VersionInfoCompany={#MyAppPublisher}",
+        "OutputBaseFilename=LUCID-AUTO-{#MyAppVersion}-Setup",
+        'Name: "{group}\\LUCID AUTO"; Filename: "{app}\\{#MyAppExeName}"',
+        'Name: "{group}\\Uninstall LUCID AUTO"; Filename: "{uninstallexe}"',
+        'Name: "{autodesktop}\\LUCID AUTO"; Filename: "{app}\\{#MyAppExeName}"; Tasks: desktopicon',
+    ]
+    for fragment in required_fragments:
+        require(fragment in text, f"Inno Setup script missing {fragment}")
+
+    require(WINDOWS_DIST.is_dir(), "PyInstaller dist output is missing")
+    require(WINDOWS_APP.exists(), "Windows app output is missing LUCID.exe")
+    result = subprocess.run(
+        [str(WINDOWS_APP), "--version"],
+        capture_output=True,
+        text=True,
+        timeout=60,
+        check=False,
+    )
+    require(
+        result.returncode == 0,
+        "Windows executable --version failed "
+        f"with exit code {result.returncode}: {result.stdout.strip()} {result.stderr.strip()}",
+    )
+
+    if any(WINDOWS_INSTALLER_ROOT.glob("*.exe")):
+        installers = list(WINDOWS_INSTALLER_ROOT.glob("LUCID-AUTO-*-Setup.exe"))
+        require(
+            bool(installers),
+            "expected versioned Windows installer output is missing",
+        )
+
+
+def main() -> None:
+    target = sys.argv[1].lower() if len(sys.argv) > 1 else "all"
+    require(target in {"all", "macos", "windows"}, "usage: verify.py [all|macos|windows]")
+
+    if target in {"all", "macos"}:
+        verify_macos()
+    if target in {"all", "windows"}:
+        verify_windows()
+
+    print(f"installer verification passed: {target}")
+
+
+if __name__ == "__main__":
+    main()
