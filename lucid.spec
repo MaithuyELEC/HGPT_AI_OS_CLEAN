@@ -11,6 +11,7 @@ ICON_ICNS = "assets/LUCID.icns" if Path("assets/LUCID.icns").exists() else None
 ICON_ICO = "assets/LUCID.ico" if Path("assets/LUCID.ico").exists() else None
 
 datas = [
+    (".env", "."),
     ("templates", "templates"),
     ("knowledge", "knowledge"),
     ("assets", "assets"),

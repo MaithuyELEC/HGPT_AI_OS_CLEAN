@@ -5,6 +5,7 @@ import logging
 import os
 import socket
 import ssl
+import sys
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -43,8 +44,21 @@ def _load_provider_env() -> None:
     except ImportError:
         return
 
-    repo_env = Path(__file__).resolve().parents[3] / ".env"
-    load_dotenv(repo_env, override=False)
+    candidates = []
+    if hasattr(sys, "_MEIPASS"):
+        candidates.append(Path(sys._MEIPASS) / ".env")
+    candidates.extend(
+        [
+            Path(sys.executable).resolve().parent.parent / "Resources" / ".env",
+            Path(__file__).resolve().parents[3] / ".env",
+            Path.cwd() / ".env",
+        ]
+    )
+
+    for env_path in candidates:
+        if env_path.exists():
+            load_dotenv(env_path, override=False)
+            return
 
 
 _load_provider_env()
