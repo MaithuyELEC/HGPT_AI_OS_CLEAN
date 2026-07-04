@@ -1,10 +1,78 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+import re
 from pathlib import Path
 
 from .loader import load_markdown, load_metadata
 from .models import KnowledgeMetadata, KnowledgePackage
+
+
+_STOPWORDS = {
+    "and",
+    "are",
+    "the",
+    "for",
+    "with",
+    "from",
+    "cua",
+    "cho",
+    "tai",
+    "voi",
+    "trong",
+    "ngoai",
+    "hien",
+    "nay",
+    "truong",
+    "sai",
+    "loi",
+    "lỗi",
+    "khong",
+    "bảo",
+    "bao",
+    "đạt",
+    "dat",
+    "không",
+    "đúng",
+    "dung",
+    "các",
+    "cac",
+    "tại",
+    "với",
+    "của",
+    "khi",
+    "can",
+    "cần",
+    "lam",
+    "làm",
+    "quy",
+    "trinh",
+    "trình",
+    "kiem",
+    "kiểm",
+    "tra",
+    "nhu",
+    "nào",
+    "nao",
+}
+
+
+def retrieval_terms(query: str) -> list[str]:
+    terms = []
+
+    for raw_term in re.split(r"\s+", query.lower().replace("-", " ")):
+        term = raw_term.strip("!?()[]{}\"'.,:;")
+
+        if len(term) < 3:
+            continue
+
+        if term in _STOPWORDS:
+            continue
+
+        if term not in terms:
+            terms.append(term)
+
+    return terms
 
 
 class KnowledgeRepository(ABC):
@@ -27,6 +95,10 @@ class KnowledgeRepository(ABC):
 
     @abstractmethod
     def search(self, query: str) -> list[KnowledgePackage]:
+        raise NotImplementedError
+
+    @abstractmethod
+    def list_packages(self) -> list[KnowledgePackage]:
         raise NotImplementedError
 
 
@@ -101,30 +173,24 @@ class FileKnowledgeRepository(KnowledgeRepository):
 
         return result
 
-    def search(self, query: str) -> list[KnowledgePackage]:
-
-        keywords = query.lower().replace("-", " ").split()
-
-        result = []
+    def list_packages(self) -> list[KnowledgePackage]:
+        packages = []
 
         for meta in self.list_metadata():
-
-            text = " ".join([
-                meta.title,
-                meta.category,
-                *meta.tags,
-            ]).lower().replace("-", " ")
-
-            score = sum(1 for keyword in keywords if keyword in text)
-
-            if score == 0:
-                continue
-
             doc = self.get_by_id(meta.id)
 
             if doc:
-                result.append((score, doc))
+                packages.append(doc)
 
-        result.sort(key=lambda item: item[0], reverse=True)
+        return packages
 
-        return [doc for _, doc in result]
+    def search(self, query: str) -> list[KnowledgePackage]:
+        terms = retrieval_terms(query)
+
+        if not terms:
+            return []
+
+        from hgpt_ai_os.knowledge.retrieval_pipeline import KnowledgeRetrievalPipeline
+
+        results = KnowledgeRetrievalPipeline(repository=self).retrieve(query)
+        return [result.item for result in results]

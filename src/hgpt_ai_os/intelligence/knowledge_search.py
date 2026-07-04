@@ -1,22 +1,20 @@
 from __future__ import annotations
 
-from hgpt_ai_os.intelligence.knowledge_ranker import KnowledgeRanker
 from hgpt_ai_os.intelligence.topic_analyzer import TopicAnalysis
-from hgpt_ai_os.knowledge.retriever import KnowledgeRetriever
+from hgpt_ai_os.knowledge.retrieval_pipeline import KnowledgeRetrievalPipeline
 
 
 class KnowledgeSearch:
     def __init__(self, knowledge_root="knowledge"):
-        self.retriever = KnowledgeRetriever(knowledge_root)
-        self.ranker = KnowledgeRanker()
+        self.pipeline = KnowledgeRetrievalPipeline(knowledge_root)
 
     def search(self, analysis: TopicAnalysis, top_k: int = 5):
-        query = analysis.search_query or analysis.original_topic
-        if not query:
-            return []
+        results = self.pipeline.retrieve(analysis, top_k=top_k)
+        self._print_ranking(results)
+        return results
 
-        items = self.retriever.retrieve(query, top_k=top_k)
-        results = self.ranker.rank(analysis, items)
+    def search_text(self, query: str, top_k: int = 5):
+        results = self.pipeline.retrieve(query, top_k=top_k)
         self._print_ranking(results)
         return results
 

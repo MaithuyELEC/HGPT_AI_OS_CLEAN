@@ -3,6 +3,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 import re
 
+from hgpt_ai_os.knowledge.repository import retrieval_terms
+
 
 _CATEGORY_RULES = {
     "Maintenance": (
@@ -438,7 +440,7 @@ class TopicAnalyzer:
 
         for raw_word in self._clean(topic).split():
             word = raw_word.strip("!?()[]{}\"'").lower()
-            if len(word) >= 3 and word not in words:
+            if word in retrieval_terms(word) and word not in words:
                 words.append(word)
 
         return words

@@ -4,18 +4,25 @@ import json
 import logging
 import os
 import socket
+import ssl
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any, Union
+
+import certifi
 
 
 logger = logging.getLogger(__name__)
 
 
 DEFAULT_GEMINI_MODEL = "gemini-2.5-pro"
+PROVIDER_UNAVAILABLE_MESSAGE = (
+    "AI provider is not available. Please check API key and provider configuration."
+)
 GEMINI_ENDPOINT = (
     "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
 )
@@ -25,8 +32,28 @@ def _env_flag(name: str) -> bool:
     return os.getenv(name, "").strip().lower() in {"1", "true", "yes", "on"}
 
 
+def _load_provider_env() -> None:
+    try:
+        from dotenv import load_dotenv
+    except ImportError:
+        return
+
+    repo_env = Path(__file__).resolve().parents[3] / ".env"
+    load_dotenv(repo_env, override=False)
+
+
+_load_provider_env()
+
+
 def _use_live_gemini() -> bool:
-    return _env_flag("USE_REAL_GEMINI") and bool(os.getenv("GOOGLE_API_KEY", "").strip())
+    return bool(_gemini_api_key())
+
+
+def _gemini_api_key() -> str:
+    return (
+        os.getenv("GOOGLE_API_KEY", "").strip()
+        or os.getenv("GEMINI_API_KEY", "").strip()
+    )
 
 
 @dataclass(frozen=True)
@@ -62,7 +89,7 @@ class GeminiClient:
         retries: int = 2,
         endpoint_template: str = GEMINI_ENDPOINT,
     ) -> None:
-        self.api_key = (api_key or os.getenv("GOOGLE_API_KEY", "")).strip()
+        self.api_key = (api_key or _gemini_api_key()).strip()
         self.model = (
             model
             or os.getenv("LUCID_GEMINI_MODEL", DEFAULT_GEMINI_MODEL).strip()
@@ -71,6 +98,7 @@ class GeminiClient:
         self.timeout = timeout
         self.retries = retries
         self.endpoint_template = endpoint_template
+        self.ssl_context = ssl.create_default_context(cafile=certifi.where())
 
     def generate(
         self,
@@ -79,7 +107,7 @@ class GeminiClient:
     ) -> Union[AIResponse, AIProviderError]:
         if not self.api_key:
             return self._error(
-                "GOOGLE_API_KEY is required for live Gemini mode.",
+                PROVIDER_UNAVAILABLE_MESSAGE,
                 error_type="configuration_error",
                 retryable=False,
                 metadata={"mode": "Live"},
@@ -96,11 +124,14 @@ class GeminiClient:
                     data=body,
                     headers={
                         "Content-Type": "application/json",
-                        "x-goog-api-key": self.api_key,
                     },
                     method="POST",
                 )
-                with urllib.request.urlopen(request, timeout=self.timeout) as response:
+                with urllib.request.urlopen(
+                    request,
+                    timeout=self.timeout,
+                    context=self.ssl_context,
+                ) as response:
                     response_body = response.read().decode("utf-8")
                 data = json.loads(response_body)
                 return self._parse_response(data)
@@ -224,7 +255,9 @@ class GeminiClient:
 
     def _endpoint(self) -> str:
         model = urllib.parse.quote(self.model, safe="")
-        return self.endpoint_template.format(model=model)
+        url = self.endpoint_template.format(model=model)
+        separator = "&" if urllib.parse.urlparse(url).query else "?"
+        return f"{url}{separator}key={urllib.parse.quote(self.api_key, safe='')}"
 
     def _parse_response(self, data: dict[str, Any]) -> AIResponse:
         candidates = data.get("candidates") or []

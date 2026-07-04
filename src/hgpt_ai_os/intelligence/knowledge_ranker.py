@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import re
+import unicodedata
 
 from hgpt_ai_os.intelligence.topic_analyzer import TopicAnalysis
 from hgpt_ai_os.knowledge.models import KnowledgePackage, KnowledgeResult
@@ -29,7 +30,7 @@ class KnowledgeRanker:
         matched_keywords = [
             keyword
             for keyword in analysis.keywords
-            if self._normalize(keyword) in text
+            if self._contains_term(keyword, text)
         ]
         matched_rules: list[str] = []
         score = 0.0
@@ -89,5 +90,14 @@ class KnowledgeRanker:
             return False
         return normalized in text
 
+    def _contains_term(self, value: str, text: str) -> bool:
+        normalized = self._normalize(value)
+        if not normalized:
+            return False
+        return re.search(rf"(?<!\w){re.escape(normalized)}(?!\w)", text) is not None
+
     def _normalize(self, value: str) -> str:
-        return re.sub(r"\s+", " ", value.lower().replace("-", " ")).strip()
+        value = unicodedata.normalize("NFKD", value.lower())
+        value = "".join(char for char in value if not unicodedata.combining(char))
+        value = re.sub(r"[-_,.:;!?()\[\]{}\"']+", " ", value)
+        return re.sub(r"\s+", " ", value).strip()

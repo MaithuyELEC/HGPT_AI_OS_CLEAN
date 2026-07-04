@@ -1,11 +1,10 @@
 
-93
 from pathlib import Path
 from docx import Document
 
 from hgpt_ai_os.planner.planner_engine import PlannerEngine
 
-from hgpt_ai_os.knowledge.retriever import KnowledgeRetriever
+from hgpt_ai_os.intelligence import KnowledgeSearch
 from hgpt_ai_os.knowledge.bundle import KnowledgeBundle
 
 from hgpt_ai_os.content.generator import ContentGenerator
@@ -25,11 +24,9 @@ class LucidOrchestrator:
 
         planner.update_status(task["row"], "RUNNING")
 
-        retriever = KnowledgeRetriever()
-
-        items = retriever.retrieve(
+        items = KnowledgeSearch().search_text(
             task["topic"],
-            top_k=5
+            top_k=5,
         )
 
         bundle = KnowledgeBundle(

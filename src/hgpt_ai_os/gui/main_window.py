@@ -103,31 +103,39 @@ class MainWindow(QMainWindow):
     def _build_header(self, layout):
         header = QFrame()
         header.setObjectName("header")
+        header.setMinimumHeight(120)
+        header.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
         header_layout = QGridLayout(header)
-        header_layout.setContentsMargins(22, 18, 22, 18)
+        header_layout.setContentsMargins(22, 14, 22, 14)
         header_layout.setHorizontalSpacing(14)
-        header_layout.setVerticalSpacing(7)
+        header_layout.setVerticalSpacing(5)
 
         title = QLabel("LUCID AUTO")
         title.setObjectName("appTitle")
+        title.setMinimumHeight(34)
+        title.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
 
         platform_label = QLabel("AI Engineering Platform")
         platform_label.setObjectName("platformLabel")
+        platform_label.setMinimumHeight(20)
+        platform_label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
 
-        powered_by = QLabel("Powered by MaithuyELEC")
+        powered_by = QLabel("Powered by MaithuyELEC · HGPT Steel Digital Factory")
         powered_by.setObjectName("poweredBy")
+        powered_by.setMinimumHeight(18)
+        powered_by.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
 
-        factory = QLabel("HGPT Steel Digital Factory")
-        factory.setObjectName("factoryCaption")
-
-        version = QLabel(f"Production\n{self.APP_VERSION}")
+        version = QLabel(f"✅ Production\n{self.APP_VERSION}")
         version.setObjectName("version")
+        version.setMinimumSize(132, 62)
 
         header_layout.addWidget(title, 0, 0)
         header_layout.addWidget(platform_label, 1, 0)
         header_layout.addWidget(powered_by, 2, 0)
-        header_layout.addWidget(factory, 3, 0)
-        header_layout.addWidget(version, 0, 1, 4, 1)
+        header_layout.addWidget(version, 0, 1, 3, 1)
+        header_layout.setRowMinimumHeight(0, 34)
+        header_layout.setRowMinimumHeight(1, 20)
+        header_layout.setRowMinimumHeight(2, 18)
         header_layout.setColumnStretch(0, 1)
 
         layout.addWidget(header)
@@ -149,11 +157,11 @@ class MainWindow(QMainWindow):
         self.topic.lineEdit().setClearButtonEnabled(True)
         self.topic.lineEdit().returnPressed.connect(self.generate)
 
-        self.btn = QPushButton("Generate")
+        self.btn = QPushButton("🚀  Generate")
         self.btn.setObjectName("primaryButton")
         self.btn.setMinimumWidth(124)
 
-        self.clear_btn = QPushButton("Clear")
+        self.clear_btn = QPushButton("🧹  Clear")
         self.clear_btn.setMinimumWidth(96)
 
         row.addWidget(label)
@@ -170,11 +178,13 @@ class MainWindow(QMainWindow):
         row.setContentsMargins(18, 12, 18, 12)
         row.setSpacing(12)
 
-        self.engine_status = QLabel("●  Engine Ready")
+        self.engine_status = QLabel("Ready")
         self.engine_status.setObjectName("engineStatus")
 
-        self.run_status = QLabel("Waiting for Topic")
+        self.run_status = QLabel("Ready")
         self.run_status.setObjectName("runStatus")
+        self._set_status_badge(self.engine_status, "ready", "Ready")
+        self._set_status_badge(self.run_status, "ready", "Ready")
 
         row.addWidget(self.engine_status)
         row.addStretch(1)
@@ -289,7 +299,7 @@ class MainWindow(QMainWindow):
         self.output_path = QLabel("~/Documents/LUCID/outputs/marketing")
         self.output_path.setObjectName("outputPath")
 
-        self.output_btn = QPushButton("Open Output Folder")
+        self.output_btn = QPushButton("📂  Open Output Folder")
         self.output_btn.setMinimumWidth(158)
 
         row.addWidget(label)
@@ -308,12 +318,12 @@ class MainWindow(QMainWindow):
                 font-size: 13px;
             }
             QFrame#header {
-                background: #ffffff;
-                border: 1px solid #c7d3df;
+                background: #fbfcfd;
+                border: 1px solid #c4d0dc;
                 border-radius: 8px;
             }
             QLabel#appTitle {
-                color: #19364d;
+                color: #102a43;
                 font-size: 28px;
                 font-weight: 800;
                 letter-spacing: 0px;
@@ -334,13 +344,13 @@ class MainWindow(QMainWindow):
                 font-weight: 600;
             }
             QLabel#version {
-                color: #19364d;
+                color: #102a43;
                 font-size: 13px;
                 font-weight: 700;
-                padding: 10px 14px;
+                padding: 10px 16px;
                 border: 1px solid #b8c7d4;
                 border-radius: 6px;
-                background: #eef3f7;
+                background: #eef4f8;
                 qproperty-alignment: AlignCenter;
             }
             QFrame#panel,
@@ -431,19 +441,44 @@ class MainWindow(QMainWindow):
             }
             QPushButton#primaryButton {
                 color: #ffffff;
-                background: #2f5f7f;
-                border-color: #274f6a;
+                background: #245a78;
+                border-color: #1f4b65;
             }
             QPushButton#primaryButton:hover {
-                background: #274f6a;
+                background: #1f4b65;
             }
             QLabel#engineStatus {
-                color: #19364d;
+                color: #0f5132;
+                background: #e7f4ec;
+                border: 1px solid #a7d7bd;
+                border-radius: 12px;
+                padding: 5px 12px;
                 font-weight: 800;
             }
             QLabel#runStatus {
-                color: #52606d;
+                border-radius: 12px;
+                padding: 5px 12px;
                 font-weight: 700;
+            }
+            QLabel#runStatus[status="ready"] {
+                color: #38546a;
+                background: #eef4f8;
+                border: 1px solid #c4d0dc;
+            }
+            QLabel#runStatus[status="running"] {
+                color: #7a4f00;
+                background: #fff4d6;
+                border: 1px solid #e2bd63;
+            }
+            QLabel#runStatus[status="completed"] {
+                color: #0f5132;
+                background: #e7f4ec;
+                border: 1px solid #a7d7bd;
+            }
+            QLabel#runStatus[status="error"] {
+                color: #7a1f1f;
+                background: #fbe7e7;
+                border: 1px solid #e2aaaa;
             }
             QProgressBar#progress {
                 background: #d5dee7;
@@ -474,6 +509,13 @@ class MainWindow(QMainWindow):
             }
             """
         )
+
+    def _set_status_badge(self, label, status: str, text: str):
+        label.setText(text)
+        label.setProperty("status", status)
+        label.style().unpolish(label)
+        label.style().polish(label)
+        label.update()
 
     def _install_shortcuts(self):
         for sequence in ("Ctrl+Return", "Ctrl+Enter", "Meta+Return", "Meta+Enter"):
@@ -552,7 +594,7 @@ class MainWindow(QMainWindow):
         topic = self.topic.currentText().strip()
 
         if not topic:
-            self.run_status.setText("Waiting for Topic")
+            self._set_status_badge(self.run_status, "ready", "Ready")
             self.append_console("Warning: Topic is required before generation.")
             QMessageBox.warning(
                 self,
@@ -567,7 +609,7 @@ class MainWindow(QMainWindow):
         self.summary_panel.hide()
         self.files_panel.hide()
         self.production_result = None
-        self.run_status.setText("Running")
+        self._set_status_badge(self.run_status, "running", "Running")
 
         self.progress.show()
         self.set_controls_enabled(False)
@@ -597,7 +639,7 @@ class MainWindow(QMainWindow):
         self.production_result = result
 
         if result.success:
-            self.run_status.setText("Completed")
+            self._set_status_badge(self.run_status, "completed", "Completed")
             self._increment_total_jobs()
             self._save_last_output_folder(result.output_dir)
             self.update_summary(result)
@@ -619,7 +661,7 @@ class MainWindow(QMainWindow):
                 "Production completed successfully.",
             )
         else:
-            self.run_status.setText("Failed")
+            self._set_status_badge(self.run_status, "error", "Error")
             self.append_console("")
             self.append_console("==========")
             self.append_console("Production Failed")
@@ -641,7 +683,7 @@ class MainWindow(QMainWindow):
             "Ready to generate production content.\n"
             "=================================================="
         )
-        self.run_status.setText("Waiting for Topic")
+        self._set_status_badge(self.run_status, "ready", "Ready")
         self.summary_panel.hide()
         self.files_panel.hide()
 

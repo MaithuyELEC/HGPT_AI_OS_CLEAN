@@ -64,7 +64,7 @@ def build_outputs(day: int, topic: str, open_output_folder: bool = True) -> Path
         "video_prompt.docx": generator.generate_video_prompt(topic, context),
         "seo.docx": generator.generate_seo(topic, context),
         "hashtags.docx": generator.generate_hashtags(),
-        "approval_checklist.docx": generator.generate_checklist(),
+        "approval_checklist.docx": generator.generate_checklist(topic, context),
     }
 
     print("[06/08] Prepare Output Folder            PASS")

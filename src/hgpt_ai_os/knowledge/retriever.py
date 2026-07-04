@@ -1,16 +1,12 @@
-from hgpt_ai_os.knowledge.engine import KnowledgeEngine
+from hgpt_ai_os.knowledge.retrieval_pipeline import KnowledgeRetrievalPipeline
 
 
 class KnowledgeRetriever:
 
     def __init__(self, knowledge_root="knowledge"):
-        self.engine = KnowledgeEngine(knowledge_root)
+        self.pipeline = KnowledgeRetrievalPipeline(knowledge_root)
 
     def retrieve(self, query: str, top_k: int = 5):
+        results = self.pipeline.retrieve(query, top_k=top_k)
 
-        results = self.engine.search(query)
-
-        if not results:
-            return []
-
-        return results[:top_k]
+        return [result.item for result in results]
