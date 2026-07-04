@@ -6,8 +6,15 @@ import subprocess
 import sys
 from pathlib import Path
 
-from PySide6.QtCore import QSettings, Qt, qVersion
-from PySide6.QtGui import QAction, QKeySequence, QShortcut, QTextCursor
+from PySide6.QtCore import QSize, QSettings, Qt, qVersion
+from PySide6.QtGui import (
+    QAction,
+    QFont,
+    QKeySequence,
+    QShortcut,
+    QTextBlockFormat,
+    QTextCursor,
+)
 from PySide6.QtWidgets import (
     QComboBox,
     QFrame,
@@ -43,7 +50,7 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("LUCID AUTO")
         self.resize(1040, 720)
-        self.setMinimumSize(920, 620)
+        self.setMinimumSize(960, 660)
 
         self.worker = None
         self.production_result = None
@@ -103,17 +110,18 @@ class MainWindow(QMainWindow):
     def _build_header(self, layout):
         header = QFrame()
         header.setObjectName("header")
-        header.setMinimumHeight(120)
+        header.setMinimumHeight(132)
         header.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
         header_layout = QGridLayout(header)
-        header_layout.setContentsMargins(22, 14, 22, 14)
-        header_layout.setHorizontalSpacing(14)
-        header_layout.setVerticalSpacing(5)
+        header_layout.setContentsMargins(24, 18, 24, 18)
+        header_layout.setHorizontalSpacing(18)
+        header_layout.setVerticalSpacing(6)
 
         title = QLabel("LUCID AUTO")
         title.setObjectName("appTitle")
-        title.setMinimumHeight(34)
+        title.setMinimumHeight(42)
         title.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
+        title.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         platform_label = QLabel("AI Engineering Platform")
         platform_label.setObjectName("platformLabel")
@@ -127,13 +135,14 @@ class MainWindow(QMainWindow):
 
         version = QLabel(f"✅ Production\n{self.APP_VERSION}")
         version.setObjectName("version")
-        version.setMinimumSize(132, 62)
+        version.setMinimumSize(140, 66)
+        version.setAlignment(Qt.AlignCenter)
 
         header_layout.addWidget(title, 0, 0)
         header_layout.addWidget(platform_label, 1, 0)
         header_layout.addWidget(powered_by, 2, 0)
         header_layout.addWidget(version, 0, 1, 3, 1)
-        header_layout.setRowMinimumHeight(0, 34)
+        header_layout.setRowMinimumHeight(0, 42)
         header_layout.setRowMinimumHeight(1, 20)
         header_layout.setRowMinimumHeight(2, 18)
         header_layout.setColumnStretch(0, 1)
@@ -159,7 +168,7 @@ class MainWindow(QMainWindow):
 
         self.btn = QPushButton("🚀  Generate")
         self.btn.setObjectName("primaryButton")
-        self.btn.setMinimumWidth(124)
+        self.btn.setMinimumSize(148, 44)
 
         self.clear_btn = QPushButton("🧹  Clear")
         self.clear_btn.setMinimumWidth(96)
@@ -207,8 +216,14 @@ class MainWindow(QMainWindow):
         self.console.setObjectName("console")
         self.console.setReadOnly(True)
         self.console.setLineWrapMode(QTextEdit.NoWrap)
+        console_font = QFont("Menlo", 12)
+        console_font.setStyleHint(QFont.Monospace)
+        console_font.setFixedPitch(True)
+        console_font.setStyleStrategy(QFont.PreferAntialias)
+        self.console.setFont(console_font)
+        self.console.document().setDocumentMargin(6)
         self.console.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.console.setText(
+        self._set_console_text(
             "==================================================\n"
             f"LUCID AUTO {self.APP_VERSION}\n"
             "Production Ready\n"
@@ -272,15 +287,18 @@ class MainWindow(QMainWindow):
         files_layout.setContentsMargins(18, 14, 18, 14)
         files_layout.setSpacing(8)
 
-        title = QLabel("Generated Files")
-        title.setObjectName("summaryTitle")
+        self.files_title = QLabel("Generated Files (0)")
+        self.files_title.setObjectName("summaryTitle")
 
         self.files_list = QListWidget()
         self.files_list.setObjectName("filesList")
-        self.files_list.setMaximumHeight(96)
+        self.files_list.setMinimumHeight(132)
+        self.files_list.setMaximumHeight(176)
+        self.files_list.setSpacing(3)
+        self.files_list.setIconSize(QSize(22, 22))
         self.files_list.itemDoubleClicked.connect(self.open_generated_file)
 
-        files_layout.addWidget(title)
+        files_layout.addWidget(self.files_title)
         files_layout.addWidget(self.files_list)
         self.files_panel.hide()
 
@@ -300,7 +318,8 @@ class MainWindow(QMainWindow):
         self.output_path.setObjectName("outputPath")
 
         self.output_btn = QPushButton("📂  Open Output Folder")
-        self.output_btn.setMinimumWidth(158)
+        self.output_btn.setObjectName("secondaryButton")
+        self.output_btn.setMinimumSize(184, 40)
 
         row.addWidget(label)
         row.addWidget(self.output_path, 1)
@@ -324,7 +343,7 @@ class MainWindow(QMainWindow):
             }
             QLabel#appTitle {
                 color: #102a43;
-                font-size: 28px;
+                font-size: 31px;
                 font-weight: 800;
                 letter-spacing: 0px;
             }
@@ -364,7 +383,7 @@ class MainWindow(QMainWindow):
             }
             QLabel#summaryTitle {
                 color: #19364d;
-                font-size: 13px;
+                font-size: 14px;
                 font-weight: 800;
             }
             QLabel#summaryLabel {
@@ -374,25 +393,54 @@ class MainWindow(QMainWindow):
             }
             QLabel#summaryValue {
                 color: #1f2933;
-                font-size: 12px;
+                font-size: 13px;
                 font-weight: 600;
             }
             QListWidget#filesList {
                 color: #1f2933;
-                background: #f4f7fa;
+                background: #f8fafc;
                 border: 1px solid #d5dee7;
                 border-radius: 6px;
-                padding: 4px;
-                font-family: "SF Mono", Menlo, Consolas, monospace;
-                font-size: 12px;
+                padding: 6px;
+                font-size: 14px;
+                font-weight: 650;
             }
             QListWidget#filesList::item {
-                padding: 5px 6px;
+                min-height: 30px;
+                padding: 7px 10px;
+                border-radius: 5px;
+            }
+            QListWidget#filesList::item:hover {
+                background: #edf4f8;
             }
             QListWidget#filesList::item:selected {
                 color: #ffffff;
                 background: #2f5f7f;
-                border-radius: 4px;
+                border-radius: 5px;
+            }
+            QListWidget#filesList QScrollBar:vertical,
+            QTextEdit#console QScrollBar:vertical {
+                background: #e6edf3;
+                width: 12px;
+                margin: 2px;
+                border-radius: 6px;
+            }
+            QListWidget#filesList QScrollBar::handle:vertical,
+            QTextEdit#console QScrollBar::handle:vertical {
+                background: #a8bac9;
+                min-height: 28px;
+                border-radius: 6px;
+            }
+            QListWidget#filesList QScrollBar::handle:vertical:hover,
+            QTextEdit#console QScrollBar::handle:vertical:hover {
+                background: #7f98aa;
+            }
+            QListWidget#filesList QScrollBar::add-line:vertical,
+            QListWidget#filesList QScrollBar::sub-line:vertical,
+            QTextEdit#console QScrollBar::add-line:vertical,
+            QTextEdit#console QScrollBar::sub-line:vertical {
+                height: 0;
+                border: 0;
             }
             QLabel#fieldLabel {
                 color: #334e68;
@@ -420,8 +468,8 @@ class MainWindow(QMainWindow):
                 width: 26px;
             }
             QPushButton {
-                min-height: 36px;
-                padding: 0 16px;
+                min-height: 38px;
+                padding: 0 18px;
                 color: #19364d;
                 background: #eef3f7;
                 border: 1px solid #b8c7d4;
@@ -440,12 +488,24 @@ class MainWindow(QMainWindow):
                 border-color: #d5dee7;
             }
             QPushButton#primaryButton {
+                min-height: 44px;
                 color: #ffffff;
                 background: #245a78;
                 border-color: #1f4b65;
+                font-size: 14px;
+                padding: 0 22px;
             }
             QPushButton#primaryButton:hover {
-                background: #1f4b65;
+                background: #1e6b8f;
+                border-color: #174f6a;
+            }
+            QPushButton#secondaryButton {
+                background: #f7fafc;
+                border-color: #aebdca;
+            }
+            QPushButton#secondaryButton:hover {
+                background: #eaf2f7;
+                border-color: #8fa5b7;
             }
             QLabel#engineStatus {
                 color: #0f5132;
@@ -466,9 +526,14 @@ class MainWindow(QMainWindow):
                 border: 1px solid #c4d0dc;
             }
             QLabel#runStatus[status="running"] {
-                color: #7a4f00;
-                background: #fff4d6;
-                border: 1px solid #e2bd63;
+                color: #6f3f00;
+                background: #fff1d6;
+                border: 1px solid #e3b45b;
+            }
+            QLabel#runStatus[status="exporting"] {
+                color: #17406f;
+                background: #e5f0ff;
+                border: 1px solid #9fc3ef;
             }
             QLabel#runStatus[status="completed"] {
                 color: #0f5132;
@@ -494,14 +559,14 @@ class MainWindow(QMainWindow):
                 background: #111820;
                 border: 1px solid #25313c;
                 border-radius: 8px;
-                padding: 12px;
-                font-family: "SF Mono", Menlo, Consolas, monospace;
-                font-size: 12px;
+                padding: 14px;
+                font-family: Menlo, Consolas, monospace;
+                font-size: 13px;
                 selection-background-color: #2f5f7f;
             }
             QLabel#outputPath {
                 color: #1f2933;
-                font-family: "SF Mono", Menlo, Consolas, monospace;
+                font-family: Menlo, Consolas, monospace;
                 background: #f4f7fa;
                 border: 1px solid #d5dee7;
                 border-radius: 6px;
@@ -609,14 +674,14 @@ class MainWindow(QMainWindow):
         self.summary_panel.hide()
         self.files_panel.hide()
         self.production_result = None
-        self._set_status_badge(self.run_status, "running", "Running")
+        self._set_status_badge(self.run_status, "running", "Analyzing topic...")
 
         self.progress.show()
         self.set_controls_enabled(False)
 
         self.worker = ProductionWorker(topic)
 
-        self.worker.log.connect(self.append_console)
+        self.worker.log.connect(self.handle_worker_log)
         self.worker.finished.connect(self.finished)
         self.worker.finished.connect(self.worker.deleteLater)
 
@@ -639,11 +704,12 @@ class MainWindow(QMainWindow):
         self.production_result = result
 
         if result.success:
-            self._set_status_badge(self.run_status, "completed", "Completed")
+            self._set_status_badge(self.run_status, "exporting", "Exporting DOCX...")
             self._increment_total_jobs()
             self._save_last_output_folder(result.output_dir)
             self.update_summary(result)
             self.update_generated_files(result)
+            self._set_status_badge(self.run_status, "completed", "Completed.")
             self.append_console("")
             self.append_console("==========")
             self.append_console("Production Completed")
@@ -675,7 +741,7 @@ class MainWindow(QMainWindow):
 
     def clear_console(self):
         self.console.clear()
-        self.console.setText(
+        self._set_console_text(
             "==================================================\n"
             f"LUCID AUTO {self.APP_VERSION}\n"
             "Production Ready\n"
@@ -686,9 +752,42 @@ class MainWindow(QMainWindow):
         self._set_status_badge(self.run_status, "ready", "Ready")
         self.summary_panel.hide()
         self.files_panel.hide()
+        self.files_title.setText("Generated Files (0)")
+
+    def _set_console_text(self, text: str):
+        self.console.setPlainText(text)
+        self._apply_console_spacing()
+        self.console.moveCursor(QTextCursor.End)
+
+    def _apply_console_spacing(self):
+        cursor = QTextCursor(self.console.document())
+        cursor.select(QTextCursor.Document)
+        block_format = QTextBlockFormat()
+        block_format.setLineHeight(135.0, QTextBlockFormat.ProportionalHeight.value)
+        block_format.setBottomMargin(3)
+        cursor.setBlockFormat(block_format)
+
+    def handle_worker_log(self, text):
+        self.update_run_status_from_log(text)
+        self.append_console(text)
+
+    def update_run_status_from_log(self, text):
+        if "[01/08]" in text:
+            self._set_status_badge(self.run_status, "running", "Analyzing topic...")
+        elif "[02/08]" in text:
+            self._set_status_badge(self.run_status, "running", "Searching knowledge...")
+        elif "[03/08]" in text or "[04/08]" in text:
+            self._set_status_badge(self.run_status, "running", "Ranking...")
+        elif "[05/08]" in text or "[06/08]" in text:
+            self._set_status_badge(self.run_status, "running", "Generating AI content...")
+        elif "[07/08]" in text:
+            self._set_status_badge(self.run_status, "exporting", "Exporting DOCX...")
+        elif "[08/08]" in text or "STATUS    : PRODUCTION SUCCESS" in text:
+            self._set_status_badge(self.run_status, "completed", "Completed.")
 
     def append_console(self, text):
         self.console.append(text)
+        self._apply_console_spacing()
         self.console.moveCursor(QTextCursor.End)
 
     def set_controls_enabled(self, enabled):
@@ -716,6 +815,8 @@ class MainWindow(QMainWindow):
 
     def update_generated_files(self, result: ProductionResult):
         self.files_list.clear()
+        generated_count = len(result.generated_files)
+        self.files_title.setText(f"Generated Files ({generated_count})")
 
         if not result.generated_files:
             item = QListWidgetItem("No generated documents.")
@@ -723,12 +824,31 @@ class MainWindow(QMainWindow):
             self.files_list.addItem(item)
         else:
             for document in result.generated_files:
-                item = QListWidgetItem(document.name)
+                item = QListWidgetItem(
+                    f"{self._document_icon(document.name)}  {document.name}"
+                )
                 item.setData(Qt.UserRole, str(document))
+                item.setToolTip(str(document))
                 self.files_list.addItem(item)
             self.files_list.setCurrentRow(0)
 
         self.files_panel.show()
+
+    def _document_icon(self, filename: str) -> str:
+        name = filename.lower()
+        if "facebook" in name:
+            return "📘"
+        if "hashtag" in name:
+            return "🏷"
+        if "image" in name:
+            return "🖼"
+        if "video" in name:
+            return "🎬"
+        if "seo" in name:
+            return "🔍"
+        if "approval" in name or "checklist" in name:
+            return "✅"
+        return "📄"
 
     def open_generated_file(self, item):
         path = item.data(Qt.UserRole)
