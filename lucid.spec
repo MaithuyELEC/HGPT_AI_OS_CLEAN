@@ -23,12 +23,7 @@ datas.extend([
     ("outputs", "outputs"),
     ("src/hgpt_ai_os/config", "hgpt_ai_os/config"),
 ])
-    ("knowledge", "knowledge"),
-    ("assets", "assets"),
-    ("planner", "planner"),
-    ("outputs", "outputs"),
-    ("src/hgpt_ai_os/config", "hgpt_ai_os/config"),
-]
+    
 
 qt_datas, qt_binaries, qt_hiddenimports = collect_all("PySide6")
 qt_datas += collect_data_files(
