@@ -10,9 +10,19 @@ APP_BUNDLE = "LUCID.app"
 ICON_ICNS = "assets/LUCID.icns" if Path("assets/LUCID.icns").exists() else None
 ICON_ICO = "assets/LUCID.ico" if Path("assets/LUCID.ico").exists() else None
 
-datas = [
-    (".env", "."),
+datas = []
+
+if Path(".env").exists():
+    datas.append((".env", "."))
+
+datas.extend([
     ("templates", "templates"),
+    ("knowledge", "knowledge"),
+    ("assets", "assets"),
+    ("planner", "planner"),
+    ("outputs", "outputs"),
+    ("src/hgpt_ai_os/config", "hgpt_ai_os/config"),
+])
     ("knowledge", "knowledge"),
     ("assets", "assets"),
     ("planner", "planner"),
