@@ -27,9 +27,8 @@ function Read-LucidVersion {
 
 $version = Read-LucidVersion
 $distDir = "dist\LUCID"
-$windowsReleaseDir = "release\Windows\LUCID"
 $installerDir = "release\Installer"
-$installerName = "LUCID-AUTO-$($version.InstallerVersion)-Setup.exe"
+$installerName = "LUCID_Setup.exe"
 $installerPath = Join-Path $installerDir $installerName
 $checksumPath = "$installerPath.sha256"
 
@@ -38,9 +37,11 @@ python -m pip install -r requirements.txt
 python -c "from PySide6.QtWidgets import QApplication; import PySide6; print('PySide6 ready:', PySide6.__file__)"
 python -m PyInstaller --clean --noconfirm lucid.spec
 
-Remove-Item -Recurse -Force -LiteralPath $windowsReleaseDir -ErrorAction SilentlyContinue
-New-Item -ItemType Directory -Force -Path $windowsReleaseDir, $installerDir | Out-Null
-Copy-Item -Recurse -Force -Path (Join-Path $distDir "*") -Destination $windowsReleaseDir
+if (-not (Test-Path -LiteralPath (Join-Path $distDir "LUCID.exe") -PathType Leaf)) {
+    throw "expected PyInstaller OneDir executable was not created: dist\LUCID\LUCID.exe"
+}
+
+New-Item -ItemType Directory -Force -Path $installerDir | Out-Null
 python installer\verify.py windows
 
 $isccPath = (Get-Command ISCC.exe -ErrorAction SilentlyContinue).Source

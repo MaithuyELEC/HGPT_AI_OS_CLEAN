@@ -13,15 +13,15 @@ APP_BUILD = version_ns["APP_BUILD"].removeprefix("RC")
 MAC_DMG_ROOT = ROOT / "release" / "Mac" / "dmg"
 MAC_APP = MAC_DMG_ROOT / "LUCID AUTO.app"
 ISS_PATH = ROOT / "installer" / "LUCID.iss"
-WINDOWS_APP = ROOT / "release" / "Windows" / "LUCID" / "LUCID.exe"
 WINDOWS_DIST = ROOT / "dist" / "LUCID"
+WINDOWS_APP = WINDOWS_DIST / "LUCID.exe"
 WINDOWS_INSTALLER_ROOT = ROOT / "release" / "Installer"
 WINDOWS_QT_FILES = [
     "Qt6Core.dll",
     "Qt6Gui.dll",
     "Qt6Widgets.dll",
-    "qwindows.dll",
 ]
+WINDOWS_QWINDOWS = "qwindows.dll"
 
 
 def require(condition: bool, message: str) -> None:
@@ -67,7 +67,8 @@ def verify_windows() -> None:
         "UninstallDisplayName={#MyAppName} {#MyAppRelease}",
         "VersionInfoVersion={#MyAppVersion}",
         "VersionInfoCompany={#MyAppPublisher}",
-        "OutputBaseFilename=LUCID-AUTO-{#MyAppVersion}-Setup",
+        "OutputBaseFilename=LUCID_Setup",
+        'Source: "..\\dist\\LUCID\\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs',
         'Name: "{group}\\LUCID AUTO"; Filename: "{app}\\{#MyAppExeName}"',
         'Name: "{group}\\Uninstall LUCID AUTO"; Filename: "{uninstallexe}"',
         'Name: "{autodesktop}\\LUCID AUTO"; Filename: "{app}\\{#MyAppExeName}"; Tasks: desktopicon',
@@ -76,19 +77,19 @@ def verify_windows() -> None:
         require(fragment in text, f"Inno Setup script missing {fragment}")
 
     require(WINDOWS_DIST.is_dir(), "PyInstaller dist output is missing")
-    require(WINDOWS_APP.exists(), "Windows app output is missing LUCID.exe")
+    require(WINDOWS_APP.is_file(), "PyInstaller output is missing dist/LUCID/LUCID.exe")
     for qt_file in WINDOWS_QT_FILES:
         require(
             any(WINDOWS_DIST.rglob(qt_file)),
             f"PyInstaller output is missing bundled Qt runtime file: {qt_file}",
         )
+    require(
+        any(path.name == WINDOWS_QWINDOWS and path.parent.name == "platforms" for path in WINDOWS_DIST.rglob(WINDOWS_QWINDOWS)),
+        "PyInstaller output is missing bundled Qt runtime file: platforms/qwindows.dll",
+    )
 
     if any(WINDOWS_INSTALLER_ROOT.glob("*.exe")):
-        installers = list(WINDOWS_INSTALLER_ROOT.glob("LUCID-AUTO-*-Setup.exe"))
-        require(
-            bool(installers),
-            "expected versioned Windows installer output is missing",
-        )
+        require((WINDOWS_INSTALLER_ROOT / "LUCID_Setup.exe").is_file(), "expected Windows installer output is missing")
 
 
 def main() -> None:

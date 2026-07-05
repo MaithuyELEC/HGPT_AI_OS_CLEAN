@@ -26,7 +26,7 @@ VersionInfoProductName={#MyAppName}
 VersionInfoProductVersion={#MyAppVersion}
 VersionInfoCopyright=Copyright 2026 {#MyAppPublisher}. All rights reserved.
 OutputDir=..\release\Installer
-OutputBaseFilename=LUCID-AUTO-{#MyAppVersion}-Setup
+OutputBaseFilename=LUCID_Setup
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -39,7 +39,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: checkedonce
 
 [Files]
-Source: "..\release\Windows\LUCID\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "..\dist\LUCID\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{group}\LUCID AUTO"; Filename: "{app}\{#MyAppExeName}"
