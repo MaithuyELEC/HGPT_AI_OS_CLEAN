@@ -408,22 +408,29 @@ class ContentGenerator:
             response = self.ai.generate(system_prompt, user_prompt)
 
             if isinstance(response, AIProviderError):
-                return self._failure_message(response)
+                logger.info(
+        "AI unavailable for %s, switching to built-in generator.",
+        spec.key,
+    )
+                return self._generate_with_builtin(spec, topic, context)
 
             content = getattr(response, "content", "") or ""
             metadata: dict[str, Any] = getattr(response, "metadata", {}) or {}
 
             if metadata.get("mock"):
-                logger.error(
-                    "AI response rejected for %s: mock provider response is not production content",
-                    spec.key,
-                )
-                return PROVIDER_UNAVAILABLE_MESSAGE
+                logger.info(
+                    "Mock provider detected for %s, switching to built-in generator.",
+                     spec.key,
+    )
+                return self._generate_with_builtin(spec, topic, context)
 
             final_text = self._validate_response(content)
             if not final_text:
-                logger.error("AI response rejected for %s: empty final text", spec.key)
-                return "AI provider returned an empty response. Please try again."
+               logger.info(
+                   "Empty AI response for %s, switching to built-in generator.",
+        spec.key,
+    )
+               return self._generate_with_builtin(spec, topic, context)
 
             if self._is_duplicate_shape(final_text) and attempt == 0:
                 retry_variation = self._new_variation(f"{variation}:retry")
