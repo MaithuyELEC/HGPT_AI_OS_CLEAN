@@ -1,4 +1,4 @@
-# Lucid Auto v1.0.0 RC14
+# LUCID PLATFORM
 
 > AI Production Operating System for Steel Fabrication.
 
@@ -6,7 +6,13 @@
 
 # Overview
 
-Lucid Auto là hệ thống AI Production được phát triển để tự động hóa quá trình tạo nội dung kỹ thuật, xây dựng Knowledge Base và tiến tới Digital Factory cho HGPT Steel.
+LUCID PLATFORM is the long-term production software foundation for HGPT Steel AI
+operations. It evolves the existing LUCID AUTO production system into a universal
+runtime for providers, knowledge, agents, plugins, marketplace architecture,
+enterprise controls, and Digital Factory workflows.
+
+The current production path remains backward compatible while platform
+capabilities are delivered one sprint at a time.
 
 ---
 
@@ -126,19 +132,32 @@ outputs/
 
 ---
 
+# Platform Documentation
+
+- [Architecture](docs/architecture.md)
+- [Platform contracts](docs/contracts.md)
+- [Roadmap](docs/roadmap.md)
+- [Migration plan from LUCID AUTO](docs/migration_lucid_auto_to_platform.md)
+
+---
+
 # Roadmap
 
-✅ Lucid Auto v1.0.0 RC14
+✅ Sprint 01 Universal Runtime
 
-✅ Installer packaging assets
+✅ Sprint 02 Platform Contracts
 
-⬜ Knowledge Engine v2
+⬜ Sprint 03 Universal Knowledge
 
-⬜ SOP Generator
+⬜ Sprint 04 Agent System
 
-⬜ AI Agents
+⬜ Sprint 05 Plugin SDK
 
-⬜ Digital Factory
+⬜ Sprint 06 Marketplace Architecture
+
+⬜ Sprint 07 Enterprise Architecture
+
+⬜ Sprint 08 Digital Factory Architecture
 
 ---
 
@@ -147,7 +166,7 @@ outputs/
 Current Release
 
 ```
-v1.0.0 RC14
+LUCID PLATFORM Sprint 01 / v1.0.0 RC14 compatibility line
 ```
 
 ---

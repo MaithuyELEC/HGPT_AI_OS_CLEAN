@@ -8,9 +8,11 @@ from collections import deque
 from dataclasses import dataclass
 from typing import Any
 
+from hgpt_ai_os.ai.config_resolver import is_free_desktop_mode
 from hgpt_ai_os.ai.client import PROVIDER_UNAVAILABLE_MESSAGE
 from hgpt_ai_os.ai.client import LucidAI
 from hgpt_ai_os.ai.gemini_client import AIProviderError
+from hgpt_ai_os.content.factory.builder_factory import BuilderFactory
 from hgpt_ai_os.content.template_engine import TemplateEngine
 
 
@@ -299,7 +301,10 @@ class ContentGenerator:
 
     def __init__(self, ai: LucidAI | None = None):
         self.template = TemplateEngine()
-        self.ai = ai or LucidAI()
+        self.free_desktop_mode = ai is None and is_free_desktop_mode()
+        self.ai = ai if ai is not None else None
+        if self.ai is None and not self.free_desktop_mode:
+            self.ai = LucidAI()
         self.prompt_builder = PromptBuilder()
         self._last_topic = ""
         self._last_context = ""
@@ -322,6 +327,8 @@ class ContentGenerator:
             f"{self._run_variation}:{spec.key}:{topic}:{self._generation_sequence}"
         )
         prompt = self._build_prompt(topic, context, spec, variation)
+        if self.free_desktop_mode:
+            return self._generate_with_builtin(spec, topic, context)
         return self._generate_with_llm(prompt, spec, topic, context, variation)
 
     def generate_facebook(self, topic, context=""):
@@ -436,6 +443,44 @@ class ContentGenerator:
 
         self._remember_shape(final_text)
         return final_text
+
+    def _generate_with_builtin(
+        self,
+        spec: GenerationSpec,
+        topic: str,
+        context: str,
+    ) -> str:
+        builder_key = {
+            "image_prompt": "image",
+            "video_prompt": "video",
+            "checklist": "approval",
+        }.get(spec.key, spec.key)
+
+        logger.info("Free Desktop Mode using built-in generator for %s", spec.key)
+        try:
+            return BuilderFactory.create(builder_key).build(topic, context)
+        except ValueError:
+            return self._builtin_fallback(spec, topic, context)
+
+    def _builtin_fallback(
+        self,
+        spec: GenerationSpec,
+        topic: str,
+        context: str,
+    ) -> str:
+        reference = context.strip() or "No local knowledge context was retrieved."
+        return "\n".join(
+            [
+                spec.content_type,
+                "",
+                f"Topic: {topic}",
+                "",
+                spec.writing_goal,
+                "",
+                "Local knowledge:",
+                reference,
+            ]
+        )
 
     def _validate_response(self, content: str) -> str:
         return content.strip()

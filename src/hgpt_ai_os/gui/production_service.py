@@ -3,29 +3,22 @@ from __future__ import annotations
 import time
 
 from hgpt_ai_os.core.production_result import ProductionResult
+from hgpt_ai_os.platform import PlatformRuntime
 
 
 class ProductionService:
-    def __init__(self):
+    def __init__(self, runtime: PlatformRuntime | None = None):
+        self.runtime = runtime or PlatformRuntime()
         self.knowledge_count = None
         self.started_at = None
 
     def run(self, topic: str) -> ProductionResult:
-        from hgpt_ai_os import production
-
         self.started_at = time.perf_counter()
-        day = production.next_day()
-        output_dir = production.build_outputs(day, topic, open_output_folder=False)
-        generated_files = (
-            sorted(output_dir.glob("*.docx")) if output_dir.exists() else []
-        )
-
-        return ProductionResult(
-            success=True,
-            output_dir=output_dir,
-            generated_files=generated_files,
-            knowledge_count=self.knowledge_count,
-            elapsed_seconds=self.elapsed_seconds(),
+        return self.runtime.execute(
+            topic,
+            open_output_folder=False,
+            knowledge_count_provider=lambda: self.knowledge_count,
+            started_at=self.started_at,
         )
 
     def failed_result(self) -> ProductionResult:

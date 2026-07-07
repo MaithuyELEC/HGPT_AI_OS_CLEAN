@@ -34,6 +34,8 @@ from PySide6.QtWidgets import (
 )
 
 from hgpt_ai_os.core.production_result import ProductionResult
+from hgpt_ai_os.settings import ConfigManager
+from hgpt_ai_os.settings.settings_dialog import SettingsDialog
 from hgpt_ai_os.version import APP_BUILD as RELEASE_BUILD
 from hgpt_ai_os.version import APP_VERSION as RELEASE_VERSION
 
@@ -63,6 +65,8 @@ class MainWindow(QMainWindow):
         self.total_jobs_generated = int(
             self.settings.value("total_jobs_generated", 0, int)
         )
+        self.config_manager = ConfigManager()
+        self.config_manager.load()
         self.shortcuts = []
 
         self._build_menu()
@@ -91,9 +95,16 @@ class MainWindow(QMainWindow):
         self._install_shortcuts()
         self._restore_last_output_folder()
         self._restore_window_state()
+        self._log_configuration_status()
+        self._refresh_ai_status()
 
     def _build_menu(self):
         preferences_menu = self.menuBar().addMenu("Preferences")
+
+        ai_settings_action = QAction("AI Settings", self)
+        ai_settings_action.triggered.connect(self.open_ai_settings)
+        preferences_menu.addAction(ai_settings_action)
+        preferences_menu.addSeparator()
 
         self.auto_open_action = QAction("Auto Open Output Folder", self)
         self.auto_open_action.setCheckable(True)
@@ -508,12 +519,21 @@ class MainWindow(QMainWindow):
                 border-color: #8fa5b7;
             }
             QLabel#engineStatus {
-                color: #0f5132;
-                background: #e7f4ec;
-                border: 1px solid #a7d7bd;
                 border-radius: 12px;
                 padding: 5px 12px;
                 font-weight: 800;
+            }
+            QLabel#engineStatus[status="ready"],
+            QLabel#engineStatus[status="connected"] {
+                color: #0f5132;
+                background: #e7f4ec;
+                border: 1px solid #a7d7bd;
+            }
+            QLabel#engineStatus[status="disconnected"],
+            QLabel#engineStatus[status="config_error"] {
+                color: #7a1f1f;
+                background: #fbe7e7;
+                border: 1px solid #e2aaaa;
             }
             QLabel#runStatus {
                 border-radius: 12px;
@@ -530,6 +550,11 @@ class MainWindow(QMainWindow):
                 background: #fff1d6;
                 border: 1px solid #e3b45b;
             }
+            QLabel#runStatus[status="generating"] {
+                color: #6f3f00;
+                background: #fff1d6;
+                border: 1px solid #e3b45b;
+            }
             QLabel#runStatus[status="exporting"] {
                 color: #17406f;
                 background: #e5f0ff;
@@ -541,6 +566,11 @@ class MainWindow(QMainWindow):
                 border: 1px solid #a7d7bd;
             }
             QLabel#runStatus[status="error"] {
+                color: #7a1f1f;
+                background: #fbe7e7;
+                border: 1px solid #e2aaaa;
+            }
+            QLabel#runStatus[status="config_error"] {
                 color: #7a1f1f;
                 background: #fbe7e7;
                 border: 1px solid #e2aaaa;
@@ -652,6 +682,30 @@ class MainWindow(QMainWindow):
             ),
         )
 
+    def open_ai_settings(self):
+        dialog = SettingsDialog(self.config_manager, self)
+        if dialog.exec() == SettingsDialog.Accepted:
+            self._log_configuration_status()
+            self._refresh_ai_status()
+
+    def _log_configuration_status(self):
+        config = self.config_manager.load()
+        validation = self.config_manager.validate()
+        self.append_console("")
+        self.append_console("Loading configuration...")
+        self.append_console(f"Provider: {config.get('provider', 'gemini').title()}")
+        if validation.ok:
+            self.append_console("Connection OK")
+        else:
+            self.append_console("Connection Error")
+
+    def _refresh_ai_status(self):
+        validation = self.config_manager.validate()
+        if validation.ok:
+            self._set_status_badge(self.engine_status, "connected", "Connected")
+        else:
+            self._set_status_badge(self.engine_status, "disconnected", "Disconnected")
+
     def generate(self):
         if self.worker is not None and self.worker.isRunning():
             return
@@ -669,12 +723,46 @@ class MainWindow(QMainWindow):
             self.topic.setFocus()
             return
 
+        validation = self.config_manager.validate()
+        if not validation.ok:
+            self.console.clear()
+            self.summary_panel.hide()
+            self.files_panel.hide()
+            self.production_result = None
+            self._set_status_badge(self.run_status, "config_error", "Configuration Error")
+            self._set_status_badge(self.engine_status, "config_error", "Configuration Error")
+            self.append_console("Loading configuration...")
+            self.append_console(validation.message)
+            self.append_console("Status: Configuration Error")
+            if validation.reason:
+                self.append_console(f"Reason: {validation.reason}")
+            self.append_console(f"Provider: {validation.provider.title()}")
+            reply = QMessageBox.question(
+                self,
+                "AI is not configured.",
+                "AI is not configured.\n\nOpen Settings now?",
+                QMessageBox.Yes | QMessageBox.No,
+                QMessageBox.Yes,
+            )
+            if reply == QMessageBox.Yes:
+                self.open_ai_settings()
+                validation = self.config_manager.validate()
+                if not validation.ok:
+                    return
+            else:
+                return
+
         self._save_topic(topic)
         self.console.clear()
         self.summary_panel.hide()
         self.files_panel.hide()
         self.production_result = None
-        self._set_status_badge(self.run_status, "running", "Analyzing topic...")
+        self._set_status_badge(self.engine_status, "connected", "Connected")
+        self._set_status_badge(self.run_status, "generating", "Generating")
+        self.append_console("Loading configuration...")
+        self.append_console(f"Provider: {self.config_manager.provider().title()}")
+        self.append_console("Connection OK")
+        self.append_console("Generation Started")
 
         self.progress.show()
         self.set_controls_enabled(False)

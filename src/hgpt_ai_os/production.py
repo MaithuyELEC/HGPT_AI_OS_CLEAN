@@ -55,6 +55,10 @@ def build_outputs(day: int, topic: str, open_output_folder: bool = True) -> Path
 
     print("[04/08] Initialize Generator             PASS")
     generator = ContentGenerator()
+    if generator.free_desktop_mode:
+        print("Mode : Free Desktop")
+        print("Generator : Built-in")
+        print("AI Provider : Disabled")
 
     print("[05/08] Generate Content                 PASS")
     files = {
