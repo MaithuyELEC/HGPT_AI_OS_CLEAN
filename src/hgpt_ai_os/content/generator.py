@@ -14,6 +14,7 @@ from hgpt_ai_os.ai.client import LucidAI
 from hgpt_ai_os.ai.gemini_client import AIProviderError
 from hgpt_ai_os.content.factory.builder_factory import BuilderFactory
 from hgpt_ai_os.content.template_engine import TemplateEngine
+from hgpt_ai_os.topic_engine import TopicIntelligenceEngine
 
 
 logger = logging.getLogger(__name__)
@@ -306,6 +307,7 @@ class ContentGenerator:
         if self.ai is None and not self.free_desktop_mode:
             self.ai = LucidAI()
         self.prompt_builder = PromptBuilder()
+        self.topic_engine = TopicIntelligenceEngine()
         self._last_topic = ""
         self._last_context = ""
         self._generation_sequence = 0
@@ -344,6 +346,13 @@ class ContentGenerator:
         return self.generate("video", topic, context)
 
     def generate_hashtags(self, topic="", context=""):
+        topic = topic or self._last_topic
+        context = context or self._last_context
+
+        if topic:
+            logger.info("Free Desktop Mode using built-in generator for hashtags")
+            return BuilderFactory.create("hashtags").build(topic, context)
+
         return self.template.render(
             "templates/content/hashtags.md",
             {},
@@ -457,17 +466,8 @@ class ContentGenerator:
         topic: str,
         context: str,
     ) -> str:
-        builder_key = {
-            "image_prompt": "image",
-            "video_prompt": "video",
-            "checklist": "approval",
-        }.get(spec.key, spec.key)
-
-        logger.info("Free Desktop Mode using built-in generator for %s", spec.key)
-        try:
-            return BuilderFactory.create(builder_key).build(topic, context)
-        except ValueError:
-            return self._builtin_fallback(spec, topic, context)
+        logger.info("Using offline topic intelligence engine for %s", spec.key)
+        return self.topic_engine.generate(topic, spec.key, context)
 
     def _builtin_fallback(
         self,
