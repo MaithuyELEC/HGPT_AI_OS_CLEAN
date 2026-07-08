@@ -15,8 +15,13 @@ class EngineeringContextBuilder:
     def build(self, topic: str, extraction: EntityExtraction) -> EngineeringContext:
         processes = extraction.get("Process")
         defects = extraction.get("Defect")
+        failures = extraction.get("Failure")
+        machines = extraction.get("Machine")
+        components = extraction.get("Component")
         measurements = extraction.get("Measurement")
         risks = extraction.get("Risk")
+        standards = extraction.get("Standard")
+        production_terms = extraction.get("Production")
 
         causes = []
         inspections = []
@@ -32,7 +37,12 @@ class EngineeringContextBuilder:
             "Topic": ((topic or "").strip(),),
             "Process": processes,
             "Defect": defects,
+            "Failure": failures,
+            "Machine": machines,
+            "Component": components,
             "Measurement": measurements,
+            "Standard": standards,
+            "Production": production_terms,
             "Risk": tuple(dict.fromkeys((*risks, *concept_risks))),
             "Possible Causes": tuple(dict.fromkeys(causes)),
             "Inspection": tuple(dict.fromkeys(inspections)),
@@ -40,6 +50,6 @@ class EngineeringContextBuilder:
         }
         graph = {key: value for key, value in graph.items() if value}
 
-        subject = ", ".join(processes or defects or extraction.get("Machine") or ("engineering topic",))
+        subject = ", ".join(processes or defects or failures or machines or ("engineering topic",))
         summary = f"{topic} is treated as a {subject} case requiring cause, impact, control, and verification."
         return EngineeringContext(graph, summary)

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+
 from hgpt_ai_os.topic_engine.content_planner import ContentPlan
 from hgpt_ai_os.topic_engine.reasoning_engine import ReasoningObject
 
@@ -10,6 +12,25 @@ def bullets(values: tuple[str, ...], limit: int = 4) -> list[str]:
 
 def inline(values: tuple[str, ...], fallback: str) -> str:
     return ", ".join(values) if values else fallback
+
+
+def pick(reasoning: ReasoningObject, values: tuple[str, ...], salt: str = "") -> str:
+    if not values:
+        return ""
+    seed = hashlib.sha256(f"{reasoning.topic}:{salt}".encode("utf-8")).hexdigest()
+    return values[int(seed[:8], 16) % len(values)]
+
+
+def subject(reasoning: ReasoningObject) -> str:
+    return inline(
+        (
+            *reasoning.entities.get("Process")[:1],
+            *reasoning.entities.get("Machine")[:1],
+            *reasoning.entities.get("Defect")[:1],
+            *reasoning.entities.get("Failure")[:1],
+        ),
+        reasoning.topic,
+    )
 
 
 def facts(reasoning: ReasoningObject) -> list[str]:
