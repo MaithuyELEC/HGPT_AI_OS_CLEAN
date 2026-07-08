@@ -12,7 +12,8 @@ logger = logging.getLogger(__name__)
 
 
 FREE_DESKTOP_MODE = "free_desktop"
-SUPPORTED_PROVIDERS = {"openai", "gemini", "anthropic", "none", FREE_DESKTOP_MODE}
+DISABLED_PROVIDERS = {"none", "disabled", "disable", "off", FREE_DESKTOP_MODE}
+SUPPORTED_PROVIDERS = {"openai", "gemini", "anthropic", *DISABLED_PROVIDERS}
 CONFIG_KEYS = (
     "AI_PROVIDER",
     "OPENAI_API_KEY",
@@ -51,7 +52,7 @@ class AIConfig:
 
     @property
     def free_desktop_mode(self) -> bool:
-        return self.provider in {"none", FREE_DESKTOP_MODE}
+        return self.provider in DISABLED_PROVIDERS
 
 
 @dataclass(frozen=True)
@@ -107,7 +108,7 @@ def validate_ai_provider_config() -> AIConfigValidation:
             reason=f"Unsupported AI_PROVIDER '{provider}'.",
         )
 
-    if provider in {"none", FREE_DESKTOP_MODE}:
+    if provider in DISABLED_PROVIDERS:
         logger.info("AI_PROVIDER is disabled; using Free Desktop Mode.")
         return AIConfigValidation(
             ok=True,

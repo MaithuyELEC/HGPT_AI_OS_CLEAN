@@ -8,8 +8,7 @@ from collections import deque
 from dataclasses import dataclass
 from typing import Any
 
-from hgpt_ai_os.ai.config_resolver import is_free_desktop_mode
-from hgpt_ai_os.ai.client import PROVIDER_UNAVAILABLE_MESSAGE
+from hgpt_ai_os.ai.config_resolver import validate_ai_provider_config
 from hgpt_ai_os.ai.client import LucidAI
 from hgpt_ai_os.ai.gemini_client import AIProviderError
 from hgpt_ai_os.content.factory.builder_factory import BuilderFactory
@@ -302,10 +301,20 @@ class ContentGenerator:
 
     def __init__(self, ai: LucidAI | None = None):
         self.template = TemplateEngine()
-        self.free_desktop_mode = ai is None and is_free_desktop_mode()
-        self.ai = ai if ai is not None else None
-        if self.ai is None and not self.free_desktop_mode:
-            self.ai = LucidAI()
+        validation = validate_ai_provider_config()
+        self.free_desktop_mode = validation.config.free_desktop_mode
+        self.ai = None
+        if self.free_desktop_mode:
+            logger.info("Mode: Offline Topic Intelligence")
+        elif ai is not None:
+            self.ai = ai
+        else:
+            try:
+                self.ai = LucidAI()
+            except Exception:
+                logger.exception(
+                    "AI initialization failed; switching to offline topic intelligence."
+                )
         self.prompt_builder = PromptBuilder()
         self.topic_engine = TopicIntelligenceEngine()
         self._last_topic = ""
@@ -329,7 +338,7 @@ class ContentGenerator:
             f"{self._run_variation}:{spec.key}:{topic}:{self._generation_sequence}"
         )
         prompt = self._build_prompt(topic, context, spec, variation)
-        if self.free_desktop_mode:
+        if self.free_desktop_mode or self.ai is None:
             return self._generate_with_builtin(spec, topic, context)
         return self._generate_with_llm(prompt, spec, topic, context, variation)
 
@@ -414,13 +423,20 @@ class ContentGenerator:
             "and a channel-specific structure."
         )
         for attempt in range(2):
-            response = self.ai.generate(system_prompt, user_prompt)
+            try:
+                response = self.ai.generate(system_prompt, user_prompt)
+            except Exception:
+                logger.exception(
+                    "AI generation raised for %s, switching to offline topic intelligence.",
+                    spec.key,
+                )
+                return self._generate_with_builtin(spec, topic, context)
 
             if isinstance(response, AIProviderError):
                 logger.info(
-        "AI unavailable for %s, switching to built-in generator.",
-        spec.key,
-    )
+                    "AI unavailable for %s, switching to offline topic intelligence.",
+                    spec.key,
+                )
                 return self._generate_with_builtin(spec, topic, context)
 
             content = getattr(response, "content", "") or ""
@@ -428,18 +444,18 @@ class ContentGenerator:
 
             if metadata.get("mock"):
                 logger.info(
-                    "Mock provider detected for %s, switching to built-in generator.",
-                     spec.key,
-    )
+                    "Mock provider detected for %s, switching to offline topic intelligence.",
+                    spec.key,
+                )
                 return self._generate_with_builtin(spec, topic, context)
 
             final_text = self._validate_response(content)
             if not final_text:
-               logger.info(
-                   "Empty AI response for %s, switching to built-in generator.",
-        spec.key,
-    )
-               return self._generate_with_builtin(spec, topic, context)
+                logger.info(
+                    "Invalid or empty AI response for %s, switching to offline topic intelligence.",
+                    spec.key,
+                )
+                return self._generate_with_builtin(spec, topic, context)
 
             if self._is_duplicate_shape(final_text) and attempt == 0:
                 retry_variation = self._new_variation(f"{variation}:retry")
@@ -466,6 +482,7 @@ class ContentGenerator:
         topic: str,
         context: str,
     ) -> str:
+        logger.info("Mode: Offline Topic Intelligence")
         logger.info("Using offline topic intelligence engine for %s", spec.key)
         return self.topic_engine.generate(topic, spec.key, context)
 
@@ -489,8 +506,21 @@ class ContentGenerator:
             ]
         )
 
-    def _validate_response(self, content: str) -> str:
-        return content.strip()
+    def _validate_response(self, content: Any) -> str:
+        if not isinstance(content, str):
+            return ""
+        text = content.strip()
+        if not text:
+            return ""
+        if text.startswith(
+            "AI provider encountered an error while generating content."
+        ):
+            return ""
+        if text.startswith("AI provider is unavailable"):
+            return ""
+        if text.startswith("AI provider is not available"):
+            return ""
+        return text
 
     def _is_duplicate_shape(self, content: str) -> bool:
         opening = self._opening_fingerprint(content)
@@ -545,24 +575,6 @@ class ContentGenerator:
     def _new_variation(self, value: str) -> str:
         seed = f"{value}:{time.time_ns()}"
         return hashlib.sha256(seed.encode("utf-8")).hexdigest()[:16]
-
-    def _failure_message(self, error: AIProviderError) -> str:
-        logger.error(
-            "AI generation failed: provider=%s model=%s type=%s retryable=%s message=%s metadata=%s",
-            error.provider,
-            error.model,
-            error.error_type,
-            error.retryable,
-            error.message,
-            error.metadata,
-        )
-        if error.error_type == "configuration_error":
-            return PROVIDER_UNAVAILABLE_MESSAGE
-
-        return (
-            "AI provider encountered an error while generating content. "
-            "Please check network, SSL, and provider configuration, then try again."
-        )
 
     def _custom_spec(self, platform: str) -> GenerationSpec:
         content_type = f"{platform} content".strip()

@@ -156,6 +156,32 @@ class AIConfigResolverTests(unittest.TestCase):
                 self.assertEqual(validation.reason, "Free Desktop Mode")
                 self.assertEqual(validation.missing_key, "OPENAI_API_KEY")
 
+    def test_disabled_provider_enters_free_desktop_mode(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            cwd = root / "cwd"
+            profile = root / "profile"
+            cwd.mkdir()
+            os.chdir(cwd)
+
+            with mock.patch.dict(
+                os.environ,
+                {
+                    "USERPROFILE": str(profile),
+                    "AI_PROVIDER": "disabled",
+                    "OPENAI_API_KEY": "",
+                    "GEMINI_API_KEY": "",
+                    "ANTHROPIC_API_KEY": "",
+                },
+                clear=True,
+            ):
+                validation = validate_ai_provider_config()
+
+            self.assertTrue(validation.ok)
+            self.assertEqual(validation.status, "Free Desktop")
+            self.assertEqual(validation.reason, "Free Desktop Mode")
+            self.assertTrue(validation.config.free_desktop_mode)
+
 
 if __name__ == "__main__":
     unittest.main()
