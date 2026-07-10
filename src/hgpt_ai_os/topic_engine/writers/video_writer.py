@@ -11,12 +11,7 @@ class VideoPromptWriter:
         symptom = inline(playbook.typical_symptoms[:2], reasoning.topic)
         check = inline(playbook.inspection_steps[:2], "kiểm tra hiện trường")
         action = inline(playbook.corrective_actions[:2], "khắc phục theo tiêu chí")
-        if playbook.key == "SAW_POROSITY":
-            subject = "SAW, thuốc hàn, đường hàn rỗ khí, WPS, VT/UT và thợ hàn mặc bảo hộ"
-        elif playbook.key == "POWER_TOOL_BREAKDOWN":
-            subject = "máy mài cầm tay, chổi than, bạc đạn, bụi mài, công tắc, dây nguồn và bảo hộ"
-        else:
-            subject = f"{playbook.process}, {playbook.equipment}"
+        subject = playbook.video_subject or f"{playbook.process}, {playbook.equipment}"
         return "\n".join(
             [
                 f"Tiêu đề: {reasoning.topic}",

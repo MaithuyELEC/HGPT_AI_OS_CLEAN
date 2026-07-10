@@ -20,6 +20,28 @@ class TopicProfile:
     hashtags: tuple[str, ...]
 
 
+@dataclass(frozen=True)
+class ProblemRule:
+    required_terms: tuple[str, ...]
+    problem: str
+
+
+@dataclass(frozen=True)
+class TopicProfileDefinition:
+    aliases: tuple[str, ...]
+    domain: str
+    subject: str
+    problem: str
+    objects: tuple[str, ...]
+    risks: tuple[str, ...]
+    causes: tuple[str, ...]
+    actions: tuple[str, ...]
+    signs: tuple[str, ...]
+    hashtags: tuple[str, ...]
+    problem_rules: tuple[ProblemRule, ...] = ()
+    use_general_builder: bool = False
+
+
 BASE_HASHTAGS = (
     "#MaithuyELEC",
     "#LucidAuto",
@@ -34,212 +56,260 @@ GENERAL_BASE_HASHTAGS = (
     "#KienThucThucTe",
 )
 
-
-class TopicClassifier:
-    def classify(self, topic: str) -> TopicProfile:
-        title = (topic or "").strip() or "Cải tiến xưởng sản xuất kết cấu thép"
-        normalized = self._normalize(title)
-
-        if self._has(normalized, "5s", "kaizen", "lean"):
-            return TopicProfile(
-                topic=title,
-                normalized=normalized,
-                domain="5S / kaizen / lean",
-                subject="5S trong xưởng sản xuất kết cấu thép",
-                problem="khu vực làm việc khó kiểm soát vì vật tư, máy móc, dụng cụ, phôi thép và bán thành phẩm chưa được sắp xếp theo luồng sản xuất",
-                objects=(
+TOPIC_PROFILE_CATALOG: tuple[TopicProfileDefinition, ...] = (
+    TopicProfileDefinition(
+        aliases=("cham soc mai", "hoa mai", "cay mai"),
+        domain="chăm sóc cây mai",
+        subject="chăm sóc mai vàng",
+        problem="cần kiểm soát nước tưới, ánh sáng, đất trồng, dinh dưỡng và sâu bệnh để cây mai khỏe và ra hoa đúng mùa",
+        objects=("cây mai", "đất trồng", "nước tưới", "ánh sáng", "phân bón", "sâu bệnh"),
+        risks=("rụng lá", "thối rễ", "ra hoa sai thời điểm", "cây suy yếu sau Tết"),
+        causes=("tưới quá nhiều", "đất bí thoát nước kém", "bón phân sai giai đoạn", "không kiểm tra sâu bệnh định kỳ"),
+        actions=("đặt cây nơi đủ nắng và thoáng gió", "tưới khi mặt đất se khô", "cắt tỉa cành yếu sau mùa hoa", "bón phân hữu cơ hoặc NPK theo giai đoạn sinh trưởng"),
+        signs=("lá vàng hoặc rụng bất thường", "đất luôn ẩm ướt", "nụ ít hoặc nở không đều"),
+        hashtags=("#ChamSocMai", "#MaiVang", "#CayCanh", "#LamVuon"),
+        use_general_builder=True,
+    ),
+    TopicProfileDefinition(
+        aliases=("nuoi cho", "husky"),
+        domain="nuôi chó Husky",
+        subject="chăm sóc chó Husky",
+        problem="Husky cần vận động đủ, ăn uống phù hợp, chải lông đều và được huấn luyện kỷ luật để khỏe mạnh trong môi trường gia đình",
+        objects=("chó Husky", "khẩu phần ăn", "lịch vận động", "bộ lông", "không gian sống", "lịch tiêm phòng"),
+        risks=("tăng động do thiếu vận động", "rụng lông nhiều", "tăng cân", "phá đồ hoặc hú nhiều"),
+        causes=("đi dạo quá ít", "khẩu phần không cân bằng", "không chải lông định kỳ", "thiếu quy tắc huấn luyện nhất quán"),
+        actions=("cho vận động hằng ngày bằng đi bộ hoặc chạy nhẹ", "chia khẩu phần theo tuổi và cân nặng", "chải lông vài lần mỗi tuần", "dạy lệnh cơ bản bằng thưởng và lịch cố định"),
+        signs=("hú nhiều khi ở một mình", "cào phá đồ", "lông rối hoặc rụng thành mảng", "thở gấp khi trời nóng"),
+        hashtags=("#Husky", "#NuoiCho", "#ChamSocThuCung", "#ChoCanh"),
+        use_general_builder=True,
+    ),
+    TopicProfileDefinition(
+        aliases=("tieng nhat", "nhat n5", "n5"),
+        domain="học tiếng Nhật N5",
+        subject="lộ trình học tiếng Nhật N5",
+        problem="người mới học cần nắm bảng chữ cái, từ vựng cơ bản, ngữ pháp nền tảng, nghe ngắn và luyện đề theo lịch đều đặn",
+        objects=("hiragana", "katakana", "từ vựng N5", "ngữ pháp N5", "nghe hội thoại ngắn", "đề luyện JLPT"),
+        risks=("quên bảng chữ cái", "học lệch ngữ pháp", "nghe không kịp", "mất động lực vì lịch học quá nặng"),
+        causes=("không ôn lặp lại", "học quá nhiều mẫu câu một lúc", "ít nghe phát âm thật", "không có mục tiêu theo tuần"),
+        actions=("học chắc hiragana và katakana trước", "ôn từ vựng bằng thẻ nhớ mỗi ngày", "luyện mẫu câu N5 với ví dụ ngắn", "nghe hội thoại chậm và làm đề nhỏ cuối tuần"),
+        signs=("nhầm mặt chữ", "khó chia thể cơ bản", "đọc câu ngắn nhưng không hiểu ý", "làm đề bị thiếu thời gian"),
+        hashtags=("#TiengNhatN5", "#HocTiengNhat", "#JLPTN5", "#TuVungN5"),
+        use_general_builder=True,
+    ),
+    TopicProfileDefinition(
+        aliases=("5s", "kaizen", "lean"),
+        domain="5S / kaizen / lean",
+        subject="5S trong xưởng sản xuất kết cấu thép",
+        problem="khu vực làm việc khó kiểm soát vì vật tư, máy móc, dụng cụ, phôi thép và bán thành phẩm chưa được sắp xếp theo luồng sản xuất",
+        objects=(
                     "vật tư",
                     "máy móc",
                     "dụng cụ",
                     "phôi thép",
                     "bán thành phẩm",
                     "khu vực cắt, hàn, gá lắp và xuất hàng",
-                ),
-                risks=(
+        ),
+        risks=(
                     "mất an toàn khi di chuyển trong xưởng",
                     "tốn thời gian tìm dụng cụ",
                     "giảm năng suất tổ hàn và tổ lắp",
                     "tăng lãng phí do đặt sai vị trí hoặc làm lại",
-                ),
-                causes=(
+        ),
+        causes=(
                     "chưa có vị trí chuẩn cho dụng cụ và bán thành phẩm",
                     "thiếu nhãn nhận diện theo khu vực",
                     "không duy trì kiểm tra 5S theo ca",
-                ),
-                actions=(
+        ),
+        actions=(
                     "phân luồng vật tư, phôi thép và bán thành phẩm theo từng công đoạn",
                     "kẻ vạch, gắn nhãn, lập shadow board cho dụng cụ dùng chung",
                     "kiểm tra 5S đầu ca và cuối ca bằng checklist ngắn",
                     "đo thời gian tìm dụng cụ và số điểm mất an toàn sau mỗi tuần",
-                ),
-                signs=(
+        ),
+        signs=(
                     "dụng cụ để lẫn trên bàn gá hoặc sàn xưởng",
                     "bán thành phẩm không có thẻ nhận dạng",
                     "lối đi bị chiếm bởi vật tư chờ xử lý",
-                ),
-                hashtags=("#5S", "#Kaizen", "#SanXuatTinhGon", "#XuongKetCauThep"),
-            )
-
-        if self._has(normalized, "han", "welding", "weld", "mig", "saw", "fit up", "fitup", "ro khi", "porosity"):
-            return TopicProfile(
-                topic=title,
-                normalized=normalized,
-                domain="welding / SAW / MIG / fit-up",
-                subject="kiểm soát chất lượng hàn trong kết cấu thép",
-                problem=self._welding_problem(normalized),
-                objects=(
+        ),
+        hashtags=("#5S", "#Kaizen", "#SanXuatTinhGon", "#XuongKetCauThep"),
+    ),
+    TopicProfileDefinition(
+        aliases=("han", "welding", "weld", "mig", "saw", "fit up", "fitup", "ro khi", "porosity"),
+        domain="welding / SAW / MIG / fit-up",
+        subject="kiểm soát chất lượng hàn trong kết cấu thép",
+        problem="chất lượng mối hàn không ổn định khi chuẩn bị mép, fit-up, thông số hàn và kiểm tra QA/QC chưa đi cùng nhau",
+        objects=(
                     "mép hàn",
                     "khe hở fit-up",
                     "dây hàn",
                     "khí bảo vệ",
                     "thông số dòng áp",
                     "mối hàn hoàn thiện",
-                ),
-                risks=(
+        ),
+        risks=(
                     "mối hàn không đạt nghiệm thu",
                     "phải mài sửa hoặc hàn lại",
                     "trễ tiến độ bàn giao cấu kiện",
                     "tăng chi phí vật tư hàn và nhân công",
-                ),
-                causes=(
+        ),
+        causes=(
                     "bề mặt hàn còn ẩm, dầu hoặc gỉ",
                     "lưu lượng khí bảo vệ không ổn định",
                     "thợ hàn đặt tốc độ hoặc góc mỏ chưa phù hợp",
                     "fit-up chưa được kiểm tra trước khi hàn",
-                ),
-                actions=(
+        ),
+        actions=(
                     "làm sạch mép hàn và xác nhận fit-up trước khi mồi hồ quang",
                     "kiểm tra khí bảo vệ, dây hàn và thông số máy MIG/SAW",
                     "ghi nhận vị trí lỗi bằng ảnh và mã cấu kiện",
                     "chỉ cho sửa khi QA/QC đã xác định nguyên nhân gốc",
-                ),
-                signs=(
+        ),
+        signs=(
                     "xuất hiện rỗ khí hoặc lỗ nhỏ trên bề mặt mối hàn",
                     "đường hàn không đều màu hoặc có vùng cháy cạnh",
                     "kết quả VT/MT/UT không ổn định giữa các cấu kiện",
-                ),
-                hashtags=("#Han", "#HanMIG", "#QAQC", "#KetCauThep"),
-            )
+        ),
+        hashtags=("#Han", "#HanMIG", "#QAQC", "#KetCauThep"),
+        problem_rules=(
+            ProblemRule(
+                ("ro khi",),
+                "rỗ khí mối hàn làm giảm độ tin cậy nghiệm thu vì bề mặt, khí bảo vệ và thông số hàn MIG chưa được kiểm soát đồng bộ",
+            ),
+            ProblemRule(
+                ("porosity",),
+                "rỗ khí mối hàn làm giảm độ tin cậy nghiệm thu vì bề mặt, khí bảo vệ và thông số hàn MIG chưa được kiểm soát đồng bộ",
+            ),
+            ProblemRule(
+                ("fit up",),
+                "sai khe hở fit-up khiến đường hàn khó đạt kích thước, dễ phải sửa và ảnh hưởng nghiệm thu cấu kiện",
+            ),
+            ProblemRule(
+                ("fitup",),
+                "sai khe hở fit-up khiến đường hàn khó đạt kích thước, dễ phải sửa và ảnh hưởng nghiệm thu cấu kiện",
+            ),
+        ),
+    ),
+    TopicProfileDefinition(
+        aliases=("son", "phun bi", "ban bi", "blasting", "painting", "coating", "be mat"),
+        domain="painting / blasting / coating",
+        subject="xử lý bề mặt và sơn phủ kết cấu thép",
+        problem="lớp phủ khó đạt độ bám dính và tuổi thọ khi bề mặt thép, độ sạch, độ nhám và điều kiện môi trường chưa được kiểm soát",
+        objects=("bề mặt thép", "máy phun bi", "sơn lót", "DFT", "độ nhám", "độ ẩm môi trường"),
+        risks=("bong tróc sơn", "ăn mòn sớm", "phải xử lý lại bề mặt", "chậm đóng gói và giao hàng"),
+        causes=("bề mặt còn bụi muối hoặc dầu", "độ nhám không đạt", "sơn khi nhiệt độ/độ ẩm không phù hợp"),
+        actions=("kiểm tra độ sạch và độ nhám trước sơn", "đo DFT theo điểm chuẩn", "cách ly cấu kiện chưa đạt để sửa đúng quy trình"),
+        signs=("màu phủ không đều", "DFT lệch vùng", "bề mặt còn bụi hoặc vết dầu"),
+        hashtags=("#SonPhu", "#PhunBi", "#SonKetCau", "#ChongAnMon"),
+    ),
+    TopicProfileDefinition(
+        aliases=("cau truc", "palang", "pa lang", "crane", "hoist"),
+        domain="bảo trì cầu trục",
+        subject="bảo trì cầu trục trong nhà máy",
+        problem="cầu trục phải được kiểm tra phanh, cáp tải, móc cẩu, ray, bánh xe, limit switch và điện điều khiển trước khi vận hành",
+        objects=("phanh", "cáp tải", "móc cẩu", "ray", "bánh xe", "limit switch", "điện điều khiển"),
+        risks=("mất an toàn nâng hạ", "dừng thiết bị đột xuất", "rơi tải", "hư hỏng ray hoặc bánh xe"),
+        causes=("phanh mòn", "cáp tải xước hoặc đứt tao", "limit switch lỗi", "ray lệch hoặc bánh xe mòn"),
+        actions=("cô lập nguồn điện", "kiểm tra phanh/cáp/móc/ray", "thử limit switch và dừng khẩn", "ghi nhật ký bảo trì"),
+        signs=("tiếng kêu khi di chuyển", "cáp tải xù", "móc cẩu biến dạng", "limit switch không dừng đúng"),
+        hashtags=("#BaoTriCauTruc", "#CauTruc", "#ThietBiNang", "#AnToanNangHa"),
+    ),
+    TopicProfileDefinition(
+        aliases=("bao tri", "dong co", "motor", "may nen", "compressor", "qua nhiet", "fault"),
+        domain="maintenance / motor / compressor / machine fault",
+        subject="bảo trì thiết bị xưởng kết cấu thép",
+        problem="thiết bị xưởng phát sinh lỗi khi bảo trì phòng ngừa, đo tải và điều kiện vận hành chưa được kiểm soát theo lịch",
+        objects=("động cơ", "máy nén khí", "ổ bi", "quạt làm mát", "lọc gió", "tủ điện", "dòng tải"),
+        risks=("dừng máy đột xuất", "giảm áp khí cho dây chuyền", "cháy cuộn dây động cơ", "tăng chi phí sửa chữa và chậm tiến độ"),
+        causes=("lọc gió bẩn hoặc thông gió kém", "quá tải kéo dài", "ổ bi thiếu bôi trơn", "điện áp hoặc dòng tải bất thường"),
+        actions=("đo nhiệt độ vỏ động cơ và dòng tải theo ca", "vệ sinh lọc gió, kiểm tra quạt và đường thông gió", "lập lịch bảo trì phòng ngừa cho máy nén khí", "dừng máy khi vượt ngưỡng nhiệt cho phép"),
+        signs=("vỏ động cơ nóng bất thường", "máy nén khí chạy lâu không nghỉ", "áp suất tụt hoặc tiếng ồn ổ bi tăng"),
+        hashtags=("#BaoTri", "#MayNenKhi", "#DongCo", "#BaoTriPhongNgua"),
+        problem_rules=(
+            ProblemRule(
+                ("dong co", "qua nhiet"),
+                "động cơ máy nén khí quá nhiệt làm tăng nguy cơ dừng máy, cháy cuộn dây và thiếu khí nén cho các công đoạn sản xuất",
+            ),
+            ProblemRule(
+                ("dong co", "may nen"),
+                "động cơ máy nén khí quá nhiệt làm tăng nguy cơ dừng máy, cháy cuộn dây và thiếu khí nén cho các công đoạn sản xuất",
+            ),
+        ),
+    ),
+    TopicProfileDefinition(
+        aliases=("qaqc", "qc", "inspection", "kiem tra", "ncr", "checklist", "nghiem thu"),
+        domain="QAQC / inspection / NCR / checklist",
+        subject="QA/QC và nghiệm thu kết cấu thép",
+        problem="hồ sơ và hiện trường dễ lệch nhau nếu tiêu chí nghiệm thu, bằng chứng kiểm tra và trách nhiệm xử lý NCR không rõ",
+        objects=("ITP", "checklist", "bản vẽ", "tiêu chuẩn nghiệm thu", "ảnh bằng chứng", "NCR"),
+        risks=("lọt lỗi sang công đoạn sau", "tranh cãi nghiệm thu", "sửa lỗi tốn chi phí", "ảnh hưởng uy tín nhà máy"),
+        causes=("checklist quá chung", "thiếu ảnh hoặc số đo", "chưa khóa điểm hold point", "phân quyền phê duyệt chưa rõ"),
+        actions=("xác định tiêu chí pass/fail trước khi kiểm tra", "gắn ảnh, số đo và mã cấu kiện vào hồ sơ", "phân loại NCR theo mức độ ảnh hưởng", "đóng vòng lặp hành động khắc phục"),
+        signs=("thiếu chữ ký kiểm tra", "số đo không truy xuất được", "NCR lặp lại ở cùng công đoạn"),
+        hashtags=("#QAQC", "#KiemTra", "#NCR", "#KiemSoatChatLuong"),
+    ),
+    TopicProfileDefinition(
+        aliases=("nuoi ong", "lay mat", "mat ong", "dan ong", "ong chua"),
+        domain="nuôi ong lấy mật",
+        subject="nuôi ong lấy mật",
+        problem="cần giữ đàn ong khỏe, đặt thùng gần nguồn hoa, thu mật đúng thời điểm và bảo quản mật sạch",
+        objects=("thùng ong", "nguồn hoa", "ong chúa", "cầu mật", "dụng cụ quay mật", "chai bảo quản"),
+        risks=("đàn ong yếu", "mật loãng dễ lên men", "ong bỏ tổ", "mật lẫn tạp chất"),
+        causes=("thiếu nguồn hoa", "thu mật quá sớm", "dụng cụ chưa vệ sinh", "không theo dõi sức khỏe đàn"),
+        actions=("kiểm đàn định kỳ", "đặt thùng gần nguồn hoa sạch", "chỉ quay mật khi cầu mật vít nắp tốt", "lọc và bảo quản mật trong chai sạch"),
+        signs=("ong bay yếu", "cầu mật chưa vít nắp", "đàn thiếu phấn hoặc ong chúa đẻ kém"),
+        hashtags=("#NuoiOng", "#MatOng", "#OngChua", "#NguonHoa"),
+        use_general_builder=True,
+    ),
+    TopicProfileDefinition(
+        aliases=("day con", "dien thoai", "tre em", "smartphone"),
+        domain="dạy con dùng điện thoại",
+        subject="dạy con sử dụng điện thoại đúng cách",
+        problem="gia đình cần kiểm soát thời lượng, nội dung, an toàn mạng và giấc ngủ mà không biến điện thoại thành cuộc chiến",
+        objects=("thời lượng sử dụng", "nội dung phù hợp tuổi", "quy tắc gia đình", "an toàn mạng", "giấc ngủ"),
+        risks=("nghiện màn hình", "thiếu ngủ", "xem nội dung không phù hợp", "giảm giao tiếp gia đình"),
+        causes=("không có quy tắc rõ", "cha mẹ ít đồng hành", "dùng điện thoại để giữ trẻ im lặng"),
+        actions=("lập khung giờ dùng", "chọn nội dung cùng con", "dạy an toàn mạng", "đặt điện thoại ngoài phòng ngủ"),
+        signs=("con cáu khi bị thu điện thoại", "dùng sát giờ ngủ", "không biết con đang xem gì"),
+        hashtags=("#DayCon", "#DienThoai", "#AnToanMang", "#GiaDinh"),
+        use_general_builder=True,
+    ),
+    TopicProfileDefinition(
+        aliases=("ai", "cong viec", "5 nam", "tuong lai"),
+        domain="AI và tương lai công việc",
+        subject="chuẩn bị kỹ năng làm việc với AI",
+        problem="người đi làm cần biết nhiệm vụ nào sẽ được AI hỗ trợ, kỹ năng nào phải học và cách bảo vệ dữ liệu",
+        objects=("kỹ năng AI", "tự động hóa việc lặp lại", "dữ liệu công việc", "công cụ mới", "đo hiệu quả"),
+        risks=("tụt kỹ năng", "lộ dữ liệu", "phụ thuộc kết quả chưa kiểm chứng", "mất lợi thế nghề nghiệp"),
+        causes=("không thử công cụ mới", "không đo hiệu quả", "sao chép đầu ra AI", "thiếu tư duy kiểm chứng"),
+        actions=("chọn việc lặp lại để thử AI", "học công cụ mới mỗi tuần", "ẩn dữ liệu nhạy cảm", "đo thời gian tiết kiệm"),
+        signs=("công việc lặp lại nhiều", "báo cáo mất thời gian", "đội nhóm chưa có quy tắc dùng AI"),
+        hashtags=("#AI", "#CongViec", "#KyNangAI", "#TuDongHoa"),
+        use_general_builder=True,
+    ),
+    TopicProfileDefinition(
+        aliases=("quan ca phe", "ca phe", "cafe", "mo quan", "coffee"),
+        domain="mở quán cà phê",
+        subject="mở và vận hành quán cà phê nhỏ",
+        problem="cần chọn khách hàng mục tiêu, mặt bằng, menu, vốn, nhân sự, marketing và điểm hòa vốn trước khi mở quán",
+        objects=("khách hàng mục tiêu", "mặt bằng", "menu", "vốn đầu tư", "nhân sự", "điểm hòa vốn"),
+        risks=("thuê mặt bằng quá sức", "menu khó vận hành", "thiếu vốn dự phòng", "không kéo được khách quay lại"),
+        causes=("khảo sát thị trường ít", "không tính giá vốn", "chưa có SOP vận hành", "marketing khai trương mờ nhạt"),
+        actions=("khảo sát khách", "tính vốn và điểm hòa vốn", "test menu", "chuẩn hóa vận hành", "lập kế hoạch marketing"),
+        signs=("không biết bán cho ai", "chi phí cố định cao", "menu quá rộng", "không đo doanh thu mỗi ngày"),
+        hashtags=("#MoQuanCaPhe", "#KinhDoanhCafe", "#MenuCafe", "#DiemHoaVon"),
+        use_general_builder=True,
+    ),
+)
 
-        if self._has(normalized, "son", "phun bi", "ban bi", "blasting", "painting", "coating", "be mat"):
-            return TopicProfile(
-                topic=title,
-                normalized=normalized,
-                domain="painting / blasting / coating",
-                subject="xử lý bề mặt và sơn phủ kết cấu thép",
-                problem="lớp phủ khó đạt độ bám dính và tuổi thọ khi bề mặt thép, độ sạch, độ nhám và điều kiện môi trường chưa được kiểm soát",
-                objects=("bề mặt thép", "máy phun bi", "sơn lót", "DFT", "độ nhám", "độ ẩm môi trường"),
-                risks=("bong tróc sơn", "ăn mòn sớm", "phải xử lý lại bề mặt", "chậm đóng gói và giao hàng"),
-                causes=("bề mặt còn bụi muối hoặc dầu", "độ nhám không đạt", "sơn khi nhiệt độ/độ ẩm không phù hợp"),
-                actions=("kiểm tra độ sạch và độ nhám trước sơn", "đo DFT theo điểm chuẩn", "cách ly cấu kiện chưa đạt để sửa đúng quy trình"),
-                signs=("màu phủ không đều", "DFT lệch vùng", "bề mặt còn bụi hoặc vết dầu"),
-                hashtags=("#SonPhu", "#PhunBi", "#SonKetCau", "#ChongAnMon"),
-            )
 
-        if self._has(normalized, "cau truc", "palang", "pa lang", "crane", "hoist"):
-            return TopicProfile(
-                topic=title,
-                normalized=normalized,
-                domain="bảo trì cầu trục",
-                subject="bảo trì cầu trục trong nhà máy",
-                problem="cầu trục phải được kiểm tra phanh, cáp tải, móc cẩu, ray, bánh xe, limit switch và điện điều khiển trước khi vận hành",
-                objects=("phanh", "cáp tải", "móc cẩu", "ray", "bánh xe", "limit switch", "điện điều khiển"),
-                risks=("mất an toàn nâng hạ", "dừng thiết bị đột xuất", "rơi tải", "hư hỏng ray hoặc bánh xe"),
-                causes=("phanh mòn", "cáp tải xước hoặc đứt tao", "limit switch lỗi", "ray lệch hoặc bánh xe mòn"),
-                actions=("cô lập nguồn điện", "kiểm tra phanh/cáp/móc/ray", "thử limit switch và dừng khẩn", "ghi nhật ký bảo trì"),
-                signs=("tiếng kêu khi di chuyển", "cáp tải xù", "móc cẩu biến dạng", "limit switch không dừng đúng"),
-                hashtags=("#BaoTriCauTruc", "#CauTruc", "#ThietBiNang", "#AnToanNangHa"),
-            )
+class TopicClassifier:
+    def classify(self, topic: str) -> TopicProfile:
+        title = (topic or "").strip() or "Cải tiến xưởng sản xuất kết cấu thép"
+        normalized = self._normalize(title)
 
-        if self._has(normalized, "bao tri", "dong co", "motor", "may nen", "compressor", "qua nhiet", "fault"):
-            return TopicProfile(
-                topic=title,
-                normalized=normalized,
-                domain="maintenance / motor / compressor / machine fault",
-                subject="bảo trì thiết bị xưởng kết cấu thép",
-                problem=self._maintenance_problem(normalized),
-                objects=("động cơ", "máy nén khí", "ổ bi", "quạt làm mát", "lọc gió", "tủ điện", "dòng tải"),
-                risks=("dừng máy đột xuất", "giảm áp khí cho dây chuyền", "cháy cuộn dây động cơ", "tăng chi phí sửa chữa và chậm tiến độ"),
-                causes=("lọc gió bẩn hoặc thông gió kém", "quá tải kéo dài", "ổ bi thiếu bôi trơn", "điện áp hoặc dòng tải bất thường"),
-                actions=("đo nhiệt độ vỏ động cơ và dòng tải theo ca", "vệ sinh lọc gió, kiểm tra quạt và đường thông gió", "lập lịch bảo trì phòng ngừa cho máy nén khí", "dừng máy khi vượt ngưỡng nhiệt cho phép"),
-                signs=("vỏ động cơ nóng bất thường", "máy nén khí chạy lâu không nghỉ", "áp suất tụt hoặc tiếng ồn ổ bi tăng"),
-                hashtags=("#BaoTri", "#MayNenKhi", "#DongCo", "#BaoTriPhongNgua"),
-            )
-
-        if self._has(normalized, "qaqc", "qc", "inspection", "kiem tra", "ncr", "checklist", "nghiem thu"):
-            return TopicProfile(
-                topic=title,
-                normalized=normalized,
-                domain="QAQC / inspection / NCR / checklist",
-                subject="QA/QC và nghiệm thu kết cấu thép",
-                problem="hồ sơ và hiện trường dễ lệch nhau nếu tiêu chí nghiệm thu, bằng chứng kiểm tra và trách nhiệm xử lý NCR không rõ",
-                objects=("ITP", "checklist", "bản vẽ", "tiêu chuẩn nghiệm thu", "ảnh bằng chứng", "NCR"),
-                risks=("lọt lỗi sang công đoạn sau", "tranh cãi nghiệm thu", "sửa lỗi tốn chi phí", "ảnh hưởng uy tín nhà máy"),
-                causes=("checklist quá chung", "thiếu ảnh hoặc số đo", "chưa khóa điểm hold point", "phân quyền phê duyệt chưa rõ"),
-                actions=("xác định tiêu chí pass/fail trước khi kiểm tra", "gắn ảnh, số đo và mã cấu kiện vào hồ sơ", "phân loại NCR theo mức độ ảnh hưởng", "đóng vòng lặp hành động khắc phục"),
-                signs=("thiếu chữ ký kiểm tra", "số đo không truy xuất được", "NCR lặp lại ở cùng công đoạn"),
-                hashtags=("#QAQC", "#KiemTra", "#NCR", "#KiemSoatChatLuong"),
-            )
-
-        if self._has(normalized, "nuoi ong", "lay mat", "mat ong", "dan ong", "ong chua"):
-            return TopicProfile(
-                topic=title,
-                normalized=normalized,
-                domain="nuôi ong lấy mật",
-                subject="nuôi ong lấy mật",
-                problem="cần giữ đàn ong khỏe, đặt thùng gần nguồn hoa, thu mật đúng thời điểm và bảo quản mật sạch",
-                objects=("thùng ong", "nguồn hoa", "ong chúa", "cầu mật", "dụng cụ quay mật", "chai bảo quản"),
-                risks=("đàn ong yếu", "mật loãng dễ lên men", "ong bỏ tổ", "mật lẫn tạp chất"),
-                causes=("thiếu nguồn hoa", "thu mật quá sớm", "dụng cụ chưa vệ sinh", "không theo dõi sức khỏe đàn"),
-                actions=("kiểm đàn định kỳ", "đặt thùng gần nguồn hoa sạch", "chỉ quay mật khi cầu mật vít nắp tốt", "lọc và bảo quản mật trong chai sạch"),
-                signs=("ong bay yếu", "cầu mật chưa vít nắp", "đàn thiếu phấn hoặc ong chúa đẻ kém"),
-                hashtags=("#NuoiOng", "#MatOng", "#OngChua", "#NguonHoa"),
-            )
-
-        if self._has(normalized, "day con", "dien thoai", "tre em", "smartphone"):
-            return TopicProfile(
-                topic=title,
-                normalized=normalized,
-                domain="dạy con dùng điện thoại",
-                subject="dạy con sử dụng điện thoại đúng cách",
-                problem="gia đình cần kiểm soát thời lượng, nội dung, an toàn mạng và giấc ngủ mà không biến điện thoại thành cuộc chiến",
-                objects=("thời lượng sử dụng", "nội dung phù hợp tuổi", "quy tắc gia đình", "an toàn mạng", "giấc ngủ"),
-                risks=("nghiện màn hình", "thiếu ngủ", "xem nội dung không phù hợp", "giảm giao tiếp gia đình"),
-                causes=("không có quy tắc rõ", "cha mẹ ít đồng hành", "dùng điện thoại để giữ trẻ im lặng"),
-                actions=("lập khung giờ dùng", "chọn nội dung cùng con", "dạy an toàn mạng", "đặt điện thoại ngoài phòng ngủ"),
-                signs=("con cáu khi bị thu điện thoại", "dùng sát giờ ngủ", "không biết con đang xem gì"),
-                hashtags=("#DayCon", "#DienThoai", "#AnToanMang", "#GiaDinh"),
-            )
-
-        if " ai " in f" {normalized} " or self._has(normalized, "cong viec", "5 nam", "tuong lai"):
-            return TopicProfile(
-                topic=title,
-                normalized=normalized,
-                domain="AI và tương lai công việc",
-                subject="chuẩn bị kỹ năng làm việc với AI",
-                problem="người đi làm cần biết nhiệm vụ nào sẽ được AI hỗ trợ, kỹ năng nào phải học và cách bảo vệ dữ liệu",
-                objects=("kỹ năng AI", "tự động hóa việc lặp lại", "dữ liệu công việc", "công cụ mới", "đo hiệu quả"),
-                risks=("tụt kỹ năng", "lộ dữ liệu", "phụ thuộc kết quả chưa kiểm chứng", "mất lợi thế nghề nghiệp"),
-                causes=("không thử công cụ mới", "không đo hiệu quả", "sao chép đầu ra AI", "thiếu tư duy kiểm chứng"),
-                actions=("chọn việc lặp lại để thử AI", "học công cụ mới mỗi tuần", "ẩn dữ liệu nhạy cảm", "đo thời gian tiết kiệm"),
-                signs=("công việc lặp lại nhiều", "báo cáo mất thời gian", "đội nhóm chưa có quy tắc dùng AI"),
-                hashtags=("#AI", "#CongViec", "#KyNangAI", "#TuDongHoa"),
-            )
-
-        if self._has(normalized, "quan ca phe", "ca phe", "cafe", "mo quan", "coffee"):
-            return TopicProfile(
-                topic=title,
-                normalized=normalized,
-                domain="mở quán cà phê",
-                subject="mở và vận hành quán cà phê nhỏ",
-                problem="cần chọn khách hàng mục tiêu, mặt bằng, menu, vốn, nhân sự, marketing và điểm hòa vốn trước khi mở quán",
-                objects=("khách hàng mục tiêu", "mặt bằng", "menu", "vốn đầu tư", "nhân sự", "điểm hòa vốn"),
-                risks=("thuê mặt bằng quá sức", "menu khó vận hành", "thiếu vốn dự phòng", "không kéo được khách quay lại"),
-                causes=("khảo sát thị trường ít", "không tính giá vốn", "chưa có SOP vận hành", "marketing khai trương mờ nhạt"),
-                actions=("khảo sát khách", "tính vốn và điểm hòa vốn", "test menu", "chuẩn hóa vận hành", "lập kế hoạch marketing"),
-                signs=("không biết bán cho ai", "chi phí cố định cao", "menu quá rộng", "không đo doanh thu mỗi ngày"),
-                hashtags=("#MoQuanCaPhe", "#KinhDoanhCafe", "#MenuCafe", "#DiemHoaVon"),
-            )
+        definition = self.match_definition(title)
+        if definition is not None:
+            return self._profile_from_definition(title, normalized, definition)
 
         return TopicProfile(
             topic=title,
@@ -255,26 +325,68 @@ class TopicClassifier:
             hashtags=("#KetCauThep", "#SanXuat", "#CaiTienQuyTrinh", "#NhaMaySo"),
         )
 
-    def _has(self, normalized: str, *needles: str) -> bool:
-        return any(needle in normalized for needle in needles)
+    def match_definition(self, topic: str) -> TopicProfileDefinition | None:
+        normalized = self._normalize(topic)
+        for definition in TOPIC_PROFILE_CATALOG:
+            if self._matches_any(normalized, definition.aliases):
+                return definition
+        return None
+
+    def matches_known_profile(self, topic: str) -> bool:
+        return self.match_definition(topic) is not None
+
+    def uses_general_builder(self, topic: str) -> bool:
+        definition = self.match_definition(topic)
+        return bool(definition and definition.use_general_builder)
+
+    def _profile_from_definition(
+        self,
+        title: str,
+        normalized: str,
+        definition: TopicProfileDefinition,
+    ) -> TopicProfile:
+        return TopicProfile(
+            topic=title,
+            normalized=normalized,
+            domain=definition.domain,
+            subject=definition.subject,
+            problem=self._select_problem(normalized, definition),
+            objects=definition.objects,
+            risks=definition.risks,
+            causes=definition.causes,
+            actions=definition.actions,
+            signs=definition.signs,
+            hashtags=definition.hashtags,
+        )
+
+    def _matches_any(self, normalized: str, aliases: tuple[str, ...]) -> bool:
+        return any(self._contains_term(normalized, alias) for alias in aliases)
+
+    def _select_problem(
+        self,
+        normalized: str,
+        definition: TopicProfileDefinition,
+    ) -> str:
+        for rule in definition.problem_rules:
+            if all(
+                self._contains_term(normalized, term)
+                for term in rule.required_terms
+            ):
+                return rule.problem
+        return definition.problem
+
+    def _contains_term(self, normalized: str, term: str) -> bool:
+        normalized_term = self._normalize(term)
+        if not normalized_term:
+            return False
+        pattern = r"(?<![a-z0-9])" + re.escape(normalized_term) + r"(?![a-z0-9])"
+        return re.search(pattern, normalized) is not None
 
     def _normalize(self, text: str) -> str:
         decomposed = unicodedata.normalize("NFD", text.lower())
         no_marks = "".join(ch for ch in decomposed if unicodedata.category(ch) != "Mn")
         no_marks = no_marks.replace("đ", "d")
-        return re.sub(r"\s+", " ", no_marks).strip()
-
-    def _welding_problem(self, normalized: str) -> str:
-        if "ro khi" in normalized or "porosity" in normalized:
-            return "rỗ khí mối hàn làm giảm độ tin cậy nghiệm thu vì bề mặt, khí bảo vệ và thông số hàn MIG chưa được kiểm soát đồng bộ"
-        if "fit up" in normalized or "fitup" in normalized:
-            return "sai khe hở fit-up khiến đường hàn khó đạt kích thước, dễ phải sửa và ảnh hưởng nghiệm thu cấu kiện"
-        return "chất lượng mối hàn không ổn định khi chuẩn bị mép, fit-up, thông số hàn và kiểm tra QA/QC chưa đi cùng nhau"
-
-    def _maintenance_problem(self, normalized: str) -> str:
-        if "dong co" in normalized and ("qua nhiet" in normalized or "may nen" in normalized):
-            return "động cơ máy nén khí quá nhiệt làm tăng nguy cơ dừng máy, cháy cuộn dây và thiếu khí nén cho các công đoạn sản xuất"
-        return "thiết bị xưởng phát sinh lỗi khi bảo trì phòng ngừa, đo tải và điều kiện vận hành chưa được kiểm soát theo lịch"
+        return re.sub(r"[^a-z0-9]+", " ", no_marks).strip()
 
 
 class TopicAwareBuiltInBuilder:
@@ -406,17 +518,22 @@ class TopicAwareBuiltInBuilder:
         return "\n".join(self._hashtags(p))
 
     def _build_approval(self, p: TopicProfile) -> str:
-        checks = (
-            f"[ ] Topic relevance: nội dung nêu rõ {p.topic} và không kéo sang lỗi không liên quan.",
-            f"[ ] Quality: có tiêu chí kiểm soát cho {self._join(p.objects[:3])}.",
-            f"[ ] Safety: nhận diện rủi ro chính như {p.risks[0]}.",
-            f"[ ] Productivity: có hành động giảm lãng phí hoặc thời gian chờ: {p.actions[0]}.",
-            f"[ ] Cost: chỉ ra cách giảm sửa lỗi, dừng máy hoặc làm lại theo đúng chủ đề.",
-            f"[ ] Schedule: có bước giúp tránh trễ tiến độ do {p.problem}.",
-            f"[ ] Standardization: chuyển bài học thành SOP, checklist hoặc điểm kiểm tra theo ca.",
-            f"[ ] Scalability: có thể nhân rộng sang tổ/line/khu vực khác trong xưởng kết cấu thép.",
+        scale_target = (
+            "có thể nhân rộng sang tổ/line/khu vực khác trong xưởng kết cấu thép"
+            if self._is_factory_profile(p)
+            else "có thể lặp lại thành thói quen, lịch theo dõi hoặc checklist cá nhân"
         )
-        return "\n".join([f"Approval checklist for: {p.topic}", "", *checks])
+        checks = (
+            f"[ ] Đúng chủ đề: nội dung nêu rõ {p.topic} và không kéo sang lỗi không liên quan.",
+            f"[ ] Chất lượng: có tiêu chí kiểm soát cho {self._join(p.objects[:3])}.",
+            f"[ ] An toàn: nhận diện rủi ro chính như {p.risks[0]}.",
+            f"[ ] Hiệu quả: có hành động giảm lãng phí hoặc thời gian chờ: {p.actions[0]}.",
+            f"[ ] Chi phí: chỉ ra cách giảm sửa lỗi, dừng máy hoặc làm lại theo đúng chủ đề.",
+            f"[ ] Thời gian: có bước giúp tránh chậm trễ do {p.problem}.",
+            f"[ ] Chuẩn hóa: chuyển bài học thành SOP, checklist hoặc điểm kiểm tra theo ca.",
+            f"[ ] Nhân rộng: {scale_target}.",
+        )
+        return "\n".join([f"Checklist duyệt nội dung: {p.topic}", "", *checks])
 
     def _hashtags(self, p: TopicProfile) -> list[str]:
         topic_tags = [self._hashtag_from_word(word) for word in self._topic_words(p.topic)]
@@ -436,15 +553,16 @@ class TopicAwareBuiltInBuilder:
         )
 
     def _keywords(self, p: TopicProfile) -> tuple[str, ...]:
-        return (
+        keywords = (
             p.topic,
             p.subject,
             p.domain,
             *p.objects[:4],
             *p.risks[:2],
-            "xưởng kết cấu thép",
-            "checklist cải tiến",
         )
+        if self._is_factory_profile(p):
+            return (*keywords, "xưởng kết cấu thép", "checklist cải tiến")
+        return (*keywords, "hướng dẫn thực tế", "checklist theo dõi")
 
     def _visual_detail_label(self, p: TopicProfile) -> str:
         if p.domain.startswith("5S"):

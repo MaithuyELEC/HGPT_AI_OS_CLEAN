@@ -4,6 +4,7 @@ import hashlib
 import logging
 import re
 import time
+import unicodedata
 from collections import deque
 from dataclasses import dataclass
 from typing import Any
@@ -12,6 +13,7 @@ from hgpt_ai_os.ai.config_resolver import validate_ai_provider_config
 from hgpt_ai_os.ai.client import LucidAI
 from hgpt_ai_os.ai.gemini_client import AIProviderError
 from hgpt_ai_os.content.factory.builder_factory import BuilderFactory
+from hgpt_ai_os.content.factory.topic_aware import TopicClassifier
 from hgpt_ai_os.content.template_engine import TemplateEngine
 from hgpt_ai_os.topic_engine import TopicIntelligenceEngine
 
@@ -212,7 +214,6 @@ _BROKEN_VIETNAMESE_PATTERNS = (
     "b ng ch ng",
 )
 
-
 class PromptBuilder:
     def build(
         self,
@@ -360,6 +361,7 @@ class ContentGenerator:
                 )
         self.prompt_builder = PromptBuilder()
         self.topic_engine = TopicIntelligenceEngine()
+        self.topic_classifier = TopicClassifier()
         self._last_topic = ""
         self._last_context = ""
         self._generation_sequence = 0
@@ -400,6 +402,9 @@ class ContentGenerator:
     def generate_hashtags(self, topic="", context=""):
         topic = topic or self._last_topic
         context = context or self._last_context
+
+        if topic and self._uses_general_builder(topic):
+            return BuilderFactory.create("hashtags").build(topic, context)
 
         if topic:
             logger.info("Free Desktop Mode using built-in generator for hashtags")
@@ -526,7 +531,25 @@ class ContentGenerator:
     ) -> str:
         logger.info("Mode: Offline Topic Intelligence")
         logger.info("Using offline topic intelligence engine for %s", spec.key)
+        if self._uses_general_builder(topic):
+            builder_key = {
+                "checklist": "approval",
+                "image_prompt": "image",
+                "video_prompt": "video",
+            }.get(spec.key, spec.key)
+            return BuilderFactory.create(builder_key).build(topic, context)
         return self.topic_engine.generate(topic, spec.key, context)
+
+    def _uses_general_builder(self, topic: str) -> bool:
+        return self.topic_classifier.uses_general_builder(topic)
+
+    def _plain(self, text: str) -> str:
+        decomposed = unicodedata.normalize("NFD", text.lower())
+        value = "".join(
+            char for char in decomposed if unicodedata.category(char) != "Mn"
+        )
+        value = value.replace("đ", "d")
+        return re.sub(r"\s+", " ", value).strip()
 
     def _builtin_fallback(
         self,

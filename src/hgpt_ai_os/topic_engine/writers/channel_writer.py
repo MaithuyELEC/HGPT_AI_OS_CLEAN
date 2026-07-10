@@ -27,6 +27,9 @@ class DomainPlaybook:
     production_impact: str
     checklist_items: tuple[str, ...]
     hashtags: tuple[str, ...]
+    match_groups: tuple[tuple[str, ...], ...] = ()
+    extra_corrective_actions: tuple[str, ...] = ()
+    video_subject: str = ""
 
 
 def _normalize(value: str) -> str:
@@ -106,6 +109,9 @@ PLAYBOOKS: tuple[DomainPlaybook, ...] = (
         production_impact="Gây dừng kiểm tra, tăng giờ mài sửa, tốn thuốc hàn/dây hàn và chậm bàn giao sang công đoạn sơn hoặc lắp dựng.",
         checklist_items=("sấy thuốc hàn", "kiểm tra dây hàn", "làm sạch mép hàn", "kiểm tra dầu/rỉ/ẩm", "kiểm tra dòng hàn, điện áp và tốc độ chạy", "kiểm tra chiều sâu lớp thuốc", "kiểm tra stickout", "VT/UT", "sửa chữa theo WPS"),
         hashtags=("#SAW", "#RoKhiMoiHan", "#WPS", "#VTUT", "#KetCauThep"),
+        match_groups=(("saw", "ro khi"), ("saw", "porosity"), ("saw", "bo khi")),
+        extra_corrective_actions=("- sấy thuốc hàn và sửa hàn theo WPS đã phê duyệt",),
+        video_subject="SAW, thuốc hàn, đường hàn rỗ khí, WPS, VT/UT và thợ hàn mặc bảo hộ",
     ),
     DomainPlaybook(
         key="POWER_TOOL_BREAKDOWN",
@@ -127,6 +133,9 @@ PLAYBOOKS: tuple[DomainPlaybook, ...] = (
         production_impact="Làm gián đoạn mài sửa, tăng thời gian chờ dụng cụ, tăng chi phí thay máy và tạo áp lực tiến độ cho tổ hoàn thiện.",
         checklist_items=("chổi than", "bạc đạn", "rotor/stator", "công tắc", "dây nguồn", "bụi mài", "quá tải", "rung/ồn/nhiệt", "lịch bảo trì", "hướng dẫn vận hành"),
         hashtags=("#MayMai", "#BaoTri", "#DungCuDien", "#TPM", "#AnToanLaoDong"),
+        match_groups=(("may mai", "hong"), ("angle grinder", "breakdown"), ("may mai", "lien tuc")),
+        extra_corrective_actions=("- kiểm tra công tắc/dây nguồn, ghi rung/ồn/nhiệt và huấn luyện công nhân dùng máy mài cầm tay đúng tải",),
+        video_subject="máy mài cầm tay, chổi than, bạc đạn, bụi mài, công tắc, dây nguồn và bảo hộ",
     ),
     DomainPlaybook(
         key="LASER_5S",
@@ -145,6 +154,7 @@ PLAYBOOKS: tuple[DomainPlaybook, ...] = (
         production_impact="Giảm tốc độ cấp phôi, tăng thời gian tìm kiếm và làm chậm công đoạn gá lắp sau cắt.",
         checklist_items=("phân làn vật tư", "nhãn bán thành phẩm", "thùng phế", "bảng vị trí dụng cụ", "ảnh chuẩn 5S", "chủ khu vực", "vệ sinh bàn cắt", "kiểm tra đầu cắt/thấu kính"),
         hashtags=("#5S", "#CatLaser", "#SanXuatTinhGon", "#Kaizen"),
+        match_groups=(("laser", "5s"),),
     ),
     DomainPlaybook(
         key="PAINT_PEELING",
@@ -163,6 +173,7 @@ PLAYBOOKS: tuple[DomainPlaybook, ...] = (
         production_impact="Tăng thời gian reblast, repaint, kiểm tra lại và chiếm mặt bằng hoàn thiện.",
         checklist_items=("độ sạch bề mặt", "độ nhám", "điểm sương", "độ ẩm", "DFT", "độ bám dính", "cắt ô/kéo bật", "vát mép vùng sửa"),
         hashtags=("#SonPhu", "#DoBamDinh", "#DFT", "#ChuanBiBeMat"),
+        match_groups=(("son", "bong troc"), ("paint", "peeling"), ("coating", "adhesion")),
     ),
     DomainPlaybook(
         key="MOTOR_VIBRATION",
@@ -291,14 +302,11 @@ def match_playbook(topic: str, reasoning: ReasoningObject | None = None) -> Doma
                 score += 12 + len(normalized_alias.split())
             else:
                 score += sum(1 for token in normalized_alias.split() if token in haystack)
-        if playbook.key == "SAW_POROSITY" and "saw" in haystack and any(term in haystack for term in ("ro khi", "porosity", "bọ khí")):
-            score += 20
-        if playbook.key == "POWER_TOOL_BREAKDOWN" and any(term in haystack for term in ("may mai", "angle grinder")) and any(term in haystack for term in ("hong", "breakdown", "lien tuc")):
-            score += 20
-        if playbook.key == "LASER_5S" and "laser" in haystack and "5s" in haystack:
-            score += 20
-        if playbook.key == "PAINT_PEELING" and any(term in haystack for term in ("son", "paint", "coating")) and any(term in haystack for term in ("bong troc", "peeling", "adhesion")):
-            score += 20
+        score += 20 * sum(
+            1
+            for group in playbook.match_groups
+            if all(_contains_term(haystack, term) for term in group)
+        )
         if best is None or score > best[0]:
             best = (score, playbook)
     if best is None or best[0] <= 0:
@@ -308,6 +316,14 @@ def match_playbook(topic: str, reasoning: ReasoningObject | None = None) -> Doma
 
 def playbook_for_reasoning(reasoning: ReasoningObject) -> DomainPlaybook:
     return match_playbook(reasoning.topic, reasoning) or _fallback_playbook(reasoning)
+
+
+def _contains_term(haystack: str, term: str) -> bool:
+    normalized_term = _normalize(term)
+    if not normalized_term:
+        return False
+    pattern = r"(?<![a-z0-9])" + re.escape(normalized_term) + r"(?![a-z0-9])"
+    return re.search(pattern, haystack) is not None
 
 
 def bullets(values: tuple[str, ...], limit: int = 4) -> list[str]:
