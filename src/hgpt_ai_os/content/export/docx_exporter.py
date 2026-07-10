@@ -8,15 +8,55 @@ class DocxExporter:
     _HEADING_RE = re.compile(r"^(#{1,3})\s+(.+)$")
     _BULLET_RE = re.compile(r"^\s*[-*+]\s+(.+)$")
     _BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
+    _FORBIDDEN_ENGLISH_RE = re.compile(
+        r"\b("
+        r"Timeline|Scene|Camera|Voice|Caption|Transition|Negative prompt|"
+        r"Duration|Aspect ratio|Lens|Lighting|Composition|Mood|Texture|"
+        r"Industrial environment|Engineering checklist|Inspection item|"
+        r"Acceptance criteria|Responsible person|Frequency|Root Cause|"
+        r"Problem|Evidence|Manager's job|Quality release|Schedule|"
+        r"Hold the product|The topic belongs to"
+        r")\b",
+        re.IGNORECASE,
+    )
+    _BROKEN_VIETNAMESE_RE = re.compile(
+        r"\b("
+        r"[Đđ]\s+ng\s+c|"
+        r"ki\s+m\s+tra|"
+        r"b\s+ng\s+ch\s+ng"
+        r")\b",
+        re.IGNORECASE,
+    )
 
     def save(self, path: Path, title: str, content: str):
 
         path.parent.mkdir(parents=True, exist_ok=True)
+        self.validate_content(str(content))
 
         doc = Document()
+        self._set_vietnamese_font(doc)
         doc.add_heading(title, level=1)
         self._add_markdown_content(doc, str(content))
         doc.save(path)
+
+    def validate_content(self, content: str) -> None:
+        if content.encode("utf-8").decode("utf-8") != content:
+            raise ValueError("DOCX export blocked: invalid UTF-8 content.")
+        forbidden = self._FORBIDDEN_ENGLISH_RE.search(content)
+        if forbidden:
+            raise ValueError(
+                f"DOCX export blocked: forbidden English text '{forbidden.group(0)}'."
+            )
+        broken = self._BROKEN_VIETNAMESE_RE.search(content)
+        if broken:
+            raise ValueError(
+                f"DOCX export blocked: broken Vietnamese text '{broken.group(0)}'."
+            )
+
+    def _set_vietnamese_font(self, doc: Document) -> None:
+        for style_name in ("Normal", "Heading 1", "Heading 2", "Heading 3"):
+            style = doc.styles[style_name]
+            style.font.name = "Arial"
 
     def _add_markdown_content(self, doc: Document, content: str):
         for raw_line in content.splitlines():

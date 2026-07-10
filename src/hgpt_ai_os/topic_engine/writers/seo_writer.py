@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from hgpt_ai_os.topic_engine.content_planner import ContentPlan
 from hgpt_ai_os.topic_engine.reasoning_engine import ReasoningObject
-from hgpt_ai_os.topic_engine.writers.channel_writer import bullets, inline, pick, subject
+from hgpt_ai_os.topic_engine.writers.channel_writer import pick, playbook_for_reasoning
 
 
 _TITLE_ANGLES = (
@@ -14,44 +14,49 @@ _TITLE_ANGLES = (
 
 class SeoWriter:
     def write(self, reasoning: ReasoningObject, plan: ContentPlan) -> str:
-        p = reasoning.problem
-        keyword = inline(reasoning.parsed.keywords[:4], reasoning.topic)
+        playbook = playbook_for_reasoning(reasoning)
         title = pick(reasoning, _TITLE_ANGLES, "seo-title").format(topic=reasoning.topic)
-        topic_subject = subject(reasoning)
 
         return "\n".join(
             [
-                f"SEO Title: {title}",
-                f"Meta Description: Phân tích kỹ thuật về {reasoning.topic}: triệu chứng, cơ chế lỗi, nguyên nhân gốc, kiểm tra xác nhận, giải pháp và bảo trì phòng ngừa.",
-                f"Search Intent: Người đọc muốn hiểu {keyword}, xác định nguyên nhân thật và có checklist hành động tại xưởng.",
+                title,
                 "",
-                "Introduction",
-                f"{reasoning.topic} cần được xem như một bài toán kiểm soát sản xuất, không chỉ là một lỗi riêng lẻ. Với {topic_subject}, chất lượng đầu ra phụ thuộc vào việc đọc đúng triệu chứng, truy nguyên cơ chế phát sinh và ghi lại bằng chứng nghiệm thu trước khi bàn giao.",
+                f"{reasoning.topic} là một vấn đề kỹ thuật thuộc nhóm {playbook.domain}. Để xử lý đúng, đội sản xuất cần hiểu cơ chế phát sinh, kiểm tra bằng chứng tại hiện trường và sửa theo tiêu chí đã được phê duyệt.",
                 "",
-                "Technical Analysis",
-                f"Triệu chứng chính: {inline(p.symptoms, reasoning.topic)}.",
-                "Cơ chế có khả năng xảy ra:",
-                *bullets(reasoning.possible_mechanisms, 5),
-                f"Bằng chứng cần ưu tiên: {inline(reasoning.evidence[:4], 'ảnh hiện trường, số đo, nhật ký thông số và xác nhận QA/QC')}.",
+                "Triệu chứng thường gặp",
+                *[f"- {item}" for item in playbook.typical_symptoms],
                 "",
-                "Root Cause",
-                f"Immediate Cause: {p.immediate_cause}.",
-                f"Hidden Cause: {p.hidden_cause}.",
-                f"Root Cause: {p.root_cause}.",
-                f"Quality Risk: {p.quality_risk}",
-                f"Safety Risk: {p.safety_risk}",
-                f"Maintenance Risk: {p.maintenance_risk}",
+                "Cơ chế kỹ thuật",
+                playbook.technical_mechanism,
                 "",
-                "Engineering Solution",
-                *bullets(reasoning.corrective_actions, 6),
-                f"Cost Impact: {p.cost_impact}",
-                f"Schedule Impact: {p.schedule_impact}",
+                "Nguyên nhân cần ưu tiên xác minh",
+                *[f"- {item}" for item in playbook.likely_causes],
                 "",
-                "Preventive Maintenance",
-                *bullets(reasoning.preventive_actions, 6),
-                f"Recommended Inspection: {inline(p.recommended_inspection[:5], 'visual check, measurement record, parameter log')}.",
+                "Cách kiểm tra tại xưởng",
+                *[f"- {item}" for item in playbook.inspection_steps],
                 "",
-                "Conclusion",
-                f"Muốn xử lý {reasoning.topic} bền vững, đội sản xuất cần đi theo chuỗi: Problem -> Possible mechanisms -> Evidence -> Most probable cause -> Recommended verification -> Corrective action -> Preventive action. Khi bằng chứng được chuẩn hóa, lỗi giảm lặp lại và quyết định nghiệm thu rõ ràng hơn.",
+                "Biện pháp khắc phục",
+                *[f"- {item}" for item in playbook.corrective_actions],
+                "",
+                "Kiểm soát phòng ngừa",
+                *[f"- {item}" for item in playbook.preventive_actions],
+                "",
+                "Rủi ro nếu bỏ qua",
+                *[f"- {item}" for item in (*playbook.quality_risks, *playbook.safety_risks)],
+                "",
+                "Câu hỏi thường gặp",
+                f"1. Khi nào cần dừng để kiểm tra {reasoning.topic}? Khi xuất hiện {playbook.typical_symptoms[0]} hoặc khi tiêu chí nghiệm thu chưa rõ.",
+                f"2. Ai chịu trách nhiệm xác nhận? Tổ trưởng, QA/QC và người vận hành liên quan phải cùng đóng bằng chứng kiểm tra.",
+                f"3. Nên theo dõi chỉ số nào? Tần suất lỗi, thời gian sửa, kết quả kiểm tra lại và số lần tái diễn theo ca.",
+                "",
+                "Kế hoạch triển khai tại xưởng",
+                "Bước 1: khoanh vùng hiện tượng và tách sản phẩm hoặc thiết bị có nguy cơ khỏi luồng bàn giao.",
+                "Bước 2: kiểm tra triệu chứng bằng danh sách điểm kiểm tra chuyên ngành thay vì hỏi miệng hoặc đoán nguyên nhân.",
+                "Bước 3: chọn hành động khắc phục theo tiêu chí kỹ thuật đã phê duyệt, ghi người chịu trách nhiệm và thời điểm xác nhận.",
+                "Bước 4: cập nhật checklist phòng ngừa để ca sau nhìn thấy cùng dấu hiệu là biết dừng, kiểm tra và báo cáo đúng tuyến.",
+                "Bước 5: đưa bài học vào họp đầu ca, kèm ảnh hiện trường, thông số đo và kết quả nghiệm thu sau sửa.",
+                "",
+                "Kết luận",
+                f"Với {playbook.process}, kết quả bền vững không đến từ việc sửa nhanh mà đến từ kiểm soát điều kiện tạo lỗi, ghi bằng chứng kiểm tra và chuẩn hóa hành động phòng ngừa. {playbook.production_impact}",
             ]
         )

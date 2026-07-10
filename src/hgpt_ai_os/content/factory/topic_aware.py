@@ -23,9 +23,15 @@ class TopicProfile:
 BASE_HASHTAGS = (
     "#MaithuyELEC",
     "#LucidAuto",
-    "#HGPTSteel",
-    "#SteelKnowledgeBase",
-    "#DigitalFactory",
+    "#KetCauThep",
+    "#KienThucXuong",
+    "#NhaMaySo",
+)
+
+GENERAL_BASE_HASHTAGS = (
+    "#MaithuyELEC",
+    "#LucidAuto",
+    "#KienThucThucTe",
 )
 
 
@@ -71,7 +77,7 @@ class TopicClassifier:
                     "bán thành phẩm không có thẻ nhận dạng",
                     "lối đi bị chiếm bởi vật tư chờ xử lý",
                 ),
-                hashtags=("#5S", "#Kaizen", "#LeanManufacturing", "#SteelWorkshop"),
+                hashtags=("#5S", "#Kaizen", "#SanXuatTinhGon", "#XuongKetCauThep"),
             )
 
         if self._has(normalized, "han", "welding", "weld", "mig", "saw", "fit up", "fitup", "ro khi", "porosity"):
@@ -112,7 +118,7 @@ class TopicClassifier:
                     "đường hàn không đều màu hoặc có vùng cháy cạnh",
                     "kết quả VT/MT/UT không ổn định giữa các cấu kiện",
                 ),
-                hashtags=("#Welding", "#MIGWelding", "#QAQC", "#SteelFabrication"),
+                hashtags=("#Han", "#HanMIG", "#QAQC", "#KetCauThep"),
             )
 
         if self._has(normalized, "son", "phun bi", "ban bi", "blasting", "painting", "coating", "be mat"):
@@ -127,7 +133,22 @@ class TopicClassifier:
                 causes=("bề mặt còn bụi muối hoặc dầu", "độ nhám không đạt", "sơn khi nhiệt độ/độ ẩm không phù hợp"),
                 actions=("kiểm tra độ sạch và độ nhám trước sơn", "đo DFT theo điểm chuẩn", "cách ly cấu kiện chưa đạt để sửa đúng quy trình"),
                 signs=("màu phủ không đều", "DFT lệch vùng", "bề mặt còn bụi hoặc vết dầu"),
-                hashtags=("#Coating", "#Blasting", "#Painting", "#CorrosionControl"),
+                hashtags=("#SonPhu", "#PhunBi", "#SonKetCau", "#ChongAnMon"),
+            )
+
+        if self._has(normalized, "cau truc", "palang", "pa lang", "crane", "hoist"):
+            return TopicProfile(
+                topic=title,
+                normalized=normalized,
+                domain="bảo trì cầu trục",
+                subject="bảo trì cầu trục trong nhà máy",
+                problem="cầu trục phải được kiểm tra phanh, cáp tải, móc cẩu, ray, bánh xe, limit switch và điện điều khiển trước khi vận hành",
+                objects=("phanh", "cáp tải", "móc cẩu", "ray", "bánh xe", "limit switch", "điện điều khiển"),
+                risks=("mất an toàn nâng hạ", "dừng thiết bị đột xuất", "rơi tải", "hư hỏng ray hoặc bánh xe"),
+                causes=("phanh mòn", "cáp tải xước hoặc đứt tao", "limit switch lỗi", "ray lệch hoặc bánh xe mòn"),
+                actions=("cô lập nguồn điện", "kiểm tra phanh/cáp/móc/ray", "thử limit switch và dừng khẩn", "ghi nhật ký bảo trì"),
+                signs=("tiếng kêu khi di chuyển", "cáp tải xù", "móc cẩu biến dạng", "limit switch không dừng đúng"),
+                hashtags=("#BaoTriCauTruc", "#CauTruc", "#ThietBiNang", "#AnToanNangHa"),
             )
 
         if self._has(normalized, "bao tri", "dong co", "motor", "may nen", "compressor", "qua nhiet", "fault"):
@@ -142,7 +163,7 @@ class TopicClassifier:
                 causes=("lọc gió bẩn hoặc thông gió kém", "quá tải kéo dài", "ổ bi thiếu bôi trơn", "điện áp hoặc dòng tải bất thường"),
                 actions=("đo nhiệt độ vỏ động cơ và dòng tải theo ca", "vệ sinh lọc gió, kiểm tra quạt và đường thông gió", "lập lịch bảo trì phòng ngừa cho máy nén khí", "dừng máy khi vượt ngưỡng nhiệt cho phép"),
                 signs=("vỏ động cơ nóng bất thường", "máy nén khí chạy lâu không nghỉ", "áp suất tụt hoặc tiếng ồn ổ bi tăng"),
-                hashtags=("#Maintenance", "#Compressor", "#Motor", "#PreventiveMaintenance"),
+                hashtags=("#BaoTri", "#MayNenKhi", "#DongCo", "#BaoTriPhongNgua"),
             )
 
         if self._has(normalized, "qaqc", "qc", "inspection", "kiem tra", "ncr", "checklist", "nghiem thu"):
@@ -157,7 +178,67 @@ class TopicClassifier:
                 causes=("checklist quá chung", "thiếu ảnh hoặc số đo", "chưa khóa điểm hold point", "phân quyền phê duyệt chưa rõ"),
                 actions=("xác định tiêu chí pass/fail trước khi kiểm tra", "gắn ảnh, số đo và mã cấu kiện vào hồ sơ", "phân loại NCR theo mức độ ảnh hưởng", "đóng vòng lặp hành động khắc phục"),
                 signs=("thiếu chữ ký kiểm tra", "số đo không truy xuất được", "NCR lặp lại ở cùng công đoạn"),
-                hashtags=("#QAQC", "#Inspection", "#NCR", "#QualityControl"),
+                hashtags=("#QAQC", "#KiemTra", "#NCR", "#KiemSoatChatLuong"),
+            )
+
+        if self._has(normalized, "nuoi ong", "lay mat", "mat ong", "dan ong", "ong chua"):
+            return TopicProfile(
+                topic=title,
+                normalized=normalized,
+                domain="nuôi ong lấy mật",
+                subject="nuôi ong lấy mật",
+                problem="cần giữ đàn ong khỏe, đặt thùng gần nguồn hoa, thu mật đúng thời điểm và bảo quản mật sạch",
+                objects=("thùng ong", "nguồn hoa", "ong chúa", "cầu mật", "dụng cụ quay mật", "chai bảo quản"),
+                risks=("đàn ong yếu", "mật loãng dễ lên men", "ong bỏ tổ", "mật lẫn tạp chất"),
+                causes=("thiếu nguồn hoa", "thu mật quá sớm", "dụng cụ chưa vệ sinh", "không theo dõi sức khỏe đàn"),
+                actions=("kiểm đàn định kỳ", "đặt thùng gần nguồn hoa sạch", "chỉ quay mật khi cầu mật vít nắp tốt", "lọc và bảo quản mật trong chai sạch"),
+                signs=("ong bay yếu", "cầu mật chưa vít nắp", "đàn thiếu phấn hoặc ong chúa đẻ kém"),
+                hashtags=("#NuoiOng", "#MatOng", "#OngChua", "#NguonHoa"),
+            )
+
+        if self._has(normalized, "day con", "dien thoai", "tre em", "smartphone"):
+            return TopicProfile(
+                topic=title,
+                normalized=normalized,
+                domain="dạy con dùng điện thoại",
+                subject="dạy con sử dụng điện thoại đúng cách",
+                problem="gia đình cần kiểm soát thời lượng, nội dung, an toàn mạng và giấc ngủ mà không biến điện thoại thành cuộc chiến",
+                objects=("thời lượng sử dụng", "nội dung phù hợp tuổi", "quy tắc gia đình", "an toàn mạng", "giấc ngủ"),
+                risks=("nghiện màn hình", "thiếu ngủ", "xem nội dung không phù hợp", "giảm giao tiếp gia đình"),
+                causes=("không có quy tắc rõ", "cha mẹ ít đồng hành", "dùng điện thoại để giữ trẻ im lặng"),
+                actions=("lập khung giờ dùng", "chọn nội dung cùng con", "dạy an toàn mạng", "đặt điện thoại ngoài phòng ngủ"),
+                signs=("con cáu khi bị thu điện thoại", "dùng sát giờ ngủ", "không biết con đang xem gì"),
+                hashtags=("#DayCon", "#DienThoai", "#AnToanMang", "#GiaDinh"),
+            )
+
+        if " ai " in f" {normalized} " or self._has(normalized, "cong viec", "5 nam", "tuong lai"):
+            return TopicProfile(
+                topic=title,
+                normalized=normalized,
+                domain="AI và tương lai công việc",
+                subject="chuẩn bị kỹ năng làm việc với AI",
+                problem="người đi làm cần biết nhiệm vụ nào sẽ được AI hỗ trợ, kỹ năng nào phải học và cách bảo vệ dữ liệu",
+                objects=("kỹ năng AI", "tự động hóa việc lặp lại", "dữ liệu công việc", "công cụ mới", "đo hiệu quả"),
+                risks=("tụt kỹ năng", "lộ dữ liệu", "phụ thuộc kết quả chưa kiểm chứng", "mất lợi thế nghề nghiệp"),
+                causes=("không thử công cụ mới", "không đo hiệu quả", "sao chép đầu ra AI", "thiếu tư duy kiểm chứng"),
+                actions=("chọn việc lặp lại để thử AI", "học công cụ mới mỗi tuần", "ẩn dữ liệu nhạy cảm", "đo thời gian tiết kiệm"),
+                signs=("công việc lặp lại nhiều", "báo cáo mất thời gian", "đội nhóm chưa có quy tắc dùng AI"),
+                hashtags=("#AI", "#CongViec", "#KyNangAI", "#TuDongHoa"),
+            )
+
+        if self._has(normalized, "quan ca phe", "ca phe", "cafe", "mo quan", "coffee"):
+            return TopicProfile(
+                topic=title,
+                normalized=normalized,
+                domain="mở quán cà phê",
+                subject="mở và vận hành quán cà phê nhỏ",
+                problem="cần chọn khách hàng mục tiêu, mặt bằng, menu, vốn, nhân sự, marketing và điểm hòa vốn trước khi mở quán",
+                objects=("khách hàng mục tiêu", "mặt bằng", "menu", "vốn đầu tư", "nhân sự", "điểm hòa vốn"),
+                risks=("thuê mặt bằng quá sức", "menu khó vận hành", "thiếu vốn dự phòng", "không kéo được khách quay lại"),
+                causes=("khảo sát thị trường ít", "không tính giá vốn", "chưa có SOP vận hành", "marketing khai trương mờ nhạt"),
+                actions=("khảo sát khách", "tính vốn và điểm hòa vốn", "test menu", "chuẩn hóa vận hành", "lập kế hoạch marketing"),
+                signs=("không biết bán cho ai", "chi phí cố định cao", "menu quá rộng", "không đo doanh thu mỗi ngày"),
+                hashtags=("#MoQuanCaPhe", "#KinhDoanhCafe", "#MenuCafe", "#DiemHoaVon"),
             )
 
         return TopicProfile(
@@ -171,7 +252,7 @@ class TopicClassifier:
             causes=("quy trình chưa rõ", "thiếu dữ liệu kiểm tra", "trách nhiệm giữa các công đoạn chưa được chuẩn hóa"),
             actions=("xác định tiêu chí kiểm soát theo chủ đề", "giao người chịu trách nhiệm", "đo chỉ số trước và sau cải tiến", "chuẩn hóa thành SOP hoặc checklist"),
             signs=("thông tin truyền miệng", "cùng lỗi xuất hiện nhiều lần", "kết quả phụ thuộc kinh nghiệm cá nhân"),
-            hashtags=("#SteelFabrication", "#Manufacturing", "#ProcessImprovement", "#DigitalFactory"),
+            hashtags=("#KetCauThep", "#SanXuat", "#CaiTienQuyTrinh", "#NhaMaySo"),
         )
 
     def _has(self, normalized: str, *needles: str) -> bool:
@@ -208,22 +289,24 @@ class TopicAwareBuiltInBuilder:
     def _build_facebook(self, p: TopicProfile) -> str:
         return "\n".join(
             [
-                f"Hook: {p.topic} không phải là khẩu hiệu; nó phải nhìn thấy được trong từng vị trí làm việc.",
+                f"Title: {p.topic}",
                 "",
-                f"Vấn đề: {p.problem}.",
+                f"Hook: Nếu {p.topic} chỉ nằm trên giấy, kết quả thực tế sẽ rất dễ lệch.",
                 "",
-                "Dấu hiệu nhận biết:",
-                *self._bullets(p.signs),
+                f"Pain: {p.problem}.",
                 "",
-                "Nguyên nhân gốc:",
-                *self._bullets(p.causes),
+                "Story:",
+                f"Một đội đang nhìn vào {self._join(p.objects[:3])}. Mọi người đều muốn xử lý nhanh, nhưng các dấu hiệu như {self._join(p.signs[:2])} cho thấy cần kiểm tra kỹ trước khi quyết định.",
                 "",
-                "Giải pháp:",
+                "Knowledge:",
+                f"Điểm cần nhớ: {p.subject} phụ thuộc vào {self._join(p.objects[:4])}. Nguyên nhân thường đến từ {self._join(p.causes[:3])}.",
+                "",
+                "Practical actions:",
                 *self._bullets(p.actions),
                 "",
-                f"Điều học được: {p.subject} chỉ bền khi được đo bằng an toàn, năng suất, chất lượng và mức giảm lãng phí.",
+                f"Question: Bạn đang kiểm soát {p.topic} bằng cảm giác hay bằng dữ liệu cụ thể?",
                 "",
-                f"Hành động: Chọn một khu vực trong xưởng, kiểm tra {self._join(p.objects[:3])}, ghi ảnh trước/sau và chốt người chịu trách nhiệm trong ca.",
+                f"CTA: Lưu lại và chọn một bước nhỏ hôm nay: kiểm tra {self._join(p.objects[:2])}, ghi nhận dấu hiệu, rồi chốt hành động tiếp theo.",
                 "",
                 "Hashtags: " + " ".join(self._hashtags(p)),
             ]
@@ -232,59 +315,63 @@ class TopicAwareBuiltInBuilder:
     def _build_tiktok(self, p: TopicProfile) -> str:
         return "\n".join(
             [
-                f"Hook 3 seconds: Quay cận cảnh {p.signs[0]} và nói: \"Đây là lý do {p.topic} phải được kiểm soát ngay trong xưởng.\"",
+                "Hook",
+                f"{p.topic} nghe đơn giản, nhưng sai một bước là mất tiền, mất thời gian hoặc mất an toàn.",
                 "",
-                "Scene-by-scene script:",
-                f"1. Mở đầu tại xưởng kết cấu thép, chỉ vào {p.objects[0]} và {p.objects[1]}.",
-                f"2. Cho thấy vấn đề: {p.problem}.",
-                f"3. Cắt nhanh sang dấu hiệu: {p.signs[1]}.",
-                f"4. Supervisor/QA kiểm tra nguyên nhân: {p.causes[0]}.",
-                f"5. Đội xưởng thực hiện: {p.actions[0]}.",
-                f"6. Kết cảnh bằng bảng checklist đã tick và khu vực sạch, an toàn, đúng luồng.",
+                "Curiosity",
+                f"Điều nhiều người bỏ qua là {p.signs[0]}. Dấu hiệu nhỏ này thường nói trước một vấn đề lớn hơn.",
                 "",
-                "Voiceover:",
-                f"Muốn {p.subject} hiệu quả, đừng chỉ nhắc nhở. Hãy nhìn dấu hiệu, hỏi nguyên nhân gốc, rồi biến thành hành động đo được.",
+                "Pain",
+                f"Nếu xử lý vội, bạn có thể đụng vào {p.risks[0]}, rồi kéo theo {p.risks[1]}.",
                 "",
-                "Text overlay:",
-                f"{p.domain} | An toàn | Năng suất | Giảm lãng phí",
+                "Truth",
+                f"Muốn làm đúng, đừng bắt đầu bằng lời khuyên chung. Hãy nhìn {p.objects[0]}, kiểm tra {p.objects[1]} và hỏi nguyên nhân thật: {p.causes[0]}.",
                 "",
-                "Ending CTA: Theo dõi LUCID AUTO để biến kiến thức xưởng thành checklist hành động.",
+                "One practical tip",
+                f"Làm ngay một việc: {p.actions[0]}. Sau đó ghi lại kết quả để lần sau không phải đoán.",
+                "",
+                "CTA",
+                f"Lưu lại nếu bạn đang cần biến {p.topic} thành hành động rõ ràng trong hôm nay.",
             ]
         )
 
     def _build_video(self, p: TopicProfile) -> str:
         return "\n".join(
             [
-                f"English video prompt: Create a 30-second cinematic industrial video about {p.topic} in a steel fabrication workshop.",
+                f"Tiêu đề: {p.topic}",
                 "",
-                "Visual scenes:",
-                f"- Opening: wide shot of a steel fabrication workshop with beams, plates, tools, marked walkways, PPE workers, welding bays, and QA/QC boards.",
-                f"- Scene 1: close-up of {p.objects[0]} and {p.objects[1]} showing the practical issue: {p.problem}.",
-                f"- Scene 2: supervisor and worker wearing helmet, gloves, safety glasses, and reflective vest inspect {p.signs[0]}.",
-                f"- Scene 3: team performs corrective action: {p.actions[0]}.",
-                f"- Ending: clean organized workstation, signed checklist, safe walking path, and improved production flow.",
+                f"Mở đầu: Video dọc 30 giây mở bằng tình huống {p.problem}.",
                 "",
-                "Camera movement: slow gimbal push-in from the workshop entrance, handheld close-up on tools and steel parts, overhead tracking shot along the production flow, final stable hero shot.",
+                f"Cảnh 1: Tập trung vào {self._join(p.objects[:3])}; làm rõ dấu hiệu {p.signs[0]}.",
+                f"Cảnh 2: Nhân vật kiểm tra nguyên nhân {p.causes[0]} và đối chiếu với {p.causes[1]}.",
+                f"Cảnh 3: Thực hiện {p.actions[0]}, sau đó ghi nhận kết quả bằng thao tác rõ ràng.",
                 "",
-                f"Industrial steel fabrication context: include steel structures, semi-finished parts, material tags, machinery, PPE, realistic workshop lighting, QA/QC inspection details, and {p.domain} cues.",
+                "Góc máy: Cận cảnh chi tiết chính, trung cảnh thao tác con người, khung cuối ổn định để thấy kết quả.",
+                "Ánh sáng: Tự nhiên, rõ vật thể, không tối, không làm mất chi tiết quan trọng.",
+                f"Lời thoại: \"Đừng xử lý {p.topic} bằng cảm tính. Nhìn dấu hiệu, kiểm tra nguyên nhân, rồi làm một bước có thể đo lại.\"",
+                f"Phụ đề: {p.topic} | Dấu hiệu | Nguyên nhân | Hành động | Kiểm tra lại",
+                "Âm thanh: Nhịp nền gọn, âm thanh môi trường thật, điểm nhấn nhẹ khi xuất hiện hành động chính.",
                 "",
-                "Clear opening and ending: begin with the visible workshop problem and end with verified safe, productive, standardized work.",
+                f"Kết thúc: Hiển thị kết quả sau khi {p.actions[0]} và nhắc lại lợi ích giảm {p.risks[0]}.",
+                "CTA: Lưu prompt này để tạo video ngắn có hành động thực tế, không kể lan man.",
             ]
         )
 
     def _build_image(self, p: TopicProfile) -> str:
-        detail_label = self._visual_detail_label(p)
         return "\n".join(
             [
-                f"English image prompt: Industrial poster style image about {p.topic}.",
-                "",
-                f"Clear subject: a steel fabrication workshop team applying {p.subject}, with the main focus on {p.objects[0]}, {p.objects[1]}, and {p.objects[2]}.",
-                "",
-                f"Workshop context: structural steel beams, semi-finished components, machinery, marked storage zones, tool boards, PPE workers, QA/QC checklist board, realistic factory lighting.",
-                "",
-                f"{detail_label}: show {p.actions[0]}, visible labels, organized work area, safe walkway, inspection tags, and evidence of {p.domain}.",
-                "",
-                "Style: clean industrial poster, realistic proportions, sharp focus, professional Vietnamese steel factory environment, no fantasy elements, no random unrelated defects.",
+                f"Chủ thể: {p.subject}, trọng tâm là {self._join(p.objects[:3])}",
+                f"Bối cảnh: môi trường phù hợp với {p.domain}, có dấu hiệu {self._join(p.signs[:2])}",
+                f"Hành động: {p.actions[0]}",
+                "Trang phục: phù hợp nghề nghiệp, sạch, an toàn, không phô trương",
+                "Ánh sáng: rõ chi tiết, tự nhiên, không quá tối hoặc quá chói",
+                "Góc máy: ngang tầm mắt kết hợp cận cảnh chi tiết chính",
+                "Ống kính: 35mm cho bối cảnh, 85mm cho chi tiết",
+                "Màu sắc: chân thực, cân bằng, ưu tiên màu của vật thể và môi trường thật",
+                f"Chi tiết cần có: {self._join((*p.objects[:4], *p.signs[:2]))}",
+                "Chi tiết cần tránh: chữ sai tiếng Việt, vật thể méo, chi tiết không liên quan, bối cảnh giả",
+                "Phong cách: ảnh tư liệu chân thực, rõ nét, giàu chi tiết, có tính sản xuất",
+                "Tỷ lệ: 4:5",
             ]
         )
 
@@ -292,22 +379,26 @@ class TopicAwareBuiltInBuilder:
         keywords = self._keywords(p)
         return "\n".join(
             [
-                f"SEO title: {p.topic}: cách kiểm soát hiệu quả trong xưởng kết cấu thép",
+                f"Title: {p.topic}: hướng dẫn thực tế để bắt đầu đúng",
                 "",
-                f"Meta description: Hướng dẫn thực tế về {p.topic}, tập trung vào {self._join(p.objects[:3])}, an toàn, năng suất, chất lượng và hành động chuẩn hóa tại xưởng.",
+                f"Meta: Tìm hiểu {p.topic}, các dấu hiệu cần chú ý, nguyên nhân thường gặp và những bước thực tế để giảm {p.risks[0]}.",
                 "",
                 "Keywords:",
                 *self._bullets(keywords),
                 "",
-                "Short article outline:",
-                f"1. {p.topic} là gì trong bối cảnh xưởng kết cấu thép?",
-                f"2. Vấn đề thường gặp: {p.problem}.",
-                f"3. Dấu hiệu nhận biết tại hiện trường: {self._join(p.signs[:3])}.",
-                f"4. Nguyên nhân gốc cần kiểm tra: {self._join(p.causes[:3])}.",
-                f"5. Giải pháp và checklist hành động: {self._join(p.actions[:3])}.",
-                "6. Cách đo hiệu quả bằng chất lượng, an toàn, chi phí và tiến độ.",
+                "Outline:",
+                f"1. {p.topic} là gì và vì sao đáng quan tâm?",
+                f"2. Dấu hiệu chính: {self._join(p.signs[:3])}.",
+                f"3. Nguyên nhân cần kiểm tra: {self._join(p.causes[:3])}.",
+                f"4. Cách xử lý theo thứ tự: {self._join(p.actions[:3])}.",
+                f"5. Cách theo dõi để tránh {p.risks[0]} lặp lại.",
                 "",
-                f"Topic-related search intent: Người tìm kiếm muốn biết cách áp dụng {p.topic} vào công việc thật, có checklist rõ ràng, tránh lỗi lặp lại và cải thiện hiệu quả xưởng.",
+                "FAQ:",
+                f"- Khi nào cần ưu tiên {p.topic}? Khi xuất hiện {p.signs[0]} hoặc {p.signs[1]}.",
+                f"- Bước đầu tiên nên làm là gì? {p.actions[0]}.",
+                f"- Cần theo dõi yếu tố nào? {self._join(p.objects[:3])}.",
+                "",
+                f"Conclusion: {p.topic} hiệu quả hơn khi được viết thành dấu hiệu cụ thể, nguyên nhân rõ và hành động có thể kiểm tra lại.",
             ]
         )
 
@@ -329,12 +420,20 @@ class TopicAwareBuiltInBuilder:
 
     def _hashtags(self, p: TopicProfile) -> list[str]:
         topic_tags = [self._hashtag_from_word(word) for word in self._topic_words(p.topic)]
-        tags = [*BASE_HASHTAGS, *p.hashtags, *topic_tags]
+        base = BASE_HASHTAGS if self._is_factory_profile(p) else GENERAL_BASE_HASHTAGS
+        tags = [*base, *p.hashtags, *topic_tags]
         deduped = []
         for tag in tags:
             if tag and tag not in deduped:
                 deduped.append(tag)
         return deduped[:14]
+
+    def _is_factory_profile(self, p: TopicProfile) -> bool:
+        normalized_domain = self.classifier._normalize(p.domain)
+        return any(
+            token in normalized_domain
+            for token in ("steel", "ket cau", "xuong", "factory", "han", "welding", "qaqc", "bao tri", "maintenance", "cau truc", "son", "5s", "kaizen", "lean")
+        )
 
     def _keywords(self, p: TopicProfile) -> tuple[str, ...]:
         return (

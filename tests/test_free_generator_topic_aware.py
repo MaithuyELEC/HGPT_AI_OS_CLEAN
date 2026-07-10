@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import re
+
 from hgpt_ai_os.content.factory.builder_factory import BuilderFactory
 
 
@@ -87,7 +89,7 @@ def test_each_output_type_uses_a_distinct_topic_specific_body():
         assert first != second
         assert topic_a in first or "5S" in first
         if key == "hashtags":
-            assert "#Motor" in second or "#Dong" in second
+            assert "#DongCo" in second
         else:
             assert topic_b in second or "động cơ" in second.lower()
 
@@ -98,10 +100,101 @@ def test_static_hashtags_are_kept_with_topic_specific_hashtags():
     for tag in (
         "#MaithuyELEC",
         "#LucidAuto",
-        "#HGPTSteel",
-        "#SteelKnowledgeBase",
-        "#DigitalFactory",
+        "#KetCauThep",
+        "#KienThucXuong",
+        "#NhaMaySo",
         "#5S",
         "#Kaizen",
     ):
         assert tag in content
+
+
+def test_release_output_contracts_are_independent_without_sentence_reuse():
+    topics = (
+        "Nuôi ong lấy mật",
+        "Cách mở quán cà phê",
+        "Bảo trì cầu trục trong nhà máy",
+    )
+    channels = ("facebook", "tiktok", "video", "image", "seo")
+
+    for topic in topics:
+        outputs = {key: BuilderFactory.create(key).build(topic) for key in channels}
+
+        assert outputs["facebook"] != outputs["tiktok"]
+        assert outputs["tiktok"] != outputs["video"]
+        assert outputs["video"] != outputs["seo"]
+        assert outputs["seo"] != outputs["facebook"]
+        assert all(outputs["image"] != body for key, body in outputs.items() if key != "image")
+
+        for label in (
+            "Title:",
+            "Hook:",
+            "Pain:",
+            "Story:",
+            "Knowledge:",
+            "Practical actions:",
+            "Question:",
+            "CTA:",
+            "Hashtags:",
+        ):
+            assert label in outputs["facebook"]
+        assert "Người đọc" not in outputs["facebook"]
+        assert "Chủ đề thuộc" not in outputs["facebook"]
+
+        for label in ("Hook", "Curiosity", "Pain", "Truth", "One practical tip", "CTA"):
+            assert label in outputs["tiktok"]
+        assert 120 <= len(outputs["tiktok"].split()) <= 220
+        for forbidden in ("Scene", "Camera", "Storyboard", "Lighting", "Cảnh", "Góc máy"):
+            assert forbidden not in outputs["tiktok"]
+
+        image_lines = [line.strip() for line in outputs["image"].splitlines() if line.strip()]
+        assert [line.split(":", 1)[0] for line in image_lines] == [
+            "Chủ thể",
+            "Bối cảnh",
+            "Hành động",
+            "Trang phục",
+            "Ánh sáng",
+            "Góc máy",
+            "Ống kính",
+            "Màu sắc",
+            "Chi tiết cần có",
+            "Chi tiết cần tránh",
+            "Phong cách",
+            "Tỷ lệ",
+        ]
+
+        for label in (
+            "Tiêu đề:",
+            "Mở đầu:",
+            "Cảnh 1:",
+            "Cảnh 2:",
+            "Cảnh 3:",
+            "Góc máy:",
+            "Ánh sáng:",
+            "Lời thoại:",
+            "Phụ đề:",
+            "Âm thanh:",
+            "Kết thúc:",
+            "CTA:",
+        ):
+            assert label in outputs["video"]
+
+        for label in ("Title:", "Meta:", "Keywords:", "Outline:", "FAQ:", "Conclusion:"):
+            assert label in outputs["seo"]
+
+        seen_sentences: dict[str, str] = {}
+        for channel, body in outputs.items():
+            for sentence in _sentences(body):
+                owner = seen_sentences.setdefault(sentence, channel)
+                assert owner == channel, f"sentence reused by {owner} and {channel}: {sentence}"
+
+
+def _sentences(body: str) -> list[str]:
+    normalized = re.sub(r"\s+", " ", body)
+    parts = re.split(r"(?<=[.!?])\s+|\n+", normalized)
+    sentences = []
+    for part in parts:
+        sentence = part.strip(" -")
+        if len(sentence.split()) >= 6:
+            sentences.append(sentence.lower())
+    return sentences

@@ -1,9 +1,313 @@
 from __future__ import annotations
 
 import hashlib
+import re
+import unicodedata
+from dataclasses import dataclass
 
 from hgpt_ai_os.topic_engine.content_planner import ContentPlan
 from hgpt_ai_os.topic_engine.reasoning_engine import ReasoningObject
+
+
+@dataclass(frozen=True)
+class DomainPlaybook:
+    key: str
+    aliases: tuple[str, ...]
+    domain: str
+    process: str
+    equipment: str
+    typical_symptoms: tuple[str, ...]
+    technical_mechanism: str
+    likely_causes: tuple[str, ...]
+    inspection_steps: tuple[str, ...]
+    corrective_actions: tuple[str, ...]
+    preventive_actions: tuple[str, ...]
+    safety_risks: tuple[str, ...]
+    quality_risks: tuple[str, ...]
+    production_impact: str
+    checklist_items: tuple[str, ...]
+    hashtags: tuple[str, ...]
+
+
+def _normalize(value: str) -> str:
+    decomposed = unicodedata.normalize("NFD", value.lower())
+    ascii_text = "".join(ch for ch in decomposed if unicodedata.category(ch) != "Mn")
+    return re.sub(r"[^a-z0-9]+", " ", ascii_text).strip()
+
+
+def _fallback_playbook(reasoning: ReasoningObject) -> DomainPlaybook:
+    topic = reasoning.topic.strip() or "vấn đề kỹ thuật hiện trường"
+    inspections = (
+        "kiểm tra trực quan tại khu vực liên quan",
+        "ghi bằng chứng đo kiểm hoặc ảnh hiện trường",
+        "đối chiếu tiêu chí nghiệm thu trước khi bàn giao",
+        "xác nhận người chịu trách nhiệm và thời điểm kiểm tra",
+    )
+    actions = (
+        "cô lập bất thường khỏi luồng bàn giao",
+        "xác định nguyên nhân theo dữ liệu tại hiện trường",
+        "sửa theo tiêu chí kỹ thuật đã thống nhất",
+        "kiểm tra lại và lưu bằng chứng sau sửa",
+    )
+    return DomainPlaybook(
+        key="GENERAL_ENGINEERING",
+        aliases=(topic,),
+        domain="Sản xuất cơ khí",
+        process=topic,
+        equipment="khu vực sản xuất liên quan",
+        typical_symptoms=(
+            f"dấu hiệu bất thường liên quan đến {topic}",
+            "kết quả phụ thuộc kinh nghiệm cá nhân",
+            "thiếu tiêu chí rõ trước khi chuyển công đoạn",
+        ),
+        technical_mechanism=(
+            "Sự cố cần được đọc theo chuỗi triệu chứng, điều kiện vận hành, thông số kiểm soát "
+            "và bằng chứng nghiệm thu thay vì xử lý theo cảm tính."
+        ),
+        likely_causes=(
+            "quy trình kiểm soát chưa đủ rõ",
+            "thiếu bằng chứng kiểm tra trước khi quyết định",
+            "trách nhiệm giữa các công đoạn chưa được chuẩn hóa",
+            "điều kiện làm việc thay đổi nhưng chưa được cập nhật vào checklist",
+        ),
+        inspection_steps=inspections,
+        corrective_actions=actions,
+        preventive_actions=(
+            "chuẩn hóa tiêu chí kiểm tra trước khi bàn giao",
+            "ghi ảnh hiện trường và thông số đo cho từng lần xử lý",
+            "đào tạo lại điểm bất thường để tổ sản xuất nhận diện sớm",
+        ),
+        safety_risks=("rủi ro thao tác lại khi chưa cô lập năng lượng hoặc khu vực làm việc",),
+        quality_risks=("nguy cơ lỗi lặp lại nếu thiếu bằng chứng nghiệm thu",),
+        production_impact="Làm tăng thời gian chờ, thời gian sửa lại và rủi ro trễ bàn giao.",
+        checklist_items=inspections,
+        hashtags=("#LucidAuto", "#KyThuatSanXuat", "#Qaqc"),
+    )
+
+
+PLAYBOOKS: tuple[DomainPlaybook, ...] = (
+    DomainPlaybook(
+        key="SAW_POROSITY",
+        aliases=("saw porosity", "duong han saw ro khi", "han saw bi ro khi", "ro khi moi han saw", "submerged arc porosity", "thuoc han am"),
+        domain="Hàn kết cấu thép",
+        process="Hàn hồ quang chìm SAW",
+        equipment="máy hàn SAW, dây hàn, thuốc hàn và liên kết thép",
+        typical_symptoms=("bề mặt đường hàn có lỗ rỗ", "siêu âm phát hiện chỉ thị dạng khí", "mối hàn phải mài sửa hoặc hàn lại", "kết quả VT/UT không đạt"),
+        technical_mechanism=(
+            "Rỗ khí trong SAW thường hình thành khi hơi ẩm, dầu, rỉ sét hoặc khí bị giữ lại trong vũng hàn. "
+            "Nếu dòng hàn, điện áp, tốc độ chạy, stickout hoặc chiều sâu lớp thuốc không ổn định, khí không thoát kịp trước khi kim loại đông đặc."
+        ),
+        likely_causes=("thuốc hàn ẩm hoặc sấy chưa đủ", "bề mặt thép còn dầu, rỉ, nước hoặc lớp cán", "dây hàn bẩn hoặc bảo quản kém", "dòng hàn, điện áp hoặc tốc độ chạy lệch WPS", "chiều sâu lớp thuốc không đủ che phủ hồ quang"),
+        inspection_steps=("kiểm tra hồ sơ sấy và bảo quản thuốc hàn", "kiểm tra dây hàn, đường kính và tình trạng bề mặt", "làm sạch mép hàn rồi xác nhận không còn dầu, rỉ hoặc ẩm", "đối chiếu dòng hàn, điện áp, tốc độ chạy và stickout với WPS", "kiểm tra chiều sâu lớp thuốc", "thực hiện VT và UT theo ITP"),
+        corrective_actions=("mài bỏ vùng rỗ khí đến kim loại tốt", "làm sạch mép hàn và vùng lân cận", "sấy hoặc thay thuốc hàn nghi ngờ ẩm", "đặt lại dòng hàn, điện áp, tốc độ chạy và stickout theo WPS", "hàn sửa theo WPS rồi kiểm tra lại VT/UT"),
+        preventive_actions=("quản lý lò sấy và thùng giữ nhiệt thuốc hàn bằng nhật ký", "che chắn thuốc hàn khỏi ẩm và tạp chất", "khóa dải thông số SAW theo WPS tại máy", "kiểm tra bề mặt trước khi rải thuốc", "duy trì điểm dừng kiểm tra VT/UT trước khi chuyển công đoạn"),
+        safety_risks=("bỏng, khói hàn và tia hồ quang khi mài sửa hoặc hàn lại", "nguy cơ kẹt tay khi thao tác dầm thép nặng"),
+        quality_risks=("mối hàn bị loại, giảm độ kín và giảm độ tin cậy kết cấu", "phát sinh sửa chữa nhiều lần nếu không khóa nguyên nhân ẩm bẩn"),
+        production_impact="Gây dừng kiểm tra, tăng giờ mài sửa, tốn thuốc hàn/dây hàn và chậm bàn giao sang công đoạn sơn hoặc lắp dựng.",
+        checklist_items=("sấy thuốc hàn", "kiểm tra dây hàn", "làm sạch mép hàn", "kiểm tra dầu/rỉ/ẩm", "kiểm tra dòng hàn, điện áp và tốc độ chạy", "kiểm tra chiều sâu lớp thuốc", "kiểm tra stickout", "VT/UT", "sửa chữa theo WPS"),
+        hashtags=("#SAW", "#RoKhiMoiHan", "#WPS", "#VTUT", "#KetCauThep"),
+    ),
+    DomainPlaybook(
+        key="POWER_TOOL_BREAKDOWN",
+        aliases=("may mai cam tay hong lien tuc", "angle grinder breakdown", "may mai hong", "power tool breakdown", "dung cu dien hong lien tuc"),
+        domain="Bảo trì dụng cụ điện cầm tay",
+        process="Mài sửa và bảo trì dụng cụ",
+        equipment="máy mài cầm tay, chổi than, bạc đạn, rotor/stator, công tắc và dây nguồn",
+        typical_symptoms=("máy mài nóng nhanh", "tia lửa ở cổ góp nhiều", "rung hoặc ồn bất thường", "máy yếu lực hoặc dừng đột ngột", "hỏng lặp lại sau thời gian ngắn"),
+        technical_mechanism=(
+            "Máy mài hỏng liên tục thường đến từ mòn chổi than, bạc đạn rơ, bụi mài lọt vào thân máy, rotor/stator quá nhiệt hoặc công tắc và dây nguồn tiếp xúc kém. "
+            "Khi công nhân ép tải, dùng sai đá hoặc không vệ sinh khe gió, nhiệt và bụi làm hỏng cách điện nhanh hơn."
+        ),
+        likely_causes=("chổi than mòn hoặc kẹt trong rãnh giữ", "bạc đạn khô mỡ, rơ hoặc kêu", "bụi mài bám trong khe gió và cổ góp", "rotor/stator quá nhiệt do quá tải", "dây nguồn hoặc công tắc chập chờn", "công nhân ép máy hoặc dùng sai đá mài"),
+        inspection_steps=("mở kiểm tra chổi than và cổ góp", "quay thử bạc đạn để nghe ồn và cảm nhận độ rơ", "thổi sạch bụi mài trong khe gió", "kiểm tra rotor/stator bằng quan sát cháy xém và đo cách điện khi cần", "kiểm tra công tắc, dây nguồn và phích cắm", "quan sát cách công nhân sử dụng máy tại hiện trường"),
+        corrective_actions=("thay chổi than đúng mã", "thay bạc đạn khi có rơ, ồn hoặc nóng", "vệ sinh bụi mài và khe thông gió", "loại bỏ rotor/stator cháy hoặc suy cách điện", "thay công tắc hoặc dây nguồn lỗi", "hướng dẫn lại cách ép lực và chọn đá mài"),
+        preventive_actions=("lập lịch bảo trì định kỳ theo giờ sử dụng", "kiểm tra rung/ồn/nhiệt trước ca", "quy định vệ sinh bụi mài cuối ca", "cấp đá mài đúng công việc", "kiểm soát cách sử dụng của công nhân bằng hướng dẫn ngắn tại xưởng"),
+        safety_risks=("điện giật do dây nguồn hoặc công tắc hỏng", "vỡ đá mài khi quá tải hoặc dùng sai tốc độ", "bụi và tia lửa gây thương tích nếu thiếu PPE"),
+        quality_risks=("bề mặt mài không đều, mất kích thước hoặc làm hỏng mép hàn cần sửa",),
+        production_impact="Làm gián đoạn mài sửa, tăng thời gian chờ dụng cụ, tăng chi phí thay máy và tạo áp lực tiến độ cho tổ hoàn thiện.",
+        checklist_items=("chổi than", "bạc đạn", "rotor/stator", "công tắc", "dây nguồn", "bụi mài", "quá tải", "rung/ồn/nhiệt", "lịch bảo trì", "hướng dẫn vận hành"),
+        hashtags=("#MayMai", "#BaoTri", "#DungCuDien", "#TPM", "#AnToanLaoDong"),
+    ),
+    DomainPlaybook(
+        key="LASER_5S",
+        aliases=("5s khu vuc may cat laser", "laser 5s", "5s laser cutting", "may cat laser 5s"),
+        domain="Lean/5S khu vực cắt",
+        process="5S cho máy cắt laser",
+        equipment="máy cắt laser, bàn cắt, khu vật tư đầu vào, khu thành phẩm và thùng phế",
+        typical_symptoms=("vật tư lẫn lộn", "phôi sau cắt khó truy vết", "dụng cụ và đầu cắt không có vị trí cố định", "phế và bavia tích tụ quanh bàn cắt"),
+        technical_mechanism="5S yếu làm dòng vật tư không rõ, tăng nguy cơ lẫn chi tiết, mất thời gian tìm dụng cụ và che khuất bất thường của máy cắt laser.",
+        likely_causes=("chưa phân làn vật tư đầu vào và đầu ra", "không có tiêu chuẩn ảnh sau ca", "thiếu chủ khu vực", "dụng cụ đo và phụ kiện laser chưa có bảng vị trí cố định"),
+        inspection_steps=("đối chiếu ảnh chuẩn 5S", "kiểm tra nhãn bán thành phẩm và mã chi tiết", "kiểm tra thùng phế, bavia và đường đi", "kiểm tra vị trí đầu cắt, thấu kính, thước đo và dụng cụ vệ sinh"),
+        corrective_actions=("vạch lại luồng vật tư", "dán nhãn khu phôi, thành phẩm và phế", "lập bảng vị trí dụng cụ", "dọn bavia và phế sau từng ca"),
+        preventive_actions=("chụp ảnh chuẩn cuối ca", "gán chủ khu vực", "kiểm tra 5S hằng ngày", "đưa điểm 5S vào họp sản xuất"),
+        safety_risks=("trượt ngã do phế và bavia", "đứt tay khi phân loại chi tiết sắc cạnh"),
+        quality_risks=("lẫn mã chi tiết, xước bề mặt, giao nhầm bán thành phẩm",),
+        production_impact="Giảm tốc độ cấp phôi, tăng thời gian tìm kiếm và làm chậm công đoạn gá lắp sau cắt.",
+        checklist_items=("phân làn vật tư", "nhãn bán thành phẩm", "thùng phế", "bảng vị trí dụng cụ", "ảnh chuẩn 5S", "chủ khu vực", "vệ sinh bàn cắt", "kiểm tra đầu cắt/thấu kính"),
+        hashtags=("#5S", "#CatLaser", "#SanXuatTinhGon", "#Kaizen"),
+    ),
+    DomainPlaybook(
+        key="PAINT_PEELING",
+        aliases=("loi bong troc son", "paint peeling", "coating peeling", "son bong troc", "do bam dinh son kem"),
+        domain="Sơn phủ kết cấu thép",
+        process="Chuẩn bị bề mặt và sơn phủ",
+        equipment="bề mặt thép, hệ sơn, thiết bị phun và dụng cụ đo môi trường",
+        typical_symptoms=("màng sơn bong theo mảng", "lộ nền thép sau va chạm nhẹ", "kết quả adhesion không đạt", "xuất hiện rỉ dưới lớp sơn"),
+        technical_mechanism="Sơn bong tróc xảy ra khi bề mặt còn dầu, muối, bụi, ẩm hoặc độ nhám không đạt làm liên kết giữa màng sơn và nền thép suy yếu.",
+        likely_causes=("profile phun bi không đạt", "sơn khi gần điểm sương", "bề mặt còn dầu hoặc bụi", "thời gian phủ lớp kế tiếp sai", "pha sơn hoặc đóng rắn không đúng"),
+        inspection_steps=("kiểm tra độ sạch bề mặt", "đo độ nhám", "ghi nhiệt độ thép, độ ẩm và điểm sương", "kiểm tra DFT", "thử bám dính bằng phương pháp cắt ô hoặc kéo bật khi cần"),
+        corrective_actions=("loại bỏ vùng sơn lỗi", "làm sạch và tạo nhám lại", "sơn lại theo quy trình", "đo DFT và kiểm tra bám dính sau sửa"),
+        preventive_actions=("khóa điều kiện môi trường trước khi sơn", "kiểm soát vật tư pha trộn", "ghi profile và DFT theo khu vực", "bảo vệ bề mặt sau phun bi"),
+        safety_risks=("hít dung môi và bụi sơn", "cháy nổ nếu thông gió kém"),
+        quality_risks=("ăn mòn sớm, khách hàng từ chối nghiệm thu, phải sơn lại diện rộng",),
+        production_impact="Tăng thời gian reblast, repaint, kiểm tra lại và chiếm mặt bằng hoàn thiện.",
+        checklist_items=("độ sạch bề mặt", "độ nhám", "điểm sương", "độ ẩm", "DFT", "độ bám dính", "cắt ô/kéo bật", "vát mép vùng sửa"),
+        hashtags=("#SonPhu", "#DoBamDinh", "#DFT", "#ChuanBiBeMat"),
+    ),
+    DomainPlaybook(
+        key="MOTOR_VIBRATION",
+        aliases=("motor vibration", "dong co bi rung", "do rung dong co", "motor rung", "may rung"),
+        domain="Bảo trì thiết bị quay",
+        process="Chẩn đoán rung động động cơ",
+        equipment="động cơ, bạc đạn, khớp nối, bệ máy và tải kéo",
+        typical_symptoms=("động cơ rung tăng", "bạc đạn nóng", "tiếng ồn theo chu kỳ", "dòng điện dao động"),
+        technical_mechanism="Rung động tăng khi mất cân bằng, lệch tâm, bạc đạn hỏng hoặc bệ máy lỏng truyền lực dao động vào thân động cơ.",
+        likely_causes=("lệch tâm khớp nối", "bạc đạn mòn", "rotor mất cân bằng", "bu lông bệ lỏng", "tải bị kẹt hoặc quá tải"),
+        inspection_steps=("đo rung theo trục H/V/A", "đo nhiệt bạc đạn", "kiểm tra căn chỉnh bằng laser", "kiểm tra bu lông bệ", "đo dòng điện"),
+        corrective_actions=("căn chỉnh khớp nối", "thay bạc đạn lỗi", "cân bằng rotor", "siết và chêm lại bệ", "xử lý tải quá tải"),
+        preventive_actions=("theo dõi trend rung", "bôi trơn đúng lịch", "kiểm tra alignment sau sửa chữa", "lập ngưỡng cảnh báo"),
+        safety_risks=("vỡ khớp nối hoặc bung chi tiết quay",),
+        quality_risks=("dừng máy làm gián đoạn công đoạn phụ thuộc",),
+        production_impact="Có thể gây dừng máy đột xuất và kéo dài thời gian sửa cơ điện.",
+        checklist_items=("đo rung", "nhiệt bạc đạn", "alignment", "bôi trơn", "bu lông bệ", "dòng điện", "trend dữ liệu"),
+        hashtags=("#DongCo", "#DoRung", "#BaoTri", "#TPM"),
+    ),
+    DomainPlaybook(
+        key="ANCHOR_BOLT_MISLOCATION",
+        aliases=("anchor bolt mislocation", "bu long neo sai vi tri", "bulong neo sai vi tri", "anchor sai vi tri"),
+        domain="Lắp dựng kết cấu thép",
+        process="Kiểm soát bu lông neo",
+        equipment="bu lông neo, template, base plate và móng",
+        typical_symptoms=("lỗ base plate không khớp", "khoảng cách tim bu lông lệch", "cao độ ren không đủ", "cột không thể dựng đúng vị trí"),
+        technical_mechanism="Sai vị trí bu lông neo thường phát sinh khi template yếu, mốc khảo sát sai hoặc không kiểm tra lại trước khi đổ bê tông.",
+        likely_causes=("template không cứng", "mốc survey sai", "bu lông xê dịch khi đổ bê tông", "không nghiệm thu trước đổ"),
+        inspection_steps=("survey tọa độ tim bu lông", "kiểm tra cao độ projection", "kiểm tra ren và độ thẳng", "đối chiếu bản vẽ mới nhất"),
+        corrective_actions=("lập phương án sửa được phê duyệt", "khoan/cấy hoặc mở lỗ theo thiết kế cho phép", "bảo vệ ren và kiểm tra lại survey"),
+        preventive_actions=("dùng template cứng", "hold point trước đổ bê tông", "khóa revision bản vẽ", "lưu biên bản survey"),
+        safety_risks=("rủi ro khi nâng cột mà điểm kê không ổn định",),
+        quality_risks=("lệch trục cột, sai dung sai lắp dựng, phát sinh NCR",),
+        production_impact="Làm chậm lắp dựng, tăng chi phí sửa móng/base plate và ảnh hưởng tiến độ cẩu.",
+        checklist_items=("tọa độ tim", "projection", "template", "ren", "bản vẽ revision", "biên bản survey", "hold point"),
+        hashtags=("#BuLongNeo", "#LapDung", "#KhaoSat", "#KetCauThep"),
+    ),
+    DomainPlaybook(
+        key="BLASTING_ABRASIVE_LOSS",
+        aliases=("blasting abrasive loss", "hao hat bi phun", "mat hat phun bi", "abrasive loss", "phun bi ton hat"),
+        domain="Xử lý bề mặt",
+        process="Phun bi/phun cát",
+        equipment="buồng phun, hạt mài, hệ thu hồi, cyclone và lọc bụi",
+        typical_symptoms=("hao hạt mài bất thường", "bụi tăng", "profile không ổn định", "năng suất phun giảm"),
+        technical_mechanism="Hạt mài thất thoát khi hệ thu hồi kín kém, phân ly bụi sai, áp lực phun không phù hợp hoặc thao tác phun làm hạt văng khỏi vùng thu hồi.",
+        likely_causes=("rò rỉ cửa buồng phun", "cyclone phân ly kém", "áp lực phun quá cao", "hạt bị vỡ do tái sử dụng quá lâu", "thu gom sàn không đều"),
+        inspection_steps=("kiểm tra rò rỉ buồng phun", "kiểm tra hệ thu hồi", "đo độ nhám", "kiểm tra bụi và kích cỡ hạt", "ghi lượng hạt bổ sung mỗi ca"),
+        corrective_actions=("bịt kín điểm rò", "chỉnh bộ phân ly", "đặt lại áp lực phun", "loại hạt vỡ và bụi", "chuẩn hóa thu gom"),
+        preventive_actions=("theo dõi tiêu hao hạt theo m2", "bảo trì gioăng cửa", "kiểm tra lọc bụi định kỳ", "đào tạo góc phun"),
+        safety_risks=("bụi hô hấp và trơn trượt do hạt rơi vãi",),
+        quality_risks=("độ nhám không đạt làm giảm bám dính sơn",),
+        production_impact="Tăng chi phí vật tư, giảm tốc độ chuẩn bị bề mặt và ảnh hưởng kế hoạch sơn.",
+        checklist_items=("rò buồng phun", "hệ thu hồi", "bộ phân ly", "áp lực phun", "độ nhám", "lượng hạt bổ sung", "lọc bụi"),
+        hashtags=("#PhunBi", "#HatMai", "#ChuanBiBeMat", "#KiemSoatChiPhi"),
+    ),
+    DomainPlaybook(
+        key="LASER_BURR",
+        aliases=("laser burr", "laser dross", "ba via cat laser", "bavia laser", "xi cat laser"),
+        domain="Cắt laser",
+        process="Kiểm soát bavia/xỉ cắt",
+        equipment="máy cắt laser, đầu cắt, thấu kính, khí hỗ trợ và bàn cắt",
+        typical_symptoms=("mép cắt có bavia", "xỉ bám mặt dưới", "lỗ cắt không sạch", "phôi phải mài lại nhiều"),
+        technical_mechanism="Bavia laser xuất hiện khi tiêu điểm, tốc độ cắt, công suất, áp lực khí hoặc tình trạng đầu cắt/thấu kính không phù hợp với chiều dày vật liệu.",
+        likely_causes=("tiêu điểm sai", "đầu cắt mòn hoặc lệch tâm", "áp lực khí hỗ trợ thấp", "tốc độ cắt không phù hợp", "thấu kính bẩn"),
+        inspection_steps=("kiểm tra đầu cắt và thấu kính", "cắt mẫu theo chiều dày", "đối chiếu tiêu điểm, công suất, tốc độ và khí", "kiểm tra mép dưới bằng mẫu chuẩn"),
+        corrective_actions=("vệ sinh hoặc thay thấu kính/đầu cắt", "đặt lại tiêu điểm", "tối ưu tốc độ và khí", "mài sạch bavia trước gá lắp"),
+        preventive_actions=("lập bảng thông số theo chiều dày", "kiểm tra đầu cắt/thấu kính đầu ca", "lưu mẫu cắt chuẩn", "tách phôi lỗi để xử lý ngay"),
+        safety_risks=("đứt tay do mép sắc",),
+        quality_risks=("fit-up hở, mối hàn xấu hoặc lắp ghép kẹt do bavia",),
+        production_impact="Tăng thời gian mài sửa và làm chậm công đoạn gá lắp.",
+        checklist_items=("đầu cắt", "thấu kính", "tiêu điểm", "khí hỗ trợ", "tốc độ cắt", "mẫu cắt", "bavia mép dưới"),
+        hashtags=("#CatLaser", "#Bavia", "#XiCat", "#Fitup"),
+    ),
+    DomainPlaybook(
+        key="CRANE_NOISE",
+        aliases=("crane noise", "cau truc keu", "cau truc on", "tieng on cau truc", "overhead crane noise"),
+        domain="Bảo trì thiết bị nâng",
+        process="Chẩn đoán tiếng ồn cầu trục",
+        equipment="cầu trục, bánh xe, ray, hộp giảm tốc, phanh và cáp tải",
+        typical_symptoms=("cầu trục kêu khi di chuyển", "rung trên dầm", "bánh xe mòn lệch", "phanh phát tiếng bất thường"),
+        technical_mechanism="Tiếng ồn cầu trục thường đến từ lệch ray, bánh xe mòn, bạc đạn thiếu bôi trơn, hộp giảm tốc lỗi hoặc phanh cọ sát.",
+        likely_causes=("ray lệch hoặc bẩn", "bánh xe mòn côn", "bạc đạn khô", "hộp giảm tốc thiếu dầu", "phanh chỉnh sai"),
+        inspection_steps=("kiểm tra ray và khe hở", "kiểm tra bánh xe", "nghe hộp giảm tốc", "kiểm tra dầu và bạc đạn", "thử phanh không tải và có tải"),
+        corrective_actions=("vệ sinh và căn ray", "thay bánh xe hoặc bạc đạn lỗi", "bổ sung dầu hộp giảm tốc", "chỉnh phanh theo hướng dẫn"),
+        preventive_actions=("lập lịch kiểm tra ray", "bôi trơn định kỳ", "ghi âm/rung để so sánh", "không vận hành quá tải"),
+        safety_risks=("rủi ro rơi tải hoặc mất kiểm soát di chuyển nếu tiếp tục vận hành",),
+        quality_risks=("dừng nâng hạ làm chậm xuất hàng và lắp dựng",),
+        production_impact="Có thể khóa thiết bị nâng chính, gây ùn vật tư và chậm giao hàng.",
+        checklist_items=("ray", "bánh xe", "bạc đạn", "hộp giảm tốc", "phanh", "cáp tải", "dầu bôi trơn", "thử tải"),
+        hashtags=("#CauTruc", "#BaoTri", "#AnToanNangHa", "#TPM"),
+    ),
+    DomainPlaybook(
+        key="DFT_LOW",
+        aliases=("dft low", "dft thap", "do day mang son thap", "son khong dat dft", "low dry film thickness"),
+        domain="Sơn phủ kết cấu thép",
+        process="Kiểm soát DFT",
+        equipment="màng sơn khô, máy đo DFT, súng phun và bề mặt thép",
+        typical_symptoms=("DFT thấp hơn yêu cầu", "spot reading không đạt", "màng sơn phủ không đều", "phải sơn bù nhiều điểm"),
+        technical_mechanism="DFT thấp xảy ra khi lượng sơn ướt, khoảng cách phun, tốc độ tay, độ phủ mép cạnh hoặc pha loãng không kiểm soát đúng theo quy trình.",
+        likely_causes=("tay phun đi quá nhanh", "pha loãng quá mức", "không stripe coat mép cạnh", "máy đo chưa hiệu chuẩn", "bề mặt khó phủ đều"),
+        inspection_steps=("hiệu chuẩn máy đo DFT", "lập bản đồ điểm đo", "kiểm tra WFT khi phun", "kiểm tra mép cạnh và góc khuất", "đối chiếu yêu cầu hệ sơn"),
+        corrective_actions=("sơn bù vùng thấp DFT", "kiểm tra lại sau khô", "điều chỉnh kỹ thuật phun", "ghi lại map DFT sau sửa"),
+        preventive_actions=("đào tạo tay phun", "sơn dặm mép cạnh trước lớp phủ chính", "kiểm soát WFT trong ca", "hiệu chuẩn máy đo trước khi dùng"),
+        safety_risks=("phơi nhiễm dung môi khi sơn bù nhiều lần",),
+        quality_risks=("chống ăn mòn không đạt tuổi thọ thiết kế", "khách hàng từ chối nghiệm thu"),
+        production_impact="Làm tăng thời gian sơn bù, chờ khô và kiểm tra lại.",
+        checklist_items=("hiệu chuẩn máy đo DFT", "bản đồ điểm đo", "WFT", "sơn dặm mép cạnh", "mép cạnh", "pha loãng", "sơn bù", "kiểm tra sau khô"),
+        hashtags=("#DFT", "#SonPhu", "#KiemTraSon", "#Qaqc"),
+    ),
+)
+
+
+def match_playbook(topic: str, reasoning: ReasoningObject | None = None) -> DomainPlaybook | None:
+    values = [topic]
+    if reasoning is not None:
+        values.extend(reasoning.parsed.keywords)
+        for category in ("Process", "Machine", "Tool", "Defect", "Failure", "Measurement", "Component", "Material"):
+            values.extend(reasoning.entities.get(category))
+    haystack = _normalize(" ".join(values))
+    best: tuple[int, DomainPlaybook] | None = None
+    for playbook in PLAYBOOKS:
+        score = 0
+        for alias in playbook.aliases:
+            normalized_alias = _normalize(alias)
+            if normalized_alias and normalized_alias in haystack:
+                score += 12 + len(normalized_alias.split())
+            else:
+                score += sum(1 for token in normalized_alias.split() if token in haystack)
+        if playbook.key == "SAW_POROSITY" and "saw" in haystack and any(term in haystack for term in ("ro khi", "porosity", "bọ khí")):
+            score += 20
+        if playbook.key == "POWER_TOOL_BREAKDOWN" and any(term in haystack for term in ("may mai", "angle grinder")) and any(term in haystack for term in ("hong", "breakdown", "lien tuc")):
+            score += 20
+        if playbook.key == "LASER_5S" and "laser" in haystack and "5s" in haystack:
+            score += 20
+        if playbook.key == "PAINT_PEELING" and any(term in haystack for term in ("son", "paint", "coating")) and any(term in haystack for term in ("bong troc", "peeling", "adhesion")):
+            score += 20
+        if best is None or score > best[0]:
+            best = (score, playbook)
+    if best is None or best[0] <= 0:
+        return _fallback_playbook(reasoning) if reasoning is not None else None
+    return best[1]
+
+
+def playbook_for_reasoning(reasoning: ReasoningObject) -> DomainPlaybook:
+    return match_playbook(reasoning.topic, reasoning) or _fallback_playbook(reasoning)
 
 
 def bullets(values: tuple[str, ...], limit: int = 4) -> list[str]:
@@ -52,6 +356,8 @@ def hashtags(reasoning: ReasoningObject) -> str:
 
 class ChannelWriter:
     def write(self, reasoning: ReasoningObject, plan: ContentPlan) -> str:
+        if plan.channel == "hashtags":
+            return hashtags(reasoning)
         return "\n".join(
             [
                 f"Hook: {reasoning.topic}",
@@ -64,6 +370,6 @@ class ChannelWriter:
                 "Verification:",
                 *bullets(reasoning.verification, 3),
                 "",
-                f"CTA: Review the evidence before releasing the work. {hashtags(reasoning)}",
+                f"CTA: Kiểm tra bằng chứng trước khi bàn giao. {hashtags(reasoning)}",
             ]
         )

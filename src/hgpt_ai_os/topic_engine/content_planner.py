@@ -20,6 +20,7 @@ class ContentPlanner:
         "image": ("Industrial poster prompt",),
         "seo": ("Title", "Search Intent", "Professional Article Outline", "FAQ", "CTA"),
         "checklist": ("Engineering inspection checklist",),
+        "hashtags": ("Hashtags",),
         "channel": ("Hook", "Body", "Action"),
     }
 

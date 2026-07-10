@@ -33,9 +33,9 @@ class GenerationSpec:
 _GENERATION_SPECS = {
     "facebook": GenerationSpec(
         key="facebook",
-        content_type="Facebook engineering post",
-        target_audience="steel fabrication and construction site engineers, QC teams, supervisors",
-        writing_goal="educate readers with a practical field problem, risks, corrective action, and inspection checklist",
+        content_type="Facebook educational post",
+        target_audience="the audience implied by the user's topic",
+        writing_goal="educate readers with a practical topic-specific problem, risks, actions, examples, and clear takeaway",
         format_notes="Write in Vietnamese. Use a strong hook, short sections, practical bullet points, and a clear CTA.",
         reasoning_focus="field consequence, root cause, decision points, inspection evidence, corrective workflow",
         structure_options=(
@@ -47,10 +47,10 @@ _GENERATION_SPECS = {
     "tiktok": GenerationSpec(
         key="tiktok",
         content_type="TikTok short video script",
-        target_audience="site engineers, foremen, QC inspectors, and steel construction crews",
-        writing_goal="turn the topic into a concise educational short-video script with visual beats and spoken lines",
-        format_notes="Write in Vietnamese. Include hook, scene-by-scene shots, voiceover, captions, and CTA.",
-        reasoning_focus="visual symptom, first three seconds, demonstration sequence, spoken explanation, field takeaway",
+        target_audience="the audience implied by the user's topic",
+        writing_goal="turn the topic into a short viral TikTok script that moves through hook, curiosity, pain, useful information, twist, and action",
+        format_notes="Write in Vietnamese. Use labels Mở đầu, Khơi tò mò, Nỗi đau, Thông tin, Cú twist, Kêu gọi hành động. Keep it around 150-250 words. Do not write a storyboard, shot plan, camera schedule, timestamps, or scene directions.",
+        reasoning_focus="viral hook, curiosity gap, audience pain, one practical insight, twist, save/share action",
         structure_options=(
             "open with a camera-visible defect, then move through three quick shots and a final field rule",
             "open with a question to the crew, then show inspection, correction, and approval beats",
@@ -60,9 +60,9 @@ _GENERATION_SPECS = {
     "image": GenerationSpec(
         key="image_prompt",
         content_type="Image generation prompt",
-        target_audience="AI image model and industrial visual designer",
-        writing_goal="describe a realistic engineering image that visualizes the topic accurately",
-        format_notes="Write a production-ready prompt in English with subject, setting, technical details, camera, lighting, and exclusions.",
+        target_audience="AI image model and visual designer",
+        writing_goal="describe a realistic image that visualizes the topic accurately",
+        format_notes="Write in Vietnamese with structured labels only: Chủ thể, Bối cảnh, Hành động, Trang phục, Ánh sáng, Góc máy, Ống kính, Màu sắc, Chi tiết cần có, Chi tiết cần tránh, Phong cách chất lượng, Tỷ lệ khung hình. Do not output paragraphs.",
         reasoning_focus="visible subject, physical setting, measurable details, inspection context, visual exclusions",
         structure_options=(
             "compose from foreground subject to background context, then camera, lighting, and negative prompts",
@@ -73,9 +73,9 @@ _GENERATION_SPECS = {
     "video": GenerationSpec(
         key="video_prompt",
         content_type="Video generation prompt",
-        target_audience="AI video model and industrial video producer",
-        writing_goal="describe a cinematic technical sequence that explains the field issue and correction workflow",
-        format_notes="Write a production-ready prompt in English with duration, shot sequence, motion, inspection actions, and safety mood.",
+        target_audience="AI video model and video producer",
+        writing_goal="describe a cinematic topic-specific sequence that explains the issue and practical action",
+        format_notes="Write in Vietnamese as a production-ready Gemini Veo/Veo3/Kling prompt with labels: Tiêu đề, Mở đầu, Cảnh 1, Cảnh 2, Cảnh 3, Góc máy, Ánh sáng, Lời thoại, Phụ đề, Âm thanh / SFX, Kết thúc, Kêu gọi hành động, Chi tiết cần tránh. It must be copy-paste ready and not a long article.",
         reasoning_focus="sequence logic, motion, inspection handoff, correction workflow, final verification",
         structure_options=(
             "sequence from establishing shot to close-up evidence, correction action, and final sign-off",
@@ -86,7 +86,7 @@ _GENERATION_SPECS = {
     "seo": GenerationSpec(
         key="seo",
         content_type="SEO article brief",
-        target_audience="engineers, QA/QC teams, project managers, and technical buyers searching for steel construction guidance",
+        target_audience="readers searching for guidance on the user's topic",
         writing_goal="create search-optimized educational content with keywords, title, meta description, outline, and FAQs",
         format_notes="Write in Vietnamese. Keep it distinct from social posts and focus on search intent and technical discoverability.",
         reasoning_focus="search intent, technical entities, practical questions, buyer/engineer concerns, answer hierarchy",
@@ -98,15 +98,15 @@ _GENERATION_SPECS = {
     ),
     "checklist": GenerationSpec(
         key="checklist",
-        content_type="Production approval checklist",
-        target_audience="content reviewer, engineering reviewer, and QA/QC approver",
-        writing_goal="verify technical accuracy, audience fit, channel fit, and production readiness",
+        content_type="Content approval checklist",
+        target_audience="content reviewer, subject reviewer, and final approver",
+        writing_goal="verify topic relevance, accuracy, clarity, practical value, audience fit, channel fit, visual fit, CTA, and readiness",
         format_notes="Write in Vietnamese. Use checkbox bullets grouped by review area.",
         reasoning_focus="approval criteria, technical risk, channel readiness, evidence coverage, final release decision",
         structure_options=(
-            "group checks by technical accuracy, channel fit, evidence, compliance, and final approval",
-            "group checks by topic relevance, risk controls, visual assets, review workflow, and release readiness",
-            "group checks by reviewer role: engineering, QA/QC, marketing, production, and approver",
+            "group checks by topic relevance, accuracy, clarity, practical value, CTA, and final approval",
+            "group checks by audience fit, visual assets, evidence, review workflow, and release readiness",
+            "group checks by reviewer role: content, subject matter, marketing, visual, and approver",
         ),
     ),
 }
@@ -167,6 +167,49 @@ _EVIDENCE_RHYTHMS = (
     "pair each risk with one verification action",
     "move from general implication to specific field check",
     "make the final step a release or hold decision",
+)
+
+_FORBIDDEN_OUTPUT_TERMS = (
+    "Timeline",
+    "Scene",
+    "Camera",
+    "Voice",
+    "Caption",
+    "Transition",
+    "Negative prompt",
+    "Duration",
+    "Aspect ratio",
+    "Lens",
+    "Lighting",
+    "Composition",
+    "Mood",
+    "Texture",
+    "Hook:",
+    "CTA:",
+    "Voice Over",
+    "Camera Angle",
+    "Scene-by-scene",
+    "Industrial environment",
+    "Engineering checklist",
+    "Inspection item",
+    "Acceptance criteria",
+    "Responsible person",
+    "Frequency",
+    "Root Cause",
+    "Problem",
+    "Evidence",
+    "Manager's job",
+    "Quality release",
+    "Schedule",
+    "Hold the product",
+    "The topic belongs to",
+)
+
+_BROKEN_VIETNAMESE_PATTERNS = (
+    "Đ ng c",
+    "đ ng c",
+    "ki m tra",
+    "b ng ch ng",
 )
 
 
@@ -360,7 +403,7 @@ class ContentGenerator:
 
         if topic:
             logger.info("Free Desktop Mode using built-in generator for hashtags")
-            return BuilderFactory.create("hashtags").build(topic, context)
+            return self.topic_engine.generate(topic, "hashtags", context)
 
         return self.template.render(
             "templates/content/hashtags.md",
@@ -416,8 +459,7 @@ class ContentGenerator:
         variation: str,
     ) -> str:
         system_prompt = (
-            "You are LUCID AUTO's AI content engine for steel fabrication, "
-            "construction QA/QC, site engineering, and industrial marketing. "
+            "You are LUCID AUTO's AI content engine for Vietnamese topic-aware content. "
             "Generate practical, technically grounded final content. "
             "Every deliverable must use independent reasoning, an original opening, "
             "and a channel-specific structure."
@@ -519,6 +561,11 @@ class ContentGenerator:
         if text.startswith("AI provider is unavailable"):
             return ""
         if text.startswith("AI provider is not available"):
+            return ""
+        lowered = text.lower()
+        if any(term.lower() in lowered for term in _FORBIDDEN_OUTPUT_TERMS):
+            return ""
+        if any(pattern.lower() in lowered for pattern in _BROKEN_VIETNAMESE_PATTERNS):
             return ""
         return text
 

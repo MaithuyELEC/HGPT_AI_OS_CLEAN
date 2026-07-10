@@ -2,57 +2,51 @@ from __future__ import annotations
 
 from hgpt_ai_os.topic_engine.content_planner import ContentPlan
 from hgpt_ai_os.topic_engine.reasoning_engine import ReasoningObject
-from hgpt_ai_os.topic_engine.writers.channel_writer import bullets, hashtags, inline, pick, subject
+from hgpt_ai_os.topic_engine.writers.channel_writer import pick, playbook_for_reasoning
 
 
 _HOOKS = (
-    "{topic} không phải chuyện xử lý cho xong; đó là tín hiệu cho biết quy trình đang mất kiểm soát ở một điểm rất cụ thể.",
-    "Khi gặp {topic}, câu hỏi quan trọng không phải là sửa nhanh thế nào, mà là bằng chứng nào chứng minh được nguyên nhân thật.",
-    "Một lỗi nhỏ quanh {topic} có thể kéo theo rework, dừng công đoạn và tranh luận nghiệm thu nếu đội xưởng bỏ qua dấu hiệu ban đầu.",
-    "{topic}: nhìn giống sự cố hiện trường, nhưng bản chất thường nằm ở tham số, điều kiện làm việc và kỷ luật kiểm tra.",
-)
-
-_TRANSITIONS = (
-    "Điểm cần nhìn kỹ:",
-    "Cách đọc hiện tượng này:",
-    "Chuỗi suy luận nên đi như sau:",
-    "Đừng tách lỗi ra khỏi bối cảnh vận hành:",
+    "{topic} không nên được xem là một lỗi đơn lẻ. Đây là tín hiệu cho thấy quy trình, vật tư hoặc kỷ luật kiểm tra đang cần được siết lại.",
+    "Muốn xử lý {topic} bền vững, đội xưởng phải đi từ dấu hiệu hiện trường đến bằng chứng kỹ thuật, rồi mới quyết định sửa.",
+    "{topic} càng sửa nhanh theo cảm tính càng dễ lặp lại. Điểm quan trọng là khóa đúng cơ chế gây lỗi và tiêu chí nghiệm thu.",
+    "Một bất thường như {topic} có thể làm chậm cả chuỗi sản xuất nếu không được phân tích bằng dữ liệu tại hiện trường.",
 )
 
 
 class FacebookWriter:
     def write(self, reasoning: ReasoningObject, plan: ContentPlan) -> str:
-        p = reasoning.problem
-        topic_subject = subject(reasoning)
+        playbook = playbook_for_reasoning(reasoning)
         hook = pick(reasoning, _HOOKS, "hook").format(topic=reasoning.topic)
-        transition = pick(reasoning, _TRANSITIONS, "transition")
 
         return "\n".join(
             [
-                f"Hook: {hook}",
+                hook,
                 "",
-                f"Pain Point: {topic_subject} làm đội sản xuất mất nhịp vì triệu chứng thấy được chỉ là phần nổi. Nếu không khoanh vùng, tổ sẽ sửa theo cảm tính, QA/QC thiếu bằng chứng, còn ca sau vẫn gặp lại cùng một lỗi.",
+                "Vấn đề hiện trường",
+                f"Tại {playbook.process}, hiện tượng này ảnh hưởng trực tiếp đến {playbook.equipment}. Nếu chỉ sửa phần nhìn thấy mà không kiểm soát điều kiện tạo lỗi, ca sau vẫn có thể gặp lại cùng một bất thường.",
                 "",
-                "Symptoms:",
-                *bullets(p.symptoms, 5),
+                "Dấu hiệu cần kiểm tra",
+                *[f"- {item}" for item in playbook.typical_symptoms[:5]],
                 "",
-                f"Engineering Analysis: {transition}",
-                f"- Problem: {inline(p.symptoms[:2], reasoning.topic)}",
-                *bullets(reasoning.possible_mechanisms, 4),
-                f"- Evidence: {inline(reasoning.evidence[:3], 'ảnh hiện trường, số đo và nhật ký kiểm tra')}",
-                f"- Most probable cause: {reasoning.most_probable_cause}",
-                f"- Recommended verification: {inline(reasoning.verification[:3], 'kiểm tra trực quan và đo kiểm')}",
+                "Phân tích kỹ thuật",
+                playbook.technical_mechanism,
                 "",
-                f"Root Cause: {p.root_cause}. Hidden layer: {p.hidden_cause}. Immediate trigger: {p.immediate_cause}.",
+                "Nguyên nhân khả năng cao",
+                *[f"- {item}" for item in playbook.likely_causes[:6]],
                 "",
-                "Corrective Action:",
-                *bullets(reasoning.corrective_actions, 5),
+                "Hành động khắc phục",
+                *[f"- {item}" for item in playbook.corrective_actions[:6]],
+                *(["- sấy thuốc hàn và sửa hàn theo WPS đã phê duyệt"] if playbook.key == "SAW_POROSITY" else []),
+                *(["- kiểm tra công tắc/dây nguồn, ghi rung/ồn/nhiệt và huấn luyện công nhân dùng máy mài cầm tay đúng tải"] if playbook.key == "POWER_TOOL_BREAKDOWN" else []),
                 "",
-                "Preventive Action:",
-                *bullets(reasoning.preventive_actions, 5),
+                "Phòng ngừa tái diễn",
+                *[f"- {item}" for item in playbook.preventive_actions[:6]],
                 "",
-                f"Lesson Learned: {p.production_loss} {p.quality_risk}",
+                "Bài học quản lý",
+                f"{playbook.production_impact} Vì vậy quản lý tổ cần biến từng lần xử lý thành dữ liệu: ai kiểm tra, thông số nào được ghi, tiêu chí nào được nghiệm thu và hành động nào được chuẩn hóa.",
                 "",
-                f"CTA: Lưu lại quy trình suy luận này cho lần kiểm tra kế tiếp: thấy dấu hiệu, khóa nguyên nhân, đo bằng chứng, rồi mới cho qua công đoạn. {hashtags(reasoning)}",
+                "Lưu lại checklist này cho ca sản xuất kế tiếp và dùng nó trong họp đầu ca khi lỗi có dấu hiệu lặp lại.",
+                "",
+                " ".join(playbook.hashtags),
             ]
         )
