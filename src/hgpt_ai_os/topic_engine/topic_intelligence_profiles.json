@@ -1504,6 +1504,93 @@
       ]
     },
     {
+      "key": "CRANE_NOISE",
+      "domain": "Bảo trì thiết bị nâng",
+      "process": "Chẩn đoán tiếng ồn/rung cầu trục",
+      "equipment": "cầu trục",
+      "match": {
+        "equipment": [
+          "Crane"
+        ],
+        "failures": [
+          "Noise",
+          "Vibration"
+        ]
+      }
+    },
+    {
+      "key": "CRANE_GENERAL_FAILURE",
+      "domain": "Bảo trì thiết bị nâng",
+      "process": "Sự cố chung cầu trục",
+      "equipment": "cầu trục và khu vực nâng hạ liên quan",
+      "match": {
+        "equipment": [
+          "Crane"
+        ],
+        "failures": [
+          "Broken",
+          "Cracked"
+        ]
+      },
+      "typical_symptoms": [
+        "cầu trục có dấu hiệu hư hỏng nhưng chưa xác định bộ phận",
+        "thiết bị nâng cần dừng để kiểm tra an toàn",
+        "thông tin hiện trường chưa đủ để kết luận cáp, motor hay hộp giảm tốc",
+        "cần xác minh vị trí hư hỏng trước khi sửa"
+      ],
+      "technical_mechanism": "Sự cố cầu trục chưa rõ bộ phận phải được xử lý như một bất thường an toàn của thiết bị nâng: dừng vận hành, cô lập khu vực, kiểm tra theo bằng chứng hiện trường và chỉ kết luận nguyên nhân sau khi xác minh trực tiếp.",
+      "likely_causes": [
+        "hư hỏng cơ khí tại một bộ phận chưa được nhận diện",
+        "tải, thao tác vận hành hoặc điều kiện làm việc tạo ứng suất bất thường",
+        "thiếu dữ liệu kiểm tra định kỳ để khoanh vùng nguyên nhân",
+        "bất thường chưa được cô lập trước khi tiếp tục vận hành"
+      ],
+      "inspection_steps": [
+        "dừng vận hành cầu trục và cảnh báo khu vực nâng hạ",
+        "ghi nhận vị trí, thời điểm, tải nâng và mô tả hư hỏng ban đầu",
+        "kiểm tra trực quan toàn bộ khu vực liên quan trước khi tháo lắp",
+        "xác định bộ phận hư hỏng bằng bằng chứng đo kiểm hoặc ảnh hiện trường",
+        "đối chiếu hướng dẫn bảo trì và tiêu chí an toàn đang áp dụng"
+      ],
+      "corrective_actions": [
+        "giữ thiết bị ở trạng thái không vận hành đến khi xác định rõ nguyên nhân",
+        "sửa hoặc thay bộ phận được xác minh là hư hỏng",
+        "kiểm tra lại các điểm liên quan trước khi chạy thử",
+        "ghi biên bản xử lý và người xác nhận trước khi bàn giao"
+      ],
+      "preventive_actions": [
+        "bổ sung điểm kiểm tra bất thường vào checklist cầu trục",
+        "ghi lịch sử hư hỏng theo vị trí và điều kiện vận hành",
+        "đào tạo người vận hành báo lỗi khi chưa rõ bộ phận",
+        "không suy diễn nguyên nhân khi thiếu bằng chứng hiện trường"
+      ],
+      "safety_risks": [
+        "rủi ro rơi tải hoặc va chạm nếu tiếp tục vận hành khi chưa xác minh hư hỏng",
+        "nguy cơ thao tác trong vùng nâng hạ khi chưa cô lập khu vực"
+      ],
+      "quality_risks": [
+        "sửa sai bộ phận nếu kết luận nguyên nhân trước khi kiểm tra",
+        "lỗi lặp lại do thiếu bằng chứng nghiệm thu"
+      ],
+      "production_impact": "Cầu trục có thể phải dừng tạm thời để bảo vệ người, vật tư và tiến độ nâng hạ cho đến khi nguyên nhân được xác minh.",
+      "checklist_items": [
+        "dừng vận hành",
+        "cô lập khu vực",
+        "ghi bằng chứng hiện trường",
+        "xác định vị trí hư hỏng",
+        "kiểm tra an toàn",
+        "sửa theo nguyên nhân đã xác minh",
+        "chạy thử",
+        "nghiệm thu trước vận hành"
+      ],
+      "hashtags": [
+        "#CauTruc",
+        "#BaoTri",
+        "#AnToanNangHa",
+        "#KiemTraHienTruong"
+      ]
+    },
+    {
       "key": "HYDRAULIC_LEAK",
       "domain": "Bảo trì thủy lực",
       "process": "Rò rỉ hệ thống thủy lực",

@@ -195,6 +195,33 @@ class TopicEngineTests(unittest.TestCase):
                         self.assertEqual(getattr(context, field), value)
                 self.assertGreater(context.confidence, 0.5)
 
+    def test_crane_failure_routing_does_not_mutate_unknown_failure_to_noise(self):
+        engine = TopicIntelligenceEngine()
+        cases = {
+            "Cầu trục 7.5T bị đứt": ("CRANE_GENERAL_FAILURE", "Crane Broken Troubleshooting"),
+            "Cầu trục bị gãy": ("CRANE_GENERAL_FAILURE", "Crane Broken Troubleshooting"),
+            "Cầu trục bị nứt": ("CRANE_GENERAL_FAILURE", "Crane Cracked Troubleshooting"),
+            "Cầu trục rung": ("CRANE_NOISE", "Crane Vibration Troubleshooting"),
+            "Cầu trục kêu": ("CRANE_NOISE", "Crane Noise Troubleshooting"),
+            "Cáp cẩu trục bị đứt": ("WIRE_ROPE_FAILURE", "Crane Wire Rope Broken Troubleshooting"),
+        }
+
+        for topic, (playbook_key, query) in cases.items():
+            with self.subTest(topic=topic):
+                context = engine.analyze(topic)
+                self.assertEqual(context.playbook_key, playbook_key)
+                self.assertEqual(context.knowledge_query, query)
+
+    def test_empty_context_playbook_uses_generic_reasoning_for_low_confidence_fuzzy_match(self):
+        engine = TopicIntelligenceEngine()
+        reasoning = engine.reason("Cầu trục 7.5T bị đứt")
+        object.__setattr__(reasoning.topic_context, "playbook_key", "")
+
+        playbook = match_playbook(reasoning.topic, reasoning)
+
+        self.assertEqual(playbook.key, "GENERAL_ENGINEERING")
+        self.assertEqual(playbook.aliases, ("Cầu trục 7.5T bị đứt",))
+
     def test_wire_rope_failure_merges_failure_intelligence_into_context(self):
         context = TopicIntelligenceEngine().analyze("Cáp cẩu trục bị đứt")
         merged = " ".join(

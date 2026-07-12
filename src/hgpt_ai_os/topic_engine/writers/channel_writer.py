@@ -432,6 +432,25 @@ def _data_playbooks() -> tuple[DomainPlaybook, ...]:
 DATA_PLAYBOOKS = _data_playbooks()
 
 
+def _fuzzy_confidence(playbook: DomainPlaybook, haystack: str) -> float:
+    confidence = 0.0
+    for alias in playbook.aliases:
+        normalized_alias = _normalize(alias)
+        if not normalized_alias:
+            continue
+        if _contains_term(haystack, normalized_alias):
+            confidence = max(confidence, 1.0)
+            continue
+        tokens = normalized_alias.split()
+        if tokens:
+            hits = sum(1 for token in tokens if _contains_term(haystack, token))
+            confidence = max(confidence, hits / len(tokens) * 0.5)
+    for group in playbook.match_groups:
+        if group and all(_contains_term(haystack, term) for term in group):
+            confidence = max(confidence, 1.0)
+    return confidence
+
+
 def match_playbook(topic: str, reasoning: ReasoningObject | None = None) -> DomainPlaybook | None:
     if reasoning is not None:
         context_playbook = _context_playbook(reasoning)
@@ -467,6 +486,9 @@ def match_playbook(topic: str, reasoning: ReasoningObject | None = None) -> Doma
             best = (score, playbook)
     if best is None or best[0] <= 0:
         return _fallback_playbook(reasoning) if reasoning is not None else None
+    if reasoning is not None and not reasoning.topic_context.playbook_key:
+        if _fuzzy_confidence(best[1], haystack) < 0.9:
+            return _fallback_playbook(reasoning)
     return best[1]
 
 
