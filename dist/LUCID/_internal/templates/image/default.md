@@ -1,9 +1,0 @@
-{{HOOK}}
-
-TITLE:
-{{TOPIC}}
-
-IMAGE PROMPT:
-{{IMAGE_PROMPT}}
-
-{{HASHTAGS}}

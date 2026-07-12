@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import re
 
+from hgpt_ai_os.content.export.docx_exporter import DocxExporter
 from hgpt_ai_os.content.factory.builder_factory import BuilderFactory
 
 
@@ -66,16 +67,38 @@ def test_facebook_has_required_topic_aware_sections():
     content = BuilderFactory.create("facebook").build("5S trong xưởng sản xuất kết cấu thép")
 
     for section in (
-        "Hook:",
-        "Vấn đề:",
-        "Dấu hiệu nhận biết:",
-        "Nguyên nhân gốc:",
-        "Giải pháp:",
-        "Điều học được:",
-        "Hành động:",
-        "Hashtags:",
+        "Introduction",
+        "Main knowledge",
+        "Step-by-step actions",
+        "Practical advice",
+        "Common mistakes",
+        "Conclusion",
     ):
         assert section in content
+
+
+def test_general_facebook_uses_domain_writer_sections_not_template_sections():
+    content = BuilderFactory.create("facebook").build("Mai")
+
+    for section in (
+        "Mở bài",
+        "Bối cảnh",
+        "Điều cần hiểu",
+        "Cách làm",
+        "Sai lầm thường gặp",
+        "Kết lại",
+        "Lời mời",
+    ):
+        assert section in content
+
+    for label in (
+        "Introduction",
+        "Main knowledge",
+        "Step-by-step actions",
+        "Practical advice",
+        "Conclusion",
+    ):
+        assert label not in content
 
 
 def test_each_output_type_uses_a_distinct_topic_specific_body():
@@ -126,60 +149,110 @@ def test_release_output_contracts_are_independent_without_sentence_reuse():
         assert outputs["seo"] != outputs["facebook"]
         assert all(outputs["image"] != body for key, body in outputs.items() if key != "image")
 
-        for label in (
-            "Title:",
-            "Hook:",
-            "Pain:",
-            "Story:",
-            "Knowledge:",
-            "Practical actions:",
-            "Question:",
-            "CTA:",
-            "Hashtags:",
-        ):
-            assert label in outputs["facebook"]
+        expected_general = topic != "Bảo trì cầu trục trong nhà máy"
+        if expected_general:
+            for label in (
+                "Mở bài",
+                "Bối cảnh",
+                "Điều cần hiểu",
+                "Cách làm",
+                "Sai lầm thường gặp",
+                "Kết lại",
+                "Lời mời",
+            ):
+                assert label in outputs["facebook"]
+            for label in (
+                "Introduction",
+                "Main knowledge",
+                "Step-by-step actions",
+                "Practical advice",
+                "Conclusion",
+            ):
+                assert label not in outputs["facebook"]
+        else:
+            for label in (
+                "Introduction",
+                "Main knowledge",
+                "Step-by-step actions",
+                "Practical advice",
+                "Common mistakes",
+                "Conclusion",
+            ):
+                assert label in outputs["facebook"]
         assert "Người đọc" not in outputs["facebook"]
         assert "Chủ đề thuộc" not in outputs["facebook"]
 
-        for label in ("Hook", "Curiosity", "Pain", "Truth", "One practical tip", "CTA"):
+        expected_tiktok_labels = (
+            ("Mở đầu", "Gây chú ý", "Nội dung chính", "Điểm nhớ", "Kết thúc")
+            if expected_general
+            else ("Mở đầu", "Khơi mở kiến thức", "Điểm cần tránh", "Cách làm đúng", "Gợi ý áp dụng", "Kết thúc")
+        )
+        for label in expected_tiktok_labels:
             assert label in outputs["tiktok"]
+        for forbidden in ("Hook", "Curiosity", "Pain", "Truth", "One practical tip", "CTA"):
+            assert forbidden not in outputs["tiktok"]
         assert 120 <= len(outputs["tiktok"].split()) <= 220
         for forbidden in ("Scene", "Camera", "Storyboard", "Lighting", "Cảnh", "Góc máy"):
             assert forbidden not in outputs["tiktok"]
 
         image_lines = [line.strip() for line in outputs["image"].splitlines() if line.strip()]
-        assert [line.split(":", 1)[0] for line in image_lines] == [
-            "Chủ thể",
-            "Bối cảnh",
-            "Hành động",
-            "Trang phục",
-            "Ánh sáng",
-            "Góc máy",
-            "Ống kính",
-            "Màu sắc",
-            "Chi tiết cần có",
-            "Chi tiết cần tránh",
-            "Phong cách",
-            "Tỷ lệ",
-        ]
+        if expected_general:
+            image_labels = [line.split(" - ", 1)[0] for line in image_lines]
+            assert image_labels[0].startswith("Prompt Gemini tạo ảnh:")
+            assert image_labels[1:] == [
+                "Chủ thể",
+                "Bối cảnh",
+                "Hành động",
+                "Bố cục",
+                "Ánh sáng",
+                "Góc quay",
+                "Ống kính",
+                "Chất liệu",
+                "Màu sắc",
+                "Cảm xúc",
+                "Chi tiết cần tránh",
+                "Tỷ lệ khung hình",
+                "Chất lượng",
+            ]
+            for label in ("Prompt Veo tạo video", "Cảnh một -", "Cảnh hai -", "Cảnh ba -", "Lời thoại -", "Kết thúc -"):
+                assert label in outputs["video"]
+        else:
+            assert [line.split(":", 1)[0] for line in image_lines] == [
+                "Chủ thể",
+                "Bối cảnh",
+                "Hành động",
+                "Trang phục",
+                "Ánh sáng",
+                "Góc máy",
+                "Ống kính",
+                "Màu sắc",
+                "Chi tiết cần có",
+                "Chi tiết cần tránh",
+                "Phong cách",
+                "Tỷ lệ",
+            ]
+            for label in (
+                "Tiêu đề:",
+                "Mở đầu:",
+                "Cảnh 1:",
+                "Cảnh 2:",
+                "Cảnh 3:",
+                "Góc máy:",
+                "Ánh sáng:",
+                "Lời thoại:",
+                "Phụ đề:",
+                "Âm thanh:",
+                "Kết thúc:",
+                "Kêu gọi hành động:",
+            ):
+                assert label in outputs["video"]
 
-        for label in (
-            "Tiêu đề:",
-            "Mở đầu:",
-            "Cảnh 1:",
-            "Cảnh 2:",
-            "Cảnh 3:",
-            "Góc máy:",
-            "Ánh sáng:",
-            "Lời thoại:",
-            "Phụ đề:",
-            "Âm thanh:",
-            "Kết thúc:",
-            "CTA:",
-        ):
-            assert label in outputs["video"]
-
-        for label in ("Title:", "Meta:", "Keywords:", "Outline:", "FAQ:", "Conclusion:"):
+        seo_labels = (
+            ("Tiêu đề SEO:", "Mô tả tìm kiếm:", "Từ khóa chính", "Dàn ý bài viết", "Câu hỏi thường gặp")
+            if expected_general
+            else ("Title:", "Meta:", "Keywords:", "Outline:", "FAQ:", "Conclusion:")
+        )
+        for label in seo_labels:
             assert label in outputs["seo"]
 
         seen_sentences: dict[str, str] = {}
@@ -187,6 +260,36 @@ def test_release_output_contracts_are_independent_without_sentence_reuse():
             for sentence in _sentences(body):
                 owner = seen_sentences.setdefault(sentence, channel)
                 assert owner == channel, f"sentence reused by {owner} and {channel}: {sentence}"
+
+
+def test_general_topics_export_all_outputs_without_legacy_template_labels():
+    exporter = DocxExporter()
+    topics = ("Mai", "Japanese N5", "Coffee", "Husky", "Cooking", "Travel", "Finance")
+    channels = ("facebook", "tiktok", "seo", "image", "video", "hashtags", "approval")
+    forbidden = (
+        "Introduction",
+        "Main knowledge",
+        "Step-by-step actions",
+        "Practical advice",
+        "Common mistakes",
+        "Conclusion",
+        "Hook:",
+        "Story:",
+        "Pain:",
+        "Truth:",
+        "CTA:",
+        "Curiosity:",
+        "Practical actions:",
+    )
+
+    for topic in topics:
+        outputs = {key: BuilderFactory.create(key).build(topic) for key in channels}
+        assert set(outputs) == set(channels)
+
+        for channel, body in outputs.items():
+            exporter.validate_content(body)
+            for label in forbidden:
+                assert label not in body, f"{topic} {channel} leaked {label}"
 
 
 def _sentences(body: str) -> list[str]:

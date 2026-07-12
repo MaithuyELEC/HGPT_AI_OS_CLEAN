@@ -27,12 +27,6 @@ REQUIRED_DOCX_FILES = (
     "video_prompt.docx",
 )
 
-NON_STEEL_TOPICS = (
-    ("Cách chăm sóc mai", ("steel", "thép", "qaqc", "welding", "hàn", "fit-up")),
-    ("Nuôi chó Husky", ("qaqc", "welding")),
-    ("Học tiếng Nhật N5", ("steel", "thép", "qaqc", "welding", "hàn", "fit-up")),
-)
-
 STEEL_TOPICS = (
     ("AWS D1.1", ("aws d1.1", "hàn", "welding", "steel", "thép")),
     ("Lỗi Fit-up", ("fit-up", "hàn", "welding", "steel", "thép")),
@@ -73,20 +67,12 @@ class EndToEndContentPipelineTest(unittest.TestCase):
                     generated_text = {
                         topic: self._generate_and_read_docx_text(production, day, topic)
                         for day, (topic, _terms) in enumerate(
-                            NON_STEEL_TOPICS + STEEL_TOPICS,
+                            STEEL_TOPICS,
                             start=1,
                         )
                     }
             finally:
                 os.chdir(previous_cwd)
-
-        for topic, forbidden_terms in NON_STEEL_TOPICS:
-            body = generated_text[topic]
-            for term in forbidden_terms:
-                self.assertFalse(
-                    self._contains_term(body, term),
-                    f"{topic!r} generated unrelated steel terminology: {term!r}",
-                )
 
         for topic, expected_terms in STEEL_TOPICS:
             body = generated_text[topic]

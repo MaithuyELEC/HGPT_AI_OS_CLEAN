@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import re
 import unicodedata
 from dataclasses import dataclass
+from pathlib import Path
 
 from hgpt_ai_os.topic_engine.content_planner import ContentPlan
 from hgpt_ai_os.topic_engine.reasoning_engine import ReasoningObject
@@ -30,6 +32,14 @@ class DomainPlaybook:
     match_groups: tuple[tuple[str, ...], ...] = ()
     extra_corrective_actions: tuple[str, ...] = ()
     video_subject: str = ""
+    failure_mechanisms: tuple[str, ...] = ()
+    measurements: tuple[str, ...] = ()
+    engineering_calculations: tuple[str, ...] = ()
+    verification_steps: tuple[str, ...] = ()
+    engineering_notes: tuple[str, ...] = ()
+    common_mistakes: tuple[str, ...] = ()
+    lessons_learned: tuple[str, ...] = ()
+    standards: tuple[str, ...] = ()
 
 
 def _normalize(value: str) -> str:
@@ -85,6 +95,98 @@ def _fallback_playbook(reasoning: ReasoningObject) -> DomainPlaybook:
         production_impact="Làm tăng thời gian chờ, thời gian sửa lại và rủi ro trễ bàn giao.",
         checklist_items=inspections,
         hashtags=("#LucidAuto", "#KyThuatSanXuat", "#Qaqc"),
+        failure_mechanisms=("Sai lệch nhỏ tích lũy thành lỗi hệ thống khi không có điểm dừng kiểm tra và tiêu chí pass/fail rõ.",),
+        measurements=("ghi kích thước, thông số vận hành hoặc ảnh lỗi trước/sau sửa",),
+        engineering_calculations=("so sánh giá trị đo với giới hạn bản vẽ, WPS, ITP hoặc hướng dẫn OEM đang áp dụng",),
+        verification_steps=("kiểm tra lại bằng cùng phương pháp đã phát hiện lỗi", "lưu bằng chứng nghiệm thu trước khi release"),
+        engineering_notes=("Không release bằng cảm giác; phải có bằng chứng đo kiểm hoặc ảnh hiện trường.",),
+        common_mistakes=("sửa phần nhìn thấy nhưng không khóa điều kiện tạo lỗi", "bỏ qua người chịu trách nhiệm xác nhận sau sửa"),
+        lessons_learned=("Biến mỗi lỗi thành một điểm kiểm soát mới trong checklist ca sau.",),
+        standards=("ITP nội bộ", "tiêu chí bản vẽ/quy trình hiện hành"),
+    )
+
+
+def _context_playbook(reasoning: ReasoningObject) -> DomainPlaybook | None:
+    intelligence = reasoning.topic_context.failure_intelligence
+    if not intelligence:
+        return None
+
+    base = next(
+        (
+            playbook
+            for playbook in (*DATA_PLAYBOOKS, *PLAYBOOKS)
+            if playbook.key == reasoning.topic_context.playbook_key
+        ),
+        None,
+    )
+    process = reasoning.topic_context.failure_mode or reasoning.topic
+    equipment = ", ".join(
+        value
+        for value in (
+            *reasoning.topic_context.equipment,
+            *reasoning.topic_context.components,
+        )
+        if value
+    ) or "thiết bị/khu vực liên quan"
+    standards = intelligence.get("standards", ())
+    mechanisms = intelligence.get("failure_mechanism", ())
+    measurements = intelligence.get("measurements", ())
+    calculations = intelligence.get("engineering_calculation", ())
+    verification = intelligence.get("verification_steps", ())
+    notes = intelligence.get("engineering_notes", ())
+    mistakes = intelligence.get("common_mistakes", ())
+    lessons = intelligence.get("lessons_learned", ())
+    mechanism = (
+        (base.technical_mechanism if base is not None else f"{process} cần được xử lý theo dữ liệu hiện trường")
+        + (f", tiêu chuẩn {inline(standards, '')}" if standards else "")
+        + ": nhận diện triệu chứng, khóa nguyên nhân, sửa đúng tiêu chí và chỉ bàn giao khi có bằng chứng xác nhận."
+    )
+    return DomainPlaybook(
+        key=reasoning.topic_context.playbook_key or process,
+        aliases=(reasoning.topic,),
+        domain=(base.domain if base is not None else reasoning.topic_context.domain) or "Kỹ thuật hiện trường",
+        process=base.process if base is not None else process,
+        equipment=base.equipment if base is not None else equipment,
+        typical_symptoms=tuple(dict.fromkeys((*(base.typical_symptoms if base is not None else ()), *intelligence.get("symptoms", ())))),
+        technical_mechanism=mechanism,
+        likely_causes=tuple(dict.fromkeys((*(base.likely_causes if base is not None else ()), *intelligence.get("root_causes", ())))),
+        inspection_steps=tuple(dict.fromkeys((*(base.inspection_steps if base is not None else ()), *intelligence.get("inspection_points", ())))),
+        corrective_actions=tuple(
+            dict.fromkeys(
+                (
+                    *(base.corrective_actions if base is not None else ()),
+                    *intelligence.get("repair_steps", ()),
+                    *intelligence.get("verification_steps", ()),
+                )
+            )
+        ),
+        preventive_actions=tuple(dict.fromkeys((*(base.preventive_actions if base is not None else ()), *intelligence.get("preventive_actions", ())))),
+        safety_risks=tuple(dict.fromkeys((*(base.safety_risks if base is not None else ()), *intelligence.get("safety_notes", ())))),
+        quality_risks=base.quality_risks if base is not None else ("nguy cơ lỗi lặp lại nếu thiếu bằng chứng nghiệm thu trước vận hành",),
+        production_impact=base.production_impact if base is not None else "Thiết bị hoặc công đoạn liên quan phải giữ trạng thái kiểm soát đến khi sửa chữa và xác nhận đạt.",
+        checklist_items=tuple(
+            dict.fromkeys(
+                (
+                    *(base.checklist_items if base is not None else ()),
+                    *intelligence.get("inspection_points", ()),
+                    *intelligence.get("repair_steps", ()),
+                    *intelligence.get("verification_steps", ()),
+                    *intelligence.get("safety_notes", ()),
+                )
+            )
+        ),
+        hashtags=base.hashtags if base is not None else ("#LucidAuto", "#FailureIntelligence", "#BaoTri"),
+        match_groups=base.match_groups if base is not None else (),
+        extra_corrective_actions=base.extra_corrective_actions if base is not None else (),
+        video_subject=base.video_subject if base is not None else "",
+        failure_mechanisms=tuple(dict.fromkeys((*(base.failure_mechanisms if base is not None else ()), *mechanisms))),
+        measurements=tuple(dict.fromkeys((*(base.measurements if base is not None else ()), *measurements))),
+        engineering_calculations=tuple(dict.fromkeys((*(base.engineering_calculations if base is not None else ()), *calculations))),
+        verification_steps=tuple(dict.fromkeys((*(base.verification_steps if base is not None else ()), *verification))),
+        engineering_notes=tuple(dict.fromkeys((*(base.engineering_notes if base is not None else ()), *notes))),
+        common_mistakes=tuple(dict.fromkeys((*(base.common_mistakes if base is not None else ()), *mistakes))),
+        lessons_learned=tuple(dict.fromkeys((*(base.lessons_learned if base is not None else ()), *lessons))),
+        standards=tuple(dict.fromkeys((*(base.standards if base is not None else ()), *standards))),
     )
 
 
@@ -186,11 +288,11 @@ PLAYBOOKS: tuple[DomainPlaybook, ...] = (
         likely_causes=("lệch tâm khớp nối", "bạc đạn mòn", "rotor mất cân bằng", "bu lông bệ lỏng", "tải bị kẹt hoặc quá tải"),
         inspection_steps=("đo rung theo trục H/V/A", "đo nhiệt bạc đạn", "kiểm tra căn chỉnh bằng laser", "kiểm tra bu lông bệ", "đo dòng điện"),
         corrective_actions=("căn chỉnh khớp nối", "thay bạc đạn lỗi", "cân bằng rotor", "siết và chêm lại bệ", "xử lý tải quá tải"),
-        preventive_actions=("theo dõi trend rung", "bôi trơn đúng lịch", "kiểm tra alignment sau sửa chữa", "lập ngưỡng cảnh báo"),
+        preventive_actions=("theo dõi xu hướng rung", "bôi trơn đúng lịch", "kiểm tra đồng tâm sau sửa chữa", "lập ngưỡng cảnh báo"),
         safety_risks=("vỡ khớp nối hoặc bung chi tiết quay",),
         quality_risks=("dừng máy làm gián đoạn công đoạn phụ thuộc",),
         production_impact="Có thể gây dừng máy đột xuất và kéo dài thời gian sửa cơ điện.",
-        checklist_items=("đo rung", "nhiệt bạc đạn", "alignment", "bôi trơn", "bu lông bệ", "dòng điện", "trend dữ liệu"),
+        checklist_items=("đo rung", "nhiệt bạc đạn", "kiểm tra đồng tâm", "bôi trơn", "bu lông bệ", "dòng điện", "xu hướng dữ liệu"),
         hashtags=("#DongCo", "#DoRung", "#BaoTri", "#TPM"),
     ),
     DomainPlaybook(
@@ -286,7 +388,61 @@ PLAYBOOKS: tuple[DomainPlaybook, ...] = (
 )
 
 
+def _data_playbooks() -> tuple[DomainPlaybook, ...]:
+    path = Path(__file__).resolve().parents[1] / "topic_intelligence_profiles.json"
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    playbooks = []
+    for item in raw.get("playbooks", ()):
+        if not item.get("typical_symptoms"):
+            continue
+        playbooks.append(
+            DomainPlaybook(
+                key=item["key"],
+                aliases=tuple(item.get("aliases", ())),
+                domain=item["domain"],
+                process=item["process"],
+                equipment=item["equipment"],
+                typical_symptoms=tuple(item.get("typical_symptoms", ())),
+                technical_mechanism=item.get("technical_mechanism", ""),
+                likely_causes=tuple(item.get("likely_causes", ())),
+                inspection_steps=tuple(item.get("inspection_steps", ())),
+                corrective_actions=tuple(item.get("corrective_actions", ())),
+                preventive_actions=tuple(item.get("preventive_actions", ())),
+                safety_risks=tuple(item.get("safety_risks", ())),
+                quality_risks=tuple(item.get("quality_risks", ())),
+                production_impact=item.get("production_impact", ""),
+                checklist_items=tuple(item.get("checklist_items", ())),
+                hashtags=tuple(item.get("hashtags", ())),
+                match_groups=(),
+                extra_corrective_actions=tuple(item.get("extra_corrective_actions", ())),
+                video_subject=item.get("video_subject", ""),
+                failure_mechanisms=tuple(item.get("failure_mechanisms", ())),
+                measurements=tuple(item.get("measurements", ())),
+                engineering_calculations=tuple(item.get("engineering_calculations", ())),
+                verification_steps=tuple(item.get("verification_steps", ())),
+                engineering_notes=tuple(item.get("engineering_notes", ())),
+                common_mistakes=tuple(item.get("common_mistakes", ())),
+                lessons_learned=tuple(item.get("lessons_learned", ())),
+                standards=tuple(item.get("standards", ())),
+            )
+        )
+    return tuple(playbooks)
+
+
+DATA_PLAYBOOKS = _data_playbooks()
+
+
 def match_playbook(topic: str, reasoning: ReasoningObject | None = None) -> DomainPlaybook | None:
+    if reasoning is not None:
+        context_playbook = _context_playbook(reasoning)
+        if context_playbook is not None:
+            return context_playbook
+
+    if reasoning is not None and reasoning.topic_context.playbook_key:
+        for playbook in (*DATA_PLAYBOOKS, *PLAYBOOKS):
+            if playbook.key == reasoning.topic_context.playbook_key:
+                return playbook
+
     values = [topic]
     if reasoning is not None:
         values.extend(reasoning.parsed.keywords)

@@ -1,0 +1,1915 @@
+{
+  "entities": [
+    {
+      "canonical": "Crane",
+      "category": "Equipment",
+      "domain": "Industrial Maintenance",
+      "aliases": [
+        "crane",
+        "cau",
+        "cẩu",
+        "cầu trục",
+        "cau truc",
+        "overhead crane"
+      ]
+    },
+    {
+      "canonical": "Wire Rope",
+      "category": "Component",
+      "domain": "Industrial Maintenance",
+      "parent": "Crane",
+      "aliases": [
+        "wire rope",
+        "rope",
+        "cáp",
+        "cap",
+        "cáp tải",
+        "cap tai",
+        "cáp cẩu",
+        "cap cau",
+        "cáp cẩu trục",
+        "cap cau truc"
+      ]
+    },
+    {
+      "canonical": "Motor",
+      "category": "Equipment",
+      "domain": "Industrial Maintenance",
+      "aliases": [
+        "motor",
+        "động cơ",
+        "dong co",
+        "electric motor"
+      ]
+    },
+    {
+      "canonical": "VFD",
+      "category": "Equipment",
+      "domain": "Industrial Automation",
+      "aliases": [
+        "vfd",
+        "inverter",
+        "biến tần",
+        "bien tan"
+      ]
+    },
+    {
+      "canonical": "PLC",
+      "category": "Equipment",
+      "domain": "Industrial Automation",
+      "aliases": [
+        "plc",
+        "programmable logic controller"
+      ]
+    },
+    {
+      "canonical": "Siemens PLC",
+      "category": "Equipment",
+      "domain": "Industrial Automation",
+      "parent": "PLC",
+      "aliases": [
+        "plc siemens",
+        "siemens plc",
+        "s7",
+        "s7-1200",
+        "s7-1500"
+      ]
+    },
+    {
+      "canonical": "Hydraulic System",
+      "category": "Equipment",
+      "domain": "Industrial Maintenance",
+      "aliases": [
+        "hydraulic",
+        "thủy lực",
+        "thuy luc",
+        "hệ thủy lực",
+        "he thuy luc"
+      ]
+    },
+    {
+      "canonical": "Hydraulic Hose",
+      "category": "Component",
+      "domain": "Industrial Maintenance",
+      "parent": "Hydraulic System",
+      "aliases": [
+        "hydraulic hose",
+        "ống thủy lực",
+        "ong thuy luc",
+        "ống dầu",
+        "ong dau"
+      ]
+    },
+    {
+      "canonical": "Bearing",
+      "category": "Component",
+      "domain": "Industrial Maintenance",
+      "aliases": [
+        "bearing",
+        "bạc đạn",
+        "bac dan",
+        "vòng bi",
+        "vong bi"
+      ]
+    },
+    {
+      "canonical": "Gearbox",
+      "category": "Equipment",
+      "domain": "Industrial Maintenance",
+      "aliases": [
+        "gearbox",
+        "hộp giảm tốc",
+        "hop giam toc",
+        "hộp số",
+        "hop so"
+      ]
+    },
+    {
+      "canonical": "SAW Welding",
+      "category": "Process",
+      "domain": "Welding",
+      "aliases": [
+        "saw",
+        "submerged arc",
+        "submerged arc welding",
+        "hàn saw",
+        "han saw"
+      ]
+    },
+    {
+      "canonical": "Weld Seam",
+      "category": "Component",
+      "domain": "Welding",
+      "aliases": [
+        "đường hàn",
+        "duong han",
+        "mối hàn",
+        "moi han",
+        "weld seam",
+        "weld bead"
+      ]
+    },
+    {
+      "canonical": "Husky Dog",
+      "category": "Equipment",
+      "domain": "Pet Care",
+      "aliases": [
+        "husky",
+        "chó husky",
+        "cho husky"
+      ]
+    },
+    {
+      "canonical": "Japanese N5",
+      "category": "Process",
+      "domain": "Language Learning",
+      "aliases": [
+        "n5",
+        "jlpt n5",
+        "tiếng nhật n5",
+        "tieng nhat n5",
+        "học tiếng nhật n5",
+        "hoc tieng nhat n5"
+      ]
+    },
+    {
+      "canonical": "VAT",
+      "category": "Process",
+      "domain": "Finance",
+      "aliases": [
+        "vat",
+        "gtgt",
+        "thuế gtgt",
+        "thue gtgt",
+        "value added tax"
+      ]
+    },
+    {
+      "canonical": "Blockchain Layer 2",
+      "category": "Process",
+      "domain": "Technology",
+      "aliases": [
+        "blockchain layer 2",
+        "layer 2",
+        "l2 blockchain",
+        "rollup",
+        "optimistic rollup",
+        "zk rollup"
+      ]
+    },
+    {
+      "canonical": "Mai Plant",
+      "category": "Equipment",
+      "domain": "Gardening",
+      "aliases": [
+        "cây mai",
+        "cay mai",
+        "hoa mai",
+        "chăm sóc mai",
+        "cham soc mai"
+      ]
+    },
+    {
+      "canonical": "Cooking",
+      "category": "Process",
+      "domain": "Cooking",
+      "aliases": [
+        "nấu ăn",
+        "nau an",
+        "cooking",
+        "recipe",
+        "món ăn",
+        "mon an"
+      ]
+    },
+    {
+      "canonical": "Steel",
+      "category": "Material",
+      "domain": "Steel Fabrication",
+      "aliases": [
+        "steel",
+        "thép",
+        "thep",
+        "kết cấu thép",
+        "ket cau thep"
+      ]
+    },
+    {
+      "canonical": "GMAW Welding",
+      "category": "Process",
+      "domain": "Welding",
+      "aliases": [
+        "gmaw",
+        "mig",
+        "mag",
+        "hàn mig",
+        "han mig",
+        "gas metal arc"
+      ]
+    },
+    {
+      "canonical": "FCAW Welding",
+      "category": "Process",
+      "domain": "Welding",
+      "aliases": [
+        "fcaw",
+        "flux cored",
+        "hàn fcaw",
+        "han fcaw"
+      ]
+    },
+    {
+      "canonical": "GTAW Welding",
+      "category": "Process",
+      "domain": "Welding",
+      "aliases": [
+        "gtaw",
+        "tig",
+        "hàn tig",
+        "han tig"
+      ]
+    },
+    {
+      "canonical": "SMAW Welding",
+      "category": "Process",
+      "domain": "Welding",
+      "aliases": [
+        "smaw",
+        "stick welding",
+        "que hàn",
+        "que han"
+      ]
+    },
+    {
+      "canonical": "Laser Welding",
+      "category": "Process",
+      "domain": "Welding",
+      "aliases": [
+        "laser welding",
+        "hàn laser",
+        "han laser"
+      ]
+    },
+    {
+      "canonical": "Robot Welding",
+      "category": "Process",
+      "domain": "Welding",
+      "aliases": [
+        "robot welding",
+        "hàn robot",
+        "han robot",
+        "robot hàn"
+      ]
+    },
+    {
+      "canonical": "QA/QC",
+      "category": "Department",
+      "domain": "Quality",
+      "aliases": [
+        "qaqc",
+        "qa/qc",
+        "quality control",
+        "kiểm tra chất lượng",
+        "kiem tra chat luong"
+      ]
+    },
+    {
+      "canonical": "NDT",
+      "category": "Process",
+      "domain": "Quality",
+      "aliases": [
+        "ndt",
+        "vt",
+        "pt",
+        "mt",
+        "ut",
+        "rt",
+        "non destructive testing",
+        "kiểm tra không phá hủy"
+      ]
+    },
+    {
+      "canonical": "WPS",
+      "category": "Standard",
+      "domain": "Welding",
+      "aliases": [
+        "wps",
+        "welding procedure specification"
+      ]
+    },
+    {
+      "canonical": "PQR",
+      "category": "Standard",
+      "domain": "Welding",
+      "aliases": [
+        "pqr",
+        "procedure qualification record"
+      ]
+    },
+    {
+      "canonical": "WPQ",
+      "category": "Standard",
+      "domain": "Welding",
+      "aliases": [
+        "wpq",
+        "welder performance qualification"
+      ]
+    },
+    {
+      "canonical": "ITP",
+      "category": "Standard",
+      "domain": "Quality",
+      "aliases": [
+        "itp",
+        "inspection test plan",
+        "hold point",
+        "witness point"
+      ]
+    },
+    {
+      "canonical": "NCR",
+      "category": "Standard",
+      "domain": "Quality",
+      "aliases": [
+        "ncr",
+        "nonconformance report",
+        "non conformity report"
+      ]
+    },
+    {
+      "canonical": "CAPA",
+      "category": "Standard",
+      "domain": "Quality",
+      "aliases": [
+        "capa",
+        "corrective action preventive action"
+      ]
+    },
+    {
+      "canonical": "Beam",
+      "category": "Component",
+      "domain": "Steel Fabrication",
+      "aliases": [
+        "beam",
+        "dầm",
+        "dam"
+      ]
+    },
+    {
+      "canonical": "Column",
+      "category": "Component",
+      "domain": "Steel Fabrication",
+      "aliases": [
+        "column",
+        "cột",
+        "cot"
+      ]
+    },
+    {
+      "canonical": "Brace",
+      "category": "Component",
+      "domain": "Steel Fabrication",
+      "aliases": [
+        "brace",
+        "giằng",
+        "giang"
+      ]
+    },
+    {
+      "canonical": "Base Plate",
+      "category": "Component",
+      "domain": "Steel Fabrication",
+      "aliases": [
+        "base plate",
+        "bản mã chân cột",
+        "ban ma chan cot"
+      ]
+    },
+    {
+      "canonical": "Anchor Bolt",
+      "category": "Component",
+      "domain": "Steel Fabrication",
+      "aliases": [
+        "anchor bolt",
+        "bu lông neo",
+        "bu long neo"
+      ]
+    },
+    {
+      "canonical": "Gusset Plate",
+      "category": "Component",
+      "domain": "Steel Fabrication",
+      "aliases": [
+        "gusset",
+        "gusset plate",
+        "bản mã giằng",
+        "ban ma giang"
+      ]
+    },
+    {
+      "canonical": "Pump",
+      "category": "Equipment",
+      "domain": "Industrial Maintenance",
+      "aliases": [
+        "pump",
+        "bơm",
+        "bom"
+      ]
+    },
+    {
+      "canonical": "Compressor",
+      "category": "Equipment",
+      "domain": "Industrial Maintenance",
+      "aliases": [
+        "compressor",
+        "máy nén khí",
+        "may nen khi"
+      ]
+    },
+    {
+      "canonical": "Fan",
+      "category": "Equipment",
+      "domain": "Industrial Maintenance",
+      "aliases": [
+        "fan",
+        "quạt",
+        "quat"
+      ]
+    },
+    {
+      "canonical": "Brake",
+      "category": "Component",
+      "domain": "Industrial Maintenance",
+      "aliases": [
+        "brake",
+        "phanh"
+      ]
+    },
+    {
+      "canonical": "Coupling",
+      "category": "Component",
+      "domain": "Industrial Maintenance",
+      "aliases": [
+        "coupling",
+        "khớp nối",
+        "khop noi"
+      ]
+    },
+    {
+      "canonical": "Chain",
+      "category": "Component",
+      "domain": "Industrial Maintenance",
+      "aliases": [
+        "chain",
+        "xích",
+        "xich"
+      ]
+    },
+    {
+      "canonical": "Pulley",
+      "category": "Component",
+      "domain": "Industrial Maintenance",
+      "aliases": [
+        "pulley",
+        "puly",
+        "ròng rọc",
+        "rong roc"
+      ]
+    },
+    {
+      "canonical": "Belt",
+      "category": "Component",
+      "domain": "Industrial Maintenance",
+      "aliases": [
+        "belt",
+        "dây đai",
+        "day dai"
+      ]
+    },
+    {
+      "canonical": "Sensor",
+      "category": "Component",
+      "domain": "Industrial Automation",
+      "aliases": [
+        "sensor",
+        "cảm biến",
+        "cam bien"
+      ]
+    },
+    {
+      "canonical": "Encoder",
+      "category": "Component",
+      "domain": "Industrial Automation",
+      "aliases": [
+        "encoder",
+        "bộ mã hóa",
+        "bo ma hoa"
+      ]
+    },
+    {
+      "canonical": "Servo",
+      "category": "Equipment",
+      "domain": "Industrial Automation",
+      "aliases": [
+        "servo",
+        "servo motor"
+      ]
+    },
+    {
+      "canonical": "HMI",
+      "category": "Equipment",
+      "domain": "Industrial Automation",
+      "aliases": [
+        "hmi",
+        "màn hình hmi",
+        "man hinh hmi"
+      ]
+    },
+    {
+      "canonical": "Painting",
+      "category": "Process",
+      "domain": "Steel Fabrication",
+      "aliases": [
+        "painting",
+        "coating",
+        "sơn",
+        "son",
+        "sơn phủ",
+        "son phu",
+        "paint"
+      ]
+    },
+    {
+      "canonical": "DFT",
+      "category": "Measurement",
+      "domain": "Steel Fabrication",
+      "aliases": [
+        "dft",
+        "dry film thickness",
+        "độ dày màng sơn",
+        "do day mang son"
+      ]
+    },
+    {
+      "canonical": "Bolt",
+      "category": "Component",
+      "domain": "Steel Fabrication",
+      "aliases": [
+        "bolt",
+        "bu lông",
+        "bu long",
+        "structural bolt",
+        "bolt connection"
+      ]
+    },
+    {
+      "canonical": "Torque Wrench",
+      "category": "Tool",
+      "domain": "Steel Fabrication",
+      "aliases": [
+        "torque wrench",
+        "cờ lê lực",
+        "co le luc",
+        "súng siết lực",
+        "sung siet luc"
+      ]
+    },
+    {
+      "canonical": "Fit-up",
+      "category": "Process",
+      "domain": "Steel Fabrication",
+      "aliases": [
+        "fit-up",
+        "fit up",
+        "gá lắp",
+        "ga lap",
+        "lắp ghép",
+        "lap ghep"
+      ]
+    }
+  ],
+  "failures": [
+    {
+      "canonical": "Broken",
+      "severity": "Critical",
+      "aliases": [
+        "broken",
+        "break",
+        "snapped",
+        "đứt",
+        "dut",
+        "bị đứt",
+        "bi dut",
+        "gãy",
+        "gay",
+        "wire rope failure",
+        "rope failure",
+        "crane wire rope failure"
+      ]
+    },
+    {
+      "canonical": "Failed",
+      "severity": "High",
+      "aliases": [
+        "failure",
+        "failed",
+        "hỏng",
+        "hong",
+        "sự cố",
+        "su co"
+      ]
+    },
+    {
+      "canonical": "Burned",
+      "severity": "High",
+      "aliases": [
+        "burned",
+        "burnt",
+        "cháy",
+        "chay",
+        "bị cháy",
+        "bi chay",
+        "burnout",
+        "motor burnout"
+      ]
+    },
+    {
+      "canonical": "Over Current",
+      "severity": "High",
+      "aliases": [
+        "oc",
+        "over current",
+        "overcurrent",
+        "quá dòng",
+        "qua dong",
+        "báo oc",
+        "bao oc"
+      ]
+    },
+    {
+      "canonical": "System Fault",
+      "severity": "High",
+      "aliases": [
+        "sf",
+        "system fault",
+        "system failure",
+        "đèn sf",
+        "den sf",
+        "báo sf",
+        "bao sf",
+        "fault",
+        "plc fault"
+      ]
+    },
+    {
+      "canonical": "Porosity",
+      "severity": "High",
+      "aliases": [
+        "porosity",
+        "rỗ khí",
+        "ro khi",
+        "bọ khí",
+        "bo khi",
+        "saw porosity"
+      ]
+    },
+    {
+      "canonical": "Cracked",
+      "severity": "High",
+      "aliases": [
+        "cracked",
+        "crack",
+        "nứt",
+        "nut"
+      ]
+    },
+    {
+      "canonical": "Leak",
+      "severity": "Medium",
+      "aliases": [
+        "leak",
+        "leakage",
+        "rò rỉ",
+        "ro ri"
+      ]
+    },
+    {
+      "canonical": "Loose",
+      "severity": "Medium",
+      "aliases": [
+        "loose",
+        "lỏng",
+        "long"
+      ]
+    },
+    {
+      "canonical": "Wear",
+      "severity": "Medium",
+      "aliases": [
+        "wear",
+        "worn",
+        "mòn",
+        "mon"
+      ]
+    },
+    {
+      "canonical": "Noise",
+      "severity": "Medium",
+      "aliases": [
+        "noise",
+        "ồn",
+        "on",
+        "kêu",
+        "keu"
+      ]
+    },
+    {
+      "canonical": "Vibration",
+      "severity": "Medium",
+      "aliases": [
+        "vibration",
+        "rung",
+        "độ rung",
+        "do rung"
+      ]
+    },
+    {
+      "canonical": "Overheat",
+      "severity": "High",
+      "aliases": [
+        "overheat",
+        "overheating",
+        "quá nhiệt",
+        "qua nhiet",
+        "nóng",
+        "nong"
+      ]
+    },
+    {
+      "canonical": "Rust",
+      "severity": "Medium",
+      "aliases": [
+        "rust",
+        "gỉ",
+        "gi",
+        "rỉ",
+        "ri"
+      ]
+    },
+    {
+      "canonical": "Deformation",
+      "severity": "High",
+      "aliases": [
+        "deformation",
+        "biến dạng",
+        "bien dang",
+        "cong vênh",
+        "cong venh"
+      ]
+    },
+    {
+      "canonical": "Corrosion",
+      "severity": "Medium",
+      "aliases": [
+        "corrosion",
+        "ăn mòn",
+        "an mon"
+      ]
+    },
+    {
+      "canonical": "Misalignment",
+      "severity": "Medium",
+      "aliases": [
+        "misalignment",
+        "lệch tâm",
+        "lech tam",
+        "lệch",
+        "lech"
+      ]
+    },
+    {
+      "canonical": "Open Circuit",
+      "severity": "High",
+      "aliases": [
+        "open circuit",
+        "hở mạch",
+        "ho mach"
+      ]
+    },
+    {
+      "canonical": "Short Circuit",
+      "severity": "Critical",
+      "aliases": [
+        "short circuit",
+        "ngắn mạch",
+        "ngan mach",
+        "chập",
+        "chap"
+      ]
+    },
+    {
+      "canonical": "Slag Inclusion",
+      "severity": "High",
+      "aliases": [
+        "slag inclusion",
+        "kẹt xỉ",
+        "ket xi",
+        "xỉ hàn",
+        "xi han"
+      ]
+    },
+    {
+      "canonical": "Lack of Fusion",
+      "severity": "High",
+      "aliases": [
+        "lack of fusion",
+        "thiếu chảy cạnh",
+        "thieu chay canh",
+        "không ngấu cạnh"
+      ]
+    },
+    {
+      "canonical": "Lack of Penetration",
+      "severity": "High",
+      "aliases": [
+        "lack of penetration",
+        "thiếu ngấu",
+        "thieu ngau",
+        "không thấu chân"
+      ]
+    },
+    {
+      "canonical": "Undercut",
+      "severity": "Medium",
+      "aliases": [
+        "undercut",
+        "cháy cạnh",
+        "chay canh"
+      ]
+    },
+    {
+      "canonical": "Overlap",
+      "severity": "Medium",
+      "aliases": [
+        "overlap",
+        "chồng mép",
+        "chong mep"
+      ]
+    },
+    {
+      "canonical": "Arc Blow",
+      "severity": "Medium",
+      "aliases": [
+        "arc blow",
+        "thổi lệch hồ quang",
+        "thoi lech ho quang"
+      ]
+    },
+    {
+      "canonical": "Burn Through",
+      "severity": "High",
+      "aliases": [
+        "burn through",
+        "cháy thủng",
+        "chay thung"
+      ]
+    },
+    {
+      "canonical": "Distortion",
+      "severity": "Medium",
+      "aliases": [
+        "distortion",
+        "biến dạng hàn",
+        "bien dang han",
+        "cong vênh"
+      ]
+    },
+    {
+      "canonical": "Spatter",
+      "severity": "Low",
+      "aliases": [
+        "spatter",
+        "bắn tóe",
+        "ban toe"
+      ]
+    },
+    {
+      "canonical": "Underfill",
+      "severity": "Medium",
+      "aliases": [
+        "underfill",
+        "thiếu đầy",
+        "thieu day"
+      ]
+    },
+    {
+      "canonical": "Excess Reinforcement",
+      "severity": "Medium",
+      "aliases": [
+        "excess reinforcement",
+        "gia cường quá mức",
+        "gia cuong qua muc"
+      ]
+    },
+    {
+      "canonical": "Cavitation",
+      "severity": "High",
+      "aliases": [
+        "cavitation",
+        "xâm thực",
+        "xam thuc"
+      ]
+    },
+    {
+      "canonical": "Low DFT",
+      "severity": "Medium",
+      "aliases": [
+        "low dft",
+        "dft thấp",
+        "dft thap",
+        "độ dày màng sơn thấp"
+      ]
+    },
+    {
+      "canonical": "Mislocation",
+      "severity": "High",
+      "aliases": [
+        "mislocation",
+        "sai vị trí",
+        "sai vi tri",
+        "lệch vị trí"
+      ]
+    },
+    {
+      "canonical": "Paint DFT Failure",
+      "severity": "Medium",
+      "aliases": [
+        "paint dft failure",
+        "dft failure",
+        "sơn không đạt dft",
+        "son khong dat dft",
+        "paint dft not acceptable"
+      ]
+    },
+    {
+      "canonical": "Bolt Torque Failure",
+      "severity": "High",
+      "aliases": [
+        "bolt torque",
+        "bolt torque failure",
+        "torque not achieved",
+        "siết lực bu lông",
+        "siet luc bu long",
+        "lực siết bu lông không đạt",
+        "luc siet bu long khong dat"
+      ]
+    },
+    {
+      "canonical": "Fit-up Error",
+      "severity": "High",
+      "aliases": [
+        "fit-up error",
+        "fit-up failure",
+        "lỗi fit-up",
+        "loi fit-up",
+        "sai khe hở fit-up",
+        "sai khe ho fit-up",
+        "gap mismatch",
+        "fit-up",
+        "fit up"
+      ]
+    }
+  ],
+  "intents": [
+    {
+      "canonical": "Repair",
+      "aliases": [
+        "repair",
+        "sửa",
+        "sua",
+        "sửa chữa",
+        "sua chua",
+        "khắc phục",
+        "khac phuc"
+      ]
+    },
+    {
+      "canonical": "Troubleshooting",
+      "aliases": [
+        "troubleshoot",
+        "diagnose",
+        "chẩn đoán",
+        "chan doan",
+        "báo lỗi",
+        "bao loi",
+        "lỗi",
+        "loi",
+        "bị",
+        "bi"
+      ]
+    },
+    {
+      "canonical": "Inspection",
+      "aliases": [
+        "inspection",
+        "kiểm tra",
+        "kiem tra",
+        "check"
+      ]
+    },
+    {
+      "canonical": "Maintenance",
+      "aliases": [
+        "maintenance",
+        "bảo trì",
+        "bao tri",
+        "pm",
+        "tpm"
+      ]
+    },
+    {
+      "canonical": "Design",
+      "aliases": [
+        "design",
+        "thiết kế",
+        "thiet ke"
+      ]
+    },
+    {
+      "canonical": "Calculation",
+      "aliases": [
+        "calculation",
+        "calculate",
+        "tính",
+        "tinh",
+        "tính toán",
+        "tinh toan"
+      ]
+    },
+    {
+      "canonical": "SOP",
+      "aliases": [
+        "sop",
+        "procedure",
+        "quy trình",
+        "quy trinh"
+      ]
+    },
+    {
+      "canonical": "Checklist",
+      "aliases": [
+        "checklist",
+        "danh sách kiểm",
+        "danh sach kiem"
+      ]
+    },
+    {
+      "canonical": "Marketing",
+      "aliases": [
+        "marketing",
+        "quảng cáo",
+        "quang cao"
+      ]
+    },
+    {
+      "canonical": "Training",
+      "aliases": [
+        "training",
+        "đào tạo",
+        "dao tao",
+        "học",
+        "hoc"
+      ]
+    },
+    {
+      "canonical": "SEO",
+      "aliases": [
+        "seo",
+        "keyword",
+        "từ khóa",
+        "tu khoa"
+      ]
+    },
+    {
+      "canonical": "Video",
+      "aliases": [
+        "video",
+        "tiktok",
+        "reel"
+      ]
+    },
+    {
+      "canonical": "Comparison",
+      "aliases": [
+        "compare",
+        "comparison",
+        "so sánh",
+        "so sanh",
+        "vs"
+      ]
+    },
+    {
+      "canonical": "Root Cause Analysis",
+      "aliases": [
+        "root cause",
+        "rca",
+        "nguyên nhân gốc",
+        "nguyen nhan goc",
+        "vì sao",
+        "vi sao",
+        "tại sao",
+        "tai sao"
+      ]
+    },
+    {
+      "canonical": "Quality",
+      "aliases": [
+        "quality",
+        "chất lượng",
+        "chat luong",
+        "qaqc",
+        "qc"
+      ]
+    },
+    {
+      "canonical": "Safety",
+      "aliases": [
+        "safety",
+        "an toàn",
+        "an toan",
+        "loto",
+        "lockout"
+      ]
+    }
+  ],
+  "standards": [
+    {
+      "canonical": "ISO 9001",
+      "aliases": [
+        "iso 9001",
+        "qms"
+      ]
+    },
+    {
+      "canonical": "ISO 45001",
+      "aliases": [
+        "iso 45001",
+        "ohs"
+      ]
+    },
+    {
+      "canonical": "AWS D1.1",
+      "aliases": [
+        "aws d1.1",
+        "aws"
+      ]
+    },
+    {
+      "canonical": "ISO 3834",
+      "aliases": [
+        "iso 3834"
+      ]
+    },
+    {
+      "canonical": "EN 1090",
+      "aliases": [
+        "en 1090",
+        "en1090"
+      ]
+    },
+    {
+      "canonical": "IEC 60204",
+      "aliases": [
+        "iec 60204"
+      ]
+    },
+    {
+      "canonical": "ISO 4413",
+      "aliases": [
+        "iso 4413"
+      ]
+    },
+    {
+      "canonical": "ISO 15243",
+      "aliases": [
+        "iso 15243"
+      ]
+    },
+    {
+      "canonical": "ISO 10816",
+      "aliases": [
+        "iso 10816"
+      ]
+    },
+    {
+      "canonical": "ISO 4309",
+      "aliases": [
+        "iso 4309",
+        "wire rope discard",
+        "tiêu chuẩn cáp",
+        "tieu chuan cap"
+      ]
+    },
+    {
+      "canonical": "AISC",
+      "aliases": [
+        "aisc"
+      ]
+    },
+    {
+      "canonical": "ASME IX",
+      "aliases": [
+        "asme ix",
+        "asme section ix"
+      ]
+    },
+    {
+      "canonical": "ISO 5817",
+      "aliases": [
+        "iso 5817"
+      ]
+    },
+    {
+      "canonical": "ISO 17637",
+      "aliases": [
+        "iso 17637",
+        "vt weld"
+      ]
+    },
+    {
+      "canonical": "ISO 17638",
+      "aliases": [
+        "iso 17638",
+        "mt weld"
+      ]
+    },
+    {
+      "canonical": "ISO 3452",
+      "aliases": [
+        "iso 3452",
+        "pt weld"
+      ]
+    },
+    {
+      "canonical": "ISO 17640",
+      "aliases": [
+        "iso 17640",
+        "ut weld"
+      ]
+    },
+    {
+      "canonical": "ISO 17636",
+      "aliases": [
+        "iso 17636",
+        "rt weld"
+      ]
+    }
+  ],
+  "severity_rules": [
+    {
+      "severity": "Critical",
+      "requires": {
+        "component": [
+          "Wire Rope"
+        ],
+        "failure": [
+          "Broken"
+        ]
+      }
+    },
+    {
+      "severity": "Critical",
+      "requires": {
+        "failure": [
+          "Short Circuit"
+        ]
+      }
+    },
+    {
+      "severity": "High",
+      "requires": {
+        "component": [
+          "Bearing"
+        ],
+        "failure": [
+          "Failed",
+          "Noise",
+          "Vibration",
+          "Overheat"
+        ]
+      }
+    },
+    {
+      "severity": "High",
+      "requires": {
+        "equipment": [
+          "Gearbox"
+        ],
+        "failure": [
+          "Failed",
+          "Noise",
+          "Overheat"
+        ]
+      }
+    },
+    {
+      "severity": "High",
+      "requires": {
+        "failure": [
+          "Burned",
+          "Over Current",
+          "System Fault",
+          "Porosity",
+          "Overheat",
+          "Cracked"
+        ]
+      }
+    }
+  ],
+  "playbooks": [
+    {
+      "key": "MOTOR_BURNOUT",
+      "domain": "Bảo trì thiết bị quay",
+      "process": "Sự cố cháy động cơ",
+      "equipment": "động cơ, nguồn cấp, tải kéo, bạc đạn và hệ thống làm mát",
+      "match": {
+        "equipment": [
+          "Motor"
+        ],
+        "failures": [
+          "Burned"
+        ]
+      }
+    },
+    {
+      "key": "VFD_OVERCURRENT",
+      "domain": "Tự động hóa công nghiệp",
+      "process": "Biến tần báo quá dòng",
+      "equipment": "biến tần, động cơ, cáp motor và tải cơ khí",
+      "match": {
+        "equipment": [
+          "VFD"
+        ],
+        "failures": [
+          "Over Current"
+        ]
+      }
+    },
+    {
+      "key": "PLC_FAULT",
+      "domain": "Tự động hóa công nghiệp",
+      "process": "PLC báo lỗi hệ thống",
+      "equipment": "PLC, nguồn 24VDC, module I/O, field wiring và mạng truyền thông",
+      "match": {
+        "equipment": [
+          "PLC"
+        ],
+        "failures": [
+          "System Fault"
+        ]
+      }
+    },
+    {
+      "key": "SAW_POROSITY",
+      "domain": "Hàn kết cấu thép",
+      "process": "Hàn hồ quang chìm SAW",
+      "equipment": "máy hàn SAW, dây hàn, thuốc hàn và liên kết thép",
+      "match": {
+        "processes": [
+          "SAW Welding"
+        ],
+        "failures": [
+          "Porosity"
+        ]
+      }
+    },
+    {
+      "key": "WIRE_ROPE_FAILURE",
+      "domain": "Bảo trì thiết bị nâng",
+      "process": "Sự cố cáp tải cầu trục",
+      "equipment": "cầu trục, palang, tang cuốn, puly và cáp tải",
+      "match": {
+        "equipment": [
+          "Crane"
+        ],
+        "components": [
+          "Wire Rope"
+        ]
+      },
+      "typical_symptoms": [
+        "cáp tải bị đứt hoặc tưa nghiêm trọng",
+        "sợi cáp/tao cáp gãy thấy rõ",
+        "tải nâng mất an toàn",
+        "puly hoặc tang cuốn có dấu hiệu làm hỏng cáp"
+      ],
+      "technical_mechanism": "Cáp cẩu trục bị đứt là sự cố mất khả năng chịu tải của bộ phận nâng. Cần dừng thiết bị ngay, cô lập năng lượng, kiểm tra toàn bộ đường cáp, puly, tang cuốn, móc và nguyên nhân quá tải hoặc mài mòn trước khi thay thế.",
+      "likely_causes": [
+        "quá tải hoặc sốc tải",
+        "cáp mòn, gãy sợi hoặc ăn mòn vượt tiêu chí loại bỏ",
+        "puly/tang cuốn mòn rãnh hoặc sai đường kính",
+        "cuốn cáp chồng chéo hoặc kẹt cáp",
+        "thiếu bôi trơn và kiểm tra định kỳ",
+        "lắp sai chủng loại cáp hoặc sai đầu kẹp"
+      ],
+      "inspection_steps": [
+        "dừng vận hành và treo biển cấm sử dụng",
+        "LOTO nguồn điện và cô lập khu vực nâng hạ",
+        "kiểm tra sợi đứt, tao cáp, đường kính cáp, mòn, gỉ và biến dạng",
+        "kiểm tra puly, tang cuốn, móc, phanh và giới hạn hành trình",
+        "đối chiếu tiêu chí loại bỏ cáp theo hồ sơ thiết bị/ISO 4309 khi áp dụng",
+        "lập biên bản sự cố và ảnh hiện trường trước khi thay"
+      ],
+      "corrective_actions": [
+        "thay cáp đúng chủng loại, đường kính và tải làm việc",
+        "kiểm tra hoặc thay puly/tang cuốn làm hỏng cáp",
+        "kiểm tra phanh, giới hạn hành trình và thiết bị chống quá tải",
+        "chạy thử không tải, có tải theo quy trình và ghi bằng chứng",
+        "chỉ cho phép vận hành lại sau khi người có thẩm quyền ký xác nhận nghiệm thu"
+      ],
+      "preventive_actions": [
+        "lập lịch kiểm tra cáp theo ca/tuần/tháng",
+        "theo dõi số sợi đứt, mòn đường kính, ăn mòn và biến dạng",
+        "bôi trơn cáp theo khuyến nghị nhà sản xuất",
+        "đào tạo người vận hành tránh sốc tải và kéo xiên",
+        "ghi lịch sử thay cáp, tải nâng và bất thường puly/tang"
+      ],
+      "safety_risks": [
+        "rơi tải, va đập người và hư hỏng thiết bị nâng",
+        "nguy cơ thao tác dưới tải treo nếu không cô lập khu vực"
+      ],
+      "quality_risks": [
+        "hư hỏng vật tư đang nâng và mất kiểm soát bàn giao sản xuất"
+      ],
+      "production_impact": "Thiết bị nâng phải dừng ngay; vật tư bị kẹt tại khu vực nâng hạ và kế hoạch sản xuất/lắp dựng có thể bị khóa cho đến khi thay cáp và thử tải đạt.",
+      "checklist_items": [
+        "dừng thiết bị",
+        "LOTO",
+        "cô lập khu vực",
+        "kiểm tra cáp",
+        "tiêu chí loại bỏ",
+        "puly",
+        "tang cuốn",
+        "phanh",
+        "giới hạn hành trình",
+        "thay cáp",
+        "thử tải",
+        "nghiệm thu trước vận hành"
+      ],
+      "hashtags": [
+        "#CauTruc",
+        "#CapTai",
+        "#AnToanNangHa",
+        "#LOTO",
+        "#BaoTri"
+      ]
+    },
+    {
+      "key": "HYDRAULIC_LEAK",
+      "domain": "Bảo trì thủy lực",
+      "process": "Rò rỉ hệ thống thủy lực",
+      "equipment": "bơm, van, xy lanh, ống thủy lực, fitting và dầu thủy lực",
+      "match": {
+        "equipment": [
+          "Hydraulic System"
+        ],
+        "failures": [
+          "Leak"
+        ]
+      }
+    },
+    {
+      "key": "BEARING_FAILURE",
+      "domain": "Bảo trì thiết bị quay",
+      "process": "Hư hỏng bạc đạn/vòng bi",
+      "equipment": "bạc đạn, trục, gối đỡ, phớt và hệ bôi trơn",
+      "match": {
+        "components": [
+          "Bearing"
+        ],
+        "failures": [
+          "Failed"
+        ]
+      }
+    },
+    {
+      "key": "GEARBOX_FAILURE",
+      "domain": "Bảo trì truyền động",
+      "process": "Hư hỏng hộp giảm tốc",
+      "equipment": "hộp giảm tốc, bánh răng, bạc đạn, dầu bôi trơn và khớp nối",
+      "match": {
+        "equipment": [
+          "Gearbox"
+        ],
+        "failures": [
+          "Failed"
+        ]
+      }
+    },
+    {
+      "key": "WELD_SLAG_INCLUSION",
+      "domain": "Hàn kết cấu thép",
+      "process": "Kiểm soát lỗi hàn",
+      "equipment": "máy hàn, vật liệu hàn, liên kết thép và hồ sơ WPS/PQR/WPQ",
+      "match": {
+        "failures": [
+          "Slag Inclusion"
+        ]
+      },
+      "hashtags": [
+        "#Welding",
+        "#QAQC",
+        "#WPS",
+        "#NDT",
+        "#KetCauThep"
+      ]
+    },
+    {
+      "key": "WELD_LACK_OF_FUSION",
+      "domain": "Hàn kết cấu thép",
+      "process": "Kiểm soát lỗi hàn",
+      "equipment": "máy hàn, vật liệu hàn, liên kết thép và hồ sơ WPS/PQR/WPQ",
+      "match": {
+        "failures": [
+          "Lack of Fusion"
+        ]
+      },
+      "hashtags": [
+        "#Welding",
+        "#QAQC",
+        "#WPS",
+        "#NDT",
+        "#KetCauThep"
+      ]
+    },
+    {
+      "key": "WELD_LACK_OF_PENETRATION",
+      "domain": "Hàn kết cấu thép",
+      "process": "Kiểm soát lỗi hàn",
+      "equipment": "máy hàn, vật liệu hàn, liên kết thép và hồ sơ WPS/PQR/WPQ",
+      "match": {
+        "components": [
+          "Weld Seam"
+        ],
+        "failures": [
+          "Lack of Penetration"
+        ]
+      },
+      "hashtags": [
+        "#Welding",
+        "#QAQC",
+        "#WPS",
+        "#NDT",
+        "#KetCauThep"
+      ]
+    },
+    {
+      "key": "WELD_UNDERCUT",
+      "domain": "Hàn kết cấu thép",
+      "process": "Kiểm soát lỗi hàn",
+      "equipment": "máy hàn, vật liệu hàn, liên kết thép và hồ sơ WPS/PQR/WPQ",
+      "match": {
+        "components": [
+          "Weld Seam"
+        ],
+        "failures": [
+          "Undercut"
+        ]
+      },
+      "hashtags": [
+        "#Welding",
+        "#QAQC",
+        "#WPS",
+        "#NDT",
+        "#KetCauThep"
+      ]
+    },
+    {
+      "key": "WELD_OVERLAP",
+      "domain": "Hàn kết cấu thép",
+      "process": "Kiểm soát lỗi hàn",
+      "equipment": "máy hàn, vật liệu hàn, liên kết thép và hồ sơ WPS/PQR/WPQ",
+      "match": {
+        "components": [
+          "Weld Seam"
+        ],
+        "failures": [
+          "Overlap"
+        ]
+      },
+      "hashtags": [
+        "#Welding",
+        "#QAQC",
+        "#WPS",
+        "#NDT",
+        "#KetCauThep"
+      ]
+    },
+    {
+      "key": "WELD_CRACK",
+      "domain": "Hàn kết cấu thép",
+      "process": "Kiểm soát lỗi hàn",
+      "equipment": "máy hàn, vật liệu hàn, liên kết thép và hồ sơ WPS/PQR/WPQ",
+      "match": {
+        "components": [
+          "Weld Seam"
+        ],
+        "failures": [
+          "Cracked"
+        ]
+      },
+      "hashtags": [
+        "#Welding",
+        "#QAQC",
+        "#WPS",
+        "#NDT",
+        "#KetCauThep"
+      ]
+    },
+    {
+      "key": "WELD_ARC_BLOW",
+      "domain": "Hàn kết cấu thép",
+      "process": "Kiểm soát lỗi hàn",
+      "equipment": "máy hàn, vật liệu hàn, liên kết thép và hồ sơ WPS/PQR/WPQ",
+      "match": {
+        "components": [
+          "Weld Seam"
+        ],
+        "failures": [
+          "Arc Blow"
+        ]
+      },
+      "hashtags": [
+        "#Welding",
+        "#QAQC",
+        "#WPS",
+        "#NDT",
+        "#KetCauThep"
+      ]
+    },
+    {
+      "key": "WELD_BURN_THROUGH",
+      "domain": "Hàn kết cấu thép",
+      "process": "Kiểm soát lỗi hàn",
+      "equipment": "máy hàn, vật liệu hàn, liên kết thép và hồ sơ WPS/PQR/WPQ",
+      "match": {
+        "components": [
+          "Weld Seam"
+        ],
+        "failures": [
+          "Burn Through"
+        ]
+      },
+      "hashtags": [
+        "#Welding",
+        "#QAQC",
+        "#WPS",
+        "#NDT",
+        "#KetCauThep"
+      ]
+    },
+    {
+      "key": "WELD_DISTORTION",
+      "domain": "Hàn kết cấu thép",
+      "process": "Kiểm soát lỗi hàn",
+      "equipment": "máy hàn, vật liệu hàn, liên kết thép và hồ sơ WPS/PQR/WPQ",
+      "match": {
+        "components": [
+          "Weld Seam"
+        ],
+        "failures": [
+          "Distortion"
+        ]
+      },
+      "hashtags": [
+        "#Welding",
+        "#QAQC",
+        "#WPS",
+        "#NDT",
+        "#KetCauThep"
+      ]
+    },
+    {
+      "key": "WELD_SPATTER",
+      "domain": "Hàn kết cấu thép",
+      "process": "Kiểm soát lỗi hàn",
+      "equipment": "máy hàn, vật liệu hàn, liên kết thép và hồ sơ WPS/PQR/WPQ",
+      "match": {
+        "components": [
+          "Weld Seam"
+        ],
+        "failures": [
+          "Spatter"
+        ]
+      },
+      "hashtags": [
+        "#Welding",
+        "#QAQC",
+        "#WPS",
+        "#NDT",
+        "#KetCauThep"
+      ]
+    },
+    {
+      "key": "WELD_UNDERFILL",
+      "domain": "Hàn kết cấu thép",
+      "process": "Kiểm soát lỗi hàn",
+      "equipment": "máy hàn, vật liệu hàn, liên kết thép và hồ sơ WPS/PQR/WPQ",
+      "match": {
+        "components": [
+          "Weld Seam"
+        ],
+        "failures": [
+          "Underfill"
+        ]
+      },
+      "hashtags": [
+        "#Welding",
+        "#QAQC",
+        "#WPS",
+        "#NDT",
+        "#KetCauThep"
+      ]
+    },
+    {
+      "key": "WELD_EXCESS_REINFORCEMENT",
+      "domain": "Hàn kết cấu thép",
+      "process": "Kiểm soát lỗi hàn",
+      "equipment": "máy hàn, vật liệu hàn, liên kết thép và hồ sơ WPS/PQR/WPQ",
+      "match": {
+        "components": [
+          "Weld Seam"
+        ],
+        "failures": [
+          "Excess Reinforcement"
+        ]
+      },
+      "hashtags": [
+        "#Welding",
+        "#QAQC",
+        "#WPS",
+        "#NDT",
+        "#KetCauThep"
+      ]
+    },
+    {
+      "key": "PUMP_CAVITATION",
+      "domain": "Bảo trì bơm công nghiệp",
+      "process": "Chẩn đoán xâm thực bơm",
+      "equipment": "bơm, đường hút, lọc hút, van và bồn cấp",
+      "match": {
+        "equipment": [
+          "Pump"
+        ],
+        "failures": [
+          "Cavitation"
+        ]
+      },
+      "hashtags": [
+        "#Pump",
+        "#Cavitation",
+        "#BaoTri",
+        "#TPM"
+      ]
+    },
+    {
+      "key": "COMPRESSOR_OVERHEAT",
+      "domain": "Bảo trì máy nén khí",
+      "process": "Máy nén khí quá nhiệt",
+      "equipment": "máy nén khí, motor, lọc gió, dầu, két giải nhiệt",
+      "match": {
+        "equipment": [
+          "Compressor"
+        ],
+        "failures": [
+          "Overheat"
+        ]
+      },
+      "hashtags": [
+        "#Compressor",
+        "#Overheat",
+        "#BaoTri",
+        "#TPM"
+      ]
+    },
+    {
+      "key": "ANCHOR_BOLT_MISLOCATION",
+      "domain": "Lắp dựng kết cấu thép",
+      "process": "Kiểm soát bu lông neo",
+      "equipment": "bu lông neo, template, base plate, móng và lưới survey",
+      "match": {
+        "components": [
+          "Anchor Bolt"
+        ],
+        "failures": [
+          "Mislocation"
+        ]
+      },
+      "hashtags": [
+        "#AnchorBolt",
+        "#Erection",
+        "#AISC",
+        "#EN1090"
+      ]
+    },
+    {
+      "key": "PAINT_DFT_FAILURE",
+      "domain": "Sơn phủ kết cấu thép",
+      "process": "Kiểm soát DFT sơn phủ",
+      "equipment": "cấu kiện thép, hệ sơn, súng phun, máy đo DFT và khu vực sơn",
+      "match": {
+        "processes": [
+          "Painting"
+        ],
+        "failures": [
+          "Paint DFT Failure"
+        ]
+      },
+      "hashtags": [
+        "#DFT",
+        "#Painting",
+        "#QAQC",
+        "#Coating"
+      ],
+      "video_subject": "cấu kiện thép sơn phủ, máy đo DFT, bản đồ điểm đo, thợ sơn và QA/QC mặc PPE"
+    },
+    {
+      "key": "BOLT_TORQUE_FAILURE",
+      "domain": "Lắp dựng kết cấu thép",
+      "process": "Kiểm soát lực siết bu lông",
+      "equipment": "liên kết bu lông, cờ lê lực, súng siết lực, long đền, ê cu và bản mã",
+      "match": {
+        "components": [
+          "Bolt"
+        ],
+        "failures": [
+          "Bolt Torque Failure"
+        ]
+      },
+      "hashtags": [
+        "#BoltTorque",
+        "#SteelStructure",
+        "#QAQC",
+        "#Erection"
+      ],
+      "video_subject": "liên kết bu lông kết cấu thép, cờ lê lực đã hiệu chuẩn, mark sơn kiểm soát và QA/QC kiểm tra"
+    },
+    {
+      "key": "FIT_UP_ERROR",
+      "domain": "Chế tạo kết cấu thép",
+      "process": "Kiểm soát fit-up trước hàn",
+      "equipment": "dầm/cột thép, mép hàn, khe hở chân, tack weld, dưỡng đo và bản vẽ shop drawing",
+      "match": {
+        "processes": [
+          "Fit-up"
+        ]
+      },
+      "hashtags": [
+        "#Fitup",
+        "#Welding",
+        "#QAQC",
+        "#SteelFabrication"
+      ],
+      "video_subject": "tổ gá lắp đo khe hở fit-up, thước lá, dưỡng hàn, tack weld và QA/QC xác nhận hold point"
+    }
+  ]
+}

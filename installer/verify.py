@@ -11,7 +11,7 @@ exec((ROOT / "src" / "hgpt_ai_os" / "version.py").read_text(), version_ns)
 APP_VERSION = version_ns["APP_VERSION"].removeprefix("v")
 APP_BUILD = version_ns["APP_BUILD"].removeprefix("RC")
 MAC_DMG_ROOT = ROOT / "release" / "Mac" / "dmg"
-MAC_APP = MAC_DMG_ROOT / "LUCID AUTO.app"
+MAC_APP = MAC_DMG_ROOT / "LUCID.app"
 ISS_PATH = ROOT / "installer" / "LUCID.iss"
 WINDOWS_DIST = ROOT / "dist" / "LUCID"
 WINDOWS_APP = WINDOWS_DIST / "LUCID.exe"

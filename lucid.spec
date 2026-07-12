@@ -9,6 +9,10 @@ APP_NAME = "LUCID"
 APP_BUNDLE = "LUCID.app"
 ICON_ICNS = "assets/LUCID.icns" if Path("assets/LUCID.icns").exists() else None
 ICON_ICO = "assets/LUCID.ico" if Path("assets/LUCID.ico").exists() else None
+version_ns = {}
+exec(Path("src/hgpt_ai_os/version.py").read_text(), version_ns)
+APP_VERSION = version_ns["APP_VERSION"].removeprefix("v")
+APP_BUILD = version_ns["APP_BUILD"].removeprefix("RC")
 
 datas = []
 
@@ -22,6 +26,8 @@ datas.extend([
     ("planner", "planner"),
     ("outputs", "outputs"),
     ("src/hgpt_ai_os/config", "hgpt_ai_os/config"),
+    ("src/hgpt_ai_os/topic_engine/failure_intelligence_library.json", "hgpt_ai_os/topic_engine"),
+    ("src/hgpt_ai_os/topic_engine/topic_intelligence_profiles.json", "hgpt_ai_os/topic_engine"),
 ])
     
 
@@ -75,7 +81,10 @@ app = BUNDLE(
     icon=ICON_ICNS,
     bundle_identifier="com.lucidauto.desktop",
     info_plist={
-        "CFBundleShortVersionString": "1.0.0",
-        "CFBundleVersion": "15",
+        "CFBundleDisplayName": "LUCID AUTO",
+        "CFBundleName": "LUCID AUTO",
+        "CFBundleShortVersionString": APP_VERSION,
+        "CFBundleVersion": APP_BUILD,
+        "LSApplicationCategoryType": "public.app-category.productivity",
     },
 )

@@ -13,9 +13,14 @@ from hgpt_ai_os.ai.config_resolver import validate_ai_provider_config
 from hgpt_ai_os.ai.client import LucidAI
 from hgpt_ai_os.ai.gemini_client import AIProviderError
 from hgpt_ai_os.content.factory.builder_factory import BuilderFactory
+from hgpt_ai_os.content.factory.general_domain import GeneralDomainRouter
 from hgpt_ai_os.content.factory.topic_aware import TopicClassifier
 from hgpt_ai_os.content.template_engine import TemplateEngine
-from hgpt_ai_os.topic_engine import TopicIntelligenceEngine
+from hgpt_ai_os.topic_engine import (
+    TopicContext,
+    TopicIntelligenceEngine,
+    compact_topic_context,
+)
 
 
 logger = logging.getLogger(__name__)
@@ -222,10 +227,15 @@ class PromptBuilder:
         spec: GenerationSpec,
         variation: str,
         sequence_number: int,
+        topic_context: TopicContext | None = None,
         retry_note: str = "",
     ) -> str:
         reference = self._knowledge_pack(context)
-        semantic_brief = self._semantic_brief(topic)
+        semantic_brief = (
+            compact_topic_context(topic_context)
+            if topic_context is not None
+            else self._semantic_brief(topic)
+        )
         structure = self._structure(spec, variation, sequence_number)
         retry_block = f"\nRevision Constraint:\n{retry_note}\n" if retry_note else ""
 
@@ -361,11 +371,22 @@ class ContentGenerator:
                 )
         self.prompt_builder = PromptBuilder()
         self.topic_engine = TopicIntelligenceEngine()
+        self._topic_context = None
         self.topic_classifier = TopicClassifier()
+        self.general_router = GeneralDomainRouter()
         self._last_topic = ""
         self._last_context = ""
         self._generation_sequence = 0
         self._run_variation = self._new_variation("run")
+
+    def prime_topic_context(self, topic_context: TopicContext) -> None:
+        self._topic_context = topic_context
+
+    def _get_topic_context(self, topic: str) -> TopicContext:
+        if self._topic_context is not None and self._topic_context.original_topic == topic:
+            return self._topic_context
+        self._topic_context = self.topic_engine.analyze(topic)
+        return self._topic_context
 
     def generate(self, platform: str, topic: str, context: str = ""):
         if topic:
@@ -379,13 +400,15 @@ class ContentGenerator:
             spec = self._custom_spec(content_key or platform)
 
         self._generation_sequence += 1
+        uses_general = self._uses_general_builder(topic) if topic else False
+        topic_context = None if uses_general else self._get_topic_context(topic) if topic else None
         variation = self._new_variation(
             f"{self._run_variation}:{spec.key}:{topic}:{self._generation_sequence}"
         )
-        prompt = self._build_prompt(topic, context, spec, variation)
+        prompt = self._build_prompt(topic, context, spec, variation, topic_context=topic_context)
         if self.free_desktop_mode or self.ai is None:
-            return self._generate_with_builtin(spec, topic, context)
-        return self._generate_with_llm(prompt, spec, topic, context, variation)
+            return self._generate_with_builtin(spec, topic, context, topic_context=topic_context)
+        return self._generate_with_llm(prompt, spec, topic, context, variation, topic_context=topic_context)
 
     def generate_facebook(self, topic, context=""):
         return self.generate("facebook", topic, context)
@@ -408,7 +431,12 @@ class ContentGenerator:
 
         if topic:
             logger.info("Free Desktop Mode using built-in generator for hashtags")
-            return self.topic_engine.generate(topic, "hashtags", context)
+            return self.topic_engine.generate(
+                topic,
+                "hashtags",
+                context,
+                topic_context=self._get_topic_context(topic),
+            )
 
         return self.template.render(
             "templates/content/hashtags.md",
@@ -444,6 +472,7 @@ class ContentGenerator:
         context: str,
         spec: GenerationSpec,
         variation: str | None = None,
+        topic_context: TopicContext | None = None,
         retry_note: str = "",
     ) -> str:
         return self.prompt_builder.build(
@@ -452,6 +481,7 @@ class ContentGenerator:
             spec=spec,
             variation=variation or self._run_variation,
             sequence_number=self._generation_sequence,
+            topic_context=topic_context,
             retry_note=retry_note,
         )
 
@@ -462,6 +492,7 @@ class ContentGenerator:
         topic: str,
         context: str,
         variation: str,
+        topic_context: TopicContext | None = None,
     ) -> str:
         system_prompt = (
             "You are LUCID AUTO's AI content engine for Vietnamese topic-aware content. "
@@ -477,14 +508,14 @@ class ContentGenerator:
                     "AI generation raised for %s, switching to offline topic intelligence.",
                     spec.key,
                 )
-                return self._generate_with_builtin(spec, topic, context)
+                return self._generate_with_builtin(spec, topic, context, topic_context=topic_context)
 
             if isinstance(response, AIProviderError):
                 logger.info(
                     "AI unavailable for %s, switching to offline topic intelligence.",
                     spec.key,
                 )
-                return self._generate_with_builtin(spec, topic, context)
+                return self._generate_with_builtin(spec, topic, context, topic_context=topic_context)
 
             content = getattr(response, "content", "") or ""
             metadata: dict[str, Any] = getattr(response, "metadata", {}) or {}
@@ -494,7 +525,7 @@ class ContentGenerator:
                     "Mock provider detected for %s, switching to offline topic intelligence.",
                     spec.key,
                 )
-                return self._generate_with_builtin(spec, topic, context)
+                return self._generate_with_builtin(spec, topic, context, topic_context=topic_context)
 
             final_text = self._validate_response(content)
             if not final_text:
@@ -502,7 +533,7 @@ class ContentGenerator:
                     "Invalid or empty AI response for %s, switching to offline topic intelligence.",
                     spec.key,
                 )
-                return self._generate_with_builtin(spec, topic, context)
+                return self._generate_with_builtin(spec, topic, context, topic_context=topic_context)
 
             if self._is_duplicate_shape(final_text) and attempt == 0:
                 retry_variation = self._new_variation(f"{variation}:retry")
@@ -511,9 +542,12 @@ class ContentGenerator:
                     context,
                     spec,
                     retry_variation,
-                    "The previous draft reused an opening or body structure. "
-                    "Rewrite with a different first paragraph, section order, "
-                    "and progression of ideas.",
+                    topic_context=topic_context,
+                    retry_note=(
+                        "The previous draft reused an opening or body structure. "
+                        "Rewrite with a different first paragraph, section order, "
+                        "and progression of ideas."
+                    ),
                 )
                 continue
 
@@ -528,6 +562,7 @@ class ContentGenerator:
         spec: GenerationSpec,
         topic: str,
         context: str,
+        topic_context: TopicContext | None = None,
     ) -> str:
         logger.info("Mode: Offline Topic Intelligence")
         logger.info("Using offline topic intelligence engine for %s", spec.key)
@@ -538,10 +573,10 @@ class ContentGenerator:
                 "video_prompt": "video",
             }.get(spec.key, spec.key)
             return BuilderFactory.create(builder_key).build(topic, context)
-        return self.topic_engine.generate(topic, spec.key, context)
+        return self.topic_engine.generate(topic, spec.key, context, topic_context=topic_context)
 
     def _uses_general_builder(self, topic: str) -> bool:
-        return self.topic_classifier.uses_general_builder(topic)
+        return self.general_router.can_handle(topic) or self.topic_classifier.uses_general_builder(topic)
 
     def _plain(self, text: str) -> str:
         decomposed = unicodedata.normalize("NFD", text.lower())

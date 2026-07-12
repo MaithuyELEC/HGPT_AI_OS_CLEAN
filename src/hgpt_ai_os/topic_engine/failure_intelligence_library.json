@@ -1,0 +1,4990 @@
+{
+  "profiles": [
+    {
+      "key": "WIRE_ROPE_FAILURE",
+      "failure_mode": {
+        "id": "wire_rope_failure_mode",
+        "vi": "Sự cố cáp tải cầu trục",
+        "en": "Wire Rope Failure"
+      },
+      "symptoms": [
+        {
+          "id": "wire_rope_snapped",
+          "vi": "cáp tải bị đứt hoặc tách rời thấy rõ",
+          "en": "wire rope snapped or visibly separated"
+        },
+        {
+          "id": "broken_outer_strands",
+          "vi": "sợi cáp bên ngoài bị đứt",
+          "en": "broken wires on outer strands"
+        },
+        {
+          "id": "reduced_rope_diameter",
+          "vi": "đường kính cáp giảm so với kích thước danh nghĩa",
+          "en": "rope diameter reduced from nominal size"
+        },
+        {
+          "id": "unsafe_lifting_load_path",
+          "vi": "đường truyền tải không còn an toàn cho nâng hạ",
+          "en": "load path becomes unsafe for lifting"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "overload_or_shock_loading",
+          "vi": "quá tải hoặc sốc tải",
+          "en": "overload or shock loading"
+        },
+        {
+          "id": "discard_criteria_damage",
+          "vi": "sợi cáp đứt, mài mòn, ăn mòn hoặc biến dạng vượt tiêu chí loại bỏ",
+          "en": "broken wires, wear, corrosion or deformation beyond discard criteria"
+        },
+        {
+          "id": "sheave_groove_or_diameter",
+          "vi": "rãnh puly mòn hoặc đường kính puly không phù hợp",
+          "en": "sheave groove wear or incorrect sheave diameter"
+        },
+        {
+          "id": "drum_spooling_damage",
+          "vi": "cáp cuốn sai trên tang, cuốn chéo hoặc bị ép dập",
+          "en": "drum spooling damage, cross-winding or rope crushing"
+        },
+        {
+          "id": "poor_lubrication_or_missed_inspection",
+          "vi": "thiếu bôi trơn hoặc bỏ sót kiểm tra định kỳ",
+          "en": "poor lubrication or missed periodic inspection"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "broken_wires_count_and_location",
+          "vi": "kiểm tra số lượng và vị trí sợi cáp bị đứt",
+          "en": "broken wires count and location"
+        },
+        {
+          "id": "rope_diameter_measurement",
+          "vi": "đo đường kính cáp theo ISO 4309",
+          "en": "rope diameter measurement"
+        },
+        {
+          "id": "sheave_groove_condition_and_alignment",
+          "vi": "kiểm tra tình trạng rãnh puly và độ đồng tâm",
+          "en": "sheave groove condition and alignment"
+        },
+        {
+          "id": "drum_groove_anchorage_spooling",
+          "vi": "kiểm tra tang cuốn, rãnh tang, điểm neo và kiểu cuốn cáp",
+          "en": "drum groove, anchorage and spooling pattern"
+        },
+        {
+          "id": "hook_brake_limit_overload_condition",
+          "vi": "kiểm tra móc, phanh, công tắc giới hạn và thiết bị chống quá tải",
+          "en": "hook, brake, limit switch and overload protection condition"
+        }
+      ],
+      "standards": [
+        {
+          "id": "iso_4309",
+          "vi": "ISO 4309",
+          "en": "ISO 4309"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "stop_and_quarantine_lifting_area",
+          "vi": "dừng vận hành và cách ly khu vực nâng hạ",
+          "en": "stop operation and quarantine the lifting area"
+        },
+        {
+          "id": "replace_rope_correct_rating",
+          "vi": "thay cáp đúng cấu tạo, đường kính và giới hạn tải làm việc",
+          "en": "replace rope with correct construction, diameter and working load limit"
+        },
+        {
+          "id": "repair_sheave_drum_surfaces",
+          "vi": "sửa hoặc thay bề mặt tiếp xúc bị hỏng của puly và tang cuốn",
+          "en": "repair or replace damaged sheave and drum contact surfaces"
+        },
+        {
+          "id": "verify_brake_limit_overload",
+          "vi": "xác nhận phanh, công tắc giới hạn và thiết bị chống quá tải trước khi vận hành",
+          "en": "verify brake, limit switch and overload protection before operation"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "no_load_functional_test",
+          "vi": "chạy thử không tải",
+          "en": "no-load functional test"
+        },
+        {
+          "id": "load_test_approved_procedure",
+          "vi": "thử tải theo quy trình nâng hạ đã phê duyệt",
+          "en": "load test according to the approved lifting procedure"
+        },
+        {
+          "id": "release_inspection_competent_person",
+          "vi": "kiểm tra nghiệm thu trước khi đưa vào vận hành và có người đủ thẩm quyền ký xác nhận",
+          "en": "release inspection signed by competent person"
+        },
+        {
+          "id": "record_photos_certificate_evidence",
+          "vi": "lưu ảnh hiện trường, chứng chỉ cáp và bằng chứng thử tải",
+          "en": "record photos, rope certificate and test evidence"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "scheduled_wire_rope_inspection",
+          "vi": "lập lịch kiểm tra cáp tải theo ca, tuần và tháng",
+          "en": "schedule wire rope inspection by shift, week and month"
+        },
+        {
+          "id": "trend_wire_rope_damage",
+          "vi": "theo dõi số sợi cáp đứt, đường kính cáp, ăn mòn và biến dạng",
+          "en": "trend broken wires, rope diameter, corrosion and deformation"
+        },
+        {
+          "id": "lubricate_rope_by_oem",
+          "vi": "bôi trơn cáp theo khuyến nghị của OEM",
+          "en": "lubricate rope according to manufacturer recommendation"
+        },
+        {
+          "id": "operator_training_side_pull_shock_overload",
+          "vi": "đào tạo người vận hành tránh kéo xiên, sốc tải và quá tải",
+          "en": "train operators to avoid side pull, shock loading and overload"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "apply_loto",
+          "vi": "áp dụng LOTO trước khi kiểm tra hoặc thay cáp",
+          "en": "apply LOTO before inspection or replacement"
+        },
+        {
+          "id": "never_under_suspended_load",
+          "vi": "không đứng dưới tải treo",
+          "en": "never stand under suspended load"
+        },
+        {
+          "id": "barricade_until_release_inspection",
+          "vi": "rào chắn khu vực nâng hạ đến khi kiểm tra nghiệm thu hoàn tất",
+          "en": "barricade the lifting zone until release inspection is complete"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "wire_rope_failure_mechanism_1",
+          "vi": "Sự cố cáp tải cầu trục hình thành khi điều kiện vận hành, vật tư, lắp đặt hoặc kiểm tra vượt khỏi giới hạn kiểm soát.",
+          "en": "Sự cố cáp tải cầu trục develops when operating, material, installation or inspection conditions move outside control limits."
+        },
+        {
+          "id": "wire_rope_failure_mechanism_2",
+          "vi": "Nếu chỉ sửa triệu chứng mà không khóa cơ chế gây lỗi, lỗi sẽ lặp lại ở cùng thiết bị hoặc công đoạn.",
+          "en": "If only the symptom is repaired and the failure mechanism is not locked, the defect will repeat on the same equipment or process."
+        }
+      ],
+      "measurements": [
+        {
+          "id": "wire_rope_failure_measurement_1",
+          "vi": "ghi thông số đo trước sửa, sau sửa và điều kiện vận hành tại thời điểm phát hiện",
+          "en": "record measurements before repair, after repair and operating condition at detection time"
+        },
+        {
+          "id": "wire_rope_failure_measurement_2",
+          "vi": "đối chiếu giá trị đo với tiêu chí bản vẽ, WPS, ITP, OEM hoặc tiêu chuẩn áp dụng",
+          "en": "compare measured values with drawing, WPS, ITP, OEM or applicable standard criteria"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "wire_rope_failure_calc_1",
+          "vi": "tính phần trăm sai lệch = (giá trị đo - giới hạn cho phép) / giới hạn cho phép x 100%",
+          "en": "calculate deviation percentage = (measured value - allowable limit) / allowable limit x 100%"
+        },
+        {
+          "id": "wire_rope_failure_calc_2",
+          "vi": "so sánh tải, dòng điện, nhiệt độ, kích thước hoặc chỉ thị NDT với giới hạn nghiệm thu đã phê duyệt",
+          "en": "compare load, current, temperature, dimension or NDT indication with approved acceptance limit"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "wire_rope_failure_note_1",
+          "vi": "quyết định release phải dựa trên bằng chứng đo kiểm, ảnh hiện trường và người chịu trách nhiệm rõ ràng",
+          "en": "release decision must be based on measurement evidence, field photos and clear responsible person"
+        },
+        {
+          "id": "wire_rope_failure_note_2",
+          "vi": "không trộn lẫn kiểm tra nguyên nhân với nghiệm thu sau sửa; hai bước này cần bằng chứng riêng",
+          "en": "do not mix root cause inspection with post-repair acceptance; both steps need separate evidence"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "wire_rope_failure_mistake_1",
+          "vi": "sửa phần nhìn thấy nhưng không kiểm tra điều kiện tạo lỗi phía trước",
+          "en": "repairing the visible symptom without checking the upstream condition that created it"
+        },
+        {
+          "id": "wire_rope_failure_mistake_2",
+          "vi": "cho thiết bị hoặc cấu kiện quay lại sản xuất khi chưa có tiêu chí nghiệm thu rõ",
+          "en": "returning equipment or fabricated item to production without clear acceptance criteria"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "wire_rope_failure_lesson_1",
+          "vi": "một lỗi nghiêm trọng phải để lại checklist mới hoặc điểm kiểm soát mới cho ca sau",
+          "en": "a serious failure must leave a new checklist item or control point for the next shift"
+        },
+        {
+          "id": "wire_rope_failure_lesson_2",
+          "vi": "dữ liệu đo lặp lại theo ca giúp phát hiện xu hướng trước khi lỗi trở thành NCR hoặc downtime",
+          "en": "shift-based measurement trends reveal the pattern before it becomes NCR or downtime"
+        }
+      ]
+    },
+    {
+      "key": "MOTOR_BURNOUT",
+      "failure_mode": {
+        "id": "motor_burnout_mode",
+        "vi": "Sự cố cháy động cơ",
+        "en": "Motor Burnout"
+      },
+      "symptoms": [
+        {
+          "id": "burn_smell",
+          "vi": "có mùi khét",
+          "en": "burn smell"
+        },
+        {
+          "id": "darkened_winding",
+          "vi": "cuộn dây bị sẫm màu",
+          "en": "darkened winding"
+        },
+        {
+          "id": "motor_trips_or_cannot_start",
+          "vi": "động cơ nhảy bảo vệ hoặc không khởi động được",
+          "en": "motor trips or cannot start"
+        },
+        {
+          "id": "abnormal_current_before_failure",
+          "vi": "dòng điện bất thường trước khi hỏng",
+          "en": "abnormal current before failure"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "overload",
+          "vi": "quá tải",
+          "en": "overload"
+        },
+        {
+          "id": "phase_loss",
+          "vi": "mất pha",
+          "en": "phase loss"
+        },
+        {
+          "id": "short_circuit_winding",
+          "vi": "cuộn dây bị chập",
+          "en": "short circuit winding"
+        },
+        {
+          "id": "poor_cooling",
+          "vi": "làm mát kém",
+          "en": "poor cooling"
+        },
+        {
+          "id": "bearing_drag",
+          "vi": "bạc đạn kéo nặng",
+          "en": "bearing drag"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "winding_resistance",
+          "vi": "đo điện trở cuộn dây",
+          "en": "winding resistance"
+        },
+        {
+          "id": "insulation_resistance",
+          "vi": "đo điện trở cách điện bằng Megger",
+          "en": "insulation resistance"
+        },
+        {
+          "id": "phase_balance",
+          "vi": "kiểm tra cân bằng pha",
+          "en": "phase balance"
+        },
+        {
+          "id": "cooling_fan_and_vents",
+          "vi": "kiểm tra quạt làm mát và khe thông gió",
+          "en": "cooling fan and vents"
+        },
+        {
+          "id": "bearing_condition",
+          "vi": "kiểm tra tình trạng bạc đạn",
+          "en": "bearing condition"
+        }
+      ],
+      "standards": [
+        {
+          "id": "en_60204",
+          "vi": "EN 60204",
+          "en": "EN 60204"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "isolate_power",
+          "vi": "cô lập nguồn điện",
+          "en": "isolate power"
+        },
+        {
+          "id": "replace_or_rewind_motor",
+          "vi": "thay hoặc quấn lại động cơ hư hỏng",
+          "en": "replace or rewind damaged motor"
+        },
+        {
+          "id": "remove_mechanical_overload",
+          "vi": "loại bỏ nguyên nhân quá tải cơ khí",
+          "en": "remove mechanical overload"
+        },
+        {
+          "id": "restore_cooling_path",
+          "vi": "khôi phục đường làm mát",
+          "en": "restore cooling path"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "megger_test",
+          "vi": "kiểm tra bằng Megger",
+          "en": "megger test"
+        },
+        {
+          "id": "no_load_run",
+          "vi": "chạy thử không tải",
+          "en": "no-load run"
+        },
+        {
+          "id": "load_current_check",
+          "vi": "kiểm tra dòng điện khi có tải",
+          "en": "load current check"
+        },
+        {
+          "id": "thermal_trend_after_restart",
+          "vi": "theo dõi nhiệt sau khi khởi động lại",
+          "en": "thermal trend after restart"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "trend_current",
+          "vi": "theo dõi dòng điện",
+          "en": "trend current"
+        },
+        {
+          "id": "clean_vents",
+          "vi": "vệ sinh khe thông gió",
+          "en": "clean vents"
+        },
+        {
+          "id": "check_phase_imbalance",
+          "vi": "kiểm tra lệch pha",
+          "en": "check phase imbalance"
+        },
+        {
+          "id": "maintain_bearings",
+          "vi": "bảo trì bạc đạn",
+          "en": "maintain bearings"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "apply_loto",
+          "vi": "áp dụng LOTO",
+          "en": "apply LOTO"
+        },
+        {
+          "id": "discharge_stored_energy",
+          "vi": "xả năng lượng tích trữ",
+          "en": "discharge stored energy"
+        },
+        {
+          "id": "verify_absence_of_voltage",
+          "vi": "xác nhận không còn điện áp",
+          "en": "verify absence of voltage"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "motor_burnout_mechanism_1",
+          "vi": "Sự cố cháy động cơ hình thành khi điều kiện vận hành, vật tư, lắp đặt hoặc kiểm tra vượt khỏi giới hạn kiểm soát.",
+          "en": "Sự cố cháy động cơ develops when operating, material, installation or inspection conditions move outside control limits."
+        },
+        {
+          "id": "motor_burnout_mechanism_2",
+          "vi": "Nếu chỉ sửa triệu chứng mà không khóa cơ chế gây lỗi, lỗi sẽ lặp lại ở cùng thiết bị hoặc công đoạn.",
+          "en": "If only the symptom is repaired and the failure mechanism is not locked, the defect will repeat on the same equipment or process."
+        }
+      ],
+      "measurements": [
+        {
+          "id": "motor_burnout_measurement_1",
+          "vi": "ghi thông số đo trước sửa, sau sửa và điều kiện vận hành tại thời điểm phát hiện",
+          "en": "record measurements before repair, after repair and operating condition at detection time"
+        },
+        {
+          "id": "motor_burnout_measurement_2",
+          "vi": "đối chiếu giá trị đo với tiêu chí bản vẽ, WPS, ITP, OEM hoặc tiêu chuẩn áp dụng",
+          "en": "compare measured values with drawing, WPS, ITP, OEM or applicable standard criteria"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "motor_burnout_calc_1",
+          "vi": "tính phần trăm sai lệch = (giá trị đo - giới hạn cho phép) / giới hạn cho phép x 100%",
+          "en": "calculate deviation percentage = (measured value - allowable limit) / allowable limit x 100%"
+        },
+        {
+          "id": "motor_burnout_calc_2",
+          "vi": "so sánh tải, dòng điện, nhiệt độ, kích thước hoặc chỉ thị NDT với giới hạn nghiệm thu đã phê duyệt",
+          "en": "compare load, current, temperature, dimension or NDT indication with approved acceptance limit"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "motor_burnout_note_1",
+          "vi": "quyết định release phải dựa trên bằng chứng đo kiểm, ảnh hiện trường và người chịu trách nhiệm rõ ràng",
+          "en": "release decision must be based on measurement evidence, field photos and clear responsible person"
+        },
+        {
+          "id": "motor_burnout_note_2",
+          "vi": "không trộn lẫn kiểm tra nguyên nhân với nghiệm thu sau sửa; hai bước này cần bằng chứng riêng",
+          "en": "do not mix root cause inspection with post-repair acceptance; both steps need separate evidence"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "motor_burnout_mistake_1",
+          "vi": "sửa phần nhìn thấy nhưng không kiểm tra điều kiện tạo lỗi phía trước",
+          "en": "repairing the visible symptom without checking the upstream condition that created it"
+        },
+        {
+          "id": "motor_burnout_mistake_2",
+          "vi": "cho thiết bị hoặc cấu kiện quay lại sản xuất khi chưa có tiêu chí nghiệm thu rõ",
+          "en": "returning equipment or fabricated item to production without clear acceptance criteria"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "motor_burnout_lesson_1",
+          "vi": "một lỗi nghiêm trọng phải để lại checklist mới hoặc điểm kiểm soát mới cho ca sau",
+          "en": "a serious failure must leave a new checklist item or control point for the next shift"
+        },
+        {
+          "id": "motor_burnout_lesson_2",
+          "vi": "dữ liệu đo lặp lại theo ca giúp phát hiện xu hướng trước khi lỗi trở thành NCR hoặc downtime",
+          "en": "shift-based measurement trends reveal the pattern before it becomes NCR or downtime"
+        }
+      ]
+    },
+    {
+      "key": "VFD_OVERCURRENT",
+      "failure_mode": {
+        "id": "vfd_overcurrent_mode",
+        "vi": "Sự cố quá dòng VFD",
+        "en": "VFD Overcurrent"
+      },
+      "symptoms": [
+        {
+          "id": "oc_fault_on_vfd",
+          "vi": "VFD báo lỗi quá dòng",
+          "en": "OC fault on VFD"
+        },
+        {
+          "id": "drive_trips_during_acceleration",
+          "vi": "biến tần nhảy lỗi khi tăng tốc",
+          "en": "drive trips during acceleration"
+        },
+        {
+          "id": "motor_stalls",
+          "vi": "động cơ bị khựng hoặc đứng tải",
+          "en": "motor stalls"
+        },
+        {
+          "id": "current_spike_fault_history",
+          "vi": "lịch sử lỗi ghi nhận dòng điện tăng vọt",
+          "en": "current spike in fault history"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "acceleration_time_too_short",
+          "vi": "thời gian tăng tốc quá ngắn",
+          "en": "acceleration time too short"
+        },
+        {
+          "id": "mechanical_jam",
+          "vi": "kẹt cơ khí",
+          "en": "mechanical jam"
+        },
+        {
+          "id": "motor_cable_short",
+          "vi": "cáp động cơ bị chập",
+          "en": "motor cable short"
+        },
+        {
+          "id": "incorrect_motor_parameters",
+          "vi": "tham số động cơ cài đặt sai",
+          "en": "incorrect motor parameters"
+        },
+        {
+          "id": "overload",
+          "vi": "quá tải",
+          "en": "overload"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "fault_log",
+          "vi": "kiểm tra nhật ký lỗi",
+          "en": "fault log"
+        },
+        {
+          "id": "motor_current",
+          "vi": "đo dòng điện động cơ",
+          "en": "motor current"
+        },
+        {
+          "id": "acceleration_ramp",
+          "vi": "kiểm tra dải tăng tốc",
+          "en": "acceleration ramp"
+        },
+        {
+          "id": "motor_cable_insulation",
+          "vi": "đo cách điện cáp động cơ",
+          "en": "motor cable insulation"
+        },
+        {
+          "id": "driven_load_condition",
+          "vi": "kiểm tra tình trạng tải kéo",
+          "en": "driven load condition"
+        }
+      ],
+      "standards": [
+        {
+          "id": "en_60204",
+          "vi": "EN 60204",
+          "en": "EN 60204"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "remove_jam",
+          "vi": "loại bỏ điểm kẹt",
+          "en": "remove jam"
+        },
+        {
+          "id": "set_motor_nameplate_parameters",
+          "vi": "cài đúng tham số theo nhãn động cơ",
+          "en": "set motor nameplate parameters"
+        },
+        {
+          "id": "adjust_acceleration_ramp",
+          "vi": "điều chỉnh dải tăng tốc",
+          "en": "adjust acceleration ramp"
+        },
+        {
+          "id": "repair_cable_or_insulation",
+          "vi": "sửa cáp hoặc phần cách điện của động cơ",
+          "en": "repair cable or motor insulation"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "jog_test",
+          "vi": "chạy nhấp kiểm tra",
+          "en": "jog test"
+        },
+        {
+          "id": "no_load_run",
+          "vi": "chạy thử không tải",
+          "en": "no-load run"
+        },
+        {
+          "id": "loaded_current_check",
+          "vi": "kiểm tra dòng điện khi có tải",
+          "en": "loaded current check"
+        },
+        {
+          "id": "fault_history_clear_after_restart",
+          "vi": "xác nhận lịch sử lỗi không lặp lại sau khi khởi động lại",
+          "en": "fault history clear after restart"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "trend_drive_current",
+          "vi": "theo dõi dòng điện của biến tần",
+          "en": "trend drive current"
+        },
+        {
+          "id": "protect_motor_cable",
+          "vi": "bảo vệ tuyến cáp động cơ",
+          "en": "protect motor cable"
+        },
+        {
+          "id": "maintain_driven_machine",
+          "vi": "bảo trì máy được kéo",
+          "en": "maintain driven machine"
+        },
+        {
+          "id": "backup_vfd_parameters",
+          "vi": "sao lưu tham số VFD",
+          "en": "backup VFD parameters"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "apply_loto",
+          "vi": "áp dụng LOTO",
+          "en": "apply LOTO"
+        },
+        {
+          "id": "wait_for_dc_bus_discharge",
+          "vi": "chờ xả điện áp DC bus",
+          "en": "wait for DC bus discharge"
+        },
+        {
+          "id": "follow_arc_flash_controls",
+          "vi": "tuân thủ biện pháp kiểm soát hồ quang điện",
+          "en": "follow arc-flash controls"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "vfd_overcurrent_mechanism_1",
+          "vi": "Sự cố quá dòng VFD hình thành khi điều kiện vận hành, vật tư, lắp đặt hoặc kiểm tra vượt khỏi giới hạn kiểm soát.",
+          "en": "Sự cố quá dòng VFD develops when operating, material, installation or inspection conditions move outside control limits."
+        },
+        {
+          "id": "vfd_overcurrent_mechanism_2",
+          "vi": "Nếu chỉ sửa triệu chứng mà không khóa cơ chế gây lỗi, lỗi sẽ lặp lại ở cùng thiết bị hoặc công đoạn.",
+          "en": "If only the symptom is repaired and the failure mechanism is not locked, the defect will repeat on the same equipment or process."
+        }
+      ],
+      "measurements": [
+        {
+          "id": "vfd_overcurrent_measurement_1",
+          "vi": "ghi thông số đo trước sửa, sau sửa và điều kiện vận hành tại thời điểm phát hiện",
+          "en": "record measurements before repair, after repair and operating condition at detection time"
+        },
+        {
+          "id": "vfd_overcurrent_measurement_2",
+          "vi": "đối chiếu giá trị đo với tiêu chí bản vẽ, WPS, ITP, OEM hoặc tiêu chuẩn áp dụng",
+          "en": "compare measured values with drawing, WPS, ITP, OEM or applicable standard criteria"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "vfd_overcurrent_calc_1",
+          "vi": "tính phần trăm sai lệch = (giá trị đo - giới hạn cho phép) / giới hạn cho phép x 100%",
+          "en": "calculate deviation percentage = (measured value - allowable limit) / allowable limit x 100%"
+        },
+        {
+          "id": "vfd_overcurrent_calc_2",
+          "vi": "so sánh tải, dòng điện, nhiệt độ, kích thước hoặc chỉ thị NDT với giới hạn nghiệm thu đã phê duyệt",
+          "en": "compare load, current, temperature, dimension or NDT indication with approved acceptance limit"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "vfd_overcurrent_note_1",
+          "vi": "quyết định release phải dựa trên bằng chứng đo kiểm, ảnh hiện trường và người chịu trách nhiệm rõ ràng",
+          "en": "release decision must be based on measurement evidence, field photos and clear responsible person"
+        },
+        {
+          "id": "vfd_overcurrent_note_2",
+          "vi": "không trộn lẫn kiểm tra nguyên nhân với nghiệm thu sau sửa; hai bước này cần bằng chứng riêng",
+          "en": "do not mix root cause inspection with post-repair acceptance; both steps need separate evidence"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "vfd_overcurrent_mistake_1",
+          "vi": "sửa phần nhìn thấy nhưng không kiểm tra điều kiện tạo lỗi phía trước",
+          "en": "repairing the visible symptom without checking the upstream condition that created it"
+        },
+        {
+          "id": "vfd_overcurrent_mistake_2",
+          "vi": "cho thiết bị hoặc cấu kiện quay lại sản xuất khi chưa có tiêu chí nghiệm thu rõ",
+          "en": "returning equipment or fabricated item to production without clear acceptance criteria"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "vfd_overcurrent_lesson_1",
+          "vi": "một lỗi nghiêm trọng phải để lại checklist mới hoặc điểm kiểm soát mới cho ca sau",
+          "en": "a serious failure must leave a new checklist item or control point for the next shift"
+        },
+        {
+          "id": "vfd_overcurrent_lesson_2",
+          "vi": "dữ liệu đo lặp lại theo ca giúp phát hiện xu hướng trước khi lỗi trở thành NCR hoặc downtime",
+          "en": "shift-based measurement trends reveal the pattern before it becomes NCR or downtime"
+        }
+      ]
+    },
+    {
+      "key": "PLC_FAULT",
+      "failure_mode": {
+        "id": "plc_fault_mode",
+        "vi": "Sự cố PLC",
+        "en": "PLC Fault"
+      },
+      "symptoms": [
+        {
+          "id": "plc_fault_led",
+          "vi": "đèn lỗi PLC sáng",
+          "en": "PLC fault LED"
+        },
+        {
+          "id": "machine_sequence_stops",
+          "vi": "chu trình máy dừng",
+          "en": "machine sequence stops"
+        },
+        {
+          "id": "io_status_mismatch",
+          "vi": "trạng thái I/O không khớp",
+          "en": "I/O status mismatch"
+        },
+        {
+          "id": "communication_alarm",
+          "vi": "có cảnh báo truyền thông",
+          "en": "communication alarm"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "power_supply_instability",
+          "vi": "nguồn cấp không ổn định",
+          "en": "power supply instability"
+        },
+        {
+          "id": "io_module_fault",
+          "vi": "mô đun I/O bị lỗi",
+          "en": "I/O module fault"
+        },
+        {
+          "id": "program_stop_condition",
+          "vi": "chương trình gặp điều kiện dừng",
+          "en": "program stop condition"
+        },
+        {
+          "id": "field_device_short",
+          "vi": "thiết bị hiện trường bị chập",
+          "en": "field device short"
+        },
+        {
+          "id": "network_interruption",
+          "vi": "gián đoạn mạng truyền thông",
+          "en": "network interruption"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "diagnostic_buffer",
+          "vi": "kiểm tra bộ nhớ chẩn đoán",
+          "en": "diagnostic buffer"
+        },
+        {
+          "id": "power_supply_voltage",
+          "vi": "đo điện áp nguồn cấp",
+          "en": "power supply voltage"
+        },
+        {
+          "id": "io_module_status",
+          "vi": "kiểm tra trạng thái mô đun I/O",
+          "en": "I/O module status"
+        },
+        {
+          "id": "field_wiring",
+          "vi": "kiểm tra dây hiện trường",
+          "en": "field wiring"
+        },
+        {
+          "id": "network_link_status",
+          "vi": "kiểm tra trạng thái liên kết mạng",
+          "en": "network link status"
+        }
+      ],
+      "standards": [
+        {
+          "id": "en_60204",
+          "vi": "EN 60204",
+          "en": "EN 60204"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "backup_program",
+          "vi": "sao lưu chương trình",
+          "en": "backup program"
+        },
+        {
+          "id": "restore_stable_power",
+          "vi": "khôi phục nguồn cấp ổn định",
+          "en": "restore stable power"
+        },
+        {
+          "id": "replace_failed_io_module",
+          "vi": "thay mô đun I/O bị lỗi",
+          "en": "replace failed I/O module"
+        },
+        {
+          "id": "repair_field_wiring",
+          "vi": "sửa dây hiện trường",
+          "en": "repair field wiring"
+        },
+        {
+          "id": "reset_after_cause_closed",
+          "vi": "chỉ đặt lại lỗi sau khi nguyên nhân đã được đóng",
+          "en": "reset only after cause is closed"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "io_forcing_check_under_permit",
+          "vi": "kiểm tra cưỡng bức I/O theo phiếu cho phép",
+          "en": "I/O forcing check under permit"
+        },
+        {
+          "id": "sequence_dry_run",
+          "vi": "chạy thử chu trình không tải",
+          "en": "sequence dry run"
+        },
+        {
+          "id": "interlock_test",
+          "vi": "kiểm tra liên động",
+          "en": "interlock test"
+        },
+        {
+          "id": "operator_release_confirmation",
+          "vi": "xác nhận của người vận hành trước khi bàn giao",
+          "en": "operator release confirmation"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "backup_plc_program",
+          "vi": "sao lưu chương trình PLC",
+          "en": "backup PLC program"
+        },
+        {
+          "id": "label_field_wiring",
+          "vi": "dán nhãn dây hiện trường",
+          "en": "label field wiring"
+        },
+        {
+          "id": "monitor_cabinet_temperature",
+          "vi": "theo dõi nhiệt độ tủ điện",
+          "en": "monitor cabinet temperature"
+        },
+        {
+          "id": "document_recurring_faults",
+          "vi": "ghi nhận các lỗi lặp lại",
+          "en": "document recurring faults"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "apply_loto_where_motion_can_start",
+          "vi": "áp dụng LOTO tại nơi cơ cấu có thể tự khởi động",
+          "en": "apply LOTO where motion can start"
+        },
+        {
+          "id": "do_not_bypass_safety_interlocks",
+          "vi": "không bỏ qua liên động an toàn",
+          "en": "do not bypass safety interlocks"
+        },
+        {
+          "id": "control_stored_pneumatic_hydraulic_energy",
+          "vi": "kiểm soát năng lượng khí nén hoặc thủy lực tích trữ",
+          "en": "control stored pneumatic or hydraulic energy"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "plc_fault_mechanism_1",
+          "vi": "Sự cố PLC hình thành khi điều kiện vận hành, vật tư, lắp đặt hoặc kiểm tra vượt khỏi giới hạn kiểm soát.",
+          "en": "Sự cố PLC develops when operating, material, installation or inspection conditions move outside control limits."
+        },
+        {
+          "id": "plc_fault_mechanism_2",
+          "vi": "Nếu chỉ sửa triệu chứng mà không khóa cơ chế gây lỗi, lỗi sẽ lặp lại ở cùng thiết bị hoặc công đoạn.",
+          "en": "If only the symptom is repaired and the failure mechanism is not locked, the defect will repeat on the same equipment or process."
+        }
+      ],
+      "measurements": [
+        {
+          "id": "plc_fault_measurement_1",
+          "vi": "ghi thông số đo trước sửa, sau sửa và điều kiện vận hành tại thời điểm phát hiện",
+          "en": "record measurements before repair, after repair and operating condition at detection time"
+        },
+        {
+          "id": "plc_fault_measurement_2",
+          "vi": "đối chiếu giá trị đo với tiêu chí bản vẽ, WPS, ITP, OEM hoặc tiêu chuẩn áp dụng",
+          "en": "compare measured values with drawing, WPS, ITP, OEM or applicable standard criteria"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "plc_fault_calc_1",
+          "vi": "tính phần trăm sai lệch = (giá trị đo - giới hạn cho phép) / giới hạn cho phép x 100%",
+          "en": "calculate deviation percentage = (measured value - allowable limit) / allowable limit x 100%"
+        },
+        {
+          "id": "plc_fault_calc_2",
+          "vi": "so sánh tải, dòng điện, nhiệt độ, kích thước hoặc chỉ thị NDT với giới hạn nghiệm thu đã phê duyệt",
+          "en": "compare load, current, temperature, dimension or NDT indication with approved acceptance limit"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "plc_fault_note_1",
+          "vi": "quyết định release phải dựa trên bằng chứng đo kiểm, ảnh hiện trường và người chịu trách nhiệm rõ ràng",
+          "en": "release decision must be based on measurement evidence, field photos and clear responsible person"
+        },
+        {
+          "id": "plc_fault_note_2",
+          "vi": "không trộn lẫn kiểm tra nguyên nhân với nghiệm thu sau sửa; hai bước này cần bằng chứng riêng",
+          "en": "do not mix root cause inspection with post-repair acceptance; both steps need separate evidence"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "plc_fault_mistake_1",
+          "vi": "sửa phần nhìn thấy nhưng không kiểm tra điều kiện tạo lỗi phía trước",
+          "en": "repairing the visible symptom without checking the upstream condition that created it"
+        },
+        {
+          "id": "plc_fault_mistake_2",
+          "vi": "cho thiết bị hoặc cấu kiện quay lại sản xuất khi chưa có tiêu chí nghiệm thu rõ",
+          "en": "returning equipment or fabricated item to production without clear acceptance criteria"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "plc_fault_lesson_1",
+          "vi": "một lỗi nghiêm trọng phải để lại checklist mới hoặc điểm kiểm soát mới cho ca sau",
+          "en": "a serious failure must leave a new checklist item or control point for the next shift"
+        },
+        {
+          "id": "plc_fault_lesson_2",
+          "vi": "dữ liệu đo lặp lại theo ca giúp phát hiện xu hướng trước khi lỗi trở thành NCR hoặc downtime",
+          "en": "shift-based measurement trends reveal the pattern before it becomes NCR or downtime"
+        }
+      ]
+    },
+    {
+      "key": "SAW_POROSITY",
+      "failure_mode": {
+        "id": "saw_porosity_mode",
+        "vi": "Rỗ khí mối hàn SAW",
+        "en": "SAW Porosity"
+      },
+      "symptoms": [
+        {
+          "id": "surface_pores",
+          "vi": "bề mặt có lỗ rỗ",
+          "en": "surface pores"
+        },
+        {
+          "id": "ut_gas_indication",
+          "vi": "UT phát hiện chỉ thị phù hợp với rỗ khí",
+          "en": "UT indication consistent with gas"
+        },
+        {
+          "id": "repair_welding_required",
+          "vi": "cần mài sửa hoặc hàn sửa",
+          "en": "repair welding required"
+        },
+        {
+          "id": "vt_result_not_accepted",
+          "vi": "kết quả VT không đạt",
+          "en": "VT result not accepted"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "wet_flux",
+          "vi": "thuốc hàn bị ẩm",
+          "en": "wet flux"
+        },
+        {
+          "id": "contaminated_plate_surface",
+          "vi": "bề mặt thép bị nhiễm bẩn",
+          "en": "contaminated plate surface"
+        },
+        {
+          "id": "dirty_wire",
+          "vi": "dây hàn bẩn",
+          "en": "dirty wire"
+        },
+        {
+          "id": "parameters_outside_wps",
+          "vi": "thông số nằm ngoài WPS",
+          "en": "parameters outside WPS"
+        },
+        {
+          "id": "insufficient_flux_depth",
+          "vi": "chiều sâu lớp thuốc hàn không đủ",
+          "en": "insufficient flux depth"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "flux_drying_record",
+          "vi": "kiểm tra hồ sơ sấy thuốc hàn",
+          "en": "flux drying record"
+        },
+        {
+          "id": "wire_condition",
+          "vi": "kiểm tra tình trạng dây hàn",
+          "en": "wire condition"
+        },
+        {
+          "id": "surface_cleanliness",
+          "vi": "kiểm tra độ sạch bề mặt",
+          "en": "surface cleanliness"
+        },
+        {
+          "id": "current_voltage_travel_speed_stickout",
+          "vi": "đối chiếu dòng hàn, điện áp, tốc độ chạy và stickout",
+          "en": "current voltage travel speed and stickout"
+        },
+        {
+          "id": "vt_and_ut_results",
+          "vi": "kiểm tra kết quả VT và UT",
+          "en": "VT and UT results"
+        }
+      ],
+      "standards": [
+        {
+          "id": "aws_d1_1",
+          "vi": "AWS D1.1",
+          "en": "AWS D1.1"
+        },
+        {
+          "id": "iso_3834",
+          "vi": "ISO 3834",
+          "en": "ISO 3834"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "remove_porosity_to_sound_metal",
+          "vi": "mài bỏ vùng rỗ khí đến kim loại tốt",
+          "en": "remove porosity to sound metal"
+        },
+        {
+          "id": "clean_joint_surface",
+          "vi": "làm sạch bề mặt liên kết",
+          "en": "clean joint surface"
+        },
+        {
+          "id": "dry_or_replace_flux",
+          "vi": "sấy hoặc thay thuốc hàn nghi ngờ ẩm",
+          "en": "dry or replace suspect flux"
+        },
+        {
+          "id": "reset_parameters_to_wps",
+          "vi": "đặt lại thông số theo WPS",
+          "en": "reset parameters to WPS"
+        },
+        {
+          "id": "repair_weld_per_wps",
+          "vi": "hàn sửa theo WPS",
+          "en": "repair weld per WPS"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "vt_after_repair",
+          "vi": "VT sau sửa",
+          "en": "VT after repair"
+        },
+        {
+          "id": "ut_according_to_itp",
+          "vi": "UT theo ITP",
+          "en": "UT according to ITP"
+        },
+        {
+          "id": "wps_parameter_record",
+          "vi": "ghi nhận thông số WPS",
+          "en": "WPS parameter record"
+        },
+        {
+          "id": "qaqc_release",
+          "vi": "QA/QC xác nhận nghiệm thu",
+          "en": "QA/QC release"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "control_flux_oven_log",
+          "vi": "kiểm soát nhật ký lò sấy thuốc hàn",
+          "en": "control flux oven log"
+        },
+        {
+          "id": "protect_flux_from_moisture",
+          "vi": "bảo vệ thuốc hàn khỏi ẩm",
+          "en": "protect flux from moisture"
+        },
+        {
+          "id": "lock_saw_parameter_range",
+          "vi": "khóa dải thông số SAW",
+          "en": "lock SAW parameter range"
+        },
+        {
+          "id": "hold_point_before_next_process",
+          "vi": "giữ điểm dừng kiểm tra trước công đoạn kế tiếp",
+          "en": "hold point before next process"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "use_welding_ppe",
+          "vi": "sử dụng PPE hàn",
+          "en": "use welding PPE"
+        },
+        {
+          "id": "control_fumes",
+          "vi": "kiểm soát khói hàn",
+          "en": "control fumes"
+        },
+        {
+          "id": "guard_grinding_sparks",
+          "vi": "che chắn tia lửa mài",
+          "en": "guard grinding sparks"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "saw_porosity_mechanism_1",
+          "vi": "Rỗ khí mối hàn SAW hình thành khi điều kiện vận hành, vật tư, lắp đặt hoặc kiểm tra vượt khỏi giới hạn kiểm soát.",
+          "en": "Rỗ khí mối hàn SAW develops when operating, material, installation or inspection conditions move outside control limits."
+        },
+        {
+          "id": "saw_porosity_mechanism_2",
+          "vi": "Nếu chỉ sửa triệu chứng mà không khóa cơ chế gây lỗi, lỗi sẽ lặp lại ở cùng thiết bị hoặc công đoạn.",
+          "en": "If only the symptom is repaired and the failure mechanism is not locked, the defect will repeat on the same equipment or process."
+        }
+      ],
+      "measurements": [
+        {
+          "id": "saw_porosity_measurement_1",
+          "vi": "ghi thông số đo trước sửa, sau sửa và điều kiện vận hành tại thời điểm phát hiện",
+          "en": "record measurements before repair, after repair and operating condition at detection time"
+        },
+        {
+          "id": "saw_porosity_measurement_2",
+          "vi": "đối chiếu giá trị đo với tiêu chí bản vẽ, WPS, ITP, OEM hoặc tiêu chuẩn áp dụng",
+          "en": "compare measured values with drawing, WPS, ITP, OEM or applicable standard criteria"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "saw_porosity_calc_1",
+          "vi": "tính phần trăm sai lệch = (giá trị đo - giới hạn cho phép) / giới hạn cho phép x 100%",
+          "en": "calculate deviation percentage = (measured value - allowable limit) / allowable limit x 100%"
+        },
+        {
+          "id": "saw_porosity_calc_2",
+          "vi": "so sánh tải, dòng điện, nhiệt độ, kích thước hoặc chỉ thị NDT với giới hạn nghiệm thu đã phê duyệt",
+          "en": "compare load, current, temperature, dimension or NDT indication with approved acceptance limit"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "saw_porosity_note_1",
+          "vi": "quyết định release phải dựa trên bằng chứng đo kiểm, ảnh hiện trường và người chịu trách nhiệm rõ ràng",
+          "en": "release decision must be based on measurement evidence, field photos and clear responsible person"
+        },
+        {
+          "id": "saw_porosity_note_2",
+          "vi": "không trộn lẫn kiểm tra nguyên nhân với nghiệm thu sau sửa; hai bước này cần bằng chứng riêng",
+          "en": "do not mix root cause inspection with post-repair acceptance; both steps need separate evidence"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "saw_porosity_mistake_1",
+          "vi": "sửa phần nhìn thấy nhưng không kiểm tra điều kiện tạo lỗi phía trước",
+          "en": "repairing the visible symptom without checking the upstream condition that created it"
+        },
+        {
+          "id": "saw_porosity_mistake_2",
+          "vi": "cho thiết bị hoặc cấu kiện quay lại sản xuất khi chưa có tiêu chí nghiệm thu rõ",
+          "en": "returning equipment or fabricated item to production without clear acceptance criteria"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "saw_porosity_lesson_1",
+          "vi": "một lỗi nghiêm trọng phải để lại checklist mới hoặc điểm kiểm soát mới cho ca sau",
+          "en": "a serious failure must leave a new checklist item or control point for the next shift"
+        },
+        {
+          "id": "saw_porosity_lesson_2",
+          "vi": "dữ liệu đo lặp lại theo ca giúp phát hiện xu hướng trước khi lỗi trở thành NCR hoặc downtime",
+          "en": "shift-based measurement trends reveal the pattern before it becomes NCR or downtime"
+        }
+      ]
+    },
+    {
+      "key": "HYDRAULIC_LEAK",
+      "failure_mode": {
+        "id": "hydraulic_leak_mode",
+        "vi": "Rò rỉ hệ thống thủy lực",
+        "en": "Hydraulic Leak"
+      },
+      "symptoms": [
+        {
+          "id": "oil_leak",
+          "vi": "rò dầu",
+          "en": "oil leak"
+        },
+        {
+          "id": "pressure_drop",
+          "vi": "áp suất giảm",
+          "en": "pressure drop"
+        },
+        {
+          "id": "slow_actuator",
+          "vi": "cơ cấu chấp hành chạy chậm",
+          "en": "slow actuator"
+        },
+        {
+          "id": "wet_hose_or_fitting",
+          "vi": "ống hoặc fitting bị ướt dầu",
+          "en": "wet hose or fitting"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "damaged_hose",
+          "vi": "ống thủy lực hư hỏng",
+          "en": "damaged hose"
+        },
+        {
+          "id": "loose_fitting",
+          "vi": "fitting bị lỏng",
+          "en": "loose fitting"
+        },
+        {
+          "id": "seal_wear",
+          "vi": "phớt bị mòn",
+          "en": "seal wear"
+        },
+        {
+          "id": "overpressure",
+          "vi": "quá áp",
+          "en": "overpressure"
+        },
+        {
+          "id": "contaminated_oil",
+          "vi": "dầu bị nhiễm bẩn",
+          "en": "contaminated oil"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "hose_cover",
+          "vi": "kiểm tra vỏ ống",
+          "en": "hose cover"
+        },
+        {
+          "id": "fitting_torque",
+          "vi": "kiểm tra lực siết fitting",
+          "en": "fitting torque"
+        },
+        {
+          "id": "seal_condition",
+          "vi": "kiểm tra tình trạng phớt",
+          "en": "seal condition"
+        },
+        {
+          "id": "pressure_setting",
+          "vi": "kiểm tra áp suất cài đặt",
+          "en": "pressure setting"
+        },
+        {
+          "id": "oil_cleanliness",
+          "vi": "kiểm tra độ sạch dầu",
+          "en": "oil cleanliness"
+        }
+      ],
+      "standards": [
+        {
+          "id": "iso_4413",
+          "vi": "ISO 4413",
+          "en": "ISO 4413"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "depressurize_system",
+          "vi": "xả áp hệ thống",
+          "en": "depressurize system"
+        },
+        {
+          "id": "replace_damaged_hose_or_seal",
+          "vi": "thay ống hoặc phớt bị hỏng",
+          "en": "replace damaged hose or seal"
+        },
+        {
+          "id": "tighten_fitting_to_specification",
+          "vi": "siết fitting đúng thông số",
+          "en": "tighten fitting to specification"
+        },
+        {
+          "id": "clean_spilled_oil",
+          "vi": "vệ sinh dầu tràn",
+          "en": "clean spilled oil"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "pressure_hold_test",
+          "vi": "kiểm tra giữ áp",
+          "en": "pressure hold test"
+        },
+        {
+          "id": "leak_check_operating_pressure",
+          "vi": "kiểm tra rò rỉ ở áp suất làm việc",
+          "en": "leak check under operating pressure"
+        },
+        {
+          "id": "actuator_cycle_test",
+          "vi": "chạy thử chu kỳ cơ cấu chấp hành",
+          "en": "actuator cycle test"
+        },
+        {
+          "id": "oil_level_confirmation",
+          "vi": "xác nhận mức dầu",
+          "en": "oil level confirmation"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "inspect_hose_routing",
+          "vi": "kiểm tra tuyến đi ống",
+          "en": "inspect hose routing"
+        },
+        {
+          "id": "replace_aged_hoses",
+          "vi": "thay ống đã lão hóa",
+          "en": "replace aged hoses"
+        },
+        {
+          "id": "filter_oil",
+          "vi": "lọc dầu",
+          "en": "filter oil"
+        },
+        {
+          "id": "trend_pressure_temperature",
+          "vi": "theo dõi áp suất và nhiệt độ",
+          "en": "trend pressure and temperature"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "apply_loto",
+          "vi": "áp dụng LOTO",
+          "en": "apply LOTO"
+        },
+        {
+          "id": "release_stored_hydraulic_pressure",
+          "vi": "xả áp thủy lực tích trữ",
+          "en": "release stored hydraulic pressure"
+        },
+        {
+          "id": "avoid_hand_search_pinhole_leaks",
+          "vi": "không dùng tay dò rò rỉ tia nhỏ",
+          "en": "avoid hand search for pinhole leaks"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "hydraulic_leak_mechanism_1",
+          "vi": "Rò rỉ hệ thống thủy lực hình thành khi điều kiện vận hành, vật tư, lắp đặt hoặc kiểm tra vượt khỏi giới hạn kiểm soát.",
+          "en": "Rò rỉ hệ thống thủy lực develops when operating, material, installation or inspection conditions move outside control limits."
+        },
+        {
+          "id": "hydraulic_leak_mechanism_2",
+          "vi": "Nếu chỉ sửa triệu chứng mà không khóa cơ chế gây lỗi, lỗi sẽ lặp lại ở cùng thiết bị hoặc công đoạn.",
+          "en": "If only the symptom is repaired and the failure mechanism is not locked, the defect will repeat on the same equipment or process."
+        }
+      ],
+      "measurements": [
+        {
+          "id": "hydraulic_leak_measurement_1",
+          "vi": "ghi thông số đo trước sửa, sau sửa và điều kiện vận hành tại thời điểm phát hiện",
+          "en": "record measurements before repair, after repair and operating condition at detection time"
+        },
+        {
+          "id": "hydraulic_leak_measurement_2",
+          "vi": "đối chiếu giá trị đo với tiêu chí bản vẽ, WPS, ITP, OEM hoặc tiêu chuẩn áp dụng",
+          "en": "compare measured values with drawing, WPS, ITP, OEM or applicable standard criteria"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "hydraulic_leak_calc_1",
+          "vi": "tính phần trăm sai lệch = (giá trị đo - giới hạn cho phép) / giới hạn cho phép x 100%",
+          "en": "calculate deviation percentage = (measured value - allowable limit) / allowable limit x 100%"
+        },
+        {
+          "id": "hydraulic_leak_calc_2",
+          "vi": "so sánh tải, dòng điện, nhiệt độ, kích thước hoặc chỉ thị NDT với giới hạn nghiệm thu đã phê duyệt",
+          "en": "compare load, current, temperature, dimension or NDT indication with approved acceptance limit"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "hydraulic_leak_note_1",
+          "vi": "quyết định release phải dựa trên bằng chứng đo kiểm, ảnh hiện trường và người chịu trách nhiệm rõ ràng",
+          "en": "release decision must be based on measurement evidence, field photos and clear responsible person"
+        },
+        {
+          "id": "hydraulic_leak_note_2",
+          "vi": "không trộn lẫn kiểm tra nguyên nhân với nghiệm thu sau sửa; hai bước này cần bằng chứng riêng",
+          "en": "do not mix root cause inspection with post-repair acceptance; both steps need separate evidence"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "hydraulic_leak_mistake_1",
+          "vi": "sửa phần nhìn thấy nhưng không kiểm tra điều kiện tạo lỗi phía trước",
+          "en": "repairing the visible symptom without checking the upstream condition that created it"
+        },
+        {
+          "id": "hydraulic_leak_mistake_2",
+          "vi": "cho thiết bị hoặc cấu kiện quay lại sản xuất khi chưa có tiêu chí nghiệm thu rõ",
+          "en": "returning equipment or fabricated item to production without clear acceptance criteria"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "hydraulic_leak_lesson_1",
+          "vi": "một lỗi nghiêm trọng phải để lại checklist mới hoặc điểm kiểm soát mới cho ca sau",
+          "en": "a serious failure must leave a new checklist item or control point for the next shift"
+        },
+        {
+          "id": "hydraulic_leak_lesson_2",
+          "vi": "dữ liệu đo lặp lại theo ca giúp phát hiện xu hướng trước khi lỗi trở thành NCR hoặc downtime",
+          "en": "shift-based measurement trends reveal the pattern before it becomes NCR or downtime"
+        }
+      ]
+    },
+    {
+      "key": "BEARING_FAILURE",
+      "failure_mode": {
+        "id": "bearing_failure_mode",
+        "vi": "Sự cố bạc đạn",
+        "en": "Bearing Failure"
+      },
+      "symptoms": [
+        {
+          "id": "abnormal_noise",
+          "vi": "tiếng ồn bất thường",
+          "en": "abnormal noise"
+        },
+        {
+          "id": "high_vibration",
+          "vi": "rung động cao",
+          "en": "high vibration"
+        },
+        {
+          "id": "bearing_temperature_rise",
+          "vi": "nhiệt độ bạc đạn tăng",
+          "en": "bearing temperature rise"
+        },
+        {
+          "id": "metal_particles_in_grease",
+          "vi": "mỡ bôi trơn có mạt kim loại",
+          "en": "metal particles in grease"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "poor_lubrication",
+          "vi": "bôi trơn kém",
+          "en": "poor lubrication"
+        },
+        {
+          "id": "misalignment",
+          "vi": "lệch đồng tâm",
+          "en": "misalignment"
+        },
+        {
+          "id": "contamination",
+          "vi": "nhiễm bẩn",
+          "en": "contamination"
+        },
+        {
+          "id": "overload",
+          "vi": "quá tải",
+          "en": "overload"
+        },
+        {
+          "id": "incorrect_fit",
+          "vi": "lắp ghép không đúng",
+          "en": "incorrect fit"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "vibration_spectrum",
+          "vi": "phân tích phổ rung",
+          "en": "vibration spectrum"
+        },
+        {
+          "id": "bearing_temperature",
+          "vi": "đo nhiệt độ bạc đạn",
+          "en": "bearing temperature"
+        },
+        {
+          "id": "grease_condition",
+          "vi": "kiểm tra tình trạng mỡ bôi trơn",
+          "en": "grease condition"
+        },
+        {
+          "id": "shaft_alignment",
+          "vi": "kiểm tra đồng tâm trục",
+          "en": "shaft alignment"
+        },
+        {
+          "id": "housing_fit",
+          "vi": "kiểm tra lắp ghép gối đỡ",
+          "en": "housing fit"
+        }
+      ],
+      "standards": [
+        {
+          "id": "iso_15243",
+          "vi": "ISO 15243",
+          "en": "ISO 15243"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "isolate_machine",
+          "vi": "cô lập máy",
+          "en": "isolate machine"
+        },
+        {
+          "id": "replace_damaged_bearing",
+          "vi": "thay bạc đạn hư hỏng",
+          "en": "replace damaged bearing"
+        },
+        {
+          "id": "clean_housing",
+          "vi": "vệ sinh gối đỡ",
+          "en": "clean housing"
+        },
+        {
+          "id": "correct_alignment",
+          "vi": "căn chỉnh đồng tâm",
+          "en": "correct alignment"
+        },
+        {
+          "id": "apply_specified_lubricant",
+          "vi": "bôi đúng loại chất bôi trơn quy định",
+          "en": "apply specified lubricant"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "run_in_test",
+          "vi": "chạy rà kiểm tra",
+          "en": "run-in test"
+        },
+        {
+          "id": "temperature_trend",
+          "vi": "theo dõi nhiệt độ",
+          "en": "temperature trend"
+        },
+        {
+          "id": "vibration_baseline",
+          "vi": "lập đường nền rung động",
+          "en": "vibration baseline"
+        },
+        {
+          "id": "noise_confirmation",
+          "vi": "xác nhận tiếng ồn đạt yêu cầu",
+          "en": "noise confirmation"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "lubrication_schedule",
+          "vi": "lập lịch bôi trơn",
+          "en": "lubrication schedule"
+        },
+        {
+          "id": "seal_contamination_points",
+          "vi": "bịt kín các điểm có nguy cơ nhiễm bẩn",
+          "en": "seal contamination points"
+        },
+        {
+          "id": "alignment_after_repair",
+          "vi": "kiểm tra đồng tâm sau sửa chữa",
+          "en": "alignment after repair"
+        },
+        {
+          "id": "condition_monitoring_trend",
+          "vi": "theo dõi tình trạng thiết bị",
+          "en": "condition monitoring trend"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "apply_loto",
+          "vi": "áp dụng LOTO",
+          "en": "apply LOTO"
+        },
+        {
+          "id": "guard_rotating_parts",
+          "vi": "che chắn bộ phận quay",
+          "en": "guard rotating parts"
+        },
+        {
+          "id": "correct_puller_heating_method",
+          "vi": "dùng cảo và phương pháp gia nhiệt phù hợp",
+          "en": "use correct puller and heating method"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "bearing_failure_mechanism_1",
+          "vi": "Sự cố bạc đạn hình thành khi điều kiện vận hành, vật tư, lắp đặt hoặc kiểm tra vượt khỏi giới hạn kiểm soát.",
+          "en": "Sự cố bạc đạn develops when operating, material, installation or inspection conditions move outside control limits."
+        },
+        {
+          "id": "bearing_failure_mechanism_2",
+          "vi": "Nếu chỉ sửa triệu chứng mà không khóa cơ chế gây lỗi, lỗi sẽ lặp lại ở cùng thiết bị hoặc công đoạn.",
+          "en": "If only the symptom is repaired and the failure mechanism is not locked, the defect will repeat on the same equipment or process."
+        }
+      ],
+      "measurements": [
+        {
+          "id": "bearing_failure_measurement_1",
+          "vi": "ghi thông số đo trước sửa, sau sửa và điều kiện vận hành tại thời điểm phát hiện",
+          "en": "record measurements before repair, after repair and operating condition at detection time"
+        },
+        {
+          "id": "bearing_failure_measurement_2",
+          "vi": "đối chiếu giá trị đo với tiêu chí bản vẽ, WPS, ITP, OEM hoặc tiêu chuẩn áp dụng",
+          "en": "compare measured values with drawing, WPS, ITP, OEM or applicable standard criteria"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "bearing_failure_calc_1",
+          "vi": "tính phần trăm sai lệch = (giá trị đo - giới hạn cho phép) / giới hạn cho phép x 100%",
+          "en": "calculate deviation percentage = (measured value - allowable limit) / allowable limit x 100%"
+        },
+        {
+          "id": "bearing_failure_calc_2",
+          "vi": "so sánh tải, dòng điện, nhiệt độ, kích thước hoặc chỉ thị NDT với giới hạn nghiệm thu đã phê duyệt",
+          "en": "compare load, current, temperature, dimension or NDT indication with approved acceptance limit"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "bearing_failure_note_1",
+          "vi": "quyết định release phải dựa trên bằng chứng đo kiểm, ảnh hiện trường và người chịu trách nhiệm rõ ràng",
+          "en": "release decision must be based on measurement evidence, field photos and clear responsible person"
+        },
+        {
+          "id": "bearing_failure_note_2",
+          "vi": "không trộn lẫn kiểm tra nguyên nhân với nghiệm thu sau sửa; hai bước này cần bằng chứng riêng",
+          "en": "do not mix root cause inspection with post-repair acceptance; both steps need separate evidence"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "bearing_failure_mistake_1",
+          "vi": "sửa phần nhìn thấy nhưng không kiểm tra điều kiện tạo lỗi phía trước",
+          "en": "repairing the visible symptom without checking the upstream condition that created it"
+        },
+        {
+          "id": "bearing_failure_mistake_2",
+          "vi": "cho thiết bị hoặc cấu kiện quay lại sản xuất khi chưa có tiêu chí nghiệm thu rõ",
+          "en": "returning equipment or fabricated item to production without clear acceptance criteria"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "bearing_failure_lesson_1",
+          "vi": "một lỗi nghiêm trọng phải để lại checklist mới hoặc điểm kiểm soát mới cho ca sau",
+          "en": "a serious failure must leave a new checklist item or control point for the next shift"
+        },
+        {
+          "id": "bearing_failure_lesson_2",
+          "vi": "dữ liệu đo lặp lại theo ca giúp phát hiện xu hướng trước khi lỗi trở thành NCR hoặc downtime",
+          "en": "shift-based measurement trends reveal the pattern before it becomes NCR or downtime"
+        }
+      ]
+    },
+    {
+      "key": "GEARBOX_FAILURE",
+      "failure_mode": {
+        "id": "gearbox_failure_mode",
+        "vi": "Sự cố hộp giảm tốc",
+        "en": "Gearbox Failure"
+      },
+      "symptoms": [
+        {
+          "id": "gearbox_noise",
+          "vi": "hộp giảm tốc phát tiếng ồn",
+          "en": "gearbox noise"
+        },
+        {
+          "id": "oil_overheating",
+          "vi": "dầu quá nhiệt",
+          "en": "oil overheating"
+        },
+        {
+          "id": "metal_debris",
+          "vi": "có mạt kim loại",
+          "en": "metal debris"
+        },
+        {
+          "id": "output_torque_loss",
+          "vi": "mất mô men đầu ra",
+          "en": "output torque loss"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "low_oil_level",
+          "vi": "mức dầu thấp",
+          "en": "low oil level"
+        },
+        {
+          "id": "wrong_lubricant",
+          "vi": "dùng sai dầu bôi trơn",
+          "en": "wrong lubricant"
+        },
+        {
+          "id": "gear_tooth_wear",
+          "vi": "răng bánh răng bị mòn",
+          "en": "gear tooth wear"
+        },
+        {
+          "id": "bearing_failure",
+          "vi": "bạc đạn hư hỏng",
+          "en": "bearing failure"
+        },
+        {
+          "id": "misalignment",
+          "vi": "lệch đồng tâm",
+          "en": "misalignment"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "oil_level_and_viscosity",
+          "vi": "kiểm tra mức dầu và độ nhớt",
+          "en": "oil level and viscosity"
+        },
+        {
+          "id": "oil_contamination",
+          "vi": "kiểm tra dầu nhiễm bẩn",
+          "en": "oil contamination"
+        },
+        {
+          "id": "gear_backlash",
+          "vi": "kiểm tra khe hở ăn khớp bánh răng",
+          "en": "gear backlash"
+        },
+        {
+          "id": "bearing_condition",
+          "vi": "kiểm tra tình trạng bạc đạn",
+          "en": "bearing condition"
+        },
+        {
+          "id": "coupling_alignment",
+          "vi": "kiểm tra đồng tâm khớp nối",
+          "en": "coupling alignment"
+        }
+      ],
+      "standards": [
+        {
+          "id": "iso_10816",
+          "vi": "ISO 10816",
+          "en": "ISO 10816"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "stop_machine",
+          "vi": "dừng máy",
+          "en": "stop machine"
+        },
+        {
+          "id": "restore_correct_lubricant",
+          "vi": "khôi phục đúng loại dầu bôi trơn",
+          "en": "restore correct lubricant"
+        },
+        {
+          "id": "replace_damaged_gear_or_bearing",
+          "vi": "thay bánh răng hoặc bạc đạn hư hỏng",
+          "en": "replace damaged gear or bearing"
+        },
+        {
+          "id": "align_coupling",
+          "vi": "căn chỉnh đồng tâm khớp nối",
+          "en": "align coupling"
+        },
+        {
+          "id": "flush_contaminated_oil",
+          "vi": "súc rửa dầu nhiễm bẩn",
+          "en": "flush contaminated oil"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "no_load_run",
+          "vi": "chạy thử không tải",
+          "en": "no-load run"
+        },
+        {
+          "id": "loaded_run",
+          "vi": "chạy thử có tải",
+          "en": "loaded run"
+        },
+        {
+          "id": "temperature_trend",
+          "vi": "theo dõi nhiệt độ",
+          "en": "temperature trend"
+        },
+        {
+          "id": "noise_vibration_confirmation",
+          "vi": "xác nhận tiếng ồn và rung động đạt yêu cầu",
+          "en": "noise and vibration confirmation"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "oil_analysis",
+          "vi": "phân tích dầu",
+          "en": "oil analysis"
+        },
+        {
+          "id": "scheduled_oil_change",
+          "vi": "thay dầu theo lịch",
+          "en": "scheduled oil change"
+        },
+        {
+          "id": "breather_maintenance",
+          "vi": "bảo trì lọc thở",
+          "en": "breather maintenance"
+        },
+        {
+          "id": "alignment_checks",
+          "vi": "kiểm tra đồng tâm định kỳ",
+          "en": "alignment checks"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "apply_loto",
+          "vi": "áp dụng LOTO",
+          "en": "apply LOTO"
+        },
+        {
+          "id": "guard_rotating_coupling",
+          "vi": "che chắn khớp nối quay",
+          "en": "guard rotating coupling"
+        },
+        {
+          "id": "handle_hot_oil_safely",
+          "vi": "xử lý dầu nóng an toàn",
+          "en": "handle hot oil safely"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "gearbox_failure_mechanism_1",
+          "vi": "Sự cố hộp giảm tốc hình thành khi điều kiện vận hành, vật tư, lắp đặt hoặc kiểm tra vượt khỏi giới hạn kiểm soát.",
+          "en": "Sự cố hộp giảm tốc develops when operating, material, installation or inspection conditions move outside control limits."
+        },
+        {
+          "id": "gearbox_failure_mechanism_2",
+          "vi": "Nếu chỉ sửa triệu chứng mà không khóa cơ chế gây lỗi, lỗi sẽ lặp lại ở cùng thiết bị hoặc công đoạn.",
+          "en": "If only the symptom is repaired and the failure mechanism is not locked, the defect will repeat on the same equipment or process."
+        }
+      ],
+      "measurements": [
+        {
+          "id": "gearbox_failure_measurement_1",
+          "vi": "ghi thông số đo trước sửa, sau sửa và điều kiện vận hành tại thời điểm phát hiện",
+          "en": "record measurements before repair, after repair and operating condition at detection time"
+        },
+        {
+          "id": "gearbox_failure_measurement_2",
+          "vi": "đối chiếu giá trị đo với tiêu chí bản vẽ, WPS, ITP, OEM hoặc tiêu chuẩn áp dụng",
+          "en": "compare measured values with drawing, WPS, ITP, OEM or applicable standard criteria"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "gearbox_failure_calc_1",
+          "vi": "tính phần trăm sai lệch = (giá trị đo - giới hạn cho phép) / giới hạn cho phép x 100%",
+          "en": "calculate deviation percentage = (measured value - allowable limit) / allowable limit x 100%"
+        },
+        {
+          "id": "gearbox_failure_calc_2",
+          "vi": "so sánh tải, dòng điện, nhiệt độ, kích thước hoặc chỉ thị NDT với giới hạn nghiệm thu đã phê duyệt",
+          "en": "compare load, current, temperature, dimension or NDT indication with approved acceptance limit"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "gearbox_failure_note_1",
+          "vi": "quyết định release phải dựa trên bằng chứng đo kiểm, ảnh hiện trường và người chịu trách nhiệm rõ ràng",
+          "en": "release decision must be based on measurement evidence, field photos and clear responsible person"
+        },
+        {
+          "id": "gearbox_failure_note_2",
+          "vi": "không trộn lẫn kiểm tra nguyên nhân với nghiệm thu sau sửa; hai bước này cần bằng chứng riêng",
+          "en": "do not mix root cause inspection with post-repair acceptance; both steps need separate evidence"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "gearbox_failure_mistake_1",
+          "vi": "sửa phần nhìn thấy nhưng không kiểm tra điều kiện tạo lỗi phía trước",
+          "en": "repairing the visible symptom without checking the upstream condition that created it"
+        },
+        {
+          "id": "gearbox_failure_mistake_2",
+          "vi": "cho thiết bị hoặc cấu kiện quay lại sản xuất khi chưa có tiêu chí nghiệm thu rõ",
+          "en": "returning equipment or fabricated item to production without clear acceptance criteria"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "gearbox_failure_lesson_1",
+          "vi": "một lỗi nghiêm trọng phải để lại checklist mới hoặc điểm kiểm soát mới cho ca sau",
+          "en": "a serious failure must leave a new checklist item or control point for the next shift"
+        },
+        {
+          "id": "gearbox_failure_lesson_2",
+          "vi": "dữ liệu đo lặp lại theo ca giúp phát hiện xu hướng trước khi lỗi trở thành NCR hoặc downtime",
+          "en": "shift-based measurement trends reveal the pattern before it becomes NCR or downtime"
+        }
+      ]
+    },
+    {
+      "key": "WELD_SLAG_INCLUSION",
+      "failure_mode": {
+        "id": "weld_slag_inclusion_mode",
+        "vi": "Kẹt xỉ mối hàn",
+        "en": "Weld Slag Inclusion"
+      },
+      "symptoms": [
+        {
+          "id": "weld_slag_inclusion_symptom_1",
+          "vi": "xỉ hàn bị giữ lại giữa các lớp hoặc trong chân mối hàn",
+          "en": "slag trapped between passes or in weld root"
+        },
+        {
+          "id": "weld_slag_inclusion_symptom_2",
+          "vi": "lỗi có nguy cơ bị loại ở VT/NDT hoặc nghiệm thu kích thước",
+          "en": "defect may be rejected by VT/NDT or dimensional acceptance"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "weld_slag_inclusion_cause_1",
+          "vi": "làm sạch giữa lớp kém, góc que/mỏ sai, dòng thấp hoặc rãnh hẹp",
+          "en": "poor interpass cleaning, wrong electrode or torch angle, low current or narrow groove"
+        },
+        {
+          "id": "weld_slag_inclusion_cause_2",
+          "vi": "thiếu hold point trước khi chuyển công đoạn",
+          "en": "missing hold point before next operation"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "weld_slag_inclusion_mechanism_1",
+          "vi": "xỉ không nổi ra khỏi vũng hàn trước khi kim loại đông đặc",
+          "en": "slag cannot float out of the weld pool before solidification"
+        },
+        {
+          "id": "weld_slag_inclusion_mechanism_2",
+          "vi": "cơ chế lỗi phải được khóa bằng thông số WPS và bằng chứng kiểm tra",
+          "en": "failure mechanism must be locked with WPS parameters and inspection evidence"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "weld_slag_inclusion_inspection_1",
+          "vi": "UT/RT, kiểm tra interpass, soi rãnh sau khi làm sạch",
+          "en": "UT/RT, interpass inspection and groove check after cleaning"
+        },
+        {
+          "id": "weld_slag_inclusion_inspection_2",
+          "vi": "rà soát WPS, PQR, WPQ, ITP và nhật ký thông số hàn",
+          "en": "review WPS, PQR, WPQ, ITP and weld parameter log"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "weld_slag_inclusion_measurement_1",
+          "vi": "chiều rộng rãnh, dòng hàn, nhiệt đầu vào, nhiệt độ interpass",
+          "en": "groove width, welding current, heat input and interpass temperature"
+        },
+        {
+          "id": "weld_slag_inclusion_measurement_2",
+          "vi": "ghi ảnh vị trí lỗi, mã cấu kiện và chiều dài vùng ảnh hưởng",
+          "en": "record defect photo, member ID and affected length"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "weld_slag_inclusion_calc_1",
+          "vi": "đối chiếu heat input = V x A x 60 / travel speed với WPS",
+          "en": "check heat input = V x A x 60 / travel speed against WPS"
+        },
+        {
+          "id": "weld_slag_inclusion_calc_2",
+          "vi": "tính tần suất lỗi theo thợ hàn, máy hàn, ca và loại liên kết",
+          "en": "calculate defect frequency by welder, machine, shift and joint type"
+        }
+      ],
+      "standards": [
+        {
+          "id": "weld_slag_inclusion_standard_1",
+          "vi": "AWS D1.1",
+          "en": "AWS D1.1"
+        },
+        {
+          "id": "weld_slag_inclusion_standard_2",
+          "vi": "ISO 3834",
+          "en": "ISO 3834"
+        },
+        {
+          "id": "weld_slag_inclusion_standard_3",
+          "vi": "WPS/PQR/WPQ",
+          "en": "WPS/PQR/WPQ"
+        },
+        {
+          "id": "weld_slag_inclusion_standard_4",
+          "vi": "ITP",
+          "en": "ITP"
+        },
+        {
+          "id": "weld_slag_inclusion_standard_5",
+          "vi": "NDT acceptance criteria",
+          "en": "NDT acceptance criteria"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "weld_slag_inclusion_repair_1",
+          "vi": "mài/gouging loại bỏ xỉ, làm sạch đến kim loại tốt, hàn sửa theo WPS",
+          "en": "grind/gouge out slag, clean to sound metal and repair weld per WPS"
+        },
+        {
+          "id": "weld_slag_inclusion_repair_2",
+          "vi": "lập repair map và chỉ hàn sửa khi QA/QC release",
+          "en": "prepare repair map and repair weld only after QA/QC release"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "weld_slag_inclusion_verify_1",
+          "vi": "VT/MT/PT/UT/RT lại đúng ITP sau sửa",
+          "en": "repeat VT/MT/PT/UT/RT according to ITP after repair"
+        },
+        {
+          "id": "weld_slag_inclusion_verify_2",
+          "vi": "QA/QC ký release khi kích thước và chỉ thị đạt tiêu chí",
+          "en": "QA/QC signs release when dimensions and indications meet criteria"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "weld_slag_inclusion_prevent_1",
+          "vi": "khóa WPS tại máy và ghi dòng, áp, tốc độ, nhiệt đầu vào",
+          "en": "lock WPS at the machine and record current, voltage, travel speed and heat input"
+        },
+        {
+          "id": "weld_slag_inclusion_prevent_2",
+          "vi": "duy trì hold point trước hàn, sau root pass và trước bàn giao NDT",
+          "en": "maintain hold points before welding, after root pass and before NDT release"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "weld_slag_inclusion_note_1",
+          "vi": "đừng đánh giá mối hàn bằng bề mặt đẹp; phải đọc cơ chế, thông số và kết quả NDT",
+          "en": "do not judge welds by cosmetic surface; read mechanism, parameters and NDT results"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "weld_slag_inclusion_mistake_1",
+          "vi": "mài sửa rộng nhưng không xác định thông số gây lỗi",
+          "en": "wide grinding repair without identifying the parameter that caused defect"
+        },
+        {
+          "id": "weld_slag_inclusion_mistake_2",
+          "vi": "bỏ qua kiểm tra interpass rồi chỉ kiểm tra cuối cùng",
+          "en": "skipping interpass inspection and checking only at final stage"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "weld_slag_inclusion_lesson_1",
+          "vi": "lỗi hàn phải được quản lý theo cơ chế + thông số + bằng chứng, không theo cảm giác thợ",
+          "en": "weld defects must be managed by mechanism + parameter + evidence, not by welder feeling"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "weld_slag_inclusion_safety_1",
+          "vi": "LOTO/che chắn khu hàn, kiểm soát khói hàn, tia hồ quang và thao tác mài sửa",
+          "en": "apply LOTO/barricade welding area and control fumes, arc flash and grinding repair"
+        }
+      ]
+    },
+    {
+      "key": "WELD_LACK_OF_FUSION",
+      "failure_mode": {
+        "id": "weld_lack_of_fusion_mode",
+        "vi": "Thiếu ngấu chảy cạnh",
+        "en": "Weld Lack of Fusion"
+      },
+      "symptoms": [
+        {
+          "id": "weld_lack_of_fusion_symptom_1",
+          "vi": "chỉ thị tuyến tính tại mép hàn hoặc giữa lớp hàn",
+          "en": "linear indication at weld sidewall or between weld passes"
+        },
+        {
+          "id": "weld_lack_of_fusion_symptom_2",
+          "vi": "lỗi có nguy cơ bị loại ở VT/NDT hoặc nghiệm thu kích thước",
+          "en": "defect may be rejected by VT/NDT or dimensional acceptance"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "weld_lack_of_fusion_cause_1",
+          "vi": "nhiệt đầu vào thấp, mép hàn bẩn, góc mỏ sai, tốc độ quá nhanh",
+          "en": "low heat input, dirty sidewall, wrong torch angle, excessive travel speed"
+        },
+        {
+          "id": "weld_lack_of_fusion_cause_2",
+          "vi": "thiếu hold point trước khi chuyển công đoạn",
+          "en": "missing hold point before next operation"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "weld_lack_of_fusion_mechanism_1",
+          "vi": "kim loại hàn không nung chảy hoàn toàn bề mặt cần liên kết",
+          "en": "weld metal fails to fully melt the bonding surface"
+        },
+        {
+          "id": "weld_lack_of_fusion_mechanism_2",
+          "vi": "cơ chế lỗi phải được khóa bằng thông số WPS và bằng chứng kiểm tra",
+          "en": "failure mechanism must be locked with WPS parameters and inspection evidence"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "weld_lack_of_fusion_inspection_1",
+          "vi": "UT, macro, kiểm tra WPS và góc mỏ",
+          "en": "UT, macro and WPS/torch angle review"
+        },
+        {
+          "id": "weld_lack_of_fusion_inspection_2",
+          "vi": "rà soát WPS, PQR, WPQ, ITP và nhật ký thông số hàn",
+          "en": "review WPS, PQR, WPQ, ITP and weld parameter log"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "weld_lack_of_fusion_measurement_1",
+          "vi": "dòng/áp/tốc độ, góc vát, khe hở root, nhiệt đầu vào",
+          "en": "current/voltage/travel speed, bevel angle, root gap and heat input"
+        },
+        {
+          "id": "weld_lack_of_fusion_measurement_2",
+          "vi": "ghi ảnh vị trí lỗi, mã cấu kiện và chiều dài vùng ảnh hưởng",
+          "en": "record defect photo, member ID and affected length"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "weld_lack_of_fusion_calc_1",
+          "vi": "tính heat input và so với dải WPS đã phê duyệt",
+          "en": "calculate heat input and compare with approved WPS range"
+        },
+        {
+          "id": "weld_lack_of_fusion_calc_2",
+          "vi": "tính tần suất lỗi theo thợ hàn, máy hàn, ca và loại liên kết",
+          "en": "calculate defect frequency by welder, machine, shift and joint type"
+        }
+      ],
+      "standards": [
+        {
+          "id": "weld_lack_of_fusion_standard_1",
+          "vi": "AWS D1.1",
+          "en": "AWS D1.1"
+        },
+        {
+          "id": "weld_lack_of_fusion_standard_2",
+          "vi": "ISO 3834",
+          "en": "ISO 3834"
+        },
+        {
+          "id": "weld_lack_of_fusion_standard_3",
+          "vi": "WPS/PQR/WPQ",
+          "en": "WPS/PQR/WPQ"
+        },
+        {
+          "id": "weld_lack_of_fusion_standard_4",
+          "vi": "ITP",
+          "en": "ITP"
+        },
+        {
+          "id": "weld_lack_of_fusion_standard_5",
+          "vi": "NDT acceptance criteria",
+          "en": "NDT acceptance criteria"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "weld_lack_of_fusion_repair_1",
+          "vi": "loại bỏ vùng không ngấu, chuẩn bị lại mép, hàn sửa và kiểm tra lại",
+          "en": "remove unfused zone, prepare sidewall, repair weld and retest"
+        },
+        {
+          "id": "weld_lack_of_fusion_repair_2",
+          "vi": "lập repair map và chỉ hàn sửa khi QA/QC release",
+          "en": "prepare repair map and repair weld only after QA/QC release"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "weld_lack_of_fusion_verify_1",
+          "vi": "VT/MT/PT/UT/RT lại đúng ITP sau sửa",
+          "en": "repeat VT/MT/PT/UT/RT according to ITP after repair"
+        },
+        {
+          "id": "weld_lack_of_fusion_verify_2",
+          "vi": "QA/QC ký release khi kích thước và chỉ thị đạt tiêu chí",
+          "en": "QA/QC signs release when dimensions and indications meet criteria"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "weld_lack_of_fusion_prevent_1",
+          "vi": "khóa WPS tại máy và ghi dòng, áp, tốc độ, nhiệt đầu vào",
+          "en": "lock WPS at the machine and record current, voltage, travel speed and heat input"
+        },
+        {
+          "id": "weld_lack_of_fusion_prevent_2",
+          "vi": "duy trì hold point trước hàn, sau root pass và trước bàn giao NDT",
+          "en": "maintain hold points before welding, after root pass and before NDT release"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "weld_lack_of_fusion_note_1",
+          "vi": "đừng đánh giá mối hàn bằng bề mặt đẹp; phải đọc cơ chế, thông số và kết quả NDT",
+          "en": "do not judge welds by cosmetic surface; read mechanism, parameters and NDT results"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "weld_lack_of_fusion_mistake_1",
+          "vi": "mài sửa rộng nhưng không xác định thông số gây lỗi",
+          "en": "wide grinding repair without identifying the parameter that caused defect"
+        },
+        {
+          "id": "weld_lack_of_fusion_mistake_2",
+          "vi": "bỏ qua kiểm tra interpass rồi chỉ kiểm tra cuối cùng",
+          "en": "skipping interpass inspection and checking only at final stage"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "weld_lack_of_fusion_lesson_1",
+          "vi": "lỗi hàn phải được quản lý theo cơ chế + thông số + bằng chứng, không theo cảm giác thợ",
+          "en": "weld defects must be managed by mechanism + parameter + evidence, not by welder feeling"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "weld_lack_of_fusion_safety_1",
+          "vi": "LOTO/che chắn khu hàn, kiểm soát khói hàn, tia hồ quang và thao tác mài sửa",
+          "en": "apply LOTO/barricade welding area and control fumes, arc flash and grinding repair"
+        }
+      ]
+    },
+    {
+      "key": "WELD_LACK_OF_PENETRATION",
+      "failure_mode": {
+        "id": "weld_lack_of_penetration_mode",
+        "vi": "Thiếu thấu chân hàn",
+        "en": "Weld Lack of Penetration"
+      },
+      "symptoms": [
+        {
+          "id": "weld_lack_of_penetration_symptom_1",
+          "vi": "chân hàn không kín hoặc chỉ thị tại root",
+          "en": "open root or root indication"
+        },
+        {
+          "id": "weld_lack_of_penetration_symptom_2",
+          "vi": "lỗi có nguy cơ bị loại ở VT/NDT hoặc nghiệm thu kích thước",
+          "en": "defect may be rejected by VT/NDT or dimensional acceptance"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "weld_lack_of_penetration_cause_1",
+          "vi": "khe hở root nhỏ, dòng thấp, root face dày, tốc độ cao",
+          "en": "small root gap, low current, thick root face or high speed"
+        },
+        {
+          "id": "weld_lack_of_penetration_cause_2",
+          "vi": "thiếu hold point trước khi chuyển công đoạn",
+          "en": "missing hold point before next operation"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "weld_lack_of_penetration_mechanism_1",
+          "vi": "hồ quang không xuyên đủ chiều dày chân liên kết",
+          "en": "arc does not penetrate through the joint root thickness"
+        },
+        {
+          "id": "weld_lack_of_penetration_mechanism_2",
+          "vi": "cơ chế lỗi phải được khóa bằng thông số WPS và bằng chứng kiểm tra",
+          "en": "failure mechanism must be locked with WPS parameters and inspection evidence"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "weld_lack_of_penetration_inspection_1",
+          "vi": "UT/RT, macro, kiểm tra fit-up trước hàn",
+          "en": "UT/RT, macro and pre-weld fit-up check"
+        },
+        {
+          "id": "weld_lack_of_penetration_inspection_2",
+          "vi": "rà soát WPS, PQR, WPQ, ITP và nhật ký thông số hàn",
+          "en": "review WPS, PQR, WPQ, ITP and weld parameter log"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "weld_lack_of_penetration_measurement_1",
+          "vi": "root gap, root face, góc vát, dòng hàn, tốc độ chạy",
+          "en": "root gap, root face, bevel angle, welding current and travel speed"
+        },
+        {
+          "id": "weld_lack_of_penetration_measurement_2",
+          "vi": "ghi ảnh vị trí lỗi, mã cấu kiện và chiều dài vùng ảnh hưởng",
+          "en": "record defect photo, member ID and affected length"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "weld_lack_of_penetration_calc_1",
+          "vi": "so sánh root gap/root face thực tế với WPS và bản vẽ",
+          "en": "compare actual root gap/root face with WPS and drawing"
+        },
+        {
+          "id": "weld_lack_of_penetration_calc_2",
+          "vi": "tính tần suất lỗi theo thợ hàn, máy hàn, ca và loại liên kết",
+          "en": "calculate defect frequency by welder, machine, shift and joint type"
+        }
+      ],
+      "standards": [
+        {
+          "id": "weld_lack_of_penetration_standard_1",
+          "vi": "AWS D1.1",
+          "en": "AWS D1.1"
+        },
+        {
+          "id": "weld_lack_of_penetration_standard_2",
+          "vi": "ISO 3834",
+          "en": "ISO 3834"
+        },
+        {
+          "id": "weld_lack_of_penetration_standard_3",
+          "vi": "WPS/PQR/WPQ",
+          "en": "WPS/PQR/WPQ"
+        },
+        {
+          "id": "weld_lack_of_penetration_standard_4",
+          "vi": "ITP",
+          "en": "ITP"
+        },
+        {
+          "id": "weld_lack_of_penetration_standard_5",
+          "vi": "NDT acceptance criteria",
+          "en": "NDT acceptance criteria"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "weld_lack_of_penetration_repair_1",
+          "vi": "gouging chân lỗi, chỉnh fit-up nếu cần, hàn sửa root theo WPS",
+          "en": "gouge defective root, correct fit-up if required and repair root per WPS"
+        },
+        {
+          "id": "weld_lack_of_penetration_repair_2",
+          "vi": "lập repair map và chỉ hàn sửa khi QA/QC release",
+          "en": "prepare repair map and repair weld only after QA/QC release"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "weld_lack_of_penetration_verify_1",
+          "vi": "VT/MT/PT/UT/RT lại đúng ITP sau sửa",
+          "en": "repeat VT/MT/PT/UT/RT according to ITP after repair"
+        },
+        {
+          "id": "weld_lack_of_penetration_verify_2",
+          "vi": "QA/QC ký release khi kích thước và chỉ thị đạt tiêu chí",
+          "en": "QA/QC signs release when dimensions and indications meet criteria"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "weld_lack_of_penetration_prevent_1",
+          "vi": "khóa WPS tại máy và ghi dòng, áp, tốc độ, nhiệt đầu vào",
+          "en": "lock WPS at the machine and record current, voltage, travel speed and heat input"
+        },
+        {
+          "id": "weld_lack_of_penetration_prevent_2",
+          "vi": "duy trì hold point trước hàn, sau root pass và trước bàn giao NDT",
+          "en": "maintain hold points before welding, after root pass and before NDT release"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "weld_lack_of_penetration_note_1",
+          "vi": "đừng đánh giá mối hàn bằng bề mặt đẹp; phải đọc cơ chế, thông số và kết quả NDT",
+          "en": "do not judge welds by cosmetic surface; read mechanism, parameters and NDT results"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "weld_lack_of_penetration_mistake_1",
+          "vi": "mài sửa rộng nhưng không xác định thông số gây lỗi",
+          "en": "wide grinding repair without identifying the parameter that caused defect"
+        },
+        {
+          "id": "weld_lack_of_penetration_mistake_2",
+          "vi": "bỏ qua kiểm tra interpass rồi chỉ kiểm tra cuối cùng",
+          "en": "skipping interpass inspection and checking only at final stage"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "weld_lack_of_penetration_lesson_1",
+          "vi": "lỗi hàn phải được quản lý theo cơ chế + thông số + bằng chứng, không theo cảm giác thợ",
+          "en": "weld defects must be managed by mechanism + parameter + evidence, not by welder feeling"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "weld_lack_of_penetration_safety_1",
+          "vi": "LOTO/che chắn khu hàn, kiểm soát khói hàn, tia hồ quang và thao tác mài sửa",
+          "en": "apply LOTO/barricade welding area and control fumes, arc flash and grinding repair"
+        }
+      ]
+    },
+    {
+      "key": "WELD_UNDERCUT",
+      "failure_mode": {
+        "id": "weld_undercut_mode",
+        "vi": "Cháy cạnh mối hàn",
+        "en": "Weld Undercut"
+      },
+      "symptoms": [
+        {
+          "id": "weld_undercut_symptom_1",
+          "vi": "rãnh lõm dọc mép đường hàn",
+          "en": "groove melted along weld toe"
+        },
+        {
+          "id": "weld_undercut_symptom_2",
+          "vi": "lỗi có nguy cơ bị loại ở VT/NDT hoặc nghiệm thu kích thước",
+          "en": "defect may be rejected by VT/NDT or dimensional acceptance"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "weld_undercut_cause_1",
+          "vi": "điện áp cao, tốc độ nhanh, góc mỏ sai, thao tác dừng cạnh kém",
+          "en": "high voltage, fast travel speed, wrong torch angle or poor toe dwell"
+        },
+        {
+          "id": "weld_undercut_cause_2",
+          "vi": "thiếu hold point trước khi chuyển công đoạn",
+          "en": "missing hold point before next operation"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "weld_undercut_mechanism_1",
+          "vi": "mép vật liệu bị nóng chảy nhưng không được kim loại đắp bù đủ",
+          "en": "base metal melts at weld toe without enough filler metal filling it"
+        },
+        {
+          "id": "weld_undercut_mechanism_2",
+          "vi": "cơ chế lỗi phải được khóa bằng thông số WPS và bằng chứng kiểm tra",
+          "en": "failure mechanism must be locked with WPS parameters and inspection evidence"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "weld_undercut_inspection_1",
+          "vi": "VT bằng thước đo mối hàn, kiểm tra toe line và chiều sâu rãnh",
+          "en": "VT with weld gauge, toe-line and groove-depth check"
+        },
+        {
+          "id": "weld_undercut_inspection_2",
+          "vi": "rà soát WPS, PQR, WPQ, ITP và nhật ký thông số hàn",
+          "en": "review WPS, PQR, WPQ, ITP and weld parameter log"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "weld_undercut_measurement_1",
+          "vi": "chiều sâu undercut, chiều dài liên tục, dòng/áp/tốc độ",
+          "en": "undercut depth, continuous length and current/voltage/travel speed"
+        },
+        {
+          "id": "weld_undercut_measurement_2",
+          "vi": "ghi ảnh vị trí lỗi, mã cấu kiện và chiều dài vùng ảnh hưởng",
+          "en": "record defect photo, member ID and affected length"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "weld_undercut_calc_1",
+          "vi": "so sánh chiều sâu/chều dài undercut với acceptance criteria",
+          "en": "compare undercut depth/length with acceptance criteria"
+        },
+        {
+          "id": "weld_undercut_calc_2",
+          "vi": "tính tần suất lỗi theo thợ hàn, máy hàn, ca và loại liên kết",
+          "en": "calculate defect frequency by welder, machine, shift and joint type"
+        }
+      ],
+      "standards": [
+        {
+          "id": "weld_undercut_standard_1",
+          "vi": "AWS D1.1",
+          "en": "AWS D1.1"
+        },
+        {
+          "id": "weld_undercut_standard_2",
+          "vi": "ISO 3834",
+          "en": "ISO 3834"
+        },
+        {
+          "id": "weld_undercut_standard_3",
+          "vi": "WPS/PQR/WPQ",
+          "en": "WPS/PQR/WPQ"
+        },
+        {
+          "id": "weld_undercut_standard_4",
+          "vi": "ITP",
+          "en": "ITP"
+        },
+        {
+          "id": "weld_undercut_standard_5",
+          "vi": "NDT acceptance criteria",
+          "en": "NDT acceptance criteria"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "weld_undercut_repair_1",
+          "vi": "mài bo rãnh, hàn đắp nếu vượt tiêu chí, kiểm tra lại VT/MT",
+          "en": "blend grind groove, fill weld if beyond criteria and repeat VT/MT"
+        },
+        {
+          "id": "weld_undercut_repair_2",
+          "vi": "lập repair map và chỉ hàn sửa khi QA/QC release",
+          "en": "prepare repair map and repair weld only after QA/QC release"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "weld_undercut_verify_1",
+          "vi": "VT/MT/PT/UT/RT lại đúng ITP sau sửa",
+          "en": "repeat VT/MT/PT/UT/RT according to ITP after repair"
+        },
+        {
+          "id": "weld_undercut_verify_2",
+          "vi": "QA/QC ký release khi kích thước và chỉ thị đạt tiêu chí",
+          "en": "QA/QC signs release when dimensions and indications meet criteria"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "weld_undercut_prevent_1",
+          "vi": "khóa WPS tại máy và ghi dòng, áp, tốc độ, nhiệt đầu vào",
+          "en": "lock WPS at the machine and record current, voltage, travel speed and heat input"
+        },
+        {
+          "id": "weld_undercut_prevent_2",
+          "vi": "duy trì hold point trước hàn, sau root pass và trước bàn giao NDT",
+          "en": "maintain hold points before welding, after root pass and before NDT release"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "weld_undercut_note_1",
+          "vi": "đừng đánh giá mối hàn bằng bề mặt đẹp; phải đọc cơ chế, thông số và kết quả NDT",
+          "en": "do not judge welds by cosmetic surface; read mechanism, parameters and NDT results"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "weld_undercut_mistake_1",
+          "vi": "mài sửa rộng nhưng không xác định thông số gây lỗi",
+          "en": "wide grinding repair without identifying the parameter that caused defect"
+        },
+        {
+          "id": "weld_undercut_mistake_2",
+          "vi": "bỏ qua kiểm tra interpass rồi chỉ kiểm tra cuối cùng",
+          "en": "skipping interpass inspection and checking only at final stage"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "weld_undercut_lesson_1",
+          "vi": "lỗi hàn phải được quản lý theo cơ chế + thông số + bằng chứng, không theo cảm giác thợ",
+          "en": "weld defects must be managed by mechanism + parameter + evidence, not by welder feeling"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "weld_undercut_safety_1",
+          "vi": "LOTO/che chắn khu hàn, kiểm soát khói hàn, tia hồ quang và thao tác mài sửa",
+          "en": "apply LOTO/barricade welding area and control fumes, arc flash and grinding repair"
+        }
+      ]
+    },
+    {
+      "key": "WELD_CRACK",
+      "failure_mode": {
+        "id": "weld_crack_mode",
+        "vi": "Nứt mối hàn",
+        "en": "Weld Crack"
+      },
+      "symptoms": [
+        {
+          "id": "weld_crack_symptom_1",
+          "vi": "vết nứt nóng, nứt nguội hoặc chỉ thị tuyến tính sắc",
+          "en": "hot crack, cold crack or sharp linear indication"
+        },
+        {
+          "id": "weld_crack_symptom_2",
+          "vi": "lỗi có nguy cơ bị loại ở VT/NDT hoặc nghiệm thu kích thước",
+          "en": "defect may be rejected by VT/NDT or dimensional acceptance"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "weld_crack_cause_1",
+          "vi": "hydro cao, ứng suất dư, vật liệu nhạy nứt, preheat/interpass sai",
+          "en": "high hydrogen, residual stress, crack-sensitive material or wrong preheat/interpass"
+        },
+        {
+          "id": "weld_crack_cause_2",
+          "vi": "thiếu hold point trước khi chuyển công đoạn",
+          "en": "missing hold point before next operation"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "weld_crack_mechanism_1",
+          "vi": "ứng suất kéo vượt khả năng chịu của vùng hàn khi kim loại đông đặc hoặc nguội",
+          "en": "tensile stress exceeds weld zone capacity during solidification or cooling"
+        },
+        {
+          "id": "weld_crack_mechanism_2",
+          "vi": "cơ chế lỗi phải được khóa bằng thông số WPS và bằng chứng kiểm tra",
+          "en": "failure mechanism must be locked with WPS parameters and inspection evidence"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "weld_crack_inspection_1",
+          "vi": "VT/MT/PT, UT xác nhận chiều sâu, rà soát vật liệu và preheat",
+          "en": "VT/MT/PT, UT depth confirmation and material/preheat review"
+        },
+        {
+          "id": "weld_crack_inspection_2",
+          "vi": "rà soát WPS, PQR, WPQ, ITP và nhật ký thông số hàn",
+          "en": "review WPS, PQR, WPQ, ITP and weld parameter log"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "weld_crack_measurement_1",
+          "vi": "chiều dài nứt, vị trí, preheat, interpass, độ cứng khi cần",
+          "en": "crack length, location, preheat, interpass and hardness when required"
+        },
+        {
+          "id": "weld_crack_measurement_2",
+          "vi": "ghi ảnh vị trí lỗi, mã cấu kiện và chiều dài vùng ảnh hưởng",
+          "en": "record defect photo, member ID and affected length"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "weld_crack_calc_1",
+          "vi": "đối chiếu carbon equivalent/preheat với WPS hoặc tiêu chuẩn vật liệu",
+          "en": "check carbon equivalent/preheat against WPS or material standard"
+        },
+        {
+          "id": "weld_crack_calc_2",
+          "vi": "tính tần suất lỗi theo thợ hàn, máy hàn, ca và loại liên kết",
+          "en": "calculate defect frequency by welder, machine, shift and joint type"
+        }
+      ],
+      "standards": [
+        {
+          "id": "weld_crack_standard_1",
+          "vi": "AWS D1.1",
+          "en": "AWS D1.1"
+        },
+        {
+          "id": "weld_crack_standard_2",
+          "vi": "ISO 3834",
+          "en": "ISO 3834"
+        },
+        {
+          "id": "weld_crack_standard_3",
+          "vi": "WPS/PQR/WPQ",
+          "en": "WPS/PQR/WPQ"
+        },
+        {
+          "id": "weld_crack_standard_4",
+          "vi": "ITP",
+          "en": "ITP"
+        },
+        {
+          "id": "weld_crack_standard_5",
+          "vi": "NDT acceptance criteria",
+          "en": "NDT acceptance criteria"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "weld_crack_repair_1",
+          "vi": "dừng hàn, khoan chặn/mở rộng theo quy trình, loại bỏ toàn bộ nứt, hàn sửa và NDT lại",
+          "en": "stop welding, arrest/drill where procedure allows, remove complete crack, repair weld and retest"
+        },
+        {
+          "id": "weld_crack_repair_2",
+          "vi": "lập repair map và chỉ hàn sửa khi QA/QC release",
+          "en": "prepare repair map and repair weld only after QA/QC release"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "weld_crack_verify_1",
+          "vi": "VT/MT/PT/UT/RT lại đúng ITP sau sửa",
+          "en": "repeat VT/MT/PT/UT/RT according to ITP after repair"
+        },
+        {
+          "id": "weld_crack_verify_2",
+          "vi": "QA/QC ký release khi kích thước và chỉ thị đạt tiêu chí",
+          "en": "QA/QC signs release when dimensions and indications meet criteria"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "weld_crack_prevent_1",
+          "vi": "khóa WPS tại máy và ghi dòng, áp, tốc độ, nhiệt đầu vào",
+          "en": "lock WPS at the machine and record current, voltage, travel speed and heat input"
+        },
+        {
+          "id": "weld_crack_prevent_2",
+          "vi": "duy trì hold point trước hàn, sau root pass và trước bàn giao NDT",
+          "en": "maintain hold points before welding, after root pass and before NDT release"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "weld_crack_note_1",
+          "vi": "đừng đánh giá mối hàn bằng bề mặt đẹp; phải đọc cơ chế, thông số và kết quả NDT",
+          "en": "do not judge welds by cosmetic surface; read mechanism, parameters and NDT results"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "weld_crack_mistake_1",
+          "vi": "mài sửa rộng nhưng không xác định thông số gây lỗi",
+          "en": "wide grinding repair without identifying the parameter that caused defect"
+        },
+        {
+          "id": "weld_crack_mistake_2",
+          "vi": "bỏ qua kiểm tra interpass rồi chỉ kiểm tra cuối cùng",
+          "en": "skipping interpass inspection and checking only at final stage"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "weld_crack_lesson_1",
+          "vi": "lỗi hàn phải được quản lý theo cơ chế + thông số + bằng chứng, không theo cảm giác thợ",
+          "en": "weld defects must be managed by mechanism + parameter + evidence, not by welder feeling"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "weld_crack_safety_1",
+          "vi": "LOTO/che chắn khu hàn, kiểm soát khói hàn, tia hồ quang và thao tác mài sửa",
+          "en": "apply LOTO/barricade welding area and control fumes, arc flash and grinding repair"
+        }
+      ]
+    },
+    {
+      "key": "WELD_DISTORTION",
+      "failure_mode": {
+        "id": "weld_distortion_mode",
+        "vi": "Biến dạng sau hàn",
+        "en": "Weld Distortion"
+      },
+      "symptoms": [
+        {
+          "id": "weld_distortion_symptom_1",
+          "vi": "dầm cong, bản mã vênh hoặc kích thước lệch sau hàn",
+          "en": "beam camber, plate warp or dimension shift after welding"
+        },
+        {
+          "id": "weld_distortion_symptom_2",
+          "vi": "lỗi có nguy cơ bị loại ở VT/NDT hoặc nghiệm thu kích thước",
+          "en": "defect may be rejected by VT/NDT or dimensional acceptance"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "weld_distortion_cause_1",
+          "vi": "thứ tự hàn sai, gá yếu, nhiệt đầu vào cao, co ngót không cân bằng",
+          "en": "wrong weld sequence, weak fixture, high heat input or unbalanced shrinkage"
+        },
+        {
+          "id": "weld_distortion_cause_2",
+          "vi": "thiếu hold point trước khi chuyển công đoạn",
+          "en": "missing hold point before next operation"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "weld_distortion_mechanism_1",
+          "vi": "co ngót nhiệt tạo mô men uốn và kéo lệch khỏi dung sai",
+          "en": "thermal shrinkage creates bending moment and pulls the assembly out of tolerance"
+        },
+        {
+          "id": "weld_distortion_mechanism_2",
+          "vi": "cơ chế lỗi phải được khóa bằng thông số WPS và bằng chứng kiểm tra",
+          "en": "failure mechanism must be locked with WPS parameters and inspection evidence"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "weld_distortion_inspection_1",
+          "vi": "đo kích thước, đường chéo, camber, độ phẳng và datum",
+          "en": "dimension, diagonal, camber, flatness and datum check"
+        },
+        {
+          "id": "weld_distortion_inspection_2",
+          "vi": "rà soát WPS, PQR, WPQ, ITP và nhật ký thông số hàn",
+          "en": "review WPS, PQR, WPQ, ITP and weld parameter log"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "weld_distortion_measurement_1",
+          "vi": "camber, độ võng, độ phẳng, chênh đường chéo, nhiệt đầu vào",
+          "en": "camber, deflection, flatness, diagonal difference and heat input"
+        },
+        {
+          "id": "weld_distortion_measurement_2",
+          "vi": "ghi ảnh vị trí lỗi, mã cấu kiện và chiều dài vùng ảnh hưởng",
+          "en": "record defect photo, member ID and affected length"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "weld_distortion_calc_1",
+          "vi": "tính sai lệch so với dung sai bản vẽ/AISC/EN1090",
+          "en": "calculate deviation against drawing/AISC/EN1090 tolerance"
+        },
+        {
+          "id": "weld_distortion_calc_2",
+          "vi": "tính tần suất lỗi theo thợ hàn, máy hàn, ca và loại liên kết",
+          "en": "calculate defect frequency by welder, machine, shift and joint type"
+        }
+      ],
+      "standards": [
+        {
+          "id": "weld_distortion_standard_1",
+          "vi": "AWS D1.1",
+          "en": "AWS D1.1"
+        },
+        {
+          "id": "weld_distortion_standard_2",
+          "vi": "ISO 3834",
+          "en": "ISO 3834"
+        },
+        {
+          "id": "weld_distortion_standard_3",
+          "vi": "WPS/PQR/WPQ",
+          "en": "WPS/PQR/WPQ"
+        },
+        {
+          "id": "weld_distortion_standard_4",
+          "vi": "ITP",
+          "en": "ITP"
+        },
+        {
+          "id": "weld_distortion_standard_5",
+          "vi": "NDT acceptance criteria",
+          "en": "NDT acceptance criteria"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "weld_distortion_repair_1",
+          "vi": "nắn theo quy trình được duyệt, sửa sequence/gá, kiểm tra lại kích thước",
+          "en": "straighten by approved procedure, correct sequence/fixture and recheck dimensions"
+        },
+        {
+          "id": "weld_distortion_repair_2",
+          "vi": "lập repair map và chỉ hàn sửa khi QA/QC release",
+          "en": "prepare repair map and repair weld only after QA/QC release"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "weld_distortion_verify_1",
+          "vi": "VT/MT/PT/UT/RT lại đúng ITP sau sửa",
+          "en": "repeat VT/MT/PT/UT/RT according to ITP after repair"
+        },
+        {
+          "id": "weld_distortion_verify_2",
+          "vi": "QA/QC ký release khi kích thước và chỉ thị đạt tiêu chí",
+          "en": "QA/QC signs release when dimensions and indications meet criteria"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "weld_distortion_prevent_1",
+          "vi": "khóa WPS tại máy và ghi dòng, áp, tốc độ, nhiệt đầu vào",
+          "en": "lock WPS at the machine and record current, voltage, travel speed and heat input"
+        },
+        {
+          "id": "weld_distortion_prevent_2",
+          "vi": "duy trì hold point trước hàn, sau root pass và trước bàn giao NDT",
+          "en": "maintain hold points before welding, after root pass and before NDT release"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "weld_distortion_note_1",
+          "vi": "đừng đánh giá mối hàn bằng bề mặt đẹp; phải đọc cơ chế, thông số và kết quả NDT",
+          "en": "do not judge welds by cosmetic surface; read mechanism, parameters and NDT results"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "weld_distortion_mistake_1",
+          "vi": "mài sửa rộng nhưng không xác định thông số gây lỗi",
+          "en": "wide grinding repair without identifying the parameter that caused defect"
+        },
+        {
+          "id": "weld_distortion_mistake_2",
+          "vi": "bỏ qua kiểm tra interpass rồi chỉ kiểm tra cuối cùng",
+          "en": "skipping interpass inspection and checking only at final stage"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "weld_distortion_lesson_1",
+          "vi": "lỗi hàn phải được quản lý theo cơ chế + thông số + bằng chứng, không theo cảm giác thợ",
+          "en": "weld defects must be managed by mechanism + parameter + evidence, not by welder feeling"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "weld_distortion_safety_1",
+          "vi": "LOTO/che chắn khu hàn, kiểm soát khói hàn, tia hồ quang và thao tác mài sửa",
+          "en": "apply LOTO/barricade welding area and control fumes, arc flash and grinding repair"
+        }
+      ]
+    },
+    {
+      "key": "WELD_SPATTER",
+      "failure_mode": {
+        "id": "weld_spatter_mode",
+        "vi": "Bắn tóe hàn",
+        "en": "Weld Spatter"
+      },
+      "symptoms": [
+        {
+          "id": "weld_spatter_symptom_1",
+          "vi": "hạt kim loại bắn bám quanh đường hàn",
+          "en": "metal droplets attached around weld bead"
+        },
+        {
+          "id": "weld_spatter_symptom_2",
+          "vi": "lỗi có nguy cơ bị loại ở VT/NDT hoặc nghiệm thu kích thước",
+          "en": "defect may be rejected by VT/NDT or dimensional acceptance"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "weld_spatter_cause_1",
+          "vi": "điện áp/dòng không phù hợp, stickout dài, khí bảo vệ kém, cực tính sai",
+          "en": "wrong voltage/current, long stickout, poor shielding gas or wrong polarity"
+        },
+        {
+          "id": "weld_spatter_cause_2",
+          "vi": "thiếu hold point trước khi chuyển công đoạn",
+          "en": "missing hold point before next operation"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "weld_spatter_mechanism_1",
+          "vi": "hồ quang mất ổn định làm giọt kim loại tách khỏi vũng hàn",
+          "en": "unstable arc ejects metal droplets from weld pool"
+        },
+        {
+          "id": "weld_spatter_mechanism_2",
+          "vi": "cơ chế lỗi phải được khóa bằng thông số WPS và bằng chứng kiểm tra",
+          "en": "failure mechanism must be locked with WPS parameters and inspection evidence"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "weld_spatter_inspection_1",
+          "vi": "VT, kiểm tra thông số máy, khí bảo vệ, stickout và dây hàn",
+          "en": "VT, parameter, shielding gas, stickout and wire check"
+        },
+        {
+          "id": "weld_spatter_inspection_2",
+          "vi": "rà soát WPS, PQR, WPQ, ITP và nhật ký thông số hàn",
+          "en": "review WPS, PQR, WPQ, ITP and weld parameter log"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "weld_spatter_measurement_1",
+          "vi": "dòng/áp, lưu lượng khí, stickout, cực tính, tốc độ cấp dây",
+          "en": "current/voltage, gas flow, stickout, polarity and wire feed speed"
+        },
+        {
+          "id": "weld_spatter_measurement_2",
+          "vi": "ghi ảnh vị trí lỗi, mã cấu kiện và chiều dài vùng ảnh hưởng",
+          "en": "record defect photo, member ID and affected length"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "weld_spatter_calc_1",
+          "vi": "so sánh bộ thông số với WPS/PQR và khuyến nghị dây hàn",
+          "en": "compare parameter set with WPS/PQR and wire recommendation"
+        },
+        {
+          "id": "weld_spatter_calc_2",
+          "vi": "tính tần suất lỗi theo thợ hàn, máy hàn, ca và loại liên kết",
+          "en": "calculate defect frequency by welder, machine, shift and joint type"
+        }
+      ],
+      "standards": [
+        {
+          "id": "weld_spatter_standard_1",
+          "vi": "AWS D1.1",
+          "en": "AWS D1.1"
+        },
+        {
+          "id": "weld_spatter_standard_2",
+          "vi": "ISO 3834",
+          "en": "ISO 3834"
+        },
+        {
+          "id": "weld_spatter_standard_3",
+          "vi": "WPS/PQR/WPQ",
+          "en": "WPS/PQR/WPQ"
+        },
+        {
+          "id": "weld_spatter_standard_4",
+          "vi": "ITP",
+          "en": "ITP"
+        },
+        {
+          "id": "weld_spatter_standard_5",
+          "vi": "NDT acceptance criteria",
+          "en": "NDT acceptance criteria"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "weld_spatter_repair_1",
+          "vi": "làm sạch spatter, chỉnh thông số, kiểm tra lại bề mặt trước sơn",
+          "en": "remove spatter, adjust parameters and recheck surface before coating"
+        },
+        {
+          "id": "weld_spatter_repair_2",
+          "vi": "lập repair map và chỉ hàn sửa khi QA/QC release",
+          "en": "prepare repair map and repair weld only after QA/QC release"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "weld_spatter_verify_1",
+          "vi": "VT/MT/PT/UT/RT lại đúng ITP sau sửa",
+          "en": "repeat VT/MT/PT/UT/RT according to ITP after repair"
+        },
+        {
+          "id": "weld_spatter_verify_2",
+          "vi": "QA/QC ký release khi kích thước và chỉ thị đạt tiêu chí",
+          "en": "QA/QC signs release when dimensions and indications meet criteria"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "weld_spatter_prevent_1",
+          "vi": "khóa WPS tại máy và ghi dòng, áp, tốc độ, nhiệt đầu vào",
+          "en": "lock WPS at the machine and record current, voltage, travel speed and heat input"
+        },
+        {
+          "id": "weld_spatter_prevent_2",
+          "vi": "duy trì hold point trước hàn, sau root pass và trước bàn giao NDT",
+          "en": "maintain hold points before welding, after root pass and before NDT release"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "weld_spatter_note_1",
+          "vi": "đừng đánh giá mối hàn bằng bề mặt đẹp; phải đọc cơ chế, thông số và kết quả NDT",
+          "en": "do not judge welds by cosmetic surface; read mechanism, parameters and NDT results"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "weld_spatter_mistake_1",
+          "vi": "mài sửa rộng nhưng không xác định thông số gây lỗi",
+          "en": "wide grinding repair without identifying the parameter that caused defect"
+        },
+        {
+          "id": "weld_spatter_mistake_2",
+          "vi": "bỏ qua kiểm tra interpass rồi chỉ kiểm tra cuối cùng",
+          "en": "skipping interpass inspection and checking only at final stage"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "weld_spatter_lesson_1",
+          "vi": "lỗi hàn phải được quản lý theo cơ chế + thông số + bằng chứng, không theo cảm giác thợ",
+          "en": "weld defects must be managed by mechanism + parameter + evidence, not by welder feeling"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "weld_spatter_safety_1",
+          "vi": "LOTO/che chắn khu hàn, kiểm soát khói hàn, tia hồ quang và thao tác mài sửa",
+          "en": "apply LOTO/barricade welding area and control fumes, arc flash and grinding repair"
+        }
+      ]
+    },
+    {
+      "key": "WELD_OVERLAP",
+      "failure_mode": {
+        "id": "weld_overlap_mode",
+        "vi": "Chồng mép mối hàn",
+        "en": "Weld Overlap"
+      },
+      "symptoms": [
+        {
+          "id": "weld_overlap_symptom_1",
+          "vi": "kim loại hàn chảy tràn không ngấu vào mép",
+          "en": "weld metal rolls over without fusing at toe"
+        },
+        {
+          "id": "weld_overlap_symptom_2",
+          "vi": "lỗi có nguy cơ bị loại ở VT/NDT hoặc nghiệm thu kích thước",
+          "en": "defect may be rejected by VT/NDT or dimensional acceptance"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "weld_overlap_cause_1",
+          "vi": "tốc độ chậm, dòng thấp, góc mỏ sai, hồ quang quá lạnh",
+          "en": "slow travel, low current, wrong torch angle or cold arc"
+        },
+        {
+          "id": "weld_overlap_cause_2",
+          "vi": "thiếu hold point trước khi chuyển công đoạn",
+          "en": "missing hold point before next operation"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "weld_overlap_mechanism_1",
+          "vi": "kim loại đắp nằm lên bề mặt nhưng thiếu hòa tan kim loại nền",
+          "en": "deposited metal lays over surface without fusing into base metal"
+        },
+        {
+          "id": "weld_overlap_mechanism_2",
+          "vi": "cơ chế lỗi phải được khóa bằng thông số WPS và bằng chứng kiểm tra",
+          "en": "failure mechanism must be locked with WPS parameters and inspection evidence"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "weld_overlap_inspection_1",
+          "vi": "VT, macro khi cần, kiểm tra toe và biên dạng bead",
+          "en": "VT, macro when needed and toe/bead profile check"
+        },
+        {
+          "id": "weld_overlap_inspection_2",
+          "vi": "rà soát WPS, PQR, WPQ, ITP và nhật ký thông số hàn",
+          "en": "review WPS, PQR, WPQ, ITP and weld parameter log"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "weld_overlap_measurement_1",
+          "vi": "chiều rộng bead, góc toe, dòng/áp/tốc độ",
+          "en": "bead width, toe angle and current/voltage/travel speed"
+        },
+        {
+          "id": "weld_overlap_measurement_2",
+          "vi": "ghi ảnh vị trí lỗi, mã cấu kiện và chiều dài vùng ảnh hưởng",
+          "en": "record defect photo, member ID and affected length"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "weld_overlap_calc_1",
+          "vi": "đối chiếu biên dạng với acceptance criteria và WPS",
+          "en": "compare bead profile with acceptance criteria and WPS"
+        },
+        {
+          "id": "weld_overlap_calc_2",
+          "vi": "tính tần suất lỗi theo thợ hàn, máy hàn, ca và loại liên kết",
+          "en": "calculate defect frequency by welder, machine, shift and joint type"
+        }
+      ],
+      "standards": [
+        {
+          "id": "weld_overlap_standard_1",
+          "vi": "AWS D1.1",
+          "en": "AWS D1.1"
+        },
+        {
+          "id": "weld_overlap_standard_2",
+          "vi": "ISO 3834",
+          "en": "ISO 3834"
+        },
+        {
+          "id": "weld_overlap_standard_3",
+          "vi": "WPS/PQR/WPQ",
+          "en": "WPS/PQR/WPQ"
+        },
+        {
+          "id": "weld_overlap_standard_4",
+          "vi": "ITP",
+          "en": "ITP"
+        },
+        {
+          "id": "weld_overlap_standard_5",
+          "vi": "NDT acceptance criteria",
+          "en": "NDT acceptance criteria"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "weld_overlap_repair_1",
+          "vi": "mài bỏ overlap, hàn sửa nếu thiếu tiết diện, kiểm tra lại VT/MT",
+          "en": "grind out overlap, repair weld if section is insufficient and repeat VT/MT"
+        },
+        {
+          "id": "weld_overlap_repair_2",
+          "vi": "lập repair map và chỉ hàn sửa khi QA/QC release",
+          "en": "prepare repair map and repair weld only after QA/QC release"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "weld_overlap_verify_1",
+          "vi": "VT/MT/PT/UT/RT lại đúng ITP sau sửa",
+          "en": "repeat VT/MT/PT/UT/RT according to ITP after repair"
+        },
+        {
+          "id": "weld_overlap_verify_2",
+          "vi": "QA/QC ký release khi kích thước và chỉ thị đạt tiêu chí",
+          "en": "QA/QC signs release when dimensions and indications meet criteria"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "weld_overlap_prevent_1",
+          "vi": "khóa WPS tại máy và ghi dòng, áp, tốc độ, nhiệt đầu vào",
+          "en": "lock WPS at the machine and record current, voltage, travel speed and heat input"
+        },
+        {
+          "id": "weld_overlap_prevent_2",
+          "vi": "duy trì hold point trước hàn, sau root pass và trước bàn giao NDT",
+          "en": "maintain hold points before welding, after root pass and before NDT release"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "weld_overlap_note_1",
+          "vi": "đừng đánh giá mối hàn bằng bề mặt đẹp; phải đọc cơ chế, thông số và kết quả NDT",
+          "en": "do not judge welds by cosmetic surface; read mechanism, parameters and NDT results"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "weld_overlap_mistake_1",
+          "vi": "mài sửa rộng nhưng không xác định thông số gây lỗi",
+          "en": "wide grinding repair without identifying the parameter that caused defect"
+        },
+        {
+          "id": "weld_overlap_mistake_2",
+          "vi": "bỏ qua kiểm tra interpass rồi chỉ kiểm tra cuối cùng",
+          "en": "skipping interpass inspection and checking only at final stage"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "weld_overlap_lesson_1",
+          "vi": "lỗi hàn phải được quản lý theo cơ chế + thông số + bằng chứng, không theo cảm giác thợ",
+          "en": "weld defects must be managed by mechanism + parameter + evidence, not by welder feeling"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "weld_overlap_safety_1",
+          "vi": "LOTO/che chắn khu hàn, kiểm soát khói hàn, tia hồ quang và thao tác mài sửa",
+          "en": "apply LOTO/barricade welding area and control fumes, arc flash and grinding repair"
+        }
+      ]
+    },
+    {
+      "key": "WELD_BURN_THROUGH",
+      "failure_mode": {
+        "id": "weld_burn_through_mode",
+        "vi": "Cháy thủng chân hàn",
+        "en": "Weld Burn Through"
+      },
+      "symptoms": [
+        {
+          "id": "weld_burn_through_symptom_1",
+          "vi": "lỗ thủng tại root hoặc kim loại chảy xệ",
+          "en": "hole at root or sagged molten metal"
+        },
+        {
+          "id": "weld_burn_through_symptom_2",
+          "vi": "lỗi có nguy cơ bị loại ở VT/NDT hoặc nghiệm thu kích thước",
+          "en": "defect may be rejected by VT/NDT or dimensional acceptance"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "weld_burn_through_cause_1",
+          "vi": "dòng cao, root gap lớn, vật liệu mỏng, tốc độ chậm",
+          "en": "high current, large root gap, thin material or slow speed"
+        },
+        {
+          "id": "weld_burn_through_cause_2",
+          "vi": "thiếu hold point trước khi chuyển công đoạn",
+          "en": "missing hold point before next operation"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "weld_burn_through_mechanism_1",
+          "vi": "nhiệt đầu vào vượt khả năng giữ vũng hàn của chân liên kết",
+          "en": "heat input exceeds root joint ability to support molten pool"
+        },
+        {
+          "id": "weld_burn_through_mechanism_2",
+          "vi": "cơ chế lỗi phải được khóa bằng thông số WPS và bằng chứng kiểm tra",
+          "en": "failure mechanism must be locked with WPS parameters and inspection evidence"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "weld_burn_through_inspection_1",
+          "vi": "VT/RT, kiểm tra root gap và độ dày vật liệu",
+          "en": "VT/RT, root gap and material thickness check"
+        },
+        {
+          "id": "weld_burn_through_inspection_2",
+          "vi": "rà soát WPS, PQR, WPQ, ITP và nhật ký thông số hàn",
+          "en": "review WPS, PQR, WPQ, ITP and weld parameter log"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "weld_burn_through_measurement_1",
+          "vi": "root gap, chiều dày, dòng/áp/tốc độ, backing condition",
+          "en": "root gap, thickness, current/voltage/travel speed and backing condition"
+        },
+        {
+          "id": "weld_burn_through_measurement_2",
+          "vi": "ghi ảnh vị trí lỗi, mã cấu kiện và chiều dài vùng ảnh hưởng",
+          "en": "record defect photo, member ID and affected length"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "weld_burn_through_calc_1",
+          "vi": "tính heat input và so với WPS cho chiều dày thực tế",
+          "en": "calculate heat input and compare with WPS for actual thickness"
+        },
+        {
+          "id": "weld_burn_through_calc_2",
+          "vi": "tính tần suất lỗi theo thợ hàn, máy hàn, ca và loại liên kết",
+          "en": "calculate defect frequency by welder, machine, shift and joint type"
+        }
+      ],
+      "standards": [
+        {
+          "id": "weld_burn_through_standard_1",
+          "vi": "AWS D1.1",
+          "en": "AWS D1.1"
+        },
+        {
+          "id": "weld_burn_through_standard_2",
+          "vi": "ISO 3834",
+          "en": "ISO 3834"
+        },
+        {
+          "id": "weld_burn_through_standard_3",
+          "vi": "WPS/PQR/WPQ",
+          "en": "WPS/PQR/WPQ"
+        },
+        {
+          "id": "weld_burn_through_standard_4",
+          "vi": "ITP",
+          "en": "ITP"
+        },
+        {
+          "id": "weld_burn_through_standard_5",
+          "vi": "NDT acceptance criteria",
+          "en": "NDT acceptance criteria"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "weld_burn_through_repair_1",
+          "vi": "cắt/mài vùng cháy thủng, chuẩn bị lại root, hàn sửa lớp root và NDT lại",
+          "en": "cut/grind burn-through zone, prepare root, repair root pass and retest"
+        },
+        {
+          "id": "weld_burn_through_repair_2",
+          "vi": "lập repair map và chỉ hàn sửa khi QA/QC release",
+          "en": "prepare repair map and repair weld only after QA/QC release"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "weld_burn_through_verify_1",
+          "vi": "VT/MT/PT/UT/RT lại đúng ITP sau sửa",
+          "en": "repeat VT/MT/PT/UT/RT according to ITP after repair"
+        },
+        {
+          "id": "weld_burn_through_verify_2",
+          "vi": "QA/QC ký release khi kích thước và chỉ thị đạt tiêu chí",
+          "en": "QA/QC signs release when dimensions and indications meet criteria"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "weld_burn_through_prevent_1",
+          "vi": "khóa WPS tại máy và ghi dòng, áp, tốc độ, nhiệt đầu vào",
+          "en": "lock WPS at the machine and record current, voltage, travel speed and heat input"
+        },
+        {
+          "id": "weld_burn_through_prevent_2",
+          "vi": "duy trì hold point trước hàn, sau root pass và trước bàn giao NDT",
+          "en": "maintain hold points before welding, after root pass and before NDT release"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "weld_burn_through_note_1",
+          "vi": "đừng đánh giá mối hàn bằng bề mặt đẹp; phải đọc cơ chế, thông số và kết quả NDT",
+          "en": "do not judge welds by cosmetic surface; read mechanism, parameters and NDT results"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "weld_burn_through_mistake_1",
+          "vi": "mài sửa rộng nhưng không xác định thông số gây lỗi",
+          "en": "wide grinding repair without identifying the parameter that caused defect"
+        },
+        {
+          "id": "weld_burn_through_mistake_2",
+          "vi": "bỏ qua kiểm tra interpass rồi chỉ kiểm tra cuối cùng",
+          "en": "skipping interpass inspection and checking only at final stage"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "weld_burn_through_lesson_1",
+          "vi": "lỗi hàn phải được quản lý theo cơ chế + thông số + bằng chứng, không theo cảm giác thợ",
+          "en": "weld defects must be managed by mechanism + parameter + evidence, not by welder feeling"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "weld_burn_through_safety_1",
+          "vi": "LOTO/che chắn khu hàn, kiểm soát khói hàn, tia hồ quang và thao tác mài sửa",
+          "en": "apply LOTO/barricade welding area and control fumes, arc flash and grinding repair"
+        }
+      ]
+    },
+    {
+      "key": "WELD_UNDERFILL",
+      "failure_mode": {
+        "id": "weld_underfill_mode",
+        "vi": "Thiếu đầy mối hàn",
+        "en": "Weld Underfill"
+      },
+      "symptoms": [
+        {
+          "id": "weld_underfill_symptom_1",
+          "vi": "mặt mối hàn thấp hơn bề mặt vật liệu hoặc kích thước yêu cầu",
+          "en": "weld face below base metal surface or required size"
+        },
+        {
+          "id": "weld_underfill_symptom_2",
+          "vi": "lỗi có nguy cơ bị loại ở VT/NDT hoặc nghiệm thu kích thước",
+          "en": "defect may be rejected by VT/NDT or dimensional acceptance"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "weld_underfill_cause_1",
+          "vi": "thiếu lượng đắp, tốc độ nhanh, bead cuối không đủ, mài quá mức",
+          "en": "insufficient deposit, fast travel, inadequate cap pass or excessive grinding"
+        },
+        {
+          "id": "weld_underfill_cause_2",
+          "vi": "thiếu hold point trước khi chuyển công đoạn",
+          "en": "missing hold point before next operation"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "weld_underfill_mechanism_1",
+          "vi": "tiết diện kim loại hàn không đủ để đạt kích thước thiết kế",
+          "en": "weld metal section is insufficient for design size"
+        },
+        {
+          "id": "weld_underfill_mechanism_2",
+          "vi": "cơ chế lỗi phải được khóa bằng thông số WPS và bằng chứng kiểm tra",
+          "en": "failure mechanism must be locked with WPS parameters and inspection evidence"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "weld_underfill_inspection_1",
+          "vi": "VT bằng thước đo, kiểm tra kích thước chân/cap và biên dạng",
+          "en": "VT with gauge, leg/cap size and profile check"
+        },
+        {
+          "id": "weld_underfill_inspection_2",
+          "vi": "rà soát WPS, PQR, WPQ, ITP và nhật ký thông số hàn",
+          "en": "review WPS, PQR, WPQ, ITP and weld parameter log"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "weld_underfill_measurement_1",
+          "vi": "kích thước weld size, underfill depth, chiều dài vùng lỗi",
+          "en": "weld size, underfill depth and defect length"
+        },
+        {
+          "id": "weld_underfill_measurement_2",
+          "vi": "ghi ảnh vị trí lỗi, mã cấu kiện và chiều dài vùng ảnh hưởng",
+          "en": "record defect photo, member ID and affected length"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "weld_underfill_calc_1",
+          "vi": "so sánh kích thước thực tế với bản vẽ và acceptance criteria",
+          "en": "compare actual weld size with drawing and acceptance criteria"
+        },
+        {
+          "id": "weld_underfill_calc_2",
+          "vi": "tính tần suất lỗi theo thợ hàn, máy hàn, ca và loại liên kết",
+          "en": "calculate defect frequency by welder, machine, shift and joint type"
+        }
+      ],
+      "standards": [
+        {
+          "id": "weld_underfill_standard_1",
+          "vi": "AWS D1.1",
+          "en": "AWS D1.1"
+        },
+        {
+          "id": "weld_underfill_standard_2",
+          "vi": "ISO 3834",
+          "en": "ISO 3834"
+        },
+        {
+          "id": "weld_underfill_standard_3",
+          "vi": "WPS/PQR/WPQ",
+          "en": "WPS/PQR/WPQ"
+        },
+        {
+          "id": "weld_underfill_standard_4",
+          "vi": "ITP",
+          "en": "ITP"
+        },
+        {
+          "id": "weld_underfill_standard_5",
+          "vi": "NDT acceptance criteria",
+          "en": "NDT acceptance criteria"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "weld_underfill_repair_1",
+          "vi": "hàn đắp bổ sung theo WPS, mài hoàn thiện và kiểm tra lại kích thước",
+          "en": "deposit additional weld per WPS, finish grind and recheck size"
+        },
+        {
+          "id": "weld_underfill_repair_2",
+          "vi": "lập repair map và chỉ hàn sửa khi QA/QC release",
+          "en": "prepare repair map and repair weld only after QA/QC release"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "weld_underfill_verify_1",
+          "vi": "VT/MT/PT/UT/RT lại đúng ITP sau sửa",
+          "en": "repeat VT/MT/PT/UT/RT according to ITP after repair"
+        },
+        {
+          "id": "weld_underfill_verify_2",
+          "vi": "QA/QC ký release khi kích thước và chỉ thị đạt tiêu chí",
+          "en": "QA/QC signs release when dimensions and indications meet criteria"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "weld_underfill_prevent_1",
+          "vi": "khóa WPS tại máy và ghi dòng, áp, tốc độ, nhiệt đầu vào",
+          "en": "lock WPS at the machine and record current, voltage, travel speed and heat input"
+        },
+        {
+          "id": "weld_underfill_prevent_2",
+          "vi": "duy trì hold point trước hàn, sau root pass và trước bàn giao NDT",
+          "en": "maintain hold points before welding, after root pass and before NDT release"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "weld_underfill_note_1",
+          "vi": "đừng đánh giá mối hàn bằng bề mặt đẹp; phải đọc cơ chế, thông số và kết quả NDT",
+          "en": "do not judge welds by cosmetic surface; read mechanism, parameters and NDT results"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "weld_underfill_mistake_1",
+          "vi": "mài sửa rộng nhưng không xác định thông số gây lỗi",
+          "en": "wide grinding repair without identifying the parameter that caused defect"
+        },
+        {
+          "id": "weld_underfill_mistake_2",
+          "vi": "bỏ qua kiểm tra interpass rồi chỉ kiểm tra cuối cùng",
+          "en": "skipping interpass inspection and checking only at final stage"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "weld_underfill_lesson_1",
+          "vi": "lỗi hàn phải được quản lý theo cơ chế + thông số + bằng chứng, không theo cảm giác thợ",
+          "en": "weld defects must be managed by mechanism + parameter + evidence, not by welder feeling"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "weld_underfill_safety_1",
+          "vi": "LOTO/che chắn khu hàn, kiểm soát khói hàn, tia hồ quang và thao tác mài sửa",
+          "en": "apply LOTO/barricade welding area and control fumes, arc flash and grinding repair"
+        }
+      ]
+    },
+    {
+      "key": "WELD_EXCESS_REINFORCEMENT",
+      "failure_mode": {
+        "id": "weld_excess_reinforcement_mode",
+        "vi": "Gia cường mối hàn quá mức",
+        "en": "Excess Weld Reinforcement"
+      },
+      "symptoms": [
+        {
+          "id": "weld_excess_reinforcement_symptom_1",
+          "vi": "cap hàn quá cao, biên dạng gồ gây tập trung ứng suất",
+          "en": "excessively high weld cap causing stress concentration"
+        },
+        {
+          "id": "weld_excess_reinforcement_symptom_2",
+          "vi": "lỗi có nguy cơ bị loại ở VT/NDT hoặc nghiệm thu kích thước",
+          "en": "defect may be rejected by VT/NDT or dimensional acceptance"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "weld_excess_reinforcement_cause_1",
+          "vi": "tốc độ chậm, nhiều kim loại đắp, thao tác weave quá lớn",
+          "en": "slow travel, excessive filler deposit or excessive weave"
+        },
+        {
+          "id": "weld_excess_reinforcement_cause_2",
+          "vi": "thiếu hold point trước khi chuyển công đoạn",
+          "en": "missing hold point before next operation"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "weld_excess_reinforcement_mechanism_1",
+          "vi": "biên dạng hàn vượt kích thước làm tăng ứng suất và cản lắp ráp/sơn",
+          "en": "weld profile exceeds size and increases stress or obstructs fit-up/coating"
+        },
+        {
+          "id": "weld_excess_reinforcement_mechanism_2",
+          "vi": "cơ chế lỗi phải được khóa bằng thông số WPS và bằng chứng kiểm tra",
+          "en": "failure mechanism must be locked with WPS parameters and inspection evidence"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "weld_excess_reinforcement_inspection_1",
+          "vi": "VT bằng thước đo reinforcement, kiểm tra chuyển tiếp toe",
+          "en": "VT with reinforcement gauge and toe transition check"
+        },
+        {
+          "id": "weld_excess_reinforcement_inspection_2",
+          "vi": "rà soát WPS, PQR, WPQ, ITP và nhật ký thông số hàn",
+          "en": "review WPS, PQR, WPQ, ITP and weld parameter log"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "weld_excess_reinforcement_measurement_1",
+          "vi": "chiều cao reinforcement, góc chuyển tiếp, chiều rộng bead",
+          "en": "reinforcement height, transition angle and bead width"
+        },
+        {
+          "id": "weld_excess_reinforcement_measurement_2",
+          "vi": "ghi ảnh vị trí lỗi, mã cấu kiện và chiều dài vùng ảnh hưởng",
+          "en": "record defect photo, member ID and affected length"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "weld_excess_reinforcement_calc_1",
+          "vi": "so sánh reinforcement với AWS D1.1/ITP/bản vẽ",
+          "en": "compare reinforcement with AWS D1.1/ITP/drawing"
+        },
+        {
+          "id": "weld_excess_reinforcement_calc_2",
+          "vi": "tính tần suất lỗi theo thợ hàn, máy hàn, ca và loại liên kết",
+          "en": "calculate defect frequency by welder, machine, shift and joint type"
+        }
+      ],
+      "standards": [
+        {
+          "id": "weld_excess_reinforcement_standard_1",
+          "vi": "AWS D1.1",
+          "en": "AWS D1.1"
+        },
+        {
+          "id": "weld_excess_reinforcement_standard_2",
+          "vi": "ISO 3834",
+          "en": "ISO 3834"
+        },
+        {
+          "id": "weld_excess_reinforcement_standard_3",
+          "vi": "WPS/PQR/WPQ",
+          "en": "WPS/PQR/WPQ"
+        },
+        {
+          "id": "weld_excess_reinforcement_standard_4",
+          "vi": "ITP",
+          "en": "ITP"
+        },
+        {
+          "id": "weld_excess_reinforcement_standard_5",
+          "vi": "NDT acceptance criteria",
+          "en": "NDT acceptance criteria"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "weld_excess_reinforcement_repair_1",
+          "vi": "mài giảm đúng biên dạng, không làm undercut, kiểm tra lại VT/MT",
+          "en": "grind down to correct profile without undercut and repeat VT/MT"
+        },
+        {
+          "id": "weld_excess_reinforcement_repair_2",
+          "vi": "lập repair map và chỉ hàn sửa khi QA/QC release",
+          "en": "prepare repair map and repair weld only after QA/QC release"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "weld_excess_reinforcement_verify_1",
+          "vi": "VT/MT/PT/UT/RT lại đúng ITP sau sửa",
+          "en": "repeat VT/MT/PT/UT/RT according to ITP after repair"
+        },
+        {
+          "id": "weld_excess_reinforcement_verify_2",
+          "vi": "QA/QC ký release khi kích thước và chỉ thị đạt tiêu chí",
+          "en": "QA/QC signs release when dimensions and indications meet criteria"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "weld_excess_reinforcement_prevent_1",
+          "vi": "khóa WPS tại máy và ghi dòng, áp, tốc độ, nhiệt đầu vào",
+          "en": "lock WPS at the machine and record current, voltage, travel speed and heat input"
+        },
+        {
+          "id": "weld_excess_reinforcement_prevent_2",
+          "vi": "duy trì hold point trước hàn, sau root pass và trước bàn giao NDT",
+          "en": "maintain hold points before welding, after root pass and before NDT release"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "weld_excess_reinforcement_note_1",
+          "vi": "đừng đánh giá mối hàn bằng bề mặt đẹp; phải đọc cơ chế, thông số và kết quả NDT",
+          "en": "do not judge welds by cosmetic surface; read mechanism, parameters and NDT results"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "weld_excess_reinforcement_mistake_1",
+          "vi": "mài sửa rộng nhưng không xác định thông số gây lỗi",
+          "en": "wide grinding repair without identifying the parameter that caused defect"
+        },
+        {
+          "id": "weld_excess_reinforcement_mistake_2",
+          "vi": "bỏ qua kiểm tra interpass rồi chỉ kiểm tra cuối cùng",
+          "en": "skipping interpass inspection and checking only at final stage"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "weld_excess_reinforcement_lesson_1",
+          "vi": "lỗi hàn phải được quản lý theo cơ chế + thông số + bằng chứng, không theo cảm giác thợ",
+          "en": "weld defects must be managed by mechanism + parameter + evidence, not by welder feeling"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "weld_excess_reinforcement_safety_1",
+          "vi": "LOTO/che chắn khu hàn, kiểm soát khói hàn, tia hồ quang và thao tác mài sửa",
+          "en": "apply LOTO/barricade welding area and control fumes, arc flash and grinding repair"
+        }
+      ]
+    },
+    {
+      "key": "WELD_ARC_BLOW",
+      "failure_mode": {
+        "id": "weld_arc_blow_mode",
+        "vi": "Thổi lệch hồ quang",
+        "en": "Weld Arc Blow"
+      },
+      "symptoms": [
+        {
+          "id": "weld_arc_blow_symptom_1",
+          "vi": "hồ quang lệch, bead không đều, bắn tóe tăng",
+          "en": "arc deflects, bead becomes irregular and spatter increases"
+        },
+        {
+          "id": "weld_arc_blow_symptom_2",
+          "vi": "lỗi có nguy cơ bị loại ở VT/NDT hoặc nghiệm thu kích thước",
+          "en": "defect may be rejected by VT/NDT or dimensional acceptance"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "weld_arc_blow_cause_1",
+          "vi": "từ trường dư, vị trí kẹp mass sai, dòng DC cao, hình học góc hẹp",
+          "en": "residual magnetism, wrong ground clamp location, high DC current or narrow geometry"
+        },
+        {
+          "id": "weld_arc_blow_cause_2",
+          "vi": "thiếu hold point trước khi chuyển công đoạn",
+          "en": "missing hold point before next operation"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "weld_arc_blow_mechanism_1",
+          "vi": "lực từ làm hồ quang bị kéo lệch khỏi hướng hàn",
+          "en": "magnetic force pulls the arc away from travel direction"
+        },
+        {
+          "id": "weld_arc_blow_mechanism_2",
+          "vi": "cơ chế lỗi phải được khóa bằng thông số WPS và bằng chứng kiểm tra",
+          "en": "failure mechanism must be locked with WPS parameters and inspection evidence"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "weld_arc_blow_inspection_1",
+          "vi": "quan sát hồ quang, kiểm tra vị trí mass, đo từ dư khi cần",
+          "en": "arc observation, ground clamp review and residual magnetism check when needed"
+        },
+        {
+          "id": "weld_arc_blow_inspection_2",
+          "vi": "rà soát WPS, PQR, WPQ, ITP và nhật ký thông số hàn",
+          "en": "review WPS, PQR, WPQ, ITP and weld parameter log"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "weld_arc_blow_measurement_1",
+          "vi": "dòng hàn, vị trí mass, chiều dài hồ quang, từ dư",
+          "en": "current, ground position, arc length and residual magnetism"
+        },
+        {
+          "id": "weld_arc_blow_measurement_2",
+          "vi": "ghi ảnh vị trí lỗi, mã cấu kiện và chiều dài vùng ảnh hưởng",
+          "en": "record defect photo, member ID and affected length"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "weld_arc_blow_calc_1",
+          "vi": "so sánh dòng và cực tính với WPS, đánh giá khả năng đổi AC/giảm dòng",
+          "en": "compare current and polarity with WPS and evaluate AC/lower current option"
+        },
+        {
+          "id": "weld_arc_blow_calc_2",
+          "vi": "tính tần suất lỗi theo thợ hàn, máy hàn, ca và loại liên kết",
+          "en": "calculate defect frequency by welder, machine, shift and joint type"
+        }
+      ],
+      "standards": [
+        {
+          "id": "weld_arc_blow_standard_1",
+          "vi": "AWS D1.1",
+          "en": "AWS D1.1"
+        },
+        {
+          "id": "weld_arc_blow_standard_2",
+          "vi": "ISO 3834",
+          "en": "ISO 3834"
+        },
+        {
+          "id": "weld_arc_blow_standard_3",
+          "vi": "WPS/PQR/WPQ",
+          "en": "WPS/PQR/WPQ"
+        },
+        {
+          "id": "weld_arc_blow_standard_4",
+          "vi": "ITP",
+          "en": "ITP"
+        },
+        {
+          "id": "weld_arc_blow_standard_5",
+          "vi": "NDT acceptance criteria",
+          "en": "NDT acceptance criteria"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "weld_arc_blow_repair_1",
+          "vi": "đổi vị trí mass, giảm dòng trong dải WPS, dùng run-off tab hoặc khử từ khi cần",
+          "en": "move ground clamp, reduce current within WPS, use run-off tab or demagnetize when needed"
+        },
+        {
+          "id": "weld_arc_blow_repair_2",
+          "vi": "lập repair map và chỉ hàn sửa khi QA/QC release",
+          "en": "prepare repair map and repair weld only after QA/QC release"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "weld_arc_blow_verify_1",
+          "vi": "VT/MT/PT/UT/RT lại đúng ITP sau sửa",
+          "en": "repeat VT/MT/PT/UT/RT according to ITP after repair"
+        },
+        {
+          "id": "weld_arc_blow_verify_2",
+          "vi": "QA/QC ký release khi kích thước và chỉ thị đạt tiêu chí",
+          "en": "QA/QC signs release when dimensions and indications meet criteria"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "weld_arc_blow_prevent_1",
+          "vi": "khóa WPS tại máy và ghi dòng, áp, tốc độ, nhiệt đầu vào",
+          "en": "lock WPS at the machine and record current, voltage, travel speed and heat input"
+        },
+        {
+          "id": "weld_arc_blow_prevent_2",
+          "vi": "duy trì hold point trước hàn, sau root pass và trước bàn giao NDT",
+          "en": "maintain hold points before welding, after root pass and before NDT release"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "weld_arc_blow_note_1",
+          "vi": "đừng đánh giá mối hàn bằng bề mặt đẹp; phải đọc cơ chế, thông số và kết quả NDT",
+          "en": "do not judge welds by cosmetic surface; read mechanism, parameters and NDT results"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "weld_arc_blow_mistake_1",
+          "vi": "mài sửa rộng nhưng không xác định thông số gây lỗi",
+          "en": "wide grinding repair without identifying the parameter that caused defect"
+        },
+        {
+          "id": "weld_arc_blow_mistake_2",
+          "vi": "bỏ qua kiểm tra interpass rồi chỉ kiểm tra cuối cùng",
+          "en": "skipping interpass inspection and checking only at final stage"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "weld_arc_blow_lesson_1",
+          "vi": "lỗi hàn phải được quản lý theo cơ chế + thông số + bằng chứng, không theo cảm giác thợ",
+          "en": "weld defects must be managed by mechanism + parameter + evidence, not by welder feeling"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "weld_arc_blow_safety_1",
+          "vi": "LOTO/che chắn khu hàn, kiểm soát khói hàn, tia hồ quang và thao tác mài sửa",
+          "en": "apply LOTO/barricade welding area and control fumes, arc flash and grinding repair"
+        }
+      ]
+    },
+    {
+      "key": "PUMP_CAVITATION",
+      "failure_mode": {
+        "id": "pump_cavitation_mode",
+        "vi": "Xâm thực bơm",
+        "en": "Pump Cavitation"
+      },
+      "symptoms": [
+        {
+          "id": "pump_cavitation_symptom_1",
+          "vi": "bơm kêu lạo xạo và rung tăng",
+          "en": "pump rattles and vibration rises"
+        },
+        {
+          "id": "pump_cavitation_symptom_2",
+          "vi": "lưu lượng/áp suất dao động",
+          "en": "flow/pressure fluctuates"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "pump_cavitation_cause_1",
+          "vi": "NPSH không đủ, lọc hút nghẹt hoặc van hút đóng thiếu",
+          "en": "insufficient NPSH, clogged suction strainer or partially closed suction valve"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "pump_cavitation_mechanism_1",
+          "vi": "bọt hơi sụp đổ trên cánh bơm gây rỗ bề mặt và rung",
+          "en": "vapor bubbles collapse on impeller causing pitting and vibration"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "pump_cavitation_inspection_1",
+          "vi": "đo áp hút/áp đẩy, kiểm tra lọc hút, van hút, mức bồn",
+          "en": "measure suction/discharge pressure and inspect strainer, suction valve and tank level"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "pump_cavitation_measurement_1",
+          "vi": "áp hút, áp đẩy, lưu lượng, nhiệt độ chất lỏng, rung",
+          "en": "suction pressure, discharge pressure, flow, liquid temperature and vibration"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "pump_cavitation_calc_1",
+          "vi": "tính NPSHa và so sánh với NPSHr của bơm cộng margin",
+          "en": "calculate NPSHa and compare with pump NPSHr plus margin"
+        }
+      ],
+      "standards": [
+        {
+          "id": "pump_cavitation_standard_1",
+          "vi": "ISO 9906",
+          "en": "ISO 9906"
+        },
+        {
+          "id": "pump_cavitation_standard_2",
+          "vi": "OEM pump manual",
+          "en": "OEM pump manual"
+        },
+        {
+          "id": "pump_cavitation_standard_3",
+          "vi": "TPM checklist",
+          "en": "TPM checklist"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "pump_cavitation_repair_1",
+          "vi": "khôi phục điều kiện hút, vệ sinh lọc, sửa rò khí, thay cánh bơm hỏng",
+          "en": "restore suction condition, clean strainer, fix air leak and replace damaged impeller"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "pump_cavitation_verify_1",
+          "vi": "chạy thử lưu lượng/áp suất ổn định và đo rung sau sửa",
+          "en": "run stable flow/pressure test and measure vibration after repair"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "pump_cavitation_prevent_1",
+          "vi": "kiểm tra lọc hút định kỳ, giữ mức bồn, theo dõi rung và lưu lượng",
+          "en": "periodically inspect strainer, maintain tank level and trend vibration/flow"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "pump_cavitation_note_1",
+          "vi": "không ép bơm chạy khi đường hút chưa đủ điều kiện",
+          "en": "do not force pump to run when suction condition is not healthy"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "pump_cavitation_mistake_1",
+          "vi": "chỉ thay seal mà bỏ qua điều kiện hút",
+          "en": "replacing seal while ignoring suction condition"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "pump_cavitation_lesson_1",
+          "vi": "cavitation là lỗi hệ thống đường hút, không chỉ là lỗi bơm",
+          "en": "cavitation is a suction-system failure, not only a pump failure"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "pump_cavitation_safety_1",
+          "vi": "LOTO bơm, xả áp và kiểm soát chất lỏng nóng/độc trước khi mở bơm",
+          "en": "LOTO pump, depressurize and control hot/toxic liquid before opening pump"
+        }
+      ]
+    },
+    {
+      "key": "COMPRESSOR_OVERHEAT",
+      "failure_mode": {
+        "id": "compressor_overheat_mode",
+        "vi": "Máy nén khí quá nhiệt",
+        "en": "Compressor Overheat"
+      },
+      "symptoms": [
+        {
+          "id": "compressor_overheat_symptom_1",
+          "vi": "nhiệt độ xả cao, máy dừng bảo vệ",
+          "en": "high discharge temperature and protection trip"
+        },
+        {
+          "id": "compressor_overheat_symptom_2",
+          "vi": "áp khí tụt và máy chạy lâu không nghỉ",
+          "en": "air pressure drops and compressor runs continuously"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "compressor_overheat_cause_1",
+          "vi": "lọc gió nghẹt, dầu bẩn/thấp, két giải nhiệt bẩn, thông gió kém",
+          "en": "clogged air filter, dirty/low oil, dirty cooler or poor ventilation"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "compressor_overheat_mechanism_1",
+          "vi": "nhiệt sinh ra không được thải ra ngoài làm dầu suy giảm và cụm nén vượt giới hạn",
+          "en": "heat cannot be rejected, degrading oil and pushing airend beyond limit"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "compressor_overheat_inspection_1",
+          "vi": "kiểm tra lọc gió, dầu, két giải nhiệt, quạt và nhiệt độ phòng máy",
+          "en": "inspect air filter, oil, cooler, fan and compressor room temperature"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "compressor_overheat_measurement_1",
+          "vi": "nhiệt độ xả, áp suất, dòng motor, chênh áp lọc, giờ chạy",
+          "en": "discharge temperature, pressure, motor current, filter differential pressure and running hours"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "compressor_overheat_calc_1",
+          "vi": "so sánh nhiệt độ xả và dòng motor với giới hạn OEM và tải thực tế",
+          "en": "compare discharge temperature and motor current with OEM limit and actual load"
+        }
+      ],
+      "standards": [
+        {
+          "id": "compressor_overheat_standard_1",
+          "vi": "OEM compressor manual",
+          "en": "OEM compressor manual"
+        },
+        {
+          "id": "compressor_overheat_standard_2",
+          "vi": "ISO 8573",
+          "en": "ISO 8573"
+        },
+        {
+          "id": "compressor_overheat_standard_3",
+          "vi": "TPM checklist",
+          "en": "TPM checklist"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "compressor_overheat_repair_1",
+          "vi": "vệ sinh két giải nhiệt, thay lọc/dầu, kiểm tra quạt, giảm tải trước khi chạy lại",
+          "en": "clean cooler, replace filter/oil, check fan and unload before restart"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "compressor_overheat_verify_1",
+          "vi": "chạy thử có tải, theo dõi nhiệt 30-60 phút và kiểm tra áp ổn định",
+          "en": "run loaded test, trend temperature for 30-60 minutes and verify stable pressure"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "compressor_overheat_prevent_1",
+          "vi": "PM lọc/dầu/két, đo nhiệt hằng ca, kiểm soát thông gió phòng máy",
+          "en": "PM filter/oil/cooler, measure temperature each shift and control room ventilation"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "compressor_overheat_note_1",
+          "vi": "đừng reset alarm liên tục; alarm nhiệt là bằng chứng điều kiện vận hành sai",
+          "en": "do not repeatedly reset alarm; temperature alarm proves wrong operating condition"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "compressor_overheat_mistake_1",
+          "vi": "chỉ reset biến tần/bộ điều khiển mà không làm sạch đường giải nhiệt",
+          "en": "resetting VFD/controller without cleaning cooling path"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "compressor_overheat_lesson_1",
+          "vi": "máy nén quá nhiệt thường bắt đầu từ điều kiện phòng máy và vệ sinh lọc",
+          "en": "compressor overheating often starts from room condition and filter cleanliness"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "compressor_overheat_safety_1",
+          "vi": "LOTO, xả áp bình chứa và chờ nguội trước khi mở cụm nóng",
+          "en": "LOTO, depressurize receiver and cool down before opening hot assembly"
+        }
+      ]
+    },
+    {
+      "key": "ANCHOR_BOLT_MISLOCATION",
+      "failure_mode": {
+        "id": "anchor_bolt_mislocation_mode",
+        "vi": "Bu lông neo sai vị trí",
+        "en": "Anchor Bolt Mislocation"
+      },
+      "symptoms": [
+        {
+          "id": "anchor_bolt_mislocation_symptom_1",
+          "vi": "base plate không lắp lọt hoặc lỗ bị kẹt",
+          "en": "base plate cannot fit or holes clash"
+        },
+        {
+          "id": "anchor_bolt_mislocation_symptom_2",
+          "vi": "tim cột lệch so với trục survey",
+          "en": "column centerline deviates from survey grid"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "anchor_bolt_mislocation_cause_1",
+          "vi": "template yếu, survey sai mốc, bu lông dịch khi đổ bê tông",
+          "en": "weak template, wrong survey datum or bolt movement during concrete pour"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "anchor_bolt_mislocation_mechanism_1",
+          "vi": "sai số vị trí neo truyền trực tiếp thành sai lệch dựng cột và bắt buộc sửa cơ khí/civil",
+          "en": "anchor position error transfers directly into column erection deviation and forces mechanical/civil repair"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "anchor_bolt_mislocation_inspection_1",
+          "vi": "survey tọa độ, projection, ren, độ thẳng và bản vẽ revision",
+          "en": "survey coordinate, projection, thread, verticality and drawing revision"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "anchor_bolt_mislocation_measurement_1",
+          "vi": "tọa độ X/Y, projection, đường kính lỗ, độ lệch tim, độ nghiêng",
+          "en": "X/Y coordinate, projection, hole diameter, center offset and inclination"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "anchor_bolt_mislocation_calc_1",
+          "vi": "tính offset so với tolerance bản vẽ/AISC/EN1090 và kiểm tra edge distance còn lại",
+          "en": "calculate offset against drawing/AISC/EN1090 tolerance and check remaining edge distance"
+        }
+      ],
+      "standards": [
+        {
+          "id": "anchor_bolt_mislocation_standard_1",
+          "vi": "AISC",
+          "en": "AISC"
+        },
+        {
+          "id": "anchor_bolt_mislocation_standard_2",
+          "vi": "EN 1090",
+          "en": "EN 1090"
+        },
+        {
+          "id": "anchor_bolt_mislocation_standard_3",
+          "vi": "ITP",
+          "en": "ITP"
+        },
+        {
+          "id": "anchor_bolt_mislocation_standard_4",
+          "vi": "approved drawing",
+          "en": "approved drawing"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "anchor_bolt_mislocation_repair_1",
+          "vi": "lập NCR, xin phương án sửa, khoan/cấy/mở lỗ theo phê duyệt và survey lại",
+          "en": "raise NCR, approve repair method, drill/chemical anchor/slot hole as approved and resurvey"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "anchor_bolt_mislocation_verify_1",
+          "vi": "QA/QC và survey ký biên bản trước khi dựng cột, kiểm tra torque sau lắp",
+          "en": "QA/QC and survey sign before column erection and verify torque after installation"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "anchor_bolt_mislocation_prevent_1",
+          "vi": "hold point trước đổ bê tông, template cứng, survey chéo và bảo vệ ren",
+          "en": "hold point before concrete, rigid template, cross-survey and thread protection"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "anchor_bolt_mislocation_note_1",
+          "vi": "không tự ý mở lỗ base plate khi chưa có phê duyệt thiết kế",
+          "en": "do not slot base plate holes without design approval"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "anchor_bolt_mislocation_mistake_1",
+          "vi": "dựng ép cột để kịp tiến độ",
+          "en": "forcing column erection to save schedule"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "anchor_bolt_mislocation_lesson_1",
+          "vi": "bu lông neo là điểm kiểm soát trước khi đổ bê tông, không phải lỗi chờ tới erection mới xử",
+          "en": "anchor bolt is a pre-concrete control point, not a defect to discover at erection"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "anchor_bolt_mislocation_safety_1",
+          "vi": "kiểm soát nâng cột, vùng cẩu và chống đổ khi thử lắp",
+          "en": "control lifting zone and temporary stability during trial fit"
+        }
+      ]
+    },
+    {
+      "key": "PAINT_DFT_FAILURE",
+      "failure_mode": {
+        "id": "paint_dft_failure_mode",
+        "vi": "Sơn không đạt DFT",
+        "en": "Paint DFT failure"
+      },
+      "symptoms": [
+        {
+          "id": "paint_dft_failure_symptom_1",
+          "vi": "spot reading thấp hơn yêu cầu hoặc phân bố DFT không đều theo map đo",
+          "en": "spot reading below requirement or uneven DFT map"
+        },
+        {
+          "id": "paint_dft_failure_symptom_2",
+          "vi": "mép cạnh, góc khuất hoặc vùng weld toe thiếu chiều dày màng sơn",
+          "en": "edges, shadow areas or weld toes have insufficient coating thickness"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "paint_dft_failure_cause_1",
+          "vi": "tay phun đi quá nhanh, khoảng cách phun sai, pha loãng quá mức hoặc không stripe coat mép cạnh",
+          "en": "spray pass too fast, wrong spray distance, over-thinning or missing stripe coat on edges"
+        },
+        {
+          "id": "paint_dft_failure_cause_2",
+          "vi": "máy đo chưa hiệu chuẩn, WFT không được kiểm soát hoặc điều kiện môi trường làm màng sơn co rút bất thường",
+          "en": "uncalibrated gauge, uncontrolled WFT or environmental condition causing abnormal film shrinkage"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "paint_dft_failure_mechanism_1",
+          "vi": "màng sơn quá mỏng làm giảm hàng rào chống ăn mòn; vùng mép cạnh mất bảo vệ sớm khi ngưng tụ, muối hoặc va chạm xuất hiện",
+          "en": "thin coating reduces corrosion barrier; edges lose protection early under condensation, salts or impact"
+        },
+        {
+          "id": "paint_dft_failure_mechanism_2",
+          "vi": "DFT quá cao cục bộ cũng có thể giữ dung môi, nứt màng hoặc giảm bám dính nếu vượt cửa sổ kỹ thuật của hệ sơn",
+          "en": "locally excessive DFT can trap solvent, crack film or reduce adhesion outside coating technical window"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "paint_dft_failure_inspection_1",
+          "vi": "hiệu chuẩn máy đo bằng shim/foil, đo theo SSPC-PA 2 hoặc ITP, lập map theo khu vực và theo lớp sơn",
+          "en": "calibrate gauge by shim/foil, measure per SSPC-PA 2 or ITP, map by zone and coating layer"
+        },
+        {
+          "id": "paint_dft_failure_inspection_2",
+          "vi": "kiểm tra WFT trong lúc phun, stripe coat mép cạnh, nhiệt độ thép, độ ẩm và chênh lệch điểm sương",
+          "en": "check WFT during spraying, edge stripe coat, steel temperature, humidity and dew point spread"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "paint_dft_failure_measurement_1",
+          "vi": "DFT từng spot, average theo area, minimum/maximum, WFT, nhiệt độ thép, RH, dew point và batch sơn",
+          "en": "DFT per spot, area average, minimum/maximum, WFT, steel temperature, RH, dew point and paint batch"
+        },
+        {
+          "id": "paint_dft_failure_measurement_2",
+          "vi": "độ nhám bề mặt, độ sạch bụi/muối và thời gian overcoat giữa các lớp",
+          "en": "surface profile, dust/salt cleanliness and overcoat interval between coats"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "paint_dft_failure_calc_1",
+          "vi": "so sánh average/minimum spot với tiêu chí ITP, datasheet và SSPC-PA 2; quy đổi WFT theo phần trăm solid volume khi cần",
+          "en": "compare average/minimum spot against ITP, datasheet and SSPC-PA 2; convert WFT by solid volume when required"
+        },
+        {
+          "id": "paint_dft_failure_calc_2",
+          "vi": "tính diện tích sơn bù, lượng sơn cần bổ sung và thời gian curing trước nghiệm thu lại",
+          "en": "calculate repair area, additional paint quantity and curing time before reinspection"
+        }
+      ],
+      "standards": [
+        {
+          "id": "paint_dft_failure_standard_1",
+          "vi": "SSPC-PA 2",
+          "en": "SSPC-PA 2"
+        },
+        {
+          "id": "paint_dft_failure_standard_2",
+          "vi": "ISO 12944",
+          "en": "ISO 12944"
+        },
+        {
+          "id": "paint_dft_failure_standard_3",
+          "vi": "ISO 8501/8502/8503",
+          "en": "ISO 8501/8502/8503"
+        },
+        {
+          "id": "paint_dft_failure_standard_4",
+          "vi": "datasheet hệ sơn và ITP dự án",
+          "en": "coating datasheet and project ITP"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "paint_dft_failure_repair_1",
+          "vi": "đánh dấu vùng không đạt, chà nhám/vát mép lớp sơn, làm sạch và sơn bù theo cửa sổ overcoat được phê duyệt",
+          "en": "mark failed area, sand/feather coating edge, clean and touch up within approved overcoat window"
+        },
+        {
+          "id": "paint_dft_failure_repair_2",
+          "vi": "nếu DFT quá cao hoặc màng lỗi, loại bỏ lớp không đạt và sơn lại theo quy trình đã phê duyệt",
+          "en": "if DFT is excessive or film defective, remove unacceptable film and recoat per approved procedure"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "paint_dft_failure_verify_1",
+          "vi": "đo lại DFT sau curing, cập nhật map đo, chụp ảnh vùng sửa và QA/QC ký nghiệm thu trước chuyển công đoạn",
+          "en": "remeasure DFT after curing, update DFT map, photograph repair area and QA/QC sign before release"
+        },
+        {
+          "id": "paint_dft_failure_verify_2",
+          "vi": "kiểm tra adhesion hoặc holiday test khi ITP/yêu cầu khách hàng quy định",
+          "en": "perform adhesion or holiday test when required by ITP/customer specification"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "paint_dft_failure_prevent_1",
+          "vi": "stripe coat mép cạnh, kiểm soát WFT trong ca, hiệu chuẩn gauge đầu ca và khóa điều kiện môi trường trước khi phun",
+          "en": "stripe coat edges, control WFT during shift, calibrate gauge at shift start and lock environment before spraying"
+        },
+        {
+          "id": "paint_dft_failure_prevent_2",
+          "vi": "đào tạo tay phun theo tốc độ/overlap/khoảng cách phun và review trend DFT theo tổ",
+          "en": "train painters on speed/overlap/spray distance and review DFT trend by crew"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "paint_dft_failure_note_1",
+          "vi": "DFT đạt trung bình nhưng có spot dưới minimum vẫn không được release nếu tiêu chí ITP không cho phép",
+          "en": "acceptable average with spot below minimum must not be released when ITP criteria do not allow it"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "paint_dft_failure_mistake_1",
+          "vi": "đo ít điểm ở vùng dễ đạt rồi bỏ qua mép cạnh và góc khuất",
+          "en": "measuring only easy areas and ignoring edges/shadow zones"
+        },
+        {
+          "id": "paint_dft_failure_mistake_2",
+          "vi": "sơn bù khi bề mặt còn bụi hoặc chưa xác nhận overcoat window",
+          "en": "touching up on dusty surface or without confirming overcoat window"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "paint_dft_failure_lesson_1",
+          "vi": "DFT là kiểm soát quá trình, không phải chỉ là phép đo cuối cùng sau khi sơn xong",
+          "en": "DFT is process control, not only a final measurement after painting"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "paint_dft_failure_safety_1",
+          "vi": "kiểm soát thông gió, hơi dung môi, PPE chống hóa chất và nguồn phát lửa trong khu vực sơn",
+          "en": "control ventilation, solvent vapor, chemical PPE and ignition sources in paint area"
+        }
+      ]
+    },
+    {
+      "key": "BOLT_TORQUE_FAILURE",
+      "failure_mode": {
+        "id": "bolt_torque_failure_mode",
+        "vi": "Lực siết bu lông không đạt",
+        "en": "Bolt torque failure"
+      },
+      "symptoms": [
+        {
+          "id": "bolt_torque_failure_symptom_1",
+          "vi": "mark siết lệch, bu lông còn rơ hoặc torque audit không đạt",
+          "en": "torque mark shifted, bolt loose or torque audit failed"
+        },
+        {
+          "id": "bolt_torque_failure_symptom_2",
+          "vi": "liên kết slip, khe hở bản mã hoặc tiếng kêu khi thử tải/rung",
+          "en": "connection slip, plate gap or noise during load/vibration test"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "bolt_torque_failure_cause_1",
+          "vi": "cờ lê lực chưa hiệu chuẩn, trình tự siết sai, ren bẩn, long đền sai hoặc bề mặt ma sát không đạt",
+          "en": "uncalibrated torque wrench, wrong tightening sequence, dirty threads, wrong washer or nonconforming faying surface"
+        },
+        {
+          "id": "bolt_torque_failure_cause_2",
+          "vi": "đội lắp dựng dùng cảm giác thay cho torque/tension verification và không đánh dấu kiểm soát sau siết",
+          "en": "erection crew uses feel instead of torque/tension verification and does not mark after tightening"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "bolt_torque_failure_mechanism_1",
+          "vi": "preload không đủ làm liên kết trượt, rung nới lỏng ren và tăng ứng suất mỏi tại lỗ/bản mã",
+          "en": "insufficient preload allows slip, vibration loosens threads and increases fatigue stress at holes/plates"
+        },
+        {
+          "id": "bolt_torque_failure_mechanism_2",
+          "vi": "siết quá lực có thể kéo chảy bu lông, phá ren hoặc làm sai clamp force thiết kế",
+          "en": "over-torque can yield bolt, damage threads or distort designed clamp force"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "bolt_torque_failure_inspection_1",
+          "vi": "xác nhận cấp bền bu lông, washer, bề mặt ma sát, trình tự siết và chứng chỉ hiệu chuẩn cờ lê lực",
+          "en": "confirm bolt grade, washer, faying surface, tightening sequence and torque wrench calibration certificate"
+        },
+        {
+          "id": "bolt_torque_failure_inspection_2",
+          "vi": "kiểm tra snug-tight, final torque/tension, witness mark và số lượng mẫu audit theo ITP",
+          "en": "check snug-tight, final torque/tension, witness mark and audit sample quantity per ITP"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "bolt_torque_failure_measurement_1",
+          "vi": "giá trị torque, preload/tension nếu có, đường kính bu lông, cấp bền, hệ số ma sát và ngày hiệu chuẩn dụng cụ",
+          "en": "torque value, preload/tension if available, bolt diameter, grade, slip factor and tool calibration date"
+        },
+        {
+          "id": "bolt_torque_failure_measurement_2",
+          "vi": "khe hở bản mã, số bolt không đạt, vị trí joint và kết quả recheck sau sửa",
+          "en": "plate gap, failed bolt count, joint location and recheck result after repair"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "bolt_torque_failure_calc_1",
+          "vi": "đối chiếu torque/preload với bảng thiết kế, tiêu chuẩn lắp dựng và hệ số K/friction đang dùng",
+          "en": "compare torque/preload against design table, erection standard and K/friction factor used"
+        },
+        {
+          "id": "bolt_torque_failure_calc_2",
+          "vi": "tính tỷ lệ mẫu không đạt và quyết định mở rộng kiểm tra nếu vượt ngưỡng ITP",
+          "en": "calculate failed sample ratio and expand inspection if ITP threshold is exceeded"
+        }
+      ],
+      "standards": [
+        {
+          "id": "bolt_torque_failure_standard_1",
+          "vi": "AISC/RCSC Specification for Structural Joints",
+          "en": "AISC/RCSC Specification for Structural Joints"
+        },
+        {
+          "id": "bolt_torque_failure_standard_2",
+          "vi": "EN 1090-2",
+          "en": "EN 1090-2"
+        },
+        {
+          "id": "bolt_torque_failure_standard_3",
+          "vi": "ISO 898-1/2",
+          "en": "ISO 898-1/2"
+        },
+        {
+          "id": "bolt_torque_failure_standard_4",
+          "vi": "ITP và bản vẽ lắp dựng được phê duyệt",
+          "en": "approved ITP and erection drawing"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "bolt_torque_failure_repair_1",
+          "vi": "cách ly joint, nới và siết lại theo trình tự đối xứng/cross pattern bằng dụng cụ đã hiệu chuẩn",
+          "en": "hold the joint, loosen and retighten by approved symmetric/cross pattern using calibrated tool"
+        },
+        {
+          "id": "bolt_torque_failure_repair_2",
+          "vi": "thay bu lông/ê cu/washer có ren hỏng, bẩn dầu hoặc đã bị kéo quá lực",
+          "en": "replace bolt/nut/washer with damaged threads, oil contamination or over-torque evidence"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "bolt_torque_failure_verify_1",
+          "vi": "torque audit lại, đánh witness mark, cập nhật checklist joint và QA/QC ký release",
+          "en": "repeat torque audit, apply witness mark, update joint checklist and QA/QC release"
+        },
+        {
+          "id": "bolt_torque_failure_verify_2",
+          "vi": "kiểm tra lại sau thử tải/rung hoặc sau thời gian bedding nếu ITP yêu cầu",
+          "en": "recheck after load/vibration test or bedding period if required by ITP"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "bolt_torque_failure_prevent_1",
+          "vi": "quản lý hiệu chuẩn cờ lê lực, huấn luyện trình tự siết và dùng paint mark sau final torque",
+          "en": "manage torque wrench calibration, train tightening sequence and use paint mark after final torque"
+        },
+        {
+          "id": "bolt_torque_failure_prevent_2",
+          "vi": "tách vật tư bu lông theo cấp bền/lô, bảo vệ ren và giữ bề mặt ma sát sạch",
+          "en": "segregate bolt materials by grade/lot, protect threads and keep faying surfaces clean"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "bolt_torque_failure_note_1",
+          "vi": "torque chỉ là phương pháp gián tiếp; khi thiết kế yêu cầu preload/tension thì phải tuân thủ phương pháp xác nhận tương ứng",
+          "en": "torque is indirect; when design requires preload/tension, use the specified verification method"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "bolt_torque_failure_mistake_1",
+          "vi": "siết bằng súng tác động rồi xem như đạt mà không torque audit",
+          "en": "using impact wrench and assuming acceptance without torque audit"
+        },
+        {
+          "id": "bolt_torque_failure_mistake_2",
+          "vi": "không kiểm soát washer, ren, dầu mỡ và hiệu chuẩn dụng cụ",
+          "en": "not controlling washers, threads, oil/grease and tool calibration"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "bolt_torque_failure_lesson_1",
+          "vi": "liên kết bu lông phải có bằng chứng torque/tension và mark kiểm soát; không nghiệm thu bằng cảm giác tay",
+          "en": "bolted joint needs torque/tension evidence and control mark; never accept by hand feel"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "bolt_torque_failure_safety_1",
+          "vi": "kiểm soát làm việc trên cao, pinch point, rơi dụng cụ và vùng dưới tải trong lúc siết/kiểm tra",
+          "en": "control working at height, pinch points, dropped tools and area below load during tightening/inspection"
+        }
+      ]
+    },
+    {
+      "key": "FIT_UP_ERROR",
+      "failure_mode": {
+        "id": "fit_up_error_mode",
+        "vi": "Sai fit-up trước hàn",
+        "en": "Fit-up error before welding"
+      },
+      "symptoms": [
+        {
+          "id": "fit_up_error_symptom_1",
+          "vi": "khe hở chân, lệch mép, góc vát hoặc root face không đúng bản vẽ/WPS",
+          "en": "root gap, mismatch, bevel angle or root face outside drawing/WPS"
+        },
+        {
+          "id": "fit_up_error_symptom_2",
+          "vi": "tack weld yếu, biến dạng khi gá hoặc chi tiết không khớp jig/template",
+          "en": "weak tack weld, distortion during fitting or part not matching jig/template"
+        }
+      ],
+      "root_causes": [
+        {
+          "id": "fit_up_error_cause_1",
+          "vi": "cắt/phôi sai kích thước, bavia chưa xử lý, jig sai, tack weld thiếu hoặc không có hold point QA/QC",
+          "en": "wrong cut/part dimension, burr not removed, wrong jig, insufficient tack weld or missing QA/QC hold point"
+        },
+        {
+          "id": "fit_up_error_cause_2",
+          "vi": "đội gá lắp chạy theo tiến độ và chuyển sang hàn khi khe hở/lệch mép chưa được xác nhận",
+          "en": "fit-up crew pushes schedule and releases to welding without confirming gap/mismatch"
+        }
+      ],
+      "failure_mechanism": [
+        {
+          "id": "fit_up_error_mechanism_1",
+          "vi": "fit-up sai làm hồ quang không điền đầy chân hàn, tăng thiếu ngấu, cháy cạnh, biến dạng và sửa hàn sau NDT",
+          "en": "wrong fit-up prevents proper root filling and increases lack of penetration, undercut, distortion and NDT repair"
+        },
+        {
+          "id": "fit_up_error_mechanism_2",
+          "vi": "khe hở không đều làm nhiệt đầu vào và lượng kim loại đắp thay đổi dọc đường hàn",
+          "en": "uneven gap changes heat input and deposited metal along the weld"
+        }
+      ],
+      "inspection_points": [
+        {
+          "id": "fit_up_error_inspection_1",
+          "vi": "đo root gap, hi-lo/mismatch, bevel angle, root face, tack length/spacing và độ sạch mép hàn",
+          "en": "measure root gap, hi-lo/mismatch, bevel angle, root face, tack length/spacing and edge cleanliness"
+        },
+        {
+          "id": "fit_up_error_inspection_2",
+          "vi": "đối chiếu shop drawing, WPS, jig/template và hold point trước khi cho phép hàn",
+          "en": "compare shop drawing, WPS, jig/template and hold point before welding release"
+        }
+      ],
+      "measurements": [
+        {
+          "id": "fit_up_error_measurement_1",
+          "vi": "root gap mm, hi-lo mm, bevel angle, root face, độ vuông góc, đường chéo và số tack weld",
+          "en": "root gap mm, hi-lo mm, bevel angle, root face, squareness, diagonal and tack weld count"
+        },
+        {
+          "id": "fit_up_error_measurement_2",
+          "vi": "vị trí đo theo joint number, drawing revision và ảnh trước khi hàn",
+          "en": "measurement location by joint number, drawing revision and photo before welding"
+        }
+      ],
+      "engineering_calculation": [
+        {
+          "id": "fit_up_error_calc_1",
+          "vi": "so sánh từng giá trị với tolerance bản vẽ/WPS/AWS D1.1 hoặc EN 1090; tính shim/cắt sửa nếu cần",
+          "en": "compare each value with drawing/WPS/AWS D1.1 or EN 1090 tolerance; calculate shim/cut correction if needed"
+        },
+        {
+          "id": "fit_up_error_calc_2",
+          "vi": "ước tính ảnh hưởng heat input và weld volume khi gap vượt giới hạn",
+          "en": "estimate heat input and weld volume impact when gap exceeds limit"
+        }
+      ],
+      "standards": [
+        {
+          "id": "fit_up_error_standard_1",
+          "vi": "AWS D1.1",
+          "en": "AWS D1.1"
+        },
+        {
+          "id": "fit_up_error_standard_2",
+          "vi": "EN 1090-2",
+          "en": "EN 1090-2"
+        },
+        {
+          "id": "fit_up_error_standard_3",
+          "vi": "WPS/PQR/WPQ",
+          "en": "WPS/PQR/WPQ"
+        },
+        {
+          "id": "fit_up_error_standard_4",
+          "vi": "shop drawing và ITP được phê duyệt",
+          "en": "approved shop drawing and ITP"
+        }
+      ],
+      "repair_steps": [
+        {
+          "id": "fit_up_error_repair_1",
+          "vi": "dừng hàn, tháo hoặc cắt tack weld không đạt, mài sạch bavia và gá lại theo jig/template",
+          "en": "stop welding, remove/cut unacceptable tack weld, clean burr and refit by jig/template"
+        },
+        {
+          "id": "fit_up_error_repair_2",
+          "vi": "điều chỉnh gap/mismatch, tack lại đúng chiều dài/khoảng cách và QA/QC xác nhận trước hàn",
+          "en": "adjust gap/mismatch, retack with correct length/spacing and QA/QC confirm before welding"
+        }
+      ],
+      "verification_steps": [
+        {
+          "id": "fit_up_error_verify_1",
+          "vi": "chụp ảnh fit-up đạt, ghi số joint, người kiểm tra, thông số đo và release hold point trước hàn",
+          "en": "photograph accepted fit-up, record joint number, inspector, measured values and release hold point before welding"
+        },
+        {
+          "id": "fit_up_error_verify_2",
+          "vi": "sau hàn kiểm tra VT/NDT khu vực từng bị sai fit-up để xác nhận không phát sinh lack of fusion/penetration",
+          "en": "after welding perform VT/NDT at corrected fit-up area to confirm no lack of fusion/penetration"
+        }
+      ],
+      "preventive_actions": [
+        {
+          "id": "fit_up_error_prevent_1",
+          "vi": "chuẩn hóa checklist fit-up trước hàn, kiểm soát revision bản vẽ và dùng dưỡng đo tại khu gá lắp",
+          "en": "standardize pre-weld fit-up checklist, control drawing revision and use gauges at fitting area"
+        },
+        {
+          "id": "fit_up_error_prevent_2",
+          "vi": "đào tạo tổ gá lắp về gap/hi-lo/tack weld và không release nếu thiếu chữ ký hold point",
+          "en": "train fit-up crew on gap/hi-lo/tack weld and do not release without hold-point signature"
+        }
+      ],
+      "engineering_notes": [
+        {
+          "id": "fit_up_error_note_1",
+          "vi": "fit-up là lỗi trước công đoạn hàn; nếu để qua NDT mới phát hiện thì chi phí sửa tăng nhiều lần",
+          "en": "fit-up is a pre-weld defect; finding it at NDT multiplies repair cost"
+        }
+      ],
+      "common_mistakes": [
+        {
+          "id": "fit_up_error_mistake_1",
+          "vi": "dùng búa ép khe hở cho khớp nhưng không đo lại hi-lo và biến dạng",
+          "en": "forcing gap closed by hammer without rechecking hi-lo and distortion"
+        },
+        {
+          "id": "fit_up_error_mistake_2",
+          "vi": "cho hàn khi tack weld nứt hoặc mép hàn còn bavia/dầu/rỉ",
+          "en": "allowing welding with cracked tack weld or burr/oil/rust on edges"
+        }
+      ],
+      "lessons_learned": [
+        {
+          "id": "fit_up_error_lesson_1",
+          "vi": "một phút đo fit-up trước hàn tiết kiệm nhiều giờ mài, gouging, hàn sửa và NDT lại",
+          "en": "one minute of pre-weld fit-up measurement saves hours of grinding, gouging, repair welding and retesting"
+        }
+      ],
+      "safety_notes": [
+        {
+          "id": "fit_up_error_safety_1",
+          "vi": "kiểm soát kẹp chặt, điểm kẹt tay, vật nâng treo và tia lửa khi cắt tack weld",
+          "en": "control clamps, pinch points, suspended parts and sparks when cutting tack welds"
+        }
+      ]
+    }
+  ]
+}

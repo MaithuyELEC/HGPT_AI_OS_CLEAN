@@ -20,10 +20,21 @@ class ChecklistWriter:
         lines.extend(f"- [ ] {item}" for item in playbook.checklist_items)
         lines.extend(["", "Kiểm tra xác nhận"])
         lines.extend(f"- [ ] {item}" for item in playbook.inspection_steps)
+        lines.extend(["", "Đo kiểm và tính toán"])
+        lines.extend(f"- [ ] {item}" for item in playbook.measurements)
+        lines.extend(f"- [ ] {item}" for item in playbook.engineering_calculations)
         lines.extend(["", "Hành động sau khi phát hiện lỗi"])
         lines.extend(f"- [ ] {item}" for item in playbook.corrective_actions)
+        lines.extend(["", "Xác minh sau sửa"])
+        lines.extend(f"- [ ] {item}" for item in playbook.verification_steps)
         lines.extend(["", "Phòng ngừa lặp lại"])
         lines.extend(f"- [ ] {item}" for item in playbook.preventive_actions)
+        lines.extend(["", "Sai lầm cần tránh"])
+        lines.extend(f"- [ ] {item}" for item in playbook.common_mistakes)
+        lines.extend(["", "Bài học kinh nghiệm"])
+        lines.extend(f"- [ ] {item}" for item in playbook.lessons_learned)
+        lines.extend(["", "Tiêu chuẩn/hồ sơ tham chiếu"])
+        lines.extend(f"- [ ] {item}" for item in playbook.standards)
         lines.extend(
             [
                 "",

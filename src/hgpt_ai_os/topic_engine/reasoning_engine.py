@@ -7,12 +7,14 @@ from .entity_extractor import EntityExtraction
 from .intent_detector import IntentResult
 from .knowledge_ranker import KnowledgeFact
 from .problem_analyzer import ProblemAnalysis
+from .topic_context import TopicContext
 from .topic_parser import ParsedTopic
 
 
 @dataclass(frozen=True)
 class ReasoningObject:
     topic: str
+    topic_context: TopicContext
     parsed: ParsedTopic
     intent: IntentResult
     entities: EntityExtraction
@@ -38,6 +40,7 @@ class ReasoningEngine:
         engineering_context: EngineeringContext,
         problem: ProblemAnalysis,
         knowledge_facts: tuple[KnowledgeFact, ...],
+        topic_context: TopicContext,
     ) -> ReasoningObject:
         controls = engineering_context.graph.get("Repair / Control", ()) or problem.root_cause_candidates
         verification = engineering_context.graph.get("Inspection", ()) or ("visual evidence", "measurement record", "review approval")
@@ -80,6 +83,7 @@ class ReasoningEngine:
         )
         return ReasoningObject(
             topic=parsed.original,
+            topic_context=topic_context,
             parsed=parsed,
             intent=intent,
             entities=entities,

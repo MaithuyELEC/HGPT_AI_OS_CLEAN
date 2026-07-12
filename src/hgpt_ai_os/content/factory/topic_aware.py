@@ -4,6 +4,11 @@ import re
 import unicodedata
 from dataclasses import dataclass
 
+from hgpt_ai_os.content.factory.general_domain import (
+    GeneralDomainRouter,
+    GeneralTopicBrief,
+)
+
 
 @dataclass(frozen=True)
 class TopicProfile:
@@ -56,9 +61,38 @@ GENERAL_BASE_HASHTAGS = (
     "#KienThucThucTe",
 )
 
+OUT_OF_SCOPE_ALIASES = (
+    "mai",
+    "cham soc mai",
+    "hoa mai",
+    "nau an",
+    "cooking",
+    "recipe",
+    "travel",
+    "du lich",
+    "finance",
+    "tai chinh",
+    "thue",
+    "gtgt",
+    "vat",
+    "hoc tieng",
+    "japanese",
+    "english",
+    "husky",
+    "dog",
+    "nuoi cho",
+    "nuoi ong",
+    "mat ong",
+    "ca phe",
+    "cafe",
+    "quan ca phe",
+    "parenting",
+    "day con",
+)
+
 TOPIC_PROFILE_CATALOG: tuple[TopicProfileDefinition, ...] = (
     TopicProfileDefinition(
-        aliases=("cham soc mai", "hoa mai", "cay mai"),
+        aliases=("mai", "cham soc mai", "hoa mai", "cay mai"),
         domain="chăm sóc cây mai",
         subject="chăm sóc mai vàng",
         problem="cần kiểm soát nước tưới, ánh sáng, đất trồng, dinh dưỡng và sâu bệnh để cây mai khỏe và ra hoa đúng mùa",
@@ -299,6 +333,84 @@ TOPIC_PROFILE_CATALOG: tuple[TopicProfileDefinition, ...] = (
         hashtags=("#MoQuanCaPhe", "#KinhDoanhCafe", "#MenuCafe", "#DiemHoaVon"),
         use_general_builder=True,
     ),
+    TopicProfileDefinition(
+        aliases=("nau an", "cooking", "recipe", "mon an"),
+        domain="nấu ăn gia đình",
+        subject="nấu ăn thực tế mỗi ngày",
+        problem="người nấu cần chọn nguyên liệu phù hợp, sơ chế sạch, kiểm soát nhiệt, nêm nếm theo thứ tự và giữ an toàn thực phẩm",
+        objects=("nguyên liệu", "dao thớt", "nồi chảo", "nhiệt độ", "gia vị", "thời gian nấu"),
+        risks=("món ăn bị sống hoặc quá chín", "mất vị cân bằng", "lãng phí nguyên liệu", "không bảo đảm vệ sinh"),
+        causes=("không chuẩn bị nguyên liệu trước", "để lửa quá lớn", "nêm quá sớm hoặc quá muộn", "không tách đồ sống và đồ chín"),
+        actions=("đọc công thức và chuẩn bị nguyên liệu trước khi bật bếp", "sơ chế sạch và tách đồ sống với đồ chín", "kiểm soát lửa theo từng giai đoạn", "nếm lại trước khi tắt bếp và ghi chú lần sau"),
+        signs=("món ra nước nhiều", "thức ăn cháy cạnh", "vị quá mặn hoặc nhạt", "nguyên liệu chín không đều"),
+        hashtags=("#NauAn", "#Cooking", "#BepNha", "#AnToanThucPham"),
+        use_general_builder=True,
+    ),
+    TopicProfileDefinition(
+        aliases=("dog", "cho", "nuoi cho", "cham soc cho"),
+        domain="chăm sóc chó nuôi",
+        subject="nuôi chó trong gia đình",
+        problem="người nuôi cần kiểm soát ăn uống, vận động, vệ sinh, tiêm phòng và huấn luyện cơ bản để chó khỏe và sống hòa hợp với gia đình",
+        objects=("khẩu phần ăn", "nước uống", "lịch vận động", "vệ sinh", "tiêm phòng", "lệnh cơ bản"),
+        risks=("chó tăng cân", "hành vi phá đồ", "bệnh ngoài da", "thiếu kỷ luật khi sống trong nhà"),
+        causes=("cho ăn tùy hứng", "ít vận động", "không vệ sinh định kỳ", "huấn luyện thiếu nhất quán"),
+        actions=("lập giờ ăn và lượng ăn theo tuổi", "cho vận động hằng ngày", "tắm chải và kiểm tra da lông định kỳ", "dạy lệnh ngắn bằng thưởng tích cực"),
+        signs=("chó lười vận động", "gãi nhiều", "ăn thất thường", "khó nghe lệnh cơ bản"),
+        hashtags=("#DogCare", "#NuoiCho", "#ThuCung", "#ChamSocCho"),
+        use_general_builder=True,
+    ),
+    TopicProfileDefinition(
+        aliases=("english", "hoc tieng anh", "tieng anh", "english learning"),
+        domain="học tiếng Anh",
+        subject="lộ trình học tiếng Anh thực dụng",
+        problem="người học cần cân bằng từ vựng, phát âm, nghe, nói, đọc và viết theo mục tiêu giao tiếp hoặc công việc",
+        objects=("từ vựng", "phát âm", "nghe", "nói", "đọc", "viết"),
+        risks=("học nhiều nhưng không dùng được", "ngại nói", "quên từ nhanh", "phát âm khó nghe"),
+        causes=("học rời rạc", "ít luyện nghe thật", "không ôn lặp lại", "thiếu tình huống áp dụng"),
+        actions=("chọn một mục tiêu giao tiếp cụ thể", "học từ theo cụm câu", "nghe ngắn mỗi ngày và nhại lại", "viết hoặc nói một đoạn ngắn rồi sửa lỗi"),
+        signs=("biết từ nhưng không ghép được câu", "nghe được từng từ nhưng không hiểu ý", "ngại nói trước người khác"),
+        hashtags=("#EnglishLearning", "#HocTiengAnh", "#TuVung", "#GiaoTiep"),
+        use_general_builder=True,
+    ),
+    TopicProfileDefinition(
+        aliases=("parenting", "day con", "nuoi day con", "lam cha me"),
+        domain="nuôi dạy con",
+        subject="nuôi dạy con trong gia đình",
+        problem="cha mẹ cần xây dựng quy tắc rõ, lắng nghe cảm xúc, giữ lịch sinh hoạt ổn định và kỷ luật tích cực theo độ tuổi",
+        objects=("quy tắc gia đình", "cảm xúc của con", "giấc ngủ", "thói quen học", "thời gian màn hình", "kỷ luật tích cực"),
+        risks=("con phản kháng", "gia đình căng thẳng", "thói quen xấu lặp lại", "cha mẹ mất nhất quán"),
+        causes=("quy tắc thay đổi liên tục", "phản ứng bằng la mắng", "thiếu thời gian trò chuyện", "không theo dõi thói quen hằng ngày"),
+        actions=("chọn một quy tắc ưu tiên trong tuần", "nói rõ kỳ vọng bằng câu ngắn", "khen hành vi đúng ngay khi xuất hiện", "xem lại lịch ngủ, học và màn hình mỗi ngày"),
+        signs=("con dễ cáu", "khó ngủ", "trì hoãn việc học", "tranh cãi khi bị nhắc nhở"),
+        hashtags=("#Parenting", "#DayCon", "#GiaDinh", "#KyLuatTichCuc"),
+        use_general_builder=True,
+    ),
+    TopicProfileDefinition(
+        aliases=("finance", "tai chinh", "dau tu", "etf", "tiet kiem"),
+        domain="tài chính cá nhân",
+        subject="quản lý tiền và đầu tư cá nhân",
+        problem="người mới cần hiểu mục tiêu, khẩu vị rủi ro, quỹ dự phòng, chi phí và kỷ luật theo dõi trước khi đầu tư hoặc phân bổ tiền",
+        objects=("mục tiêu tài chính", "quỹ dự phòng", "danh mục ETF", "ngân sách tháng", "khẩu vị rủi ro"),
+        risks=("mua theo đám đông", "thiếu tiền dự phòng", "chịu phí cao", "bán hoảng loạn khi thị trường giảm"),
+        causes=("không xác định mục tiêu", "không hiểu sản phẩm", "đầu tư bằng tiền cần dùng ngắn hạn", "không ghi lại dòng tiền"),
+        actions=("lập quỹ dự phòng trước", "xác định mục tiêu và thời hạn đầu tư", "đọc phí và rủi ro của ETF", "theo dõi danh mục theo tháng thay vì theo cảm xúc"),
+        signs=("không biết tiền đang đi đâu", "mua bán vì tin nóng", "lo lắng khi giá biến động", "không có kế hoạch nạp tiền định kỳ"),
+        hashtags=("#TaiChinhCaNhan", "#DauTuETF", "#QuanLyTien", "#TietKiem"),
+        use_general_builder=True,
+    ),
+    TopicProfileDefinition(
+        aliases=("travel", "du lich", "lich trinh", "di choi"),
+        domain="du lịch",
+        subject="lên kế hoạch du lịch thực tế",
+        problem="người đi du lịch cần cân bằng lịch trình, chi phí, thời tiết, giấy tờ, phương tiện và sức khỏe để chuyến đi ít rủi ro",
+        objects=("lịch trình", "ngân sách", "giấy tờ", "phương tiện", "hành lý", "thời tiết"),
+        risks=("trễ chuyến", "phát sinh chi phí", "mang thiếu đồ quan trọng", "lịch trình quá dày"),
+        causes=("đặt lịch quá sát", "không kiểm tra thời tiết", "không tính thời gian di chuyển", "thiếu danh sách đồ cần mang"),
+        actions=("chọn ít điểm nhưng đủ thời gian", "dự phòng chi phí và thời gian di chuyển", "kiểm tra giấy tờ trước ngày đi", "chuẩn bị hành lý theo thời tiết và hoạt động"),
+        signs=("lịch trình không có giờ nghỉ", "chi phí vượt dự kiến", "phải đổi kế hoạch liên tục", "thiếu giấy tờ hoặc vật dụng cơ bản"),
+        hashtags=("#DuLich", "#Travel", "#LichTrinh", "#KinhNghiemDuLich"),
+        use_general_builder=True,
+    ),
 )
 
 
@@ -334,6 +446,10 @@ class TopicClassifier:
 
     def matches_known_profile(self, topic: str) -> bool:
         return self.match_definition(topic) is not None
+
+    def is_out_of_scope(self, topic: str) -> bool:
+        normalized = self._normalize(topic)
+        return self._matches_any(normalized, OUT_OF_SCOPE_ALIASES)
 
     def uses_general_builder(self, topic: str) -> bool:
         definition = self.match_definition(topic)
@@ -393,57 +509,106 @@ class TopicAwareBuiltInBuilder:
     def __init__(self, output_type: str):
         self.output_type = output_type
         self.classifier = TopicClassifier()
+        self.general_router = GeneralDomainRouter()
 
     def build(self, topic: str = "", context: str = "") -> str:
         profile = self.classifier.classify(topic)
+        if self.classifier.is_out_of_scope(topic):
+            return self._build_engineering_scope_notice(profile.topic)
+        if self.general_router.can_handle(topic):
+            return self._build_engineering_scope_notice(profile.topic)
+        if self.classifier.uses_general_builder(topic):
+            return self._build_engineering_scope_notice(profile.topic)
         return getattr(self, f"_build_{self.output_type}")(profile)
+
+    def _build_engineering_scope_notice(self, topic: str) -> str:
+        title = (topic or "").strip() or "Chủ đề ngoài phạm vi kỹ thuật"
+        lines = [
+            f"LUCID AUTO v1.0 Engineering Scope: {title}",
+            "",
+            "Chủ đề này nằm ngoài phạm vi Engineering AI Platform.",
+            "",
+            "LUCID AUTO chỉ tạo tài liệu cho:",
+            "- Steel Structure",
+            "- Mechanical Engineering",
+            "- Welding / Fabrication",
+            "- QA/QC / NDT",
+            "- Maintenance / TPM",
+            "- Lean / Kaizen / 5S",
+            "- Digital Factory",
+            "",
+            "Vui lòng nhập một chủ đề kỹ thuật như: lỗi hàn SAW rỗ khí, bu lông neo sai vị trí, máy nén khí quá nhiệt, bạc đạn hỏng, kiểm tra DFT, VT/UT/MT/PT/RT hoặc checklist QA/QC.",
+        ]
+        if self.output_type == "hashtags":
+            return "#LucidAuto #EngineeringAI #MechanicalEngineering #QAQC #Maintenance #Welding"
+        if self.output_type == "image":
+            return "\n".join([
+                "Prompt Gemini tạo ảnh",
+                f"Chủ thể: màn hình thông báo phạm vi kỹ thuật LUCID AUTO Engineering AI Platform cho chủ đề {title}",
+                "Bối cảnh: văn phòng QA/QC trong xưởng cơ khí, có bản vẽ kỹ thuật và checklist kiểm tra, chủ đề được đánh dấu ngoài phạm vi",
+                "Hành động: kỹ sư chọn lại chủ đề thuộc cơ khí, hàn, kết cấu thép hoặc bảo trì",
+                "Chi tiết cần tránh: minh họa đời sống, nấu ăn, du lịch, tài chính, thú cưng, cây cảnh",
+            ])
+        if self.output_type == "video":
+            return "\n".join([
+                f"Tiêu đề: LUCID AUTO chỉ nhận chủ đề kỹ thuật - {title}",
+                "Mở đầu: hiển thị xưởng cơ khí và danh sách phạm vi Engineering AI Platform; chủ đề hiện tại được đánh dấu ngoài phạm vi.",
+                "Cảnh 1: kỹ sư loại bỏ chủ đề ngoài ngành khỏi kế hoạch tạo tài liệu.",
+                "Cảnh 2: chọn lại chủ đề thuộc welding, QA/QC, maintenance, steel structure hoặc digital factory.",
+                "Kết thúc: chỉ tạo SOP, checklist, field handbook hoặc training material kỹ thuật.",
+            ])
+        return "\n".join(lines)
 
     def _build_facebook(self, p: TopicProfile) -> str:
         return "\n".join(
             [
-                f"Title: {p.topic}",
+                f"Introduction",
+                f"{p.topic} cần được biến thành kiến thức dễ hiểu, có hành động rõ và có cách kiểm tra lại trong đời sống thực tế.",
                 "",
-                f"Hook: Nếu {p.topic} chỉ nằm trên giấy, kết quả thực tế sẽ rất dễ lệch.",
+                "Main knowledge",
+                f"{p.problem}. Trọng tâm của chủ đề là {p.subject}, trong đó cần chú ý đến {self._join(p.objects[:4])}.",
                 "",
-                f"Pain: {p.problem}.",
+                "Step-by-step actions",
+                *self._numbered(p.actions),
                 "",
-                "Story:",
-                f"Một đội đang nhìn vào {self._join(p.objects[:3])}. Mọi người đều muốn xử lý nhanh, nhưng các dấu hiệu như {self._join(p.signs[:2])} cho thấy cần kiểm tra kỹ trước khi quyết định.",
+                "Practical advice",
+                f"Hãy theo dõi các dấu hiệu như {self._join(p.signs[:3])}. Nếu thấy dấu hiệu lặp lại, quay lại kiểm tra {self._join(p.causes[:3])} trước khi đổi cách làm.",
                 "",
-                "Knowledge:",
-                f"Điểm cần nhớ: {p.subject} phụ thuộc vào {self._join(p.objects[:4])}. Nguyên nhân thường đến từ {self._join(p.causes[:3])}.",
+                "Common mistakes",
+                *self._bullets(
+                    tuple(
+                        f"Chỉ chú ý đến {item} mà không kiểm tra toàn bộ bối cảnh."
+                        for item in p.objects[:3]
+                    )
+                ),
                 "",
-                "Practical actions:",
-                *self._bullets(p.actions),
+                "Conclusion",
+                f"Khi {p.topic} được viết thành kiến thức, hành động và dấu hiệu kiểm tra, người đọc có thể áp dụng ngay mà không phụ thuộc vào lời khuyên chung chung.",
                 "",
-                f"Question: Bạn đang kiểm soát {p.topic} bằng cảm giác hay bằng dữ liệu cụ thể?",
-                "",
-                f"CTA: Lưu lại và chọn một bước nhỏ hôm nay: kiểm tra {self._join(p.objects[:2])}, ghi nhận dấu hiệu, rồi chốt hành động tiếp theo.",
-                "",
-                "Hashtags: " + " ".join(self._hashtags(p)),
+                " ".join(self._hashtags(p)),
             ]
         )
 
     def _build_tiktok(self, p: TopicProfile) -> str:
         return "\n".join(
             [
-                "Hook",
-                f"{p.topic} nghe đơn giản, nhưng sai một bước là mất tiền, mất thời gian hoặc mất an toàn.",
+                "Mở đầu",
+                f"{p.topic} nghe đơn giản, nhưng muốn làm đúng phải nhìn vào dấu hiệu cụ thể trước.",
                 "",
-                "Curiosity",
-                f"Điều nhiều người bỏ qua là {p.signs[0]}. Dấu hiệu nhỏ này thường nói trước một vấn đề lớn hơn.",
+                "Khơi mở kiến thức",
+                f"Điều nhiều người bỏ qua là {p.signs[0]}. Đây là tín hiệu cho thấy cần kiểm tra {p.objects[0]} và {p.objects[1]}.",
                 "",
-                "Pain",
-                f"Nếu xử lý vội, bạn có thể đụng vào {p.risks[0]}, rồi kéo theo {p.risks[1]}.",
+                "Điểm cần tránh",
+                f"Nếu xử lý vội, bạn có thể gặp {p.risks[0]}, rồi kéo theo {p.risks[1]}.",
                 "",
-                "Truth",
-                f"Muốn làm đúng, đừng bắt đầu bằng lời khuyên chung. Hãy nhìn {p.objects[0]}, kiểm tra {p.objects[1]} và hỏi nguyên nhân thật: {p.causes[0]}.",
+                "Cách làm đúng",
+                f"Bắt đầu bằng việc {p.actions[0]}, sau đó ghi lại kết quả để biết cách làm có hiệu quả hay không.",
                 "",
-                "One practical tip",
-                f"Làm ngay một việc: {p.actions[0]}. Sau đó ghi lại kết quả để lần sau không phải đoán.",
+                "Gợi ý áp dụng",
+                f"Mỗi ngày chỉ cần chọn một bước nhỏ liên quan đến {p.topic}, làm đều và kiểm tra lại bằng dấu hiệu thực tế.",
                 "",
-                "CTA",
-                f"Lưu lại nếu bạn đang cần biến {p.topic} thành hành động rõ ràng trong hôm nay.",
+                "Kết thúc",
+                f"Khi hiểu dấu hiệu, nguyên nhân và bước làm, {p.topic} sẽ bớt mơ hồ và dễ áp dụng hơn.",
             ]
         )
 
@@ -465,7 +630,7 @@ class TopicAwareBuiltInBuilder:
                 "Âm thanh: Nhịp nền gọn, âm thanh môi trường thật, điểm nhấn nhẹ khi xuất hiện hành động chính.",
                 "",
                 f"Kết thúc: Hiển thị kết quả sau khi {p.actions[0]} và nhắc lại lợi ích giảm {p.risks[0]}.",
-                "CTA: Lưu prompt này để tạo video ngắn có hành động thực tế, không kể lan man.",
+                "Kêu gọi hành động: Lưu quy trình này để tạo video ngắn có hành động thực tế, không kể lan man.",
             ]
         )
 
@@ -587,6 +752,9 @@ class TopicAwareBuiltInBuilder:
 
     def _bullets(self, values: tuple[str, ...]) -> list[str]:
         return [f"- {value}" for value in values]
+
+    def _numbered(self, values: tuple[str, ...]) -> list[str]:
+        return [f"{index}. {value}" for index, value in enumerate(values, start=1)]
 
     def _join(self, values: tuple[str, ...]) -> str:
         return ", ".join(values)

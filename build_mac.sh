@@ -28,12 +28,19 @@ cp RELEASE_NOTES.md release/ReleaseNotes/RELEASE_NOTES.md
 
 if command -v hdiutil >/dev/null 2>&1; then
     rm -f "release/Mac/${DMG_NAME}"
-    hdiutil create \
+    if ! hdiutil create \
         -volname "LUCID AUTO" \
         -srcfolder release/Mac/dmg \
         -ov \
         -format UDZO \
-        "release/Mac/${DMG_NAME}"
+        "release/Mac/${DMG_NAME}"; then
+        echo "hdiutil create failed; falling back to hdiutil makehybrid"
+        hdiutil makehybrid \
+            -hfs \
+            -hfs-volume-name "LUCID AUTO" \
+            -o "release/Mac/${DMG_NAME}" \
+            release/Mac/dmg
+    fi
 fi
 
 echo "macOS release ready: ${APP_RELEASE}"

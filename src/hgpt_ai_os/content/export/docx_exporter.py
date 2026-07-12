@@ -8,14 +8,18 @@ class DocxExporter:
     _HEADING_RE = re.compile(r"^(#{1,3})\s+(.+)$")
     _BULLET_RE = re.compile(r"^\s*[-*+]\s+(.+)$")
     _BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
-    _FORBIDDEN_ENGLISH_RE = re.compile(
-        r"\b("
-        r"Timeline|Scene|Camera|Voice|Caption|Transition|Negative prompt|"
+    _FORBIDDEN_TEMPLATE_LABEL_RE = re.compile(
+        r"(?im)^\s*"
+        r"("
+        r"Story|Pain|Truth|Hook|Curiosity|Practical actions|"
+        r"Scene|Camera|Voice|Caption|Transition|Negative prompt|"
         r"Duration|Aspect ratio|Lens|Lighting|Composition|Mood|Texture|"
-        r"Industrial environment|Engineering checklist|Inspection item|"
-        r"Acceptance criteria|Responsible person|Frequency|Root Cause|"
-        r"Problem|Evidence|Manager's job|Quality release|Schedule|"
-        r"Hold the product|The topic belongs to"
+        r"Problem|One practical tip|CTA"
+        r")\s*:",
+    )
+    _FORBIDDEN_LEAKAGE_PHRASE_RE = re.compile(
+        r"\b("
+        r"Manager's job|Quality release|Hold the product|The topic belongs to"
         r")\b",
         re.IGNORECASE,
     )
@@ -42,7 +46,13 @@ class DocxExporter:
     def validate_content(self, content: str) -> None:
         if content.encode("utf-8").decode("utf-8") != content:
             raise ValueError("DOCX export blocked: invalid UTF-8 content.")
-        forbidden = self._FORBIDDEN_ENGLISH_RE.search(content)
+        forbidden = self._FORBIDDEN_TEMPLATE_LABEL_RE.search(content)
+        if forbidden:
+            label = forbidden.group(1)
+            raise ValueError(
+                f"DOCX export blocked: forbidden English text '{label}'."
+            )
+        forbidden = self._FORBIDDEN_LEAKAGE_PHRASE_RE.search(content)
         if forbidden:
             raise ValueError(
                 f"DOCX export blocked: forbidden English text '{forbidden.group(0)}'."

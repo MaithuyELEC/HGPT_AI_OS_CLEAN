@@ -46,6 +46,17 @@ class ImagePromptWriter:
     def write(self, reasoning: ReasoningObject, plan: ContentPlan) -> str:
         playbook = playbook_for_reasoning(reasoning)
         subject, context, action, must_have = _image_details(playbook.key)
+        context_details = ", ".join(
+            dict.fromkeys(
+                (
+                    playbook.technical_mechanism,
+                    *playbook.checklist_items,
+                    *playbook.measurements,
+                    *playbook.standards,
+                    *playbook.safety_risks,
+                )
+            )
+        )
         return "\n".join(
             [
                 "Prompt Gemini tạo ảnh",
@@ -58,6 +69,7 @@ class ImagePromptWriter:
                 "Ống kính: 35mm cho bối cảnh, 85mm cho chi tiết kỹ thuật",
                 "Màu sắc: chân thực, thép và dụng cụ đúng màu, không dùng màu hoạt hình",
                 f"Chi tiết cần có: {must_have}",
+                f"Chi tiết kỹ thuật từ TopicContext: {context_details}",
                 "Chi tiết cần tránh: chữ sai tiếng Việt, tay méo, thiết bị phi thực tế, biểu đồ giả, tư thế mất an toàn",
                 "Phong cách chất lượng: ảnh tư liệu công nghiệp sắc nét, thực tế, có chiều sâu",
                 "Tỷ lệ khung hình: 4:5 hoặc 16:9",

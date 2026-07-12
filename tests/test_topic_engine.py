@@ -1,9 +1,16 @@
 from __future__ import annotations
 
+import json
 import unittest
 from difflib import SequenceMatcher
+from pathlib import Path
 
 from hgpt_ai_os.content.generator import ContentGenerator
+from hgpt_ai_os.content.factory.builder_factory import BuilderFactory
+from hgpt_ai_os.topic_engine.failure_intelligence import (
+    FailureIntelligenceLibrary,
+    REQUIRED_FAILURE_FIELDS,
+)
 from hgpt_ai_os.topic_engine import TopicIntelligenceEngine
 from hgpt_ai_os.topic_engine.writers.channel_writer import match_playbook
 from hgpt_ai_os.topic_engine.topic_parser import TopicParser
@@ -20,8 +27,239 @@ FORBIDDEN_OUTPUT_PATTERNS = (
     "Root Cause:",
 )
 
+RAW_FAILURE_INTELLIGENCE_PHRASES = (
+    "broken wires count and location",
+    "rope diameter measurement",
+    "sheave groove condition",
+    "drum groove",
+    "release inspection",
+    "load test according to",
+    "no-load functional test",
+    "working load limit",
+    "anchor point",
+    "alignment",
+    "wear",
+    "lubrication",
+    "corrosion",
+    "fatigue",
+)
+
+FAILURE_LIBRARY_PATH = (
+    Path(__file__).resolve().parents[1]
+    / "src"
+    / "hgpt_ai_os"
+    / "topic_engine"
+    / "failure_intelligence_library.json"
+)
+
 
 class TopicEngineTests(unittest.TestCase):
+    def test_failure_intelligence_library_profiles_have_required_fields(self):
+        library = FailureIntelligenceLibrary()
+
+        for key in (
+            "WIRE_ROPE_FAILURE",
+            "MOTOR_BURNOUT",
+            "VFD_OVERCURRENT",
+            "PLC_FAULT",
+            "SAW_POROSITY",
+            "HYDRAULIC_LEAK",
+            "BEARING_FAILURE",
+            "GEARBOX_FAILURE",
+        ):
+            with self.subTest(key=key):
+                profile = library.get(key)
+                self.assertIsNotNone(profile)
+                context = profile.as_context()
+                for field in REQUIRED_FAILURE_FIELDS:
+                    self.assertTrue(context[field], field)
+
+    def test_release_v1_failure_library_is_expanded_for_engineering_platform(self):
+        library = FailureIntelligenceLibrary()
+        required_profiles = (
+            "WELD_SLAG_INCLUSION",
+            "WELD_LACK_OF_FUSION",
+            "WELD_LACK_OF_PENETRATION",
+            "WELD_UNDERCUT",
+            "WELD_OVERLAP",
+            "WELD_CRACK",
+            "WELD_ARC_BLOW",
+            "WELD_BURN_THROUGH",
+            "WELD_DISTORTION",
+            "WELD_SPATTER",
+            "WELD_UNDERFILL",
+            "WELD_EXCESS_REINFORCEMENT",
+            "PUMP_CAVITATION",
+            "COMPRESSOR_OVERHEAT",
+            "ANCHOR_BOLT_MISLOCATION",
+        )
+
+        self.assertGreaterEqual(len(library.profiles), 23)
+        for key in required_profiles:
+            with self.subTest(key=key):
+                profile = library.get(key)
+                self.assertIsNotNone(profile)
+                context = profile.as_context()
+                for field in (
+                    "failure_mechanism",
+                    "measurements",
+                    "engineering_calculation",
+                    "engineering_notes",
+                    "common_mistakes",
+                    "lessons_learned",
+                    "standards",
+                ):
+                    self.assertTrue(context[field], field)
+
+    def test_release_v1_general_life_topics_return_engineering_scope_notice(self):
+        for topic in ("Cách chăm sóc mai", "Cách nấu phở", "Thuế GTGT", "Travel checklist"):
+            with self.subTest(topic=topic):
+                body = BuilderFactory.create("facebook").build(topic)
+                self.assertIn("Engineering AI Platform", body)
+                self.assertIn("ngoài phạm vi", body)
+                for forbidden in ("tưới", "công thức", "ngân sách du lịch", "ETF"):
+                    self.assertNotIn(forbidden, body)
+
+    def test_failure_intelligence_library_items_are_bilingual(self):
+        data = json.loads(FAILURE_LIBRARY_PATH.read_text(encoding="utf-8"))
+        bilingual_fields = ("failure_mode", *REQUIRED_FAILURE_FIELDS)
+
+        for profile in data["profiles"]:
+            with self.subTest(profile=profile["key"]):
+                for field in bilingual_fields:
+                    value = profile[field]
+                    values = value if isinstance(value, list) else (value,)
+                    for item in values:
+                        self.assertIsInstance(item, dict, field)
+                        self.assertTrue(item.get("id"), item)
+                        self.assertTrue(item.get("vi"), item)
+                        self.assertTrue(item.get("en"), item)
+
+    def test_failure_intelligence_library_selects_vi_by_default_and_en_for_future_locale(self):
+        vi_context = FailureIntelligenceLibrary().get("WIRE_ROPE_FAILURE").as_context()
+        en_context = FailureIntelligenceLibrary(locale="en").get("WIRE_ROPE_FAILURE").as_context()
+
+        self.assertIn("kiểm tra số lượng và vị trí sợi cáp bị đứt", vi_context["inspection_points"])
+        self.assertIn("broken wires count and location", en_context["inspection_points"])
+
+    def test_final_topic_context_acceptance_cases(self):
+        engine = TopicIntelligenceEngine()
+        cases = {
+            "Cáp cẩu trục bị đứt": {
+                "domain": "Industrial Maintenance",
+                "intent": "Troubleshooting",
+                "equipment": ("Crane",),
+                "components": ("Wire Rope",),
+                "failures": ("Broken",),
+                "severity": "Critical",
+                "playbook_key": "WIRE_ROPE_FAILURE",
+                "query": "Crane Wire Rope Broken Troubleshooting",
+            },
+            "Động cơ bị cháy": {
+                "equipment": ("Motor",),
+                "failures": ("Burned",),
+                "severity": "High",
+                "query": "Motor Burned Troubleshooting",
+            },
+            "Biến tần báo OC": {
+                "equipment": ("VFD",),
+                "failures": ("Over Current",),
+                "severity": "High",
+                "query": "VFD Over Current Troubleshooting",
+            },
+            "PLC Siemens SF": {
+                "equipment": ("PLC", "Siemens PLC"),
+                "failures": ("System Fault",),
+                "severity": "High",
+            },
+            "Đường hàn SAW rỗ khí": {
+                "components": ("Weld Seam",),
+                "failures": ("Porosity",),
+                "severity": "High",
+                "playbook_key": "SAW_POROSITY",
+            },
+            "Nuôi chó Husky": {"domain": "Out of Scope", "intent": "Training"},
+            "Học tiếng Nhật N5": {"domain": "Out of Scope", "intent": "Training"},
+            "Thuế GTGT": {"domain": "Out of Scope"},
+            "Blockchain Layer 2": {"domain": "Out of Scope"},
+            "Cách chăm sóc mai": {"domain": "Out of Scope", "processes": ()},
+        }
+
+        for topic, expected in cases.items():
+            with self.subTest(topic=topic):
+                context = engine.analyze(topic)
+                for field, value in expected.items():
+                    if field == "query":
+                        self.assertEqual(context.knowledge_query, value)
+                    else:
+                        self.assertEqual(getattr(context, field), value)
+                self.assertGreater(context.confidence, 0.5)
+
+    def test_wire_rope_failure_merges_failure_intelligence_into_context(self):
+        context = TopicIntelligenceEngine().analyze("Cáp cẩu trục bị đứt")
+        merged = " ".join(
+            (
+                *context.standards,
+                *context.failure_intelligence.get("symptoms", ()),
+                *context.failure_intelligence.get("inspection_points", ()),
+                *context.failure_intelligence.get("verification_steps", ()),
+                *context.failure_intelligence.get("safety_notes", ()),
+            )
+        )
+
+        for expected in (
+            "ISO 4309",
+            "sợi cáp",
+            "đường kính cáp",
+            "puly",
+            "tang cuốn",
+            "LOTO",
+            "thử tải",
+            "nghiệm thu",
+        ):
+            self.assertIn(expected, merged)
+        self.assert_no_raw_failure_intelligence_phrases(merged)
+
+    def test_wire_rope_failure_generated_channels_use_context_intelligence(self):
+        engine = TopicIntelligenceEngine()
+        for channel in ("facebook", "checklist", "approval", "video", "seo", "image", "tiktok"):
+            with self.subTest(channel=channel):
+                output = engine.generate("Cáp cẩu trục bị đứt", channel)
+                if channel != "tiktok":
+                    for expected in (
+                        "ISO 4309",
+                        "sợi cáp",
+                        "đường kính cáp",
+                        "puly",
+                        "tang cuốn",
+                        "LOTO",
+                        "thử tải",
+                        "nghiệm thu",
+                    ):
+                        self.assertIn(expected, output)
+                else:
+                    self.assertIn("Cáp cẩu trục bị đứt", output)
+                    self.assertIn("thử tải", output)
+                self.assert_no_raw_failure_intelligence_phrases(output)
+
+    def test_wire_rope_failure_output_uses_context_playbook_not_crane_noise(self):
+        body = TopicIntelligenceEngine().generate("Cáp cẩu trục bị đứt", "facebook")
+
+        for expected in (
+            "dừng thiết bị",
+            "LOTO",
+            "cáp tải",
+            "sợi cáp",
+            "puly",
+            "tang cuốn",
+            "thay cáp",
+            "thử tải",
+        ):
+            self.assertIn(expected, body)
+
+        for forbidden in ("bánh xe", "ray", "hộp giảm tốc"):
+            self.assertNotIn(forbidden, body)
+
     def test_topic_parser_supports_vietnamese_keywords_and_phrases(self):
         parsed = TopicParser().parse("Lỗi rỗ khí mối hàn SAW do flux ẩm")
 
@@ -248,6 +486,11 @@ class TopicEngineTests(unittest.TestCase):
     def assert_no_forbidden_patterns(self, body: str) -> None:
         for pattern in FORBIDDEN_OUTPUT_PATTERNS:
             self.assertNotIn(pattern, body)
+
+    def assert_no_raw_failure_intelligence_phrases(self, body: str) -> None:
+        lowered = body.lower()
+        for phrase in RAW_FAILURE_INTELLIGENCE_PHRASES:
+            self.assertNotIn(phrase, lowered)
 
 
 def _max_similarity(values: list[str]) -> float:

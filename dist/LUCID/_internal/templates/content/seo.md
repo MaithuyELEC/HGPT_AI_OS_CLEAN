@@ -1,7 +1,0 @@
-TITLE
-
-{{TOPIC}}
-
-DESCRIPTION
-
-{{CONTEXT}}

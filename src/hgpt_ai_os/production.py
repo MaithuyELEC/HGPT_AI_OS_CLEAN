@@ -10,6 +10,7 @@ from hgpt_ai_os.content.export.docx_exporter import DocxExporter
 from hgpt_ai_os.core.resource_path import resource_path
 from hgpt_ai_os.intelligence import KnowledgeSearch, TopicAnalyzer
 from hgpt_ai_os.knowledge.bundle import KnowledgeBundle
+from hgpt_ai_os.topic_engine import TopicIntelligenceEngine, compact_topic_context
 from hgpt_ai_os.version import APP_VERSION
 
 
@@ -34,10 +35,14 @@ def build_outputs(day: int, topic: str, open_output_folder: bool = True) -> Path
     print("-" * 60)
 
     print("[01/08] Analyze Topic                    PASS")
-    analysis = TopicAnalyzer().analyze(topic)
+    topic_engine = TopicIntelligenceEngine()
+    topic_context = topic_engine.analyze(topic)
+    analysis = topic_context.to_topic_analysis()
     print(f"Analysis  : {analysis.category} | {analysis.process}")
     print(f"Operation : {analysis.operation or 'Unknown'}")
     print(f"Risk      : {analysis.risk or 'None'}")
+    print("Topic Context:")
+    print(compact_topic_context(topic_context))
     print(
         "Standards : "
         + (", ".join(analysis.standards) if analysis.standards else "None")
@@ -55,6 +60,7 @@ def build_outputs(day: int, topic: str, open_output_folder: bool = True) -> Path
 
     print("[04/08] Initialize Generator             PASS")
     generator = ContentGenerator()
+    generator.prime_topic_context(topic_context)
     if generator.free_desktop_mode:
         print("Mode : Free Desktop")
         print("Generator : Built-in")
