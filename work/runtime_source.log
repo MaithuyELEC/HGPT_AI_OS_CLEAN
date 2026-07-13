@@ -1,0 +1,1296 @@
+========== MODULE LOADED ==========
+module: hgpt_ai_os.topic_engine.reasoning_engine
+absolute path: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/reasoning_engine.py
+mtime: 1783870825.3058126
+class: ReasoningEngine
+===================================
+========== EXACT SOURCE ==========
+module: hgpt_ai_os.topic_engine.reasoning_engine
+inspect.getfile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/reasoning_engine.py
+inspect.getsourcefile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/reasoning_engine.py
+__file__: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/reasoning_engine.py
+__cached__: /tmp/lucid_pycache/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/reasoning_engine.cpython-312.pyc
+object id: 140232186563616
+==================================
+========== MODULE LOADED ==========
+module: hgpt_ai_os.topic_engine.content_planner
+absolute path: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/content_planner.py
+mtime: 1783870811.0971165
+class: ContentPlanner
+===================================
+========== EXACT SOURCE ==========
+module: hgpt_ai_os.topic_engine.content_planner
+inspect.getfile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/content_planner.py
+inspect.getsourcefile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/content_planner.py
+__file__: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/content_planner.py
+__cached__: /tmp/lucid_pycache/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/content_planner.cpython-312.pyc
+object id: 140232186570784
+==================================
+========== MODULE LOADED ==========
+module: hgpt_ai_os.topic_engine.topic_intelligence_engine
+absolute path: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/topic_intelligence_engine.py
+mtime: 1783870846.2484252
+class: TopicContextBuilder
+===================================
+========== EXACT SOURCE ==========
+module: hgpt_ai_os.topic_engine.topic_intelligence_engine
+inspect.getfile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/topic_intelligence_engine.py
+inspect.getsourcefile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/topic_intelligence_engine.py
+__file__: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/topic_intelligence_engine.py
+__cached__: /tmp/lucid_pycache/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/topic_intelligence_engine.cpython-312.pyc
+object id: 140232189308560
+==================================
+========== MODULE LOADED ==========
+module: hgpt_ai_os.topic_engine.writers.channel_writer
+absolute path: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/channel_writer.py
+mtime: 1783870855.4122682
+class: ChannelWriter
+===================================
+========== EXACT SOURCE ==========
+module: hgpt_ai_os.topic_engine.writers.channel_writer
+inspect.getfile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/channel_writer.py
+inspect.getsourcefile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/channel_writer.py
+__file__: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/channel_writer.py
+__cached__: /tmp/lucid_pycache/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/channel_writer.cpython-312.pyc
+object id: 140232189325408
+==================================
+========== MODULE LOADED ==========
+module: hgpt_ai_os.topic_engine.writers.checklist_writer
+absolute path: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/checklist_writer.py
+mtime: 1783870906.1124396
+class: ChecklistWriter
+===================================
+========== EXACT SOURCE ==========
+module: hgpt_ai_os.topic_engine.writers.checklist_writer
+inspect.getfile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/checklist_writer.py
+inspect.getsourcefile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/checklist_writer.py
+__file__: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/checklist_writer.py
+__cached__: /tmp/lucid_pycache/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/checklist_writer.cpython-312.pyc
+object id: 140232189327344
+==================================
+========== MODULE LOADED ==========
+module: hgpt_ai_os.topic_engine.writers.facebook_writer
+absolute path: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/facebook_writer.py
+mtime: 1783870893.2015944
+class: FacebookWriter
+===================================
+========== EXACT SOURCE ==========
+module: hgpt_ai_os.topic_engine.writers.facebook_writer
+inspect.getfile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/facebook_writer.py
+inspect.getsourcefile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/facebook_writer.py
+__file__: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/facebook_writer.py
+__cached__: /tmp/lucid_pycache/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/facebook_writer.cpython-312.pyc
+object id: 140232189332688
+==================================
+========== MODULE LOADED ==========
+module: hgpt_ai_os.topic_engine.writers.image_writer
+absolute path: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/image_writer.py
+mtime: 1783870912.859106
+class: ImagePromptWriter
+===================================
+========== EXACT SOURCE ==========
+module: hgpt_ai_os.topic_engine.writers.image_writer
+inspect.getfile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/image_writer.py
+inspect.getsourcefile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/image_writer.py
+__file__: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/image_writer.py
+__cached__: /tmp/lucid_pycache/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/image_writer.cpython-312.pyc
+object id: 140232189334432
+==================================
+========== MODULE LOADED ==========
+module: hgpt_ai_os.topic_engine.writers.engineering_document_writer
+absolute path: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/engineering_document_writer.py
+mtime: 1783870885.124894
+class: EngineeringDocumentWriter
+===================================
+========== EXACT SOURCE ==========
+module: hgpt_ai_os.topic_engine.writers.engineering_document_writer
+inspect.getfile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/engineering_document_writer.py
+inspect.getsourcefile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/engineering_document_writer.py
+__file__: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/engineering_document_writer.py
+__cached__: /tmp/lucid_pycache/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/engineering_document_writer.cpython-312.pyc
+object id: 140232189346880
+==================================
+========== MODULE LOADED ==========
+module: hgpt_ai_os.topic_engine.writers.seo_writer
+absolute path: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/seo_writer.py
+mtime: 1783870899.4613273
+class: SeoWriter
+===================================
+========== EXACT SOURCE ==========
+module: hgpt_ai_os.topic_engine.writers.seo_writer
+inspect.getfile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/seo_writer.py
+inspect.getsourcefile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/seo_writer.py
+__file__: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/seo_writer.py
+__cached__: /tmp/lucid_pycache/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/seo_writer.cpython-312.pyc
+object id: 140232189354816
+==================================
+========== MODULE LOADED ==========
+module: hgpt_ai_os.topic_engine.writers.tiktok_writer
+absolute path: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/tiktok_writer.py
+mtime: 1783870924.4274745
+class: TikTokWriter
+===================================
+========== EXACT SOURCE ==========
+module: hgpt_ai_os.topic_engine.writers.tiktok_writer
+inspect.getfile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/tiktok_writer.py
+inspect.getsourcefile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/tiktok_writer.py
+__file__: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/tiktok_writer.py
+__cached__: /tmp/lucid_pycache/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/tiktok_writer.cpython-312.pyc
+object id: 140232189357360
+==================================
+========== MODULE LOADED ==========
+module: hgpt_ai_os.topic_engine.writers.video_writer
+absolute path: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/video_writer.py
+mtime: 1783870918.5916407
+class: VideoPromptWriter
+===================================
+========== EXACT SOURCE ==========
+module: hgpt_ai_os.topic_engine.writers.video_writer
+inspect.getfile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/video_writer.py
+inspect.getsourcefile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/video_writer.py
+__file__: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/video_writer.py
+__cached__: /tmp/lucid_pycache/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/video_writer.cpython-312.pyc
+object id: 140232189360816
+==================================
+========== MODULE LOADED ==========
+module: hgpt_ai_os.topic_engine
+absolute path: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+mtime: 1783870804.1144052
+class: TopicIntelligenceEngine
+===================================
+========== EXACT SOURCE ==========
+module: hgpt_ai_os.topic_engine
+inspect.getfile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+inspect.getsourcefile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+__file__: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+__cached__: /tmp/lucid_pycache/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.cpython-312.pyc
+object id: 140232189361792
+==================================
+========== MODULE LOADED ==========
+module: hgpt_ai_os.content.generator
+absolute path: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+mtime: 1783870791.5847597
+class: ContentGenerator
+===================================
+========== EXACT SOURCE ==========
+module: hgpt_ai_os.content.generator
+inspect.getfile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+inspect.getsourcefile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+__file__: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+__cached__: /tmp/lucid_pycache/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.cpython-312.pyc
+object id: 140232189368560
+==================================
+========== MODULE LOADED ==========
+module: hgpt_ai_os.content.export.docx_exporter
+absolute path: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/export/docx_exporter.py
+mtime: 1783870931.1059778
+class: DocxExporter
+===================================
+========== EXACT SOURCE ==========
+module: hgpt_ai_os.content.export.docx_exporter
+inspect.getfile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/export/docx_exporter.py
+inspect.getsourcefile(class): /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/export/docx_exporter.py
+__file__: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/export/docx_exporter.py
+__cached__: /tmp/lucid_pycache/Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/export/docx_exporter.cpython-312.pyc
+object id: 140232189848864
+==================================
+========== RUNTIME TRACE ==========
+step: Production.build_outputs
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/production.py
+CLASS: 
+FUNCTION: build_outputs
+LINE NUMBER: 28
+MODULE NAME: __main__
+OBJECT ID: n/a
+selected_topic: Đường hàn SAW bị rỗ khí
+===================================
+============================================================
+LUCID AUTO v1.0.0
+HGPT STEEL PRODUCTION CLI
+============================================================
+Day   : 001
+Topic : Đường hàn SAW bị rỗ khí
+------------------------------------------------------------
+[01/08] Analyze Topic                    PASS
+========== RUNTIME TRACE ==========
+step: TopicIntelligenceEngine.__init__
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: __init__
+LINE NUMBER: 28
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4469135344
+===================================
+========== RUNTIME TRACE ==========
+step: TopicProfileStore.__init__
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/topic_intelligence_engine.py
+CLASS: TopicProfileStore
+FUNCTION: __init__
+LINE NUMBER: 45
+MODULE NAME: hgpt_ai_os.topic_engine.topic_intelligence_engine
+OBJECT ID: 4469135440
+===================================
+========== RUNTIME TRACE ==========
+step: EngineeringDocumentWriter.__init__
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/engineering_document_writer.py
+CLASS: EngineeringDocumentWriter
+FUNCTION: __init__
+LINE NUMBER: 163
+MODULE NAME: hgpt_ai_os.topic_engine.writers.engineering_document_writer
+OBJECT ID: 4469491808
+===================================
+========== RUNTIME TRACE ==========
+step: TopicIntelligenceEngine.analyze
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: analyze
+LINE NUMBER: 49
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4469135344
+selected_topic: Đường hàn SAW bị rỗ khí
+===================================
+========== RUNTIME TRACE ==========
+step: TopicContextBuilder.build
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/topic_intelligence_engine.py
+CLASS: TopicContextBuilder
+FUNCTION: build
+LINE NUMBER: 293
+MODULE NAME: hgpt_ai_os.topic_engine.topic_intelligence_engine
+OBJECT ID: 4469134576
+selected_topic: Đường hàn SAW bị rỗ khí
+===================================
+========== RUNTIME TRACE ==========
+step: TopicContextBuilder.result
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/topic_intelligence_engine.py
+CLASS: TopicContextBuilder
+FUNCTION: build
+LINE NUMBER: 345
+MODULE NAME: hgpt_ai_os.topic_engine.topic_intelligence_engine
+OBJECT ID: 4469134576
+selected_topic: Đường hàn SAW bị rỗ khí
+selected_domain: Welding
+selected_playbook: SAW_POROSITY
+===================================
+========== RUNTIME TRACE ==========
+step: Topic Engine.analyze
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/production.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: build_outputs
+LINE NUMBER: 43
+MODULE NAME: __main__
+OBJECT ID: 4469135344
+selected_topic: Đường hàn SAW bị rỗ khí
+selected_domain: Welding
+selected_playbook: SAW_POROSITY
+writer_selected: pending
+writer_class: pending
+knowledge_count: pending
+output_file: pending
+===================================
+Analysis  : Welding | Welding
+Operation : Troubleshooting
+Risk      : High Severity
+Topic Context:
+- Domain: Welding
+- Intent: Troubleshooting
+- Equipment: None
+- Components: Weld Seam
+- Processes: Welding, SAW, SAW Welding
+- Failures: Porosity
+- Severity: High
+- Standards: AWS D1.1, ISO 3834
+- Failure Mode: Rỗ khí mối hàn SAW
+- Playbook: SAW_POROSITY
+- Knowledge Query: Weld Seam Welding SAW SAW Welding Porosity Troubleshooting
+- Confidence: 0.95
+Standards : AWS D1.1, ISO 3834
+[02/08] Search Knowledge                 PASS
+Topic:
+"Đường hàn SAW bị rỗ khí"
+
+Knowledge Candidates:
+2
+
+Candidate Scores:
+QAQC_001
+0.51
+WELD_001
+0.41
+
+Knowledge Enabled:
+True
+
+Knowledge Disabled:
+False
+
+Injected IDs:
+QAQC_001
+WELD_001
+
+Reason:
+Relevant knowledge score >= 0.35.
+[03/08] Build Knowledge Context          PASS
+[04/08] Initialize Generator             PASS
+========== RUNTIME TRACE ==========
+step: Generator.__init__
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+CLASS: ContentGenerator
+FUNCTION: __init__
+LINE NUMBER: 358
+MODULE NAME: hgpt_ai_os.content.generator
+OBJECT ID: 4469135200
+===================================
+========== RUNTIME TRACE ==========
+step: TopicIntelligenceEngine.__init__
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: __init__
+LINE NUMBER: 28
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4469504192
+===================================
+========== RUNTIME TRACE ==========
+step: TopicProfileStore.__init__
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/topic_intelligence_engine.py
+CLASS: TopicProfileStore
+FUNCTION: __init__
+LINE NUMBER: 45
+MODULE NAME: hgpt_ai_os.topic_engine.topic_intelligence_engine
+OBJECT ID: 4469504336
+===================================
+========== RUNTIME TRACE ==========
+step: EngineeringDocumentWriter.__init__
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/engineering_document_writer.py
+CLASS: EngineeringDocumentWriter
+FUNCTION: __init__
+LINE NUMBER: 163
+MODULE NAME: hgpt_ai_os.topic_engine.writers.engineering_document_writer
+OBJECT ID: 4470232400
+===================================
+========== RUNTIME TRACE ==========
+step: Generator initialized
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/production.py
+CLASS: ContentGenerator
+FUNCTION: build_outputs
+LINE NUMBER: 77
+MODULE NAME: __main__
+OBJECT ID: 4469135200
+selected_topic: Đường hàn SAW bị rỗ khí
+selected_domain: Welding
+selected_playbook: SAW_POROSITY
+writer_selected: ContentGenerator
+writer_class: ContentGenerator
+knowledge_count: 2
+output_file: pending
+===================================
+Mode : Free Desktop
+Generator : Built-in
+AI Provider : Disabled
+[05/08] Generate Content                 PASS
+========== RUNTIME TRACE ==========
+step: Generator.generate
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+CLASS: ContentGenerator
+FUNCTION: generate
+LINE NUMBER: 395
+MODULE NAME: hgpt_ai_os.content.generator
+OBJECT ID: 4469135200
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: facebook
+===================================
+***** FALLBACK *****
+reason: Free Desktop mode or AI provider unavailable; using built-in generator.
+location: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+line: 414
+========== RUNTIME TRACE ==========
+step: Generator._generate_with_builtin
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+CLASS: ContentGenerator
+FUNCTION: _generate_with_builtin
+LINE NUMBER: 576
+MODULE NAME: hgpt_ai_os.content.generator
+OBJECT ID: 4469135200
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: facebook
+===================================
+========== RUNTIME TRACE ==========
+step: Topic Engine selected
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: _generate_with_builtin
+LINE NUMBER: 593
+MODULE NAME: hgpt_ai_os.content.generator
+OBJECT ID: 4469504192
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: facebook
+writer_class: TopicIntelligenceEngine
+===================================
+========== RUNTIME TRACE ==========
+step: TopicIntelligenceEngine.generate
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: generate
+LINE NUMBER: 91
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4469504192
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: facebook
+===================================
+========== RUNTIME TRACE ==========
+step: TopicIntelligenceEngine.reason
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: reason
+LINE NUMBER: 58
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4469504192
+selected_topic: Đường hàn SAW bị rỗ khí
+===================================
+========== RUNTIME TRACE ==========
+step: ReasoningEngine.reason
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/reasoning_engine.py
+CLASS: ReasoningEngine
+FUNCTION: reason
+LINE NUMBER: 47
+MODULE NAME: hgpt_ai_os.topic_engine.reasoning_engine
+OBJECT ID: 4470231728
+selected_topic: Đường hàn SAW bị rỗ khí
+===================================
+========== RUNTIME TRACE ==========
+step: ContentPlanner.plan
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/content_planner.py
+CLASS: ContentPlanner
+FUNCTION: plan
+LINE NUMBER: 30
+MODULE NAME: hgpt_ai_os.topic_engine.content_planner
+OBJECT ID: 4470231824
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: facebook
+===================================
+========== RUNTIME TRACE ==========
+step: Writer selected
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: FacebookWriter
+FUNCTION: generate
+LINE NUMBER: 95
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4470231920
+selected_topic: Đường hàn SAW bị rỗ khí
+selected_domain: Welding
+selected_playbook: SAW_POROSITY
+writer_selected: facebook
+writer_class: FacebookWriter
+knowledge_count: 3
+===================================
+========== RUNTIME TRACE ==========
+step: Facebook Writer
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/facebook_writer.py
+CLASS: FacebookWriter
+FUNCTION: write
+LINE NUMBER: 11
+MODULE NAME: hgpt_ai_os.topic_engine.writers.facebook_writer
+OBJECT ID: 4470231920
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: facebook
+writer_class: FacebookWriter
+===================================
+========== RUNTIME TRACE ==========
+step: Generator.generate
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+CLASS: ContentGenerator
+FUNCTION: generate
+LINE NUMBER: 395
+MODULE NAME: hgpt_ai_os.content.generator
+OBJECT ID: 4469135200
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: tiktok
+===================================
+***** FALLBACK *****
+reason: Free Desktop mode or AI provider unavailable; using built-in generator.
+location: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+line: 414
+========== RUNTIME TRACE ==========
+step: Generator._generate_with_builtin
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+CLASS: ContentGenerator
+FUNCTION: _generate_with_builtin
+LINE NUMBER: 576
+MODULE NAME: hgpt_ai_os.content.generator
+OBJECT ID: 4469135200
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: tiktok
+===================================
+========== RUNTIME TRACE ==========
+step: Topic Engine selected
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: _generate_with_builtin
+LINE NUMBER: 593
+MODULE NAME: hgpt_ai_os.content.generator
+OBJECT ID: 4469504192
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: tiktok
+writer_class: TopicIntelligenceEngine
+===================================
+========== RUNTIME TRACE ==========
+step: TopicIntelligenceEngine.generate
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: generate
+LINE NUMBER: 91
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4469504192
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: tiktok
+===================================
+========== RUNTIME TRACE ==========
+step: TopicIntelligenceEngine.reason
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: reason
+LINE NUMBER: 58
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4469504192
+selected_topic: Đường hàn SAW bị rỗ khí
+===================================
+========== RUNTIME TRACE ==========
+step: ReasoningEngine.reason
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/reasoning_engine.py
+CLASS: ReasoningEngine
+FUNCTION: reason
+LINE NUMBER: 47
+MODULE NAME: hgpt_ai_os.topic_engine.reasoning_engine
+OBJECT ID: 4470231728
+selected_topic: Đường hàn SAW bị rỗ khí
+===================================
+========== RUNTIME TRACE ==========
+step: ContentPlanner.plan
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/content_planner.py
+CLASS: ContentPlanner
+FUNCTION: plan
+LINE NUMBER: 30
+MODULE NAME: hgpt_ai_os.topic_engine.content_planner
+OBJECT ID: 4470231824
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: tiktok
+===================================
+========== RUNTIME TRACE ==========
+step: Writer selected
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: TikTokWriter
+FUNCTION: generate
+LINE NUMBER: 95
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4470232016
+selected_topic: Đường hàn SAW bị rỗ khí
+selected_domain: Welding
+selected_playbook: SAW_POROSITY
+writer_selected: tiktok
+writer_class: TikTokWriter
+knowledge_count: 3
+===================================
+========== RUNTIME TRACE ==========
+step: TikTok Writer
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/tiktok_writer.py
+CLASS: TikTokWriter
+FUNCTION: write
+LINE NUMBER: 11
+MODULE NAME: hgpt_ai_os.topic_engine.writers.tiktok_writer
+OBJECT ID: 4470232016
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: tiktok
+writer_class: TikTokWriter
+===================================
+========== RUNTIME TRACE ==========
+step: Generator.generate
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+CLASS: ContentGenerator
+FUNCTION: generate
+LINE NUMBER: 395
+MODULE NAME: hgpt_ai_os.content.generator
+OBJECT ID: 4469135200
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: image
+===================================
+***** FALLBACK *****
+reason: Free Desktop mode or AI provider unavailable; using built-in generator.
+location: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+line: 414
+========== RUNTIME TRACE ==========
+step: Generator._generate_with_builtin
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+CLASS: ContentGenerator
+FUNCTION: _generate_with_builtin
+LINE NUMBER: 576
+MODULE NAME: hgpt_ai_os.content.generator
+OBJECT ID: 4469135200
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: image_prompt
+===================================
+========== RUNTIME TRACE ==========
+step: Topic Engine selected
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: _generate_with_builtin
+LINE NUMBER: 593
+MODULE NAME: hgpt_ai_os.content.generator
+OBJECT ID: 4469504192
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: image_prompt
+writer_class: TopicIntelligenceEngine
+===================================
+========== RUNTIME TRACE ==========
+step: TopicIntelligenceEngine.generate
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: generate
+LINE NUMBER: 91
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4469504192
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: image_prompt
+===================================
+========== RUNTIME TRACE ==========
+step: TopicIntelligenceEngine.reason
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: reason
+LINE NUMBER: 58
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4469504192
+selected_topic: Đường hàn SAW bị rỗ khí
+===================================
+========== RUNTIME TRACE ==========
+step: ReasoningEngine.reason
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/reasoning_engine.py
+CLASS: ReasoningEngine
+FUNCTION: reason
+LINE NUMBER: 47
+MODULE NAME: hgpt_ai_os.topic_engine.reasoning_engine
+OBJECT ID: 4470231728
+selected_topic: Đường hàn SAW bị rỗ khí
+===================================
+========== RUNTIME TRACE ==========
+step: ContentPlanner.plan
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/content_planner.py
+CLASS: ContentPlanner
+FUNCTION: plan
+LINE NUMBER: 30
+MODULE NAME: hgpt_ai_os.topic_engine.content_planner
+OBJECT ID: 4470231824
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: image_prompt
+===================================
+========== RUNTIME TRACE ==========
+step: Writer selected
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: ImagePromptWriter
+FUNCTION: generate
+LINE NUMBER: 95
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4470232208
+selected_topic: Đường hàn SAW bị rỗ khí
+selected_domain: Welding
+selected_playbook: SAW_POROSITY
+writer_selected: image
+writer_class: ImagePromptWriter
+knowledge_count: 3
+===================================
+========== RUNTIME TRACE ==========
+step: Image Prompt Writer
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/image_writer.py
+CLASS: ImagePromptWriter
+FUNCTION: write
+LINE NUMBER: 83
+MODULE NAME: hgpt_ai_os.topic_engine.writers.image_writer
+OBJECT ID: 4470232208
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: image
+writer_class: ImagePromptWriter
+===================================
+========== RUNTIME TRACE ==========
+step: Generator.generate
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+CLASS: ContentGenerator
+FUNCTION: generate
+LINE NUMBER: 395
+MODULE NAME: hgpt_ai_os.content.generator
+OBJECT ID: 4469135200
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: video
+===================================
+***** FALLBACK *****
+reason: Free Desktop mode or AI provider unavailable; using built-in generator.
+location: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+line: 414
+========== RUNTIME TRACE ==========
+step: Generator._generate_with_builtin
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+CLASS: ContentGenerator
+FUNCTION: _generate_with_builtin
+LINE NUMBER: 576
+MODULE NAME: hgpt_ai_os.content.generator
+OBJECT ID: 4469135200
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: video_prompt
+===================================
+========== RUNTIME TRACE ==========
+step: Topic Engine selected
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: _generate_with_builtin
+LINE NUMBER: 593
+MODULE NAME: hgpt_ai_os.content.generator
+OBJECT ID: 4469504192
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: video_prompt
+writer_class: TopicIntelligenceEngine
+===================================
+========== RUNTIME TRACE ==========
+step: TopicIntelligenceEngine.generate
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: generate
+LINE NUMBER: 91
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4469504192
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: video_prompt
+===================================
+========== RUNTIME TRACE ==========
+step: TopicIntelligenceEngine.reason
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: reason
+LINE NUMBER: 58
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4469504192
+selected_topic: Đường hàn SAW bị rỗ khí
+===================================
+========== RUNTIME TRACE ==========
+step: ReasoningEngine.reason
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/reasoning_engine.py
+CLASS: ReasoningEngine
+FUNCTION: reason
+LINE NUMBER: 47
+MODULE NAME: hgpt_ai_os.topic_engine.reasoning_engine
+OBJECT ID: 4470231728
+selected_topic: Đường hàn SAW bị rỗ khí
+===================================
+========== RUNTIME TRACE ==========
+step: ContentPlanner.plan
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/content_planner.py
+CLASS: ContentPlanner
+FUNCTION: plan
+LINE NUMBER: 30
+MODULE NAME: hgpt_ai_os.topic_engine.content_planner
+OBJECT ID: 4470231824
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: video_prompt
+===================================
+========== RUNTIME TRACE ==========
+step: Writer selected
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: VideoPromptWriter
+FUNCTION: generate
+LINE NUMBER: 95
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4470232112
+selected_topic: Đường hàn SAW bị rỗ khí
+selected_domain: Welding
+selected_playbook: SAW_POROSITY
+writer_selected: video
+writer_class: VideoPromptWriter
+knowledge_count: 3
+===================================
+========== RUNTIME TRACE ==========
+step: Video Prompt Writer
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/video_writer.py
+CLASS: VideoPromptWriter
+FUNCTION: write
+LINE NUMBER: 11
+MODULE NAME: hgpt_ai_os.topic_engine.writers.video_writer
+OBJECT ID: 4470232112
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: video
+writer_class: VideoPromptWriter
+===================================
+========== RUNTIME TRACE ==========
+step: Generator.generate
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+CLASS: ContentGenerator
+FUNCTION: generate
+LINE NUMBER: 395
+MODULE NAME: hgpt_ai_os.content.generator
+OBJECT ID: 4469135200
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: seo
+===================================
+***** FALLBACK *****
+reason: Free Desktop mode or AI provider unavailable; using built-in generator.
+location: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+line: 414
+========== RUNTIME TRACE ==========
+step: Generator._generate_with_builtin
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+CLASS: ContentGenerator
+FUNCTION: _generate_with_builtin
+LINE NUMBER: 576
+MODULE NAME: hgpt_ai_os.content.generator
+OBJECT ID: 4469135200
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: seo
+===================================
+========== RUNTIME TRACE ==========
+step: Topic Engine selected
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: _generate_with_builtin
+LINE NUMBER: 593
+MODULE NAME: hgpt_ai_os.content.generator
+OBJECT ID: 4469504192
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: seo
+writer_class: TopicIntelligenceEngine
+===================================
+========== RUNTIME TRACE ==========
+step: TopicIntelligenceEngine.generate
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: generate
+LINE NUMBER: 91
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4469504192
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: seo
+===================================
+========== RUNTIME TRACE ==========
+step: TopicIntelligenceEngine.reason
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: reason
+LINE NUMBER: 58
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4469504192
+selected_topic: Đường hàn SAW bị rỗ khí
+===================================
+========== RUNTIME TRACE ==========
+step: ReasoningEngine.reason
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/reasoning_engine.py
+CLASS: ReasoningEngine
+FUNCTION: reason
+LINE NUMBER: 47
+MODULE NAME: hgpt_ai_os.topic_engine.reasoning_engine
+OBJECT ID: 4470231728
+selected_topic: Đường hàn SAW bị rỗ khí
+===================================
+========== RUNTIME TRACE ==========
+step: ContentPlanner.plan
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/content_planner.py
+CLASS: ContentPlanner
+FUNCTION: plan
+LINE NUMBER: 30
+MODULE NAME: hgpt_ai_os.topic_engine.content_planner
+OBJECT ID: 4470231824
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: seo
+===================================
+========== RUNTIME TRACE ==========
+step: Writer selected
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: SeoWriter
+FUNCTION: generate
+LINE NUMBER: 95
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4470232304
+selected_topic: Đường hàn SAW bị rỗ khí
+selected_domain: Welding
+selected_playbook: SAW_POROSITY
+writer_selected: seo
+writer_class: SeoWriter
+knowledge_count: 3
+===================================
+========== RUNTIME TRACE ==========
+step: SEO Writer
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/seo_writer.py
+CLASS: SeoWriter
+FUNCTION: write
+LINE NUMBER: 14
+MODULE NAME: hgpt_ai_os.topic_engine.writers.seo_writer
+OBJECT ID: 4470232304
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: seo
+writer_class: SeoWriter
+===================================
+========== RUNTIME TRACE ==========
+step: Engineering Writer
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/engineering_document_writer.py
+CLASS: EngineeringDocumentWriter
+FUNCTION: write
+LINE NUMBER: 167
+MODULE NAME: hgpt_ai_os.topic_engine.writers.engineering_document_writer
+OBJECT ID: 4470232400
+selected_topic: Đường hàn SAW bị rỗ khí
+selected_domain: Welding
+selected_playbook: SAW_POROSITY
+writer_selected: seo
+writer_class: EngineeringDocumentWriter
+knowledge_count: 3
+===================================
+========== RUNTIME TRACE ==========
+step: TopicIntelligenceEngine.generate
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: generate
+LINE NUMBER: 91
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4469504192
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: hashtags
+===================================
+========== RUNTIME TRACE ==========
+step: TopicIntelligenceEngine.reason
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: reason
+LINE NUMBER: 58
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4469504192
+selected_topic: Đường hàn SAW bị rỗ khí
+===================================
+========== RUNTIME TRACE ==========
+step: ReasoningEngine.reason
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/reasoning_engine.py
+CLASS: ReasoningEngine
+FUNCTION: reason
+LINE NUMBER: 47
+MODULE NAME: hgpt_ai_os.topic_engine.reasoning_engine
+OBJECT ID: 4470231728
+selected_topic: Đường hàn SAW bị rỗ khí
+===================================
+========== RUNTIME TRACE ==========
+step: ContentPlanner.plan
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/content_planner.py
+CLASS: ContentPlanner
+FUNCTION: plan
+LINE NUMBER: 30
+MODULE NAME: hgpt_ai_os.topic_engine.content_planner
+OBJECT ID: 4470231824
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: hashtags
+===================================
+========== RUNTIME TRACE ==========
+step: Writer selected
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: ChannelWriter
+FUNCTION: generate
+LINE NUMBER: 95
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4470231344
+selected_topic: Đường hàn SAW bị rỗ khí
+selected_domain: Welding
+selected_playbook: SAW_POROSITY
+writer_selected: hashtags
+writer_class: ChannelWriter
+knowledge_count: 3
+===================================
+========== RUNTIME TRACE ==========
+step: Channel Writer
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/channel_writer.py
+CLASS: ChannelWriter
+FUNCTION: write
+LINE NUMBER: 593
+MODULE NAME: hgpt_ai_os.topic_engine.writers.channel_writer
+OBJECT ID: 4470231344
+selected_topic: Đường hàn SAW bị rỗ khí
+selected_domain: Welding
+selected_playbook: SAW_POROSITY
+writer_selected: hashtags
+writer_class: ChannelWriter
+knowledge_count: 3
+===================================
+========== RUNTIME TRACE ==========
+step: Generator.generate
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+CLASS: ContentGenerator
+FUNCTION: generate
+LINE NUMBER: 395
+MODULE NAME: hgpt_ai_os.content.generator
+OBJECT ID: 4469135200
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: checklist
+===================================
+***** FALLBACK *****
+reason: Free Desktop mode or AI provider unavailable; using built-in generator.
+location: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+line: 414
+========== RUNTIME TRACE ==========
+step: Generator._generate_with_builtin
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+CLASS: ContentGenerator
+FUNCTION: _generate_with_builtin
+LINE NUMBER: 576
+MODULE NAME: hgpt_ai_os.content.generator
+OBJECT ID: 4469135200
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: checklist
+===================================
+========== RUNTIME TRACE ==========
+step: Topic Engine selected
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/generator.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: _generate_with_builtin
+LINE NUMBER: 593
+MODULE NAME: hgpt_ai_os.content.generator
+OBJECT ID: 4469504192
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: checklist
+writer_class: TopicIntelligenceEngine
+===================================
+========== RUNTIME TRACE ==========
+step: TopicIntelligenceEngine.generate
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: generate
+LINE NUMBER: 91
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4469504192
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: checklist
+===================================
+========== RUNTIME TRACE ==========
+step: TopicIntelligenceEngine.reason
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: TopicIntelligenceEngine
+FUNCTION: reason
+LINE NUMBER: 58
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4469504192
+selected_topic: Đường hàn SAW bị rỗ khí
+===================================
+========== RUNTIME TRACE ==========
+step: ReasoningEngine.reason
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/reasoning_engine.py
+CLASS: ReasoningEngine
+FUNCTION: reason
+LINE NUMBER: 47
+MODULE NAME: hgpt_ai_os.topic_engine.reasoning_engine
+OBJECT ID: 4470231728
+selected_topic: Đường hàn SAW bị rỗ khí
+===================================
+========== RUNTIME TRACE ==========
+step: ContentPlanner.plan
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/content_planner.py
+CLASS: ContentPlanner
+FUNCTION: plan
+LINE NUMBER: 30
+MODULE NAME: hgpt_ai_os.topic_engine.content_planner
+OBJECT ID: 4470231824
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: checklist
+===================================
+========== RUNTIME TRACE ==========
+step: Writer selected
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/__init__.py
+CLASS: ChecklistWriter
+FUNCTION: generate
+LINE NUMBER: 95
+MODULE NAME: hgpt_ai_os.topic_engine
+OBJECT ID: 4470232592
+selected_topic: Đường hàn SAW bị rỗ khí
+selected_domain: Welding
+selected_playbook: SAW_POROSITY
+writer_selected: checklist
+writer_class: ChecklistWriter
+knowledge_count: 3
+===================================
+========== RUNTIME TRACE ==========
+step: Checklist Writer
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/topic_engine/writers/checklist_writer.py
+CLASS: ChecklistWriter
+FUNCTION: write
+LINE NUMBER: 11
+MODULE NAME: hgpt_ai_os.topic_engine.writers.checklist_writer
+OBJECT ID: 4470232592
+selected_topic: Đường hàn SAW bị rỗ khí
+writer_selected: checklist
+writer_class: ChecklistWriter
+===================================
+[06/08] Prepare Output Folder            PASS
+========== RUNTIME TRACE ==========
+step: Output folder selected
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/production.py
+CLASS: 
+FUNCTION: build_outputs
+LINE NUMBER: 107
+MODULE NAME: __main__
+OBJECT ID: n/a
+selected_topic: Đường hàn SAW bị rỗ khí
+selected_domain: Welding
+selected_playbook: SAW_POROSITY
+knowledge_count: 2
+output_file: /private/tmp/lucid_runtime_home/Documents/LUCID/outputs/marketing/Day001
+===================================
+[07/08] Export DOCX                      PASS
+========== RUNTIME TRACE ==========
+step: DOCX Writer
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/production.py
+CLASS: DocxExporter
+FUNCTION: build_outputs
+LINE NUMBER: 120
+MODULE NAME: __main__
+OBJECT ID: 4475979200
+selected_topic: Đường hàn SAW bị rỗ khí
+output_file: /private/tmp/lucid_runtime_home/Documents/LUCID/outputs/marketing/Day001/facebook.docx
+===================================
+========== RUNTIME TRACE ==========
+step: DOCX Writer.save
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/export/docx_exporter.py
+CLASS: DocxExporter
+FUNCTION: save
+LINE NUMBER: 38
+MODULE NAME: hgpt_ai_os.content.export.docx_exporter
+OBJECT ID: 4475979200
+selected_topic: Đường hàn SAW bị rỗ khí
+output_file: /private/tmp/lucid_runtime_home/Documents/LUCID/outputs/marketing/Day001/facebook.docx
+===================================
+========== RUNTIME TRACE ==========
+step: DOCX Writer
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/production.py
+CLASS: DocxExporter
+FUNCTION: build_outputs
+LINE NUMBER: 120
+MODULE NAME: __main__
+OBJECT ID: 4475979200
+selected_topic: Đường hàn SAW bị rỗ khí
+output_file: /private/tmp/lucid_runtime_home/Documents/LUCID/outputs/marketing/Day001/tiktok.docx
+===================================
+========== RUNTIME TRACE ==========
+step: DOCX Writer.save
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/export/docx_exporter.py
+CLASS: DocxExporter
+FUNCTION: save
+LINE NUMBER: 38
+MODULE NAME: hgpt_ai_os.content.export.docx_exporter
+OBJECT ID: 4475979200
+selected_topic: Đường hàn SAW bị rỗ khí
+output_file: /private/tmp/lucid_runtime_home/Documents/LUCID/outputs/marketing/Day001/tiktok.docx
+===================================
+========== RUNTIME TRACE ==========
+step: DOCX Writer
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/production.py
+CLASS: DocxExporter
+FUNCTION: build_outputs
+LINE NUMBER: 120
+MODULE NAME: __main__
+OBJECT ID: 4475979200
+selected_topic: Đường hàn SAW bị rỗ khí
+output_file: /private/tmp/lucid_runtime_home/Documents/LUCID/outputs/marketing/Day001/image_prompt.docx
+===================================
+========== RUNTIME TRACE ==========
+step: DOCX Writer.save
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/export/docx_exporter.py
+CLASS: DocxExporter
+FUNCTION: save
+LINE NUMBER: 38
+MODULE NAME: hgpt_ai_os.content.export.docx_exporter
+OBJECT ID: 4475979200
+selected_topic: Đường hàn SAW bị rỗ khí
+output_file: /private/tmp/lucid_runtime_home/Documents/LUCID/outputs/marketing/Day001/image_prompt.docx
+===================================
+========== RUNTIME TRACE ==========
+step: DOCX Writer
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/production.py
+CLASS: DocxExporter
+FUNCTION: build_outputs
+LINE NUMBER: 120
+MODULE NAME: __main__
+OBJECT ID: 4475979200
+selected_topic: Đường hàn SAW bị rỗ khí
+output_file: /private/tmp/lucid_runtime_home/Documents/LUCID/outputs/marketing/Day001/video_prompt.docxNo application knows how to open URL file:///tmp/lucid_runtime_home/Documents/LUCID/outputs/marketing/Day001/ (Error Domain=NSOSStatusErrorDomain Code=-10661 "(null)" UserInfo={_LSLine=1567, _LSFunction=runEvaluator}).
+
+===================================
+========== RUNTIME TRACE ==========
+step: DOCX Writer.save
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/export/docx_exporter.py
+CLASS: DocxExporter
+FUNCTION: save
+LINE NUMBER: 38
+MODULE NAME: hgpt_ai_os.content.export.docx_exporter
+OBJECT ID: 4475979200
+selected_topic: Đường hàn SAW bị rỗ khí
+output_file: /private/tmp/lucid_runtime_home/Documents/LUCID/outputs/marketing/Day001/video_prompt.docx
+===================================
+========== RUNTIME TRACE ==========
+step: DOCX Writer
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/production.py
+CLASS: DocxExporter
+FUNCTION: build_outputs
+LINE NUMBER: 120
+MODULE NAME: __main__
+OBJECT ID: 4475979200
+selected_topic: Đường hàn SAW bị rỗ khí
+output_file: /private/tmp/lucid_runtime_home/Documents/LUCID/outputs/marketing/Day001/seo.docx
+===================================
+========== RUNTIME TRACE ==========
+step: DOCX Writer.save
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/export/docx_exporter.py
+CLASS: DocxExporter
+FUNCTION: save
+LINE NUMBER: 38
+MODULE NAME: hgpt_ai_os.content.export.docx_exporter
+OBJECT ID: 4475979200
+selected_topic: Đường hàn SAW bị rỗ khí
+output_file: /private/tmp/lucid_runtime_home/Documents/LUCID/outputs/marketing/Day001/seo.docx
+===================================
+========== RUNTIME TRACE ==========
+step: DOCX Writer
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/production.py
+CLASS: DocxExporter
+FUNCTION: build_outputs
+LINE NUMBER: 120
+MODULE NAME: __main__
+OBJECT ID: 4475979200
+selected_topic: Đường hàn SAW bị rỗ khí
+output_file: /private/tmp/lucid_runtime_home/Documents/LUCID/outputs/marketing/Day001/hashtags.docx
+===================================
+========== RUNTIME TRACE ==========
+step: DOCX Writer.save
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/export/docx_exporter.py
+CLASS: DocxExporter
+FUNCTION: save
+LINE NUMBER: 38
+MODULE NAME: hgpt_ai_os.content.export.docx_exporter
+OBJECT ID: 4475979200
+selected_topic: Đường hàn SAW bị rỗ khí
+output_file: /private/tmp/lucid_runtime_home/Documents/LUCID/outputs/marketing/Day001/hashtags.docx
+===================================
+========== RUNTIME TRACE ==========
+step: DOCX Writer
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/production.py
+CLASS: DocxExporter
+FUNCTION: build_outputs
+LINE NUMBER: 120
+MODULE NAME: __main__
+OBJECT ID: 4475979200
+selected_topic: Đường hàn SAW bị rỗ khí
+output_file: /private/tmp/lucid_runtime_home/Documents/LUCID/outputs/marketing/Day001/approval_checklist.docx
+===================================
+========== RUNTIME TRACE ==========
+step: DOCX Writer.save
+FULL FILE PATH: /Users/macos/Desktop/HGPT_AI_OS_CLEAN/src/hgpt_ai_os/content/export/docx_exporter.py
+CLASS: DocxExporter
+FUNCTION: save
+LINE NUMBER: 38
+MODULE NAME: hgpt_ai_os.content.export.docx_exporter
+OBJECT ID: 4475979200
+selected_topic: Đường hàn SAW bị rỗ khí
+output_file: /private/tmp/lucid_runtime_home/Documents/LUCID/outputs/marketing/Day001/approval_checklist.docx
+===================================
+[08/08] Production Completed             PASS
+------------------------------------------------------------
+STATUS    : PRODUCTION SUCCESS
+Knowledge : 2 item(s)
+Output    : /private/tmp/lucid_runtime_home/Documents/LUCID/outputs/marketing/Day001
+Elapsed   : 1.04 seconds
+============================================================

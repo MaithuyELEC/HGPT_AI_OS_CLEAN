@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from hgpt_ai_os.diagnostics import instrument_runtime_tracing, module_loaded, trace_call
+
 from .reasoning_engine import ReasoningObject
 
 
@@ -25,6 +27,7 @@ class ContentPlanner:
     }
 
     def plan(self, reasoning: ReasoningObject, channel: str) -> ContentPlan:
+        trace_call("ContentPlanner.plan", self, selected_topic=reasoning.topic, writer_selected=channel)
         key = self.normalize_channel(channel)
         primary = (
             reasoning.entities.get("Defect")
@@ -47,3 +50,7 @@ class ContentPlanner:
         if value in self._SECTIONS:
             return value
         return "channel"
+
+
+instrument_runtime_tracing(globals())
+module_loaded(__name__, __file__, ContentPlanner)

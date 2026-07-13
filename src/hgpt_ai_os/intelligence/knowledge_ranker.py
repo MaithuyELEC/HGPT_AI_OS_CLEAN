@@ -3,6 +3,7 @@ from __future__ import annotations
 import re
 import unicodedata
 
+from hgpt_ai_os.diagnostics import instrument_runtime_tracing
 from hgpt_ai_os.intelligence.topic_analyzer import TopicAnalysis
 from hgpt_ai_os.knowledge.models import KnowledgePackage, KnowledgeResult
 
@@ -101,3 +102,6 @@ class KnowledgeRanker:
         value = "".join(char for char in value if not unicodedata.combining(char))
         value = re.sub(r"[-_,.:;!?()\[\]{}\"']+", " ", value)
         return re.sub(r"\s+", " ", value).strip()
+
+
+instrument_runtime_tracing(globals())

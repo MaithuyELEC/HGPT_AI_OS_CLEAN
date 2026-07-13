@@ -16,6 +16,7 @@ from hgpt_ai_os.content.factory.builder_factory import BuilderFactory
 from hgpt_ai_os.content.factory.general_domain import GeneralDomainRouter
 from hgpt_ai_os.content.factory.topic_aware import TopicClassifier
 from hgpt_ai_os.content.template_engine import TemplateEngine
+from hgpt_ai_os.diagnostics import fallback, instrument_runtime_tracing, module_loaded, trace_call
 from hgpt_ai_os.topic_engine import (
     TopicContext,
     TopicIntelligenceEngine,
@@ -354,6 +355,7 @@ class ContentGenerator:
     _recent_structures: deque[str] = deque(maxlen=80)
 
     def __init__(self, ai: LucidAI | None = None):
+        trace_call("Generator.__init__", self)
         self.template = TemplateEngine()
         validation = validate_ai_provider_config()
         self.free_desktop_mode = validation.config.free_desktop_mode
@@ -366,6 +368,7 @@ class ContentGenerator:
             try:
                 self.ai = LucidAI()
             except Exception:
+                fallback("AI initialization failed; switching to offline topic intelligence.")
                 logger.exception(
                     "AI initialization failed; switching to offline topic intelligence."
                 )
@@ -389,6 +392,7 @@ class ContentGenerator:
         return self._topic_context
 
     def generate(self, platform: str, topic: str, context: str = ""):
+        trace_call("Generator.generate", self, selected_topic=topic, writer_selected=platform)
         if topic:
             self._last_topic = topic
             self._last_context = context
@@ -407,6 +411,7 @@ class ContentGenerator:
         )
         prompt = self._build_prompt(topic, context, spec, variation, topic_context=topic_context)
         if self.free_desktop_mode or self.ai is None:
+            fallback("Free Desktop mode or AI provider unavailable; using built-in generator.")
             return self._generate_with_builtin(spec, topic, context, topic_context=topic_context)
         return self._generate_with_llm(prompt, spec, topic, context, variation, topic_context=topic_context)
 
@@ -504,6 +509,7 @@ class ContentGenerator:
             try:
                 response = self.ai.generate(system_prompt, user_prompt)
             except Exception:
+                fallback(f"AI generation raised for {spec.key}; switching to offline topic intelligence.")
                 logger.exception(
                     "AI generation raised for %s, switching to offline topic intelligence.",
                     spec.key,
@@ -511,6 +517,7 @@ class ContentGenerator:
                 return self._generate_with_builtin(spec, topic, context, topic_context=topic_context)
 
             if isinstance(response, AIProviderError):
+                fallback(f"AIProviderError for {spec.key}; switching to offline topic intelligence.")
                 logger.info(
                     "AI unavailable for %s, switching to offline topic intelligence.",
                     spec.key,
@@ -521,6 +528,7 @@ class ContentGenerator:
             metadata: dict[str, Any] = getattr(response, "metadata", {}) or {}
 
             if metadata.get("mock"):
+                fallback(f"Mock provider detected for {spec.key}; switching to offline topic intelligence.")
                 logger.info(
                     "Mock provider detected for %s, switching to offline topic intelligence.",
                     spec.key,
@@ -529,6 +537,7 @@ class ContentGenerator:
 
             final_text = self._validate_response(content)
             if not final_text:
+                fallback(f"Invalid or empty AI response for {spec.key}; switching to offline topic intelligence.")
                 logger.info(
                     "Invalid or empty AI response for %s, switching to offline topic intelligence.",
                     spec.key,
@@ -564,6 +573,7 @@ class ContentGenerator:
         context: str,
         topic_context: TopicContext | None = None,
     ) -> str:
+        trace_call("Generator._generate_with_builtin", self, selected_topic=topic, writer_selected=spec.key)
         logger.info("Mode: Offline Topic Intelligence")
         logger.info("Using offline topic intelligence engine for %s", spec.key)
         if self._uses_general_builder(topic):
@@ -572,7 +582,23 @@ class ContentGenerator:
                 "image_prompt": "image",
                 "video_prompt": "video",
             }.get(spec.key, spec.key)
+            trace_call(
+                "General Builder selected",
+                self,
+                selected_topic=topic,
+                writer_selected=builder_key,
+                writer_class=BuilderFactory.__name__,
+                selected_builder=builder_key,
+            )
             return BuilderFactory.create(builder_key).build(topic, context)
+        trace_call(
+            "Topic Engine selected",
+            self.topic_engine,
+            selected_topic=topic,
+            writer_selected=spec.key,
+            writer_class=self.topic_engine.__class__.__name__,
+            selected_builder=self.topic_engine.__class__.__name__,
+        )
         return self.topic_engine.generate(topic, spec.key, context, topic_context=topic_context)
 
     def _uses_general_builder(self, topic: str) -> bool:
@@ -694,3 +720,7 @@ class ContentGenerator:
                 "choose a structure that fits the requested output type and differs from prior outputs",
             ),
         )
+
+
+instrument_runtime_tracing(globals())
+module_loaded(__name__, __file__, ContentGenerator)

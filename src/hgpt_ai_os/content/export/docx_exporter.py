@@ -3,6 +3,8 @@ import re
 
 from docx import Document
 
+from hgpt_ai_os.diagnostics import instrument_runtime_tracing, module_loaded, trace_call
+
 
 class DocxExporter:
     _HEADING_RE = re.compile(r"^(#{1,3})\s+(.+)$")
@@ -33,6 +35,7 @@ class DocxExporter:
     )
 
     def save(self, path: Path, title: str, content: str):
+        trace_call("DOCX Writer.save", self, selected_topic=title, output_file=path)
 
         path.parent.mkdir(parents=True, exist_ok=True)
         self.validate_content(str(content))
@@ -42,6 +45,7 @@ class DocxExporter:
         doc.add_heading(title, level=1)
         self._add_markdown_content(doc, str(content))
         doc.save(path)
+        trace_call("DOCX save completed", self, selected_topic=title, output_file=path, final_docx_writer=self.__class__.__name__)
 
     def validate_content(self, content: str) -> None:
         if content.encode("utf-8").decode("utf-8") != content:
@@ -105,3 +109,7 @@ class DocxExporter:
 
         if position < len(text):
             paragraph.add_run(text[position:])
+
+
+instrument_runtime_tracing(globals())
+module_loaded(__name__, __file__, DocxExporter)

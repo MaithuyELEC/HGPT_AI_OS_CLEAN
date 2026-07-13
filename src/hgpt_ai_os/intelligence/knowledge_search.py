@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from hgpt_ai_os.diagnostics import instrument_runtime_tracing
 from hgpt_ai_os.intelligence.topic_analyzer import TopicAnalysis
 from hgpt_ai_os.knowledge.retrieval_pipeline import (
     KNOWLEDGE_THRESHOLD,
@@ -77,3 +78,6 @@ class KnowledgeSearch:
             return
 
         print("No relevant knowledge found.")
+
+
+instrument_runtime_tracing(globals())

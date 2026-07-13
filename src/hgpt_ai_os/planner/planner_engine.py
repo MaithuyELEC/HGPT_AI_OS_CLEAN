@@ -1,6 +1,7 @@
 from openpyxl import load_workbook
 from pathlib import Path
 
+from hgpt_ai_os.diagnostics import instrument_runtime_tracing
 from hgpt_ai_os.planner.loader import PlannerLoader
 from hgpt_ai_os.planner.validator import PlannerValidator
 
@@ -57,3 +58,6 @@ class PlannerEngine:
         ws = wb["MarketingPlan"]
         ws.cell(row=row, column=5).value = status
         wb.save(self.planner)
+
+
+instrument_runtime_tracing(globals())

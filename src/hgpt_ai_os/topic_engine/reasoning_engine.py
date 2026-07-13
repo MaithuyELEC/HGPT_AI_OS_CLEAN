@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from hgpt_ai_os.diagnostics import instrument_runtime_tracing, module_loaded, trace_call
+
 from .engineering_context import EngineeringContext
 from .entity_extractor import EntityExtraction
 from .intent_detector import IntentResult
@@ -42,6 +44,7 @@ class ReasoningEngine:
         knowledge_facts: tuple[KnowledgeFact, ...],
         topic_context: TopicContext,
     ) -> ReasoningObject:
+        trace_call("ReasoningEngine.reason", self, selected_topic=parsed.original)
         controls = engineering_context.graph.get("Repair / Control", ()) or problem.root_cause_candidates
         verification = engineering_context.graph.get("Inspection", ()) or ("visual evidence", "measurement record", "review approval")
         evidence = tuple(
@@ -99,3 +102,7 @@ class ReasoningEngine:
             controls=tuple(dict.fromkeys(controls)),
             verification=tuple(dict.fromkeys(verification)),
         )
+
+
+instrument_runtime_tracing(globals())
+module_loaded(__name__, __file__, ReasoningEngine)

@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from hgpt_ai_os.diagnostics import instrument_runtime_tracing
+
 from .engineering_context import EngineeringContext
 from .entity_extractor import EntityExtraction
 from .intent_detector import IntentResult
@@ -126,3 +128,6 @@ class ProblemAnalyzer:
             likelihood=likelihood,
             severity=severity,
         )
+
+
+instrument_runtime_tracing(globals())

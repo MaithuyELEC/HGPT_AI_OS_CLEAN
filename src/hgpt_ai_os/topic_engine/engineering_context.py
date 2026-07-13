@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from hgpt_ai_os.diagnostics import instrument_runtime_tracing
+
 from .entity_extractor import EntityExtraction
 
 
@@ -53,3 +55,6 @@ class EngineeringContextBuilder:
         subject = ", ".join(processes or defects or failures or machines or ("engineering topic",))
         summary = f"{topic} is treated as a {subject} case requiring cause, impact, control, and verification."
         return EngineeringContext(graph, summary)
+
+
+instrument_runtime_tracing(globals())

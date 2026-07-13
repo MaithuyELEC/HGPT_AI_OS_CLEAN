@@ -1,11 +1,19 @@
 from __future__ import annotations
 
+from hgpt_ai_os.diagnostics import instrument_runtime_tracing, module_loaded, trace_call
 from hgpt_ai_os.topic_engine.content_planner import ContentPlan
 from hgpt_ai_os.topic_engine.reasoning_engine import ReasoningObject
-from hgpt_ai_os.topic_engine.writers.channel_writer import playbook_for_reasoning
+from hgpt_ai_os.topic_engine.writers.channel_writer import playbook_for_reasoning, sanitize_user_output
 
 
 def _image_details(key: str) -> tuple[str, str, str, str]:
+    if key == "COMPRESSOR_LOW_PRESSURE":
+        return (
+            "máy nén khí công nghiệp, đồng hồ áp, lọc gió, lọc tách dầu, van và đường ống khí có điểm rò được đánh dấu",
+            "phòng máy nén khí trong nhà xưởng, ánh sáng rõ, có bình chứa, header khí và khu vực cô lập an toàn",
+            "kỹ thuật viên mặc PPE dùng đồng hồ áp và thiết bị dò rò kiểm tra cụm máy nén",
+            "máy nén khí, đồng hồ áp, ống khí, điểm rò, lọc, van, PPE, biển LOTO, phòng máy",
+        )
     if key == "SAW_POROSITY":
         return (
             "dây chuyền hàn SAW, xe hàn, lớp thuốc hàn, đường hàn có rỗ khí, mũ hàn và đầu dò UT",
@@ -19,6 +27,34 @@ def _image_details(key: str) -> tuple[str, str, str, str]:
             "xưởng thép với bảng dụng cụ 5S, khu sửa dụng cụ điện và biển an toàn",
             "kỹ thuật viên mặc bảo hộ tháo kiểm tra máy mài, vệ sinh bụi và ghi nhãn tình trạng",
             "bàn bảo trì, máy mài, chổi than, bạc đạn, bụi, rotor/stator, kỹ thuật viên, bảo hộ, bảng dụng cụ 5S, xưởng thép",
+        )
+    if key == "WIRE_ROPE_FAILURE":
+        return (
+            "cầu trục dừng an toàn, cáp tải bị đứt sợi, puly, tang cuốn, móc cẩu và thước đo cáp",
+            "xưởng cơ khí có khu vực nâng hạ được rào chắn, tải đã hạ xuống giá đỡ và treo thẻ LOTO",
+            "kỹ sư bảo trì kiểm tra cáp bằng thước đo, đánh dấu sợi đứt và ghi ảnh hiện trường",
+            "cầu trục, cáp tải, sợi cáp đứt, puly, tang cuốn, móc cẩu, thước đo, PPE, rào chắn",
+        )
+    if key == "SHOT_BLAST_IMPELLER_FAILURE":
+        return (
+            "máy phun bi tự động mở nắp kiểm tra, blast wheel, cánh đẩy gãy, control cage, liner và hạt bi",
+            "khu xử lý bề mặt trong xưởng thép, buồng phun đã LOTO, khay hạt bi và dụng cụ đo rung đặt bên cạnh",
+            "kỹ thuật viên mặc PPE soi cánh gãy, kiểm tra bolt và chụp ảnh pattern phun",
+            "blast wheel, cánh đẩy, control cage, liner, hạt bi, dụng cụ đo rung, PPE, buồng phun",
+        )
+    if key == "GEARBOX_FAILURE":
+        return (
+            "động cơ giảm tốc, hộp giảm tốc, khớp nối, mức dầu, súng đo nhiệt và thiết bị đo rung",
+            "dây chuyền cơ khí đang dừng kiểm tra, có che chắn mở an toàn và bảng ghi thông số vận hành",
+            "kỹ thuật viên đo nhiệt motor và gearbox, kiểm tra dầu và đồng tâm khớp nối",
+            "motor, hộp giảm tốc, dầu, khớp nối, đo nhiệt, đo rung, PPE, bệ máy",
+        )
+    if key == "VFD_OVERCURRENT":
+        return (
+            "tủ điện biến tần đang báo OC, màn hình VFD, cáp motor, ampe kìm, megger và nhãn tham số motor",
+            "phòng điện công nghiệp sạch, có rào chắn điện, PPE hồ quang và sơ đồ đấu nối trên cửa tủ",
+            "kỹ sư điện kiểm tra fault log, dòng motor và cáp sau khi cô lập nguồn an toàn",
+            "biến tần, lỗi OC, tủ điện, cáp motor, ampe kìm, megger, PPE, sơ đồ đấu nối",
         )
     if key == "LASER_5S":
         return (
@@ -44,20 +80,12 @@ def _image_details(key: str) -> tuple[str, str, str, str]:
 
 class ImagePromptWriter:
     def write(self, reasoning: ReasoningObject, plan: ContentPlan) -> str:
+        trace_call("Image Prompt Writer", self, selected_topic=reasoning.topic, writer_selected=plan.channel, writer_class=self.__class__.__name__)
         playbook = playbook_for_reasoning(reasoning)
+        trace_call("Selected playbook", self, selected_topic=reasoning.topic, selected_playbook=playbook.key, writer_selected=plan.channel, writer_class=self.__class__.__name__)
         subject, context, action, must_have = _image_details(playbook.key)
-        context_details = ", ".join(
-            dict.fromkeys(
-                (
-                    playbook.technical_mechanism,
-                    *playbook.checklist_items,
-                    *playbook.measurements,
-                    *playbook.standards,
-                    *playbook.safety_risks,
-                )
-            )
-        )
-        return "\n".join(
+        visual_details = ", ".join(dict.fromkeys((*playbook.checklist_items[:6], *playbook.safety_risks[:2])))
+        return sanitize_user_output("\n".join(
             [
                 "Prompt Gemini tạo ảnh",
                 f"Chủ thể: {subject}",
@@ -69,9 +97,14 @@ class ImagePromptWriter:
                 "Ống kính: 35mm cho bối cảnh, 85mm cho chi tiết kỹ thuật",
                 "Màu sắc: chân thực, thép và dụng cụ đúng màu, không dùng màu hoạt hình",
                 f"Chi tiết cần có: {must_have}",
-                f"Chi tiết kỹ thuật từ TopicContext: {context_details}",
-                "Chi tiết cần tránh: chữ sai tiếng Việt, tay méo, thiết bị phi thực tế, biểu đồ giả, tư thế mất an toàn",
+                f"Chi tiết hiện trường: {visual_details}",
+                f"Chữ phủ ảnh: {reasoning.topic}, đặt ở góc trên, không che điểm lỗi",
+                "Chi tiết cần tránh: chữ sai tiếng Việt, tay méo, thiết bị phi thực tế, biểu đồ giả, tiêu chuẩn giả, số đo bịa, tư thế mất an toàn",
                 "Phong cách chất lượng: ảnh tư liệu công nghiệp sắc nét, thực tế, có chiều sâu",
                 "Tỷ lệ khung hình: 4:5 hoặc 16:9",
             ]
-        )
+        ))
+
+
+instrument_runtime_tracing(globals())
+module_loaded(__name__, __file__, ImagePromptWriter)

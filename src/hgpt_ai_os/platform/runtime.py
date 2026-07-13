@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any, Callable
 
 from hgpt_ai_os.core.production_result import ProductionResult
+from hgpt_ai_os.diagnostics import instrument_runtime_tracing, module_loaded, trace_call
 from hgpt_ai_os.version import APP_VERSION
 
 from .interfaces import Lifecycle, RuntimeContext
@@ -109,6 +110,7 @@ class PlatformRuntime:
         knowledge_count_provider: Callable[[], int | None] | None = None,
         started_at: float | None = None,
     ) -> ProductionResult:
+        trace_call("PlatformRuntime.execute", self, selected_topic=topic)
         adapter = self.registry.get(
             LEGACY_PRODUCTION_SERVICE_KEY,
             LegacyProductionAdapter,
@@ -142,3 +144,7 @@ class PlatformRuntime:
                 LEGACY_PRODUCTION_SERVICE_KEY,
                 LegacyProductionAdapter(),
             )
+
+
+instrument_runtime_tracing(globals())
+module_loaded(__name__, __file__, PlatformRuntime)

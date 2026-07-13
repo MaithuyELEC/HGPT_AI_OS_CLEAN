@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from hgpt_ai_os.diagnostics import instrument_runtime_tracing, module_loaded, trace_call
+
 from .content_planner import ContentPlan, ContentPlanner
 from .engineering_context import EngineeringContext, EngineeringContextBuilder
 from .entity_extractor import EngineeringEntityExtractor, EntityExtraction
@@ -23,6 +25,7 @@ from .writers import (
 
 class TopicIntelligenceEngine:
     def __init__(self) -> None:
+        trace_call("TopicIntelligenceEngine.__init__", self)
         self.parser = TopicParser()
         self.context_builder_v2 = TopicContextBuilder()
         self.intent_detector = IntentDetector()
@@ -43,6 +46,7 @@ class TopicIntelligenceEngine:
         }
 
     def analyze(self, topic: str) -> TopicContext:
+        trace_call("TopicIntelligenceEngine.analyze", self, selected_topic=topic)
         return self.context_builder_v2.build(topic)
 
     def reason(
@@ -51,6 +55,7 @@ class TopicIntelligenceEngine:
         context: str = "",
         topic_context: TopicContext | None = None,
     ) -> ReasoningObject:
+        trace_call("TopicIntelligenceEngine.reason", self, selected_topic=topic)
         topic_context = topic_context or self.analyze(topic)
         parsed = self.parser.parse(topic)
         intent = self.intent_detector.detect(parsed)
@@ -83,9 +88,20 @@ class TopicIntelligenceEngine:
         context: str = "",
         topic_context: TopicContext | None = None,
     ) -> str:
+        trace_call("TopicIntelligenceEngine.generate", self, selected_topic=topic, writer_selected=channel)
         reasoning = self.reason(topic, context, topic_context=topic_context)
         plan = self.content_planner.plan(reasoning, channel)
         writer = self.writers.get(plan.channel, self.writers["channel"])
+        trace_call(
+            "Writer selected",
+            writer,
+            selected_topic=topic,
+            selected_domain=reasoning.topic_context.domain,
+            selected_playbook=reasoning.topic_context.playbook_key,
+            writer_selected=plan.channel,
+            writer_class=writer.__class__.__name__,
+            knowledge_count=len(reasoning.knowledge_facts),
+        )
         return writer.write(reasoning, plan)
 
 
@@ -112,3 +128,7 @@ __all__ = [
     "compact_topic_context",
     "TopicParser",
 ]
+
+
+instrument_runtime_tracing(globals())
+module_loaded(__name__, __file__, TopicIntelligenceEngine)

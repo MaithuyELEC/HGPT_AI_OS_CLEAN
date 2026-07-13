@@ -34,6 +34,7 @@ from PySide6.QtWidgets import (
 )
 
 from hgpt_ai_os.core.production_result import ProductionResult
+from hgpt_ai_os.diagnostics import module_loaded, trace_call
 from hgpt_ai_os.settings import ConfigManager
 from hgpt_ai_os.settings.settings_dialog import SettingsDialog
 from hgpt_ai_os.version import APP_BUILD as RELEASE_BUILD
@@ -707,6 +708,17 @@ class MainWindow(QMainWindow):
             self._set_status_badge(self.engine_status, "disconnected", "Disconnected")
 
     def generate(self):
+        trace_call(
+            "Generate Button",
+            self,
+            selected_topic=self.topic.currentText().strip(),
+            selected_domain="n/a",
+            selected_playbook="n/a",
+            writer_selected="ProductionWorker",
+            writer_class=ProductionWorker.__name__,
+            knowledge_count="pending",
+            output_file="pending",
+        )
         if self.worker is not None and self.worker.isRunning():
             return
 
@@ -990,3 +1002,6 @@ class MainWindow(QMainWindow):
                 title,
                 f"Could not open:\n{path}\n\n{exc}",
             )
+
+
+module_loaded(__name__, __file__, MainWindow)

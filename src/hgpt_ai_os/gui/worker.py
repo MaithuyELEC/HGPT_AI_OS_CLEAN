@@ -7,6 +7,8 @@ from contextlib import redirect_stderr, redirect_stdout
 
 from PySide6.QtCore import QThread, Signal
 
+from hgpt_ai_os.diagnostics import instrument_runtime_tracing, module_loaded, trace_call
+
 from .production_service import ProductionService
 
 
@@ -43,6 +45,10 @@ class SignalStream(io.TextIOBase):
         self.buffer = ""
 
 
+SignalStream.write.__runtime_trace_exempt__ = True
+SignalStream.flush.__runtime_trace_exempt__ = True
+
+
 class ProductionWorker(QThread):
     log = Signal(str)
     finished = Signal(object)
@@ -52,6 +58,7 @@ class ProductionWorker(QThread):
         self.topic = topic
 
     def run(self):
+        trace_call("Controller", self, selected_topic=self.topic)
         service = ProductionService()
 
         try:
@@ -69,3 +76,7 @@ class ProductionWorker(QThread):
             self.log.emit("STATUS : PRODUCTION FAILED")
             self.log.emit("ERROR  : Production could not be completed.")
             self.finished.emit(service.failed_result())
+
+
+instrument_runtime_tracing(globals())
+module_loaded(__name__, __file__, ProductionWorker)

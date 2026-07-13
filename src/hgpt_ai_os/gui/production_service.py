@@ -3,6 +3,7 @@ from __future__ import annotations
 import time
 
 from hgpt_ai_os.core.production_result import ProductionResult
+from hgpt_ai_os.diagnostics import instrument_runtime_tracing, module_loaded, trace_call
 from hgpt_ai_os.platform import PlatformRuntime
 
 
@@ -13,6 +14,7 @@ class ProductionService:
         self.started_at = None
 
     def run(self, topic: str) -> ProductionResult:
+        trace_call("Controller -> ProductionService", self, selected_topic=topic)
         self.started_at = time.perf_counter()
         return self.runtime.execute(
             topic,
@@ -46,3 +48,7 @@ class ProductionService:
             return None
 
         return time.perf_counter() - self.started_at
+
+
+instrument_runtime_tracing(globals())
+module_loaded(__name__, __file__, ProductionService)
