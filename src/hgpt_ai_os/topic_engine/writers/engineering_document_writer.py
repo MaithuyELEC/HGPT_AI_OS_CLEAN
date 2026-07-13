@@ -555,8 +555,8 @@ class EngineeringDocumentWriter:
         if self._is_wire_rope_playbook(playbook):
             tools.extend(
                 [
-                    "wire rope gauge/vernier caliper, bộ đếm sợi đứt và rope certificate",
-                    "sheave groove gauge, drum inspection template và kiểm tra fleet-angle/đồng tâm",
+                    "thước đo cáp/vernier caliper, bộ đếm sợi đứt và rope certificate",
+                    "dưỡng đo rãnh puly, drum inspection template và kiểm tra góc lệch cáp/đồng tâm",
                     "load test weights or approved test load with competent lifting supervisor",
                 ]
             )
@@ -564,16 +564,16 @@ class EngineeringDocumentWriter:
             tools.extend(
                 [
                     "welding parameter log, clamp meter and WPS/PQR/WPQ package",
-                    "flux oven log, moisture control record and clean wire/flux storage check",
-                    "VT kit, weld gauge and UT request/report according to ITP",
+                    "thuốc hàn oven log, moisture control record and clean wire/thuốc hàn storage check",
+                    "VT kit, thước đo mối hàn and UT request/report according to ITP",
                 ]
             )
         if any(token in text for token in ("blast", "phun bi", "cánh", "impeller")):
             tools.extend(
                 [
-                    "vibration meter, clamp meter and OEM blast wheel wear template",
-                    "abrasive sieve, dust/foreign material tray and separator inspection sheet",
-                    "surface profile gauge, test plate and blast pattern reference photo",
+                    "vibration meter, clamp meter and OEM bánh văng bi dưỡng kiểm mòn",
+                    "hạt mài sieve, dust/foreign material tray and bộ phân ly inspection sheet",
+                    "dụng cụ đo biên dạng bề mặt, tấm thử and blast dạng phân bố reference photo",
                 ]
             )
         if any(token in text for token in ("gearbox", "giảm tốc", "hộp số")):
@@ -587,9 +587,9 @@ class EngineeringDocumentWriter:
         if any(token in text for token in ("compressor", "nén khí")):
             tools.extend(
                 [
-                    "calibrated pressure gauge, ultrasonic leak detector and soap solution",
-                    "clamp meter, thermometer and filter differential pressure indicator",
-                    "pressure decay test log, oil/filter service kit and OEM service manual",
+                    "calibrated đồng hồ áp suất, ultrasonic rò rỉ detector and soap solution",
+                    "clamp meter, thermometer and lọc differential pressure indicator",
+                    "kiểm tra suy giảm áp suất log, oil/lọc service kit and OEM service manual",
                 ]
             )
         if any(token in text for token in ("vfd", "biến tần", "inverter")):
@@ -613,7 +613,7 @@ class EngineeringDocumentWriter:
             criteria.extend(
                 [
                     "Cáp đúng construction, diameter, WLL/giới hạn tải làm việc và chứng chỉ; puly/tang không còn bề mặt làm hỏng cáp.",
-                    "Broken wires, bird cage, ăn mòn, mòn tang, mòn puly, fleet angle và D/d ratio được kiểm theo ISO 4309/OEM.",
+                    "Sợi cáp đứt, hiện tượng phồng lồng cáp, ăn mòn, mòn tang, mòn puly, góc lệch cáp và D/d ratio được kiểm theo ISO 4309/OEM.",
                     "Chạy thử không tải và thử tải theo quy trình nâng hạ đạt, phanh/limit switch/overload protection hoạt động.",
                 ]
             )
@@ -622,15 +622,15 @@ class EngineeringDocumentWriter:
                 [
                     "Thông số dòng hàn, điện áp, tốc độ chạy, stickout và chiều sâu lớp thuốc nằm trong WPS.",
                     "VT sau sửa đạt và UT/NDT theo ITP không còn chỉ thị rỗ khí vượt mức chấp nhận.",
-                    "Flux drying/holding log và bề mặt liên kết sạch được lưu cùng repair record.",
+                    "Thuốc hàn drying/holding log và bề mặt liên kết sạch được lưu cùng repair record.",
                 ]
             )
         if any(token in text for token in ("blast", "phun bi", "cánh", "impeller")):
             criteria.extend(
                 [
-                    "Blast wheel chạy không tải và có hạt với rung/dòng motor ổn định theo baseline/OEM.",
-                    "Cánh thay theo set cân bằng; control cage, liner, bolt torque và separator không tạo va đập mới.",
-                    "Test plate đạt độ sạch/profile theo ITP trước khi release sản xuất.",
+                    "Bánh văng bi chạy không tải và có hạt với rung/dòng motor ổn định theo baseline/OEM.",
+                    "Cánh thay theo set cân bằng; lồng định hướng, tấm lót, lực siết bu lông và bộ phân ly không tạo va đập mới.",
+                    "Tấm thử đạt độ sạch/biên dạng theo ITP trước khi release sản xuất.",
                 ]
             )
         if any(token in text for token in ("gearbox", "giảm tốc", "hộp số")):
@@ -644,8 +644,8 @@ class EngineeringDocumentWriter:
         if any(token in text for token in ("compressor", "nén khí")):
             criteria.extend(
                 [
-                    "Áp outlet, bình chứa, header và điểm dùng xa nhất đạt setpoint dưới tải thực tế.",
-                    "Pressure decay/leak check sau sửa không cho thấy tụt áp bất thường khi cô lập tải.",
+                    "Áp outlet, bình chứa, đường ống góp và điểm dùng xa nhất đạt điểm đặt dưới tải thực tế.",
+                    "Kiểm tra suy giảm áp suất/rò rỉ check sau sửa không cho thấy tụt áp bất thường khi cô lập tải.",
                     "Dòng motor, nhiệt độ xả, chênh áp lọc và chu kỳ load/unload nằm trong giới hạn OEM.",
                 ]
             )

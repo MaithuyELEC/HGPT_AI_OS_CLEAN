@@ -5,6 +5,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from hgpt_ai_os.core.resource_path import resource_path
+
 
 KNOWLEDGE_CONTRACT_FIELDS = (
     "equipment",
@@ -73,7 +75,7 @@ class EngineeringPlaybook:
 
 class EngineeringKnowledgeLibrary:
     def __init__(self, path: Path | None = None) -> None:
-        self.path = path or Path(__file__).with_name("engineering_knowledge_playbooks.json")
+        self.path = path or resource_path("hgpt_ai_os/topic_engine/engineering_knowledge_playbooks.json")
         raw = json.loads(self.path.read_text(encoding="utf-8"))
         self.contract = tuple(raw["contract"]["required_fields"])
         self.playbooks = {

@@ -10,7 +10,7 @@ def _image_details(key: str) -> tuple[str, str, str, str]:
     if key == "COMPRESSOR_LOW_PRESSURE":
         return (
             "máy nén khí công nghiệp, đồng hồ áp, lọc gió, lọc tách dầu, van và đường ống khí có điểm rò được đánh dấu",
-            "phòng máy nén khí trong nhà xưởng, ánh sáng rõ, có bình chứa, header khí và khu vực cô lập an toàn",
+            "phòng máy nén khí trong nhà xưởng, ánh sáng rõ, có bình chứa, đường ống góp khí và khu vực cô lập an toàn",
             "kỹ thuật viên mặc PPE dùng đồng hồ áp và thiết bị dò rò kiểm tra cụm máy nén",
             "máy nén khí, đồng hồ áp, ống khí, điểm rò, lọc, van, PPE, biển LOTO, phòng máy",
         )
@@ -37,10 +37,10 @@ def _image_details(key: str) -> tuple[str, str, str, str]:
         )
     if key == "SHOT_BLAST_IMPELLER_FAILURE":
         return (
-            "máy phun bi tự động mở nắp kiểm tra, blast wheel, cánh đẩy gãy, control cage, liner và hạt bi",
+            "máy phun bi tự động mở nắp kiểm tra, bánh văng bi, cánh đẩy gãy, lồng định hướng, tấm lót và hạt bi",
             "khu xử lý bề mặt trong xưởng thép, buồng phun đã LOTO, khay hạt bi và dụng cụ đo rung đặt bên cạnh",
-            "kỹ thuật viên mặc PPE soi cánh gãy, kiểm tra bolt và chụp ảnh pattern phun",
-            "blast wheel, cánh đẩy, control cage, liner, hạt bi, dụng cụ đo rung, PPE, buồng phun",
+            "kỹ thuật viên mặc PPE soi cánh gãy, kiểm tra bolt và chụp ảnh dạng phân bố phun",
+            "bánh văng bi, cánh đẩy, lồng định hướng, tấm lót, hạt bi, dụng cụ đo rung, PPE, buồng phun",
         )
     if key == "GEARBOX_FAILURE":
         return (

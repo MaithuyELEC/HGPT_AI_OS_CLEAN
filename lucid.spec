@@ -26,9 +26,10 @@ datas.extend([
     ("planner", "planner"),
     ("outputs", "outputs"),
     ("src/hgpt_ai_os/config", "hgpt_ai_os/config"),
-    ("src/hgpt_ai_os/topic_engine/failure_intelligence_library.json", "hgpt_ai_os/topic_engine"),
-    ("src/hgpt_ai_os/topic_engine/topic_intelligence_profiles.json", "hgpt_ai_os/topic_engine"),
 ])
+
+for path in sorted(Path("src/hgpt_ai_os/topic_engine").glob("*.json")):
+    datas.append((str(path), "hgpt_ai_os/topic_engine"))
     
 
 qt_datas, qt_binaries, qt_hiddenimports = collect_all("PySide6")

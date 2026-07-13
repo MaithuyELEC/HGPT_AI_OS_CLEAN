@@ -101,11 +101,11 @@
       ]
     },
     {
-      "canonical": "Bearing",
+      "canonical": "Ổ lăn",
       "category": "Component",
       "domain": "Industrial Maintenance",
       "aliases": [
-        "bearing",
+        "ổ lăn",
         "bạc đạn",
         "bac dan",
         "vòng bi",
@@ -148,7 +148,7 @@
         "mối hàn",
         "moi han",
         "weld seam",
-        "weld bead"
+        "weld đường hàn"
       ]
     },
     {
@@ -255,7 +255,7 @@
       "domain": "Welding",
       "aliases": [
         "fcaw",
-        "flux cored",
+        "thuốc hàn cored",
         "hàn fcaw",
         "han fcaw"
       ]
@@ -459,22 +459,22 @@
       ]
     },
     {
-      "canonical": "Compressor",
+      "canonical": "Máy nén",
       "category": "Equipment",
       "domain": "Industrial Maintenance",
       "aliases": [
-        "compressor",
+        "máy nén",
         "máy nén khí",
         "may nen khi"
       ]
     },
     {
-      "canonical": "Conveyor Belt",
+      "canonical": "Băng tải Belt",
       "category": "Equipment",
       "domain": "Industrial Maintenance",
       "aliases": [
-        "conveyor belt",
-        "belt conveyor",
+        "băng tải belt",
+        "belt băng tải",
         "băng tải",
         "bang tai",
         "băng tải buồng phun bi",
@@ -486,8 +486,8 @@
       "category": "Equipment",
       "domain": "Industrial Maintenance",
       "aliases": [
-        "shot blasting",
-        "shot blast",
+        "phun biing",
+        "phun bi",
         "phun bi",
         "phun bi tự động",
         "phun bi tu dong",
@@ -496,14 +496,14 @@
       ]
     },
     {
-      "canonical": "Blast Wheel",
+      "canonical": "Blast Bánh văng",
       "category": "Component",
       "domain": "Industrial Maintenance",
       "parent": "Shot Blasting Machine",
       "aliases": [
-        "blast wheel",
-        "impeller",
-        "throwing wheel",
+        "bánh văng bi",
+        "bánh công tác",
+        "throwing bánh văng",
         "cánh đẩy",
         "canh day",
         "cánh văng",
@@ -530,11 +530,11 @@
       ]
     },
     {
-      "canonical": "Coupling",
+      "canonical": "Khớp nối",
       "category": "Component",
       "domain": "Industrial Maintenance",
       "aliases": [
-        "coupling",
+        "khớp nối",
         "khớp nối",
         "khop noi"
       ]
@@ -615,7 +615,7 @@
       "domain": "Steel Fabrication",
       "aliases": [
         "painting",
-        "coating",
+        "lớp phủ",
         "sơn",
         "son",
         "sơn phủ",
@@ -659,11 +659,11 @@
       ]
     },
     {
-      "canonical": "Fit-up",
+      "canonical": "Gá lắp",
       "category": "Process",
       "domain": "Steel Fabrication",
       "aliases": [
-        "fit-up",
+        "gá lắp",
         "fit up",
         "gá lắp",
         "ga lap",
@@ -768,11 +768,11 @@
       ]
     },
     {
-      "canonical": "Leak",
+      "canonical": "Rò rỉ",
       "severity": "Medium",
       "aliases": [
-        "leak",
-        "leakage",
+        "rò rỉ",
+        "rò rỉage",
         "rò rỉ",
         "ro ri"
       ]
@@ -923,10 +923,10 @@
       ]
     },
     {
-      "canonical": "Undercut",
+      "canonical": "Cháy cạnh",
       "severity": "Medium",
       "aliases": [
-        "undercut",
+        "cháy cạnh",
         "cháy cạnh",
         "chay canh"
       ]
@@ -974,7 +974,7 @@
       "aliases": [
         "spatter",
         "bắn tóe",
-        "ban toe"
+        "ban chân mối hàn"
       ]
     },
     {
@@ -1039,8 +1039,8 @@
       "canonical": "Bolt Torque Failure",
       "severity": "High",
       "aliases": [
-        "bolt torque",
-        "bolt torque failure",
+        "lực siết bu lông",
+        "lực siết bu lông failure",
         "torque not achieved",
         "siết lực bu lông",
         "siet luc bu long",
@@ -1049,17 +1049,17 @@
       ]
     },
     {
-      "canonical": "Fit-up Error",
+      "canonical": "Gá lắp Error",
       "severity": "High",
       "aliases": [
-        "fit-up error",
-        "fit-up failure",
-        "lỗi fit-up",
-        "loi fit-up",
-        "sai khe hở fit-up",
-        "sai khe ho fit-up",
+        "gá lắp error",
+        "gá lắp failure",
+        "lỗi gá lắp",
+        "loi gá lắp",
+        "sai khe hở gá lắp",
+        "sai khe ho gá lắp",
         "gap mismatch",
-        "fit-up",
+        "gá lắp",
         "fit up"
       ]
     },
@@ -1388,7 +1388,7 @@
       "severity": "High",
       "requires": {
         "component": [
-          "Bearing"
+          "Ổ lăn"
         ],
         "failure": [
           "Failed",
@@ -1415,7 +1415,7 @@
       "severity": "High",
       "requires": {
         "equipment": [
-          "Compressor"
+          "Máy nén"
         ],
         "failure": [
           "Low Pressure"
@@ -1610,7 +1610,7 @@
           "SAW Welding"
         ],
         "failures": [
-          "Undercut"
+          "Cháy cạnh"
         ]
       }
     },
@@ -1791,7 +1791,7 @@
           "Hydraulic System"
         ],
         "failures": [
-          "Leak"
+          "Rò rỉ"
         ]
       }
     },
@@ -1802,7 +1802,7 @@
       "equipment": "bạc đạn, trục, gối đỡ, phớt và hệ bôi trơn",
       "match": {
         "components": [
-          "Bearing"
+          "Ổ lăn"
         ],
         "failures": [
           "Failed"
@@ -1853,7 +1853,7 @@
       "measurements": [
         "nhiệt độ vỏ gearbox theo điểm đo cố định và nhiệt độ môi trường",
         "mức dầu, loại dầu, giờ chạy dầu và kết quả phân tích dầu nếu có",
-        "rung mm/s RMS hoặc spectrum tại input/output bearing",
+        "rung mm/s RMS hoặc spectrum tại input/output ổ lăn",
         "dòng motor khi không tải và có tải",
         "độ đồng tâm khớp nối và độ rơ/backlash nếu mở kiểm tra",
         "torque hoặc tải thực tế so với service factor"
@@ -1867,7 +1867,7 @@
       "standards": [
         "OEM gearbox manual",
         "ISO 10816/ISO 20816 vibration guidance",
-        "ISO 15243 bearing damage classification",
+        "ISO 15243 ổ lăn damage classification",
         "AGMA lubricant guidance when specified",
         "internal lubrication PM procedure"
       ],
@@ -1994,7 +1994,7 @@
           "Weld Seam"
         ],
         "failures": [
-          "Undercut"
+          "Cháy cạnh"
         ]
       },
       "hashtags": [
@@ -2200,14 +2200,14 @@
       "equipment": "máy nén khí, motor, lọc gió, dầu, két giải nhiệt",
       "match": {
         "equipment": [
-          "Compressor"
+          "Máy nén"
         ],
         "failures": [
           "Overheat"
         ]
       },
       "hashtags": [
-        "#Compressor",
+        "#Máy nén",
         "#Overheat",
         "#BaoTri",
         "#TPM"
@@ -2250,7 +2250,7 @@
         "#DFT",
         "#Painting",
         "#QAQC",
-        "#Coating"
+        "#Lớp phủ"
       ],
       "video_subject": "cấu kiện thép sơn phủ, máy đo DFT, bản đồ điểm đo, thợ sơn và QA/QC mặc PPE"
     },
@@ -2278,11 +2278,11 @@
     {
       "key": "FIT_UP_ERROR",
       "domain": "Chế tạo kết cấu thép",
-      "process": "Kiểm soát fit-up trước hàn",
+      "process": "Kiểm soát gá lắp trước hàn",
       "equipment": "dầm/cột thép, mép hàn, khe hở chân, tack weld, dưỡng đo và bản vẽ shop drawing",
       "match": {
         "processes": [
-          "Fit-up"
+          "Gá lắp"
         ]
       },
       "hashtags": [
@@ -2291,7 +2291,7 @@
         "#QAQC",
         "#SteelFabrication"
       ],
-      "video_subject": "tổ gá lắp đo khe hở fit-up, thước lá, dưỡng hàn, tack weld và QA/QC xác nhận hold point"
+      "video_subject": "tổ gá lắp đo khe hở gá lắp, thước lá, dưỡng hàn, tack weld và QA/QC xác nhận hold point"
     },
     {
       "key": "AIR_COMPRESSOR_LOW_PRESSURE",
@@ -2300,15 +2300,15 @@
       "equipment": "máy nén khí, đầu nén, lọc gió, lọc tách dầu, van hút, van áp suất tối thiểu, bình chứa, đường ống và điểm sử dụng khí",
       "match": {
         "equipment": [
-          "Compressor"
+          "Máy nén"
         ],
         "failures": [
           "Low Pressure"
         ]
       },
       "typical_symptoms": [
-        "áp suất bình chứa không đạt setpoint cắt tải",
-        "máy nén chạy liên tục nhưng áp header vẫn thấp",
+        "áp suất bình chứa không đạt điểm đặt cắt tải",
+        "máy nén chạy liên tục nhưng áp đường ống góp vẫn thấp",
         "điểm sử dụng khí yếu hoặc thiết bị khí nén hoạt động chậm",
         "chênh áp lọc tăng hoặc có tiếng rò khí trên đường ống"
       ],
@@ -2320,56 +2320,56 @@
         "van hút, van áp suất tối thiểu hoặc van một chiều kẹt",
         "dây đai trượt hoặc tốc độ đầu nén thấp",
         "nhu cầu khí vượt công suất máy nén hoặc bình chứa quá nhỏ",
-        "pressure switch/transducer hoặc logic load-unload cài sai"
+        "công tắc áp suất/transducer hoặc logic load-unload cài sai"
       ],
       "inspection_steps": [
-        "ghi áp suất tại outlet máy, bình chứa, header và điểm sử dụng xa nhất",
-        "nghe và quét rò bằng ultrasonic leak detector hoặc nước xà phòng tại khớp nối, van xả đáy, FRL và ống mềm",
+        "ghi áp suất tại outlet máy, bình chứa, đường ống góp và điểm sử dụng xa nhất",
+        "nghe và quét rò bằng ultrasonic rò rỉ detector hoặc nước xà phòng tại khớp nối, van xả đáy, FRL và ống mềm",
         "kiểm tra chênh áp lọc gió, lọc tách dầu và tình trạng dầu",
-        "kiểm tra trạng thái van hút, minimum pressure valve, van một chiều và solenoid load-unload",
+        "kiểm tra trạng thái van hút, minimum pressure van, van một chiều và solenoid load-unload",
         "kiểm tra dây đai, puly, dòng motor và thời gian load/unload",
         "đối chiếu tổng nhu cầu khí thực tế với FAD/nameplate của máy nén"
       ],
       "measurements": [
-        "áp suất outlet máy, bình chứa, header và điểm dùng khí xa nhất",
-        "thời gian tăng áp từ áp thấp đến setpoint cut-out",
+        "áp suất outlet máy, bình chứa, đường ống góp và điểm dùng khí xa nhất",
+        "thời gian tăng áp từ áp thấp đến điểm đặt cut-out",
         "dòng motor khi load và khi unload",
         "chênh áp lọc gió và lọc tách dầu",
-        "tỷ lệ leak estimate theo ultrasonic survey hoặc pressure decay test",
+        "tỷ lệ rò rỉ estimate theo ultrasonic survey hoặc kiểm tra suy giảm áp suất",
         "nhiệt độ xả, mức dầu và giờ chạy"
       ],
       "failure_mechanisms": [
-        "rò rỉ làm thất thoát lưu lượng nên áp suất header giảm dù đầu nén vẫn chạy",
+        "rò rỉ làm thất thoát lưu lượng nên áp suất đường ống góp giảm dù đầu nén vẫn chạy",
         "đường hút hoặc lọc tách bị nghẹt tạo tổn thất áp và giảm lưu lượng thực",
-        "van load-unload hoặc minimum pressure valve kẹt làm máy không chuyển đúng trạng thái tạo áp",
+        "van load-unload hoặc minimum pressure van kẹt làm máy không chuyển đúng trạng thái tạo áp",
         "dây đai trượt làm tốc độ đầu nén thấp hơn thiết kế và giảm FAD"
       ],
       "standards": [
-        "OEM compressor manual",
+        "OEM máy nén manual",
         "ISO 8573",
         "ISO 1217",
         "TPM checklist",
-        "internal compressed air leak management procedure"
+        "internal khí nén rò rỉ management procedure"
       ],
       "corrective_actions": [
         "sửa rò khí, thay ống mềm/khớp nối/van xả đáy lỗi và siết lại điểm nối",
         "thay lọc gió, lọc tách dầu hoặc dầu theo đúng mã OEM",
-        "vệ sinh hoặc thay van hút, minimum pressure valve, check valve và solenoid lỗi",
+        "vệ sinh hoặc thay van hút, minimum pressure van, check van và solenoid lỗi",
         "căn chỉnh hoặc thay dây đai, puly và kiểm tra tốc độ đầu nén",
-        "cài lại pressure switch/transducer, dải load-unload và bảo vệ áp thấp theo OEM",
+        "cài lại công tắc áp suất/transducer, dải load-unload và bảo vệ áp thấp theo OEM",
         "tách tải dùng khí bất thường hoặc bổ sung dung tích bình/máy nếu nhu cầu vượt công suất"
       ],
       "verification_steps": [
-        "chạy thử có tải và ghi thời gian tăng áp đến setpoint cut-out",
-        "xác nhận áp outlet, bình chứa, header và điểm dùng xa nhất ổn định dưới tải thực tế",
+        "chạy thử có tải và ghi thời gian tăng áp đến điểm đặt cut-out",
+        "xác nhận áp outlet, bình chứa, đường ống góp và điểm dùng xa nhất ổn định dưới tải thực tế",
         "xác nhận dòng motor, nhiệt độ xả và chênh áp lọc nằm trong giới hạn OEM",
-        "pressure decay test sau sửa không còn tụt áp bất thường khi cô lập tải",
+        "kiểm tra suy giảm áp suất sau sửa không còn tụt áp bất thường khi cô lập tải",
         "QA/QC hoặc Maintenance Engineer ký release bằng log áp suất và ảnh điểm sửa"
       ],
       "preventive_actions": [
-        "lập lịch ultrasonic leak survey theo tháng và đóng leak tag trong CMMS",
+        "lập lịch ultrasonic khảo sát rò rỉ theo tháng và đóng rò rỉ tag trong CMMS",
         "thay lọc/dầu theo giờ chạy và theo chênh áp thực tế",
-        "theo dõi xu hướng áp header, thời gian load, dòng motor và nhiệt độ xả",
+        "theo dõi xu hướng áp đường ống góp, thời gian load, dòng motor và nhiệt độ xả",
         "kiểm soát đấu nối khí tạm và blow-off gây tiêu thụ vượt thiết kế",
         "đào tạo tổ sản xuất báo tụt áp bằng vị trí, thời điểm và thiết bị đang dùng"
       ],
@@ -2385,26 +2385,26 @@
       "production_impact": "Áp khí thấp làm chậm các trạm dùng khí, tạo dừng ngắn lặp lại và có thể làm lỗi chất lượng nếu fixture hoặc thiết bị khí nén không đạt lực làm việc.",
       "checklist_items": [
         "áp outlet",
-        "áp header",
+        "áp đường ống góp",
         "điểm dùng khí xa nhất",
-        "leak survey",
+        "khảo sát rò rỉ",
         "lọc gió",
         "lọc tách dầu",
         "van hút",
-        "minimum pressure valve",
+        "minimum pressure van",
         "dây đai",
         "load-unload",
-        "pressure decay test"
+        "kiểm tra suy giảm áp suất"
       ],
       "common_mistakes": [
-        "tăng setpoint áp suất để che rò khí thay vì sửa leak",
-        "thay pressure switch trước khi đo áp ở nhiều điểm",
+        "tăng điểm đặt áp suất để che rò khí thay vì sửa rò rỉ",
+        "thay công tắc áp suất trước khi đo áp ở nhiều điểm",
         "bỏ qua lọc tách dầu nghẹt vì outlet gauge vẫn dao động",
         "cho thêm máy nén chạy song song khi nhu cầu khí bất thường chưa được khóa"
       ],
       "lessons_learned": [
         "áp thấp phải được đọc như bài toán cân bằng lưu lượng: nguồn cấp, tổn thất, rò rỉ và nhu cầu dùng khí",
-        "mỗi leak tag cần owner và ngày đóng trong CMMS",
+        "mỗi rò rỉ tag cần owner và ngày đóng trong CMMS",
         "pressure trend theo ca phát hiện tụt áp sớm hơn phản ánh của người vận hành"
       ],
       "hashtags": [
@@ -2421,7 +2421,7 @@
       "equipment": "băng tải, tang chủ động, tang bị động, con lăn đỡ, con lăn hồi, cụm căng băng, mối nối băng và khung băng tải",
       "match": {
         "equipment": [
-          "Conveyor Belt"
+          "Băng tải Belt"
         ],
         "failures": [
           "Misalignment"
@@ -2434,72 +2434,72 @@
         "vật liệu rơi vãi nhiều ở một bên băng",
         "mối nối băng đi qua tang tạo nhịp giật hoặc kéo băng lệch"
       ],
-      "technical_mechanism": "Băng tải bị lệch khi lực kéo hai mép băng không cân bằng hoặc đường tâm hình học của tang, con lăn và khung không cùng trục. Sai lệch tang đầu, tang đuôi, idler, take-up, lực căng băng, mối nối băng hoặc vật liệu bám trên tang làm băng tự tìm hướng có lực cản thấp hơn và chạy dạt về một bên.",
+      "technical_mechanism": "Băng tải bị lệch khi lực kéo hai mép băng không cân bằng hoặc đường tâm hình học của tang, con lăn và khung không cùng trục. Sai lệch tang đầu, tang đuôi, con lăn đỡ, bộ căng băng, lực căng băng, mối nối băng hoặc vật liệu bám trên tang làm băng tự tìm hướng có lực cản thấp hơn và chạy dạt về một bên.",
       "likely_causes": [
         "tang đầu hoặc tang đuôi không vuông góc với đường tâm băng tải",
-        "con lăn đỡ, con lăn hồi hoặc idler lệch góc so với khung",
-        "take-up căng không đều làm lực căng hai mép băng khác nhau",
+        "con lăn đỡ, con lăn hồi hoặc con lăn đỡ lệch góc so với khung",
+        "bộ căng băng căng không đều làm lực căng hai mép băng khác nhau",
         "mối nối băng không vuông hoặc bị lệch tâm",
-        "vật liệu bám trên tang, scraper kém hoặc chute nạp lệch tâm",
+        "vật liệu bám trên tang, gạt làm sạch kém hoặc máng nạp nạp lệch tâm",
         "bạc đạn con lăn/tang kẹt, rơ hoặc nóng",
-        "trục tang cong, shaft runout lớn hoặc khung băng tải vặn xoắn"
+        "trục tang cong, độ đảo trục lớn hoặc khung băng tải vặn xoắn"
       ],
       "inspection_steps": [
         "LOTO truyền động băng tải và làm sạch vật liệu rơi vãi trước khi đo",
         "đánh dấu đường tâm băng, đường tâm khung và vị trí băng chạy lệch tại tang đầu, tang đuôi, vùng tải và vùng hồi",
-        "kiểm tra tang đầu, tang đuôi, idler, carrying roller và return roller bằng thước dây chéo, dây căng hoặc laser alignment",
-        "kiểm tra take-up, hành trình đối trọng/vít căng và lực căng hai mép băng",
-        "kiểm tra belt splice bằng thước vuông, chiều rộng băng và độ thẳng mép băng",
-        "quay tay/kiểm tra nhiệt bạc đạn con lăn, tang và đo shaft runout nếu nghi trục cong",
-        "kiểm tra vật liệu bám dính trên tang, con lăn, scraper, plough và điểm nạp liệu"
+        "kiểm tra tang đầu, tang đuôi, con lăn đỡ, con lăn đỡ tải và con lăn hồi bằng thước dây chéo, dây căng hoặc căn chỉnh laser",
+        "kiểm tra bộ căng băng, hành trình đối trọng/vít căng và lực căng hai mép băng",
+        "kiểm tra mối nối băng tải bằng thước vuông, chiều rộng băng và độ thẳng mép băng",
+        "quay tay/kiểm tra nhiệt bạc đạn con lăn, tang và đo độ đảo trục nếu nghi trục cong",
+        "kiểm tra vật liệu bám dính trên tang, con lăn, gạt làm sạch, gạt chữ V và điểm nạp liệu"
       ],
       "measurements": [
         "độ lệch mép băng so với tâm khung tại từng mốc đo",
-        "sai số vuông góc tang đầu/tang đuôi bằng đo chéo hoặc laser alignment",
-        "góc lệch con lăn đỡ, con lăn hồi và idler so với đường tâm",
-        "hành trình take-up và chênh lực căng hai bên băng",
+        "sai số vuông góc tang đầu/tang đuôi bằng đo chéo hoặc căn chỉnh laser",
+        "góc lệch con lăn đỡ, con lăn hồi và con lăn đỡ so với đường tâm",
+        "hành trình bộ căng băng và chênh lực căng hai bên băng",
         "độ vuông mối nối băng trên toàn chiều rộng",
         "nhiệt độ và độ rơ bạc đạn con lăn/tang",
-        "shaft runout của tang và độ thẳng khung băng tải"
+        "độ đảo trục của tang và độ thẳng khung băng tải"
       ],
       "failure_mechanisms": [
-        "pulley alignment sai tạo lực kéo xiên nên băng dịch dần về phía lực căng thấp",
-        "roller alignment sai làm idler tạo lực lái băng liên tục theo một hướng",
-        "belt tension hai bên không đều tại take-up làm mép băng căng hơn kéo băng lệch khỏi tâm",
-        "belt splice không vuông tạo lực xoắn lặp lại mỗi vòng chạy qua tang",
+        "căn chỉnh tang sai tạo lực kéo xiên nên băng dịch dần về phía lực căng thấp",
+        "căn chỉnh con lăn sai làm con lăn đỡ tạo lực lái băng liên tục theo một hướng",
+        "lực căng băng hai bên không đều tại bộ căng băng làm mép băng căng hơn kéo băng lệch khỏi tâm",
+        "mối nối băng tải không vuông tạo lực xoắn lặp lại mỗi vòng chạy qua tang",
         "vật liệu bám dính trên tang làm đường kính hiệu dụng thay đổi và kéo băng dạt bên",
-        "bearing kẹt hoặc shaft runout làm con lăn/tang tạo lực cản lệch tâm"
+        "ổ lăn kẹt hoặc độ đảo trục làm con lăn/tang tạo lực cản lệch tâm"
       ],
       "standards": [
-        "OEM conveyor manual",
-        "CEMA belt conveyor guidance",
-        "ISO 14890 conveyor belts reference",
+        "OEM băng tải manual",
+        "CEMA belt băng tải guidance",
+        "ISO 14890 băng tải belts reference",
         "internal LOTO procedure",
-        "internal conveyor PM checklist"
+        "internal băng tải PM checklist"
       ],
       "corrective_actions": [
-        "căn chỉnh tang đầu và tang đuôi vuông góc với đường tâm băng bằng laser alignment hoặc đo chéo",
-        "căn lại carrying roller, return roller và idler theo từng đoạn, ưu tiên vùng băng bắt đầu chạy lệch",
-        "đặt lại take-up để hành trình và lực căng hai bên cân bằng",
-        "sửa hoặc làm lại belt splice nếu mối nối không vuông hoặc kéo lệch tâm",
-        "làm sạch vật liệu bám dính trên tang/con lăn và chỉnh scraper/plough tiếp xúc đúng",
-        "thay bearing, con lăn hoặc tang có rơ, kẹt, nóng hoặc shaft runout vượt giới hạn",
-        "nắn/chêm lại frame alignment nếu khung vặn, võng hoặc lệch chân đỡ"
+        "căn chỉnh tang đầu và tang đuôi vuông góc với đường tâm băng bằng căn chỉnh laser hoặc đo chéo",
+        "căn lại con lăn đỡ tải, con lăn hồi và con lăn đỡ theo từng đoạn, ưu tiên vùng băng bắt đầu chạy lệch",
+        "đặt lại bộ căng băng để hành trình và lực căng hai bên cân bằng",
+        "sửa hoặc làm lại mối nối băng tải nếu mối nối không vuông hoặc kéo lệch tâm",
+        "làm sạch vật liệu bám dính trên tang/con lăn và chỉnh gạt làm sạch/gạt chữ V tiếp xúc đúng",
+        "thay ổ lăn, con lăn hoặc tang có rơ, kẹt, nóng hoặc độ đảo trục vượt giới hạn",
+        "nắn/chêm lại căn chỉnh khung nếu khung vặn, võng hoặc lệch chân đỡ"
       ],
       "verification_steps": [
         "chạy không tải tốc độ thấp và ghi vị trí mép băng tại tang đầu, tang đuôi, vùng tải và vùng hồi",
         "chạy có tải thực tế và xác nhận băng không cọ khung, không văng vật liệu một bên",
-        "đo lại pulley alignment, roller alignment, hành trình take-up và belt tension sau chỉnh",
-        "kiểm tra nhiệt bearing/con lăn sau chạy thử",
-        "xác nhận scraper lấy sạch vật liệu bám trên tang và không kéo lệch băng",
-        "lưu ảnh trước/sau, số đo laser alignment và log chạy thử"
+        "đo lại căn chỉnh tang, căn chỉnh con lăn, hành trình bộ căng băng và lực căng băng sau chỉnh",
+        "kiểm tra nhiệt ổ lăn/con lăn sau chạy thử",
+        "xác nhận gạt làm sạch lấy sạch vật liệu bám trên tang và không kéo lệch băng",
+        "lưu ảnh trước/sau, số đo căn chỉnh laser và log chạy thử"
       ],
       "preventive_actions": [
         "kiểm tra tracking băng theo ca tại các mốc cố định trên khung",
-        "vệ sinh vật liệu bám dính trên tang, con lăn hồi và scraper theo lịch",
-        "đo pulley alignment, roller alignment và frame alignment sau mỗi lần thay băng/tang/con lăn",
-        "kiểm tra take-up, belt tension và tình trạng belt splice định kỳ",
-        "trend nhiệt bearing, dòng motor và điểm rơi vãi vật liệu",
+        "vệ sinh vật liệu bám dính trên tang, con lăn hồi và gạt làm sạch theo lịch",
+        "đo căn chỉnh tang, căn chỉnh con lăn và căn chỉnh khung sau mỗi lần thay băng/tang/con lăn",
+        "kiểm tra bộ căng băng, lực căng băng và tình trạng mối nối băng tải định kỳ",
+        "trend nhiệt ổ lăn, dòng motor và điểm rơi vãi vật liệu",
         "đào tạo vận hành không chỉnh băng bằng cách ép con lăn cực đoan khi chưa khóa nguyên nhân hình học"
       ],
       "safety_risks": [
@@ -2513,35 +2513,35 @@
       ],
       "production_impact": "Băng tải lệch làm tăng rơi vãi vật liệu, mòn mép băng, dừng buồng phun bi và có nguy cơ hỏng tang/con lăn nếu tiếp tục chạy khi chưa căn chỉnh.",
       "checklist_items": [
-        "belt tracking",
-        "head pulley",
-        "tail pulley",
-        "carrying roller",
-        "return roller",
-        "idler",
-        "take-up",
-        "belt splice",
-        "belt tension",
-        "roller alignment",
-        "pulley alignment",
-        "laser alignment",
-        "bearing",
-        "shaft runout",
-        "frame alignment",
+        "độ lệch băng tải",
+        "tang chủ động",
+        "tang bị động",
+        "con lăn đỡ tải",
+        "con lăn hồi",
+        "con lăn đỡ",
+        "bộ căng băng",
+        "mối nối băng tải",
+        "lực căng băng",
+        "căn chỉnh con lăn",
+        "căn chỉnh tang",
+        "căn chỉnh laser",
+        "ổ lăn",
+        "độ đảo trục",
+        "căn chỉnh khung",
         "vật liệu bám dính",
-        "scraper"
+        "gạt làm sạch"
       ],
       "common_mistakes": [
-        "chỉ chỉnh một vài con lăn để ép băng về giữa nhưng không kiểm tra pulley alignment",
-        "căng băng quá mức làm tăng tải bearing và vẫn không hết lệch",
-        "bỏ qua belt splice không vuông sau khi thay băng",
+        "chỉ chỉnh một vài con lăn để ép băng về giữa nhưng không kiểm tra căn chỉnh tang",
+        "căng băng quá mức làm tăng tải ổ lăn và vẫn không hết lệch",
+        "bỏ qua mối nối băng tải không vuông sau khi thay băng",
         "không làm sạch vật liệu bám dính trên tang trước khi căn chỉnh",
         "căn khi băng không tải rồi bàn giao mà chưa thử với tải thực tế"
       ],
       "lessons_learned": [
         "lệch băng là bài toán hình học và lực căng, không phải lỗi để chỉnh cảm tính",
         "điểm băng bắt đầu lệch quan trọng hơn điểm băng đã cọ khung",
-        "mọi lần chỉnh tracking phải để lại số đo pulley, roller, take-up và ảnh vị trí băng"
+        "mọi lần chỉnh tracking phải để lại số đo pulley, roller, bộ căng băng và ảnh vị trí băng"
       ],
       "hashtags": [
         "#BangTai",
@@ -2555,59 +2555,59 @@
       "key": "SHOT_BLAST_IMPELLER_FAILURE",
       "domain": "Bảo trì thiết bị xử lý bề mặt",
       "process": "Phun bi tự động gãy cánh đẩy",
-      "equipment": "máy phun bi tự động, blast wheel, cánh đẩy, control cage, liner, hạt bi, motor và hệ thu hồi hạt",
+      "equipment": "máy phun bi tự động, bánh văng bi, cánh đẩy, lồng định hướng, tấm lót, hạt bi, motor và hệ thu hồi hạt",
       "match": {
         "equipment": [
           "Shot Blasting Machine"
         ],
         "components": [
-          "Blast Wheel"
+          "Blast Bánh văng"
         ],
         "failures": [
           "Broken"
         ]
       },
       "typical_symptoms": [
-        "cánh đẩy blast wheel bị gãy hoặc mẻ cạnh",
+        "cánh đẩy bánh văng bi bị gãy hoặc mẻ cạnh",
         "máy rung mạnh và tiếng ồn tăng ngay khi phun",
-        "dòng motor blast wheel tăng hoặc dao động",
-        "mẫu phun không đều, profile bề mặt không ổn định",
-        "liner/control cage có vết va đập bất thường"
+        "dòng motor bánh văng bi tăng hoặc dao động",
+        "mẫu phun không đều, biên dạng bề mặt không ổn định",
+        "tấm lót/lồng định hướng có vết va đập bất thường"
       ],
-      "technical_mechanism": "Cánh đẩy phun bi chịu va đập hạt mài tốc độ cao và lực ly tâm lớn. Cánh gãy khi mòn lệch gây mất cân bằng, hạt bi sai cỡ hoặc lẫn vật cứng tạo va đập cục bộ, control cage định hướng sai làm bi đập vào cánh/liner, liner mòn làm dòng bi lệch, hoặc bolt/fitment lỏng tạo rung mỏi tại chân cánh.",
+      "technical_mechanism": "Cánh đẩy phun bi chịu va đập hạt mài tốc độ cao và lực ly tâm lớn. Cánh gãy khi mòn lệch gây mất cân bằng, hạt bi sai cỡ hoặc lẫn vật cứng tạo va đập cục bộ, lồng định hướng định hướng sai làm bi đập vào cánh/tấm lót, tấm lót mòn làm dòng bi lệch, hoặc bolt/fitment lỏng tạo rung mỏi tại chân cánh.",
       "likely_causes": [
         "cánh đẩy mòn quá giới hạn làm mất cân bằng rotor",
         "hạt bi sai kích cỡ, quá sắc cạnh hoặc lẫn vật cứng",
-        "control cage/impeller lệch vị trí làm dòng bi đánh sai hướng",
-        "liner mòn thủng làm dòng hạt quay lại va vào cánh",
+        "lồng định hướng/bánh công tác lệch vị trí làm dòng bi đánh sai hướng",
+        "tấm lót mòn thủng làm dòng hạt quay lại va vào cánh",
         "bolt giữ cánh hoặc bề mặt lắp ghép lỏng",
-        "motor/bạc đạn blast wheel rung cao",
+        "motor/bạc đạn bánh văng bi rung cao",
         "feed rate hạt quá lớn gây quá tải dòng bi"
       ],
       "inspection_steps": [
-        "LOTO motor blast wheel và khóa cấp hạt trước khi mở buồng phun",
-        "tháo nắp kiểm tra cánh đẩy, control cage, impeller, liner và bolt giữ cánh",
+        "LOTO motor bánh văng bi và khóa cấp hạt trước khi mở buồng phun",
+        "tháo nắp kiểm tra cánh đẩy, lồng định hướng, bánh công tác, tấm lót và bolt giữ cánh",
         "đo độ mòn cánh theo chiều dày, khối lượng hoặc template OEM",
         "kiểm tra kích cỡ hạt, tỷ lệ hạt vỡ, bụi và vật lạ trong hệ thu hồi",
-        "đo rung motor/blast wheel và kiểm tra bạc đạn",
-        "kiểm tra vị trí hot spot/mẫu phun trên chi tiết hoặc test plate"
+        "đo rung motor/bánh văng bi và kiểm tra bạc đạn",
+        "kiểm tra vị trí hot spot/mẫu phun trên chi tiết hoặc tấm thử"
       ],
       "measurements": [
         "độ dày hoặc khối lượng từng cánh so với giới hạn OEM",
-        "độ rung blast wheel theo mm/s RMS trước và sau sửa",
+        "độ rung bánh văng bi theo mm/s RMS trước và sau sửa",
         "dòng motor khi không tải hạt và khi phun",
-        "kích cỡ hạt, tỷ lệ hạt vỡ và mức bụi trong separator",
-        "khe hở, vị trí control cage và tình trạng liner",
-        "surface profile sau phun theo yêu cầu sơn"
+        "kích cỡ hạt, tỷ lệ hạt vỡ và mức bụi trong bộ phân ly",
+        "khe hở, vị trí lồng định hướng và tình trạng tấm lót",
+        "biên dạng bề mặt sau phun theo yêu cầu sơn"
       ],
       "failure_mechanisms": [
         "mòn không đều làm rotor mất cân bằng, ứng suất mỏi tập trung tại chân cánh và cánh nứt gãy",
         "hạt quá lớn hoặc vật lạ tạo va đập vượt thiết kế trên mép cánh",
-        "control cage sai vị trí làm dòng hạt đập ngược vào liner/cánh thay vì đi ra workpiece",
+        "lồng định hướng sai vị trí làm dòng hạt đập ngược vào tấm lót/cánh thay vì đi ra workpiece",
         "bolt lỏng cho phép vi dịch chuyển, fretting và nứt tại lỗ bắt cánh"
       ],
       "standards": [
-        "OEM blast wheel manual",
+        "OEM bánh văng bi manual",
         "ISO 8501-1",
         "ISO 8503",
         "SSPC-SP 10/NACE No.2 when specified",
@@ -2615,24 +2615,24 @@
       ],
       "corrective_actions": [
         "thay trọn bộ cánh theo set cân bằng, không thay một cánh đơn lẻ nếu OEM yêu cầu theo bộ",
-        "thay hoặc chỉnh control cage, impeller và liner mòn/lệch",
+        "thay hoặc chỉnh lồng định hướng, bánh công tác và tấm lót mòn/lệch",
         "lọc bỏ hạt vỡ, vật lạ và nạp hạt đúng kích cỡ",
         "siết bolt theo torque OEM và kiểm tra bề mặt lắp ghép",
-        "kiểm tra bạc đạn/motor blast wheel nếu rung vẫn cao",
-        "đặt lại feed rate hạt và kiểm tra pattern trên test plate"
+        "kiểm tra bạc đạn/motor bánh văng bi nếu rung vẫn cao",
+        "đặt lại feed rate hạt và kiểm tra dạng phân bố trên tấm thử"
       ],
       "verification_steps": [
         "chạy thử không cấp hạt để xác nhận rung và dòng motor ổn định",
-        "chạy thử có hạt, đo dòng motor và nghe tiếng ồn blast wheel",
-        "kiểm tra pattern phun và surface profile trên test plate",
-        "mở kiểm tra nhanh sau thử để xác nhận cánh, liner và bolt không có va đập mới",
-        "QA/QC release khi profile, độ sạch và log rung/dòng đạt tiêu chí ITP/OEM"
+        "chạy thử có hạt, đo dòng motor và nghe tiếng ồn bánh văng bi",
+        "kiểm tra dạng phân bố phun và biên dạng bề mặt trên tấm thử",
+        "mở kiểm tra nhanh sau thử để xác nhận cánh, tấm lót và bolt không có va đập mới",
+        "QA/QC release khi biên dạng, độ sạch và log rung/dòng đạt tiêu chí ITP/OEM"
       ],
       "preventive_actions": [
         "lập giờ chạy thay cánh theo OEM và theo trend rung/dòng motor",
-        "kiểm soát kích cỡ hạt, separator, dust collector và tỷ lệ hạt vỡ",
-        "kiểm tra control cage/liner theo ca bằng ảnh chuẩn",
-        "ghi profile bề mặt và pattern phun theo lot sản xuất",
+        "kiểm soát kích cỡ hạt, bộ phân ly, bộ thu bụi và tỷ lệ hạt vỡ",
+        "kiểm tra lồng định hướng/tấm lót theo ca bằng ảnh chuẩn",
+        "ghi biên dạng bề mặt và dạng phân bố phun theo lot sản xuất",
         "đào tạo tổ phun bi dừng máy khi rung/ồn tăng thay vì tăng feed rate"
       ],
       "safety_risks": [
@@ -2641,37 +2641,37 @@
         "bụi và hạt mài gây nguy cơ hô hấp và trượt ngã"
       ],
       "quality_risks": [
-        "profile không đều làm giảm độ bám dính sơn",
+        "biên dạng không đều làm giảm độ bám dính sơn",
         "hạt lẫn vật cứng có thể tạo vết lõm trên bề mặt thép"
       ],
-      "production_impact": "Gãy cánh đẩy khóa công đoạn chuẩn bị bề mặt, làm tăng reblast/repaint và ảnh hưởng kế hoạch sơn vì surface profile không còn ổn định.",
+      "production_impact": "Gãy cánh đẩy khóa công đoạn chuẩn bị bề mặt, làm tăng reblast/repaint và ảnh hưởng kế hoạch sơn vì biên dạng bề mặt không còn ổn định.",
       "checklist_items": [
-        "LOTO blast wheel",
+        "LOTO bánh văng bi",
         "cánh đẩy",
-        "control cage",
-        "liner",
-        "bolt torque",
+        "lồng định hướng",
+        "tấm lót",
+        "lực siết bu lông",
         "kích cỡ hạt",
-        "separator",
+        "bộ phân ly",
         "rung motor",
         "dòng motor",
-        "test plate",
-        "surface profile"
+        "tấm thử",
+        "biên dạng bề mặt"
       ],
       "common_mistakes": [
         "thay một cánh riêng lẻ làm rotor mất cân bằng",
-        "không kiểm tra control cage nên cánh mới tiếp tục bị bi đánh sai hướng",
+        "không kiểm tra lồng định hướng nên cánh mới tiếp tục bị bi đánh sai hướng",
         "bỏ qua vật lạ trong hệ thu hồi hạt",
-        "release máy khi chưa đo rung và chưa kiểm tra profile"
+        "release máy khi chưa đo rung và chưa kiểm tra biên dạng"
       ],
       "lessons_learned": [
-        "blast wheel là cụm quay tốc độ cao; dấu hiệu rung và dòng motor là cảnh báo sớm trước khi gãy cánh",
-        "chất lượng phun bi phụ thuộc đồng thời vào cánh, control cage, liner, separator và loại hạt",
+        "bánh văng bi là cụm quay tốc độ cao; dấu hiệu rung và dòng motor là cảnh báo sớm trước khi gãy cánh",
+        "chất lượng phun bi phụ thuộc đồng thời vào cánh, lồng định hướng, tấm lót, bộ phân ly và loại hạt",
         "mỗi lần thay cánh phải để lại log giờ chạy, ảnh cánh mòn và thông số rung/dòng"
       ],
       "hashtags": [
         "#ShotBlasting",
-        "#BlastWheel",
+        "#BlastBánh văng",
         "#SurfacePreparation",
         "#BaoTri"
       ]
