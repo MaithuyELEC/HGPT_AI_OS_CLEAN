@@ -7,6 +7,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from hgpt_ai_os.diagnostics import instrument_runtime_tracing, module_loaded, trace_call
+
 from .entity_extractor import EngineeringEntityExtractor
 from .failure_intelligence import FailureIntelligenceLibrary
 from .intent_detector import IntentDetector
@@ -40,6 +42,7 @@ class ProfileEntry:
 
 class TopicProfileStore:
     def __init__(self, path: Path | None = None) -> None:
+        trace_call("TopicProfileStore.__init__", self)
         self.path = path or Path(__file__).with_name("topic_intelligence_profiles.json")
         data = json.loads(self.path.read_text(encoding="utf-8"))
         self.entities = self._entries(data.get("entities", ()))
@@ -287,6 +290,7 @@ class TopicContextBuilder:
         self.failure_library = FailureIntelligenceLibrary()
 
     def build(self, topic: str) -> TopicContext:
+        trace_call("TopicContextBuilder.build", self, selected_topic=topic)
         entities, entity_signals = self.entity_extractor.extract(topic)
         failures, failure_severities = self.failure_extractor.extract(topic)
         if failures:
@@ -300,6 +304,14 @@ class TopicContextBuilder:
         playbook_key = self.playbook_selector.select_key(entities, failures)
         failure_profile = self.failure_library.get(playbook_key) if playbook_key else None
         failure_intelligence = failure_profile.as_context() if failure_profile else {}
+        trace_call(
+            "Topic profile selected",
+            self,
+            selected_topic=topic,
+            selected_domain=domain,
+            selected_playbook=playbook_key,
+            selected_profile=failure_profile.key if failure_profile else "None",
+        )
         standards = tuple(
             dict.fromkeys(
                 (
@@ -337,6 +349,13 @@ class TopicContextBuilder:
                     )
                 )
             ),
+        )
+        trace_call(
+            "TopicContextBuilder.result",
+            self,
+            selected_topic=topic,
+            selected_domain=context.domain,
+            selected_playbook=context.playbook_key,
         )
         return TopicContext(
             **{
@@ -379,3 +398,7 @@ class TopicContextBuilder:
         if playbook_key:
             score += 0.1
         return round(min(0.98, score), 2)
+
+
+instrument_runtime_tracing(globals())
+module_loaded(__name__, __file__, TopicContextBuilder)

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from hgpt_ai_os.diagnostics import instrument_runtime_tracing
 from hgpt_ai_os.intelligence.knowledge_ranker import KnowledgeRanker
 from hgpt_ai_os.intelligence.topic_analyzer import TopicAnalysis, TopicAnalyzer
 from hgpt_ai_os.knowledge.models import KnowledgeResult
@@ -75,3 +76,6 @@ class KnowledgeRetrievalPipeline:
             return topic_or_analysis
 
         return self.analyzer.analyze(topic_or_analysis)
+
+
+instrument_runtime_tracing(globals())

@@ -4,6 +4,8 @@ import re
 import unicodedata
 from dataclasses import dataclass
 
+from hgpt_ai_os.diagnostics import instrument_runtime_tracing
+
 from .engineering_dictionary import EngineeringConcept, all_concepts
 from .topic_parser import ParsedTopic
 
@@ -107,3 +109,6 @@ class EngineeringEntityExtractor:
             if values
         }
         return EntityExtraction(frozen, tuple(dict.fromkeys(found)))
+
+
+instrument_runtime_tracing(globals())

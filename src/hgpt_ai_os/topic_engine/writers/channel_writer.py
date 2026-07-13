@@ -7,7 +7,9 @@ import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
 
+from hgpt_ai_os.diagnostics import fallback, instrument_runtime_tracing, module_loaded, trace_call
 from hgpt_ai_os.topic_engine.content_planner import ContentPlan
+from hgpt_ai_os.topic_engine.engineering_knowledge_library import EngineeringKnowledgeLibrary, EngineeringPlaybook
 from hgpt_ai_os.topic_engine.reasoning_engine import ReasoningObject
 
 
@@ -49,6 +51,7 @@ def _normalize(value: str) -> str:
 
 
 def _fallback_playbook(reasoning: ReasoningObject) -> DomainPlaybook:
+    fallback("No matched domain playbook; using GENERAL_ENGINEERING fallback playbook.")
     topic = reasoning.topic.strip() or "vấn đề kỹ thuật hiện trường"
     inspections = (
         "kiểm tra trực quan tại khu vực liên quan",
@@ -388,7 +391,43 @@ PLAYBOOKS: tuple[DomainPlaybook, ...] = (
 )
 
 
-def _data_playbooks() -> tuple[DomainPlaybook, ...]:
+def _domain_playbook_from_engineering(playbook: EngineeringPlaybook) -> DomainPlaybook:
+    checklist_items = (
+        *playbook.inspection_procedure,
+        *playbook.measurements,
+        *playbook.acceptance_criteria,
+        *playbook.verification_after_repair,
+    )
+    return DomainPlaybook(
+        key=playbook.key,
+        aliases=playbook.aliases,
+        domain=playbook.domain,
+        process=playbook.process,
+        equipment=", ".join(playbook.equipment),
+        typical_symptoms=playbook.symptoms,
+        technical_mechanism=" ".join(playbook.failure_mechanism),
+        likely_causes=tuple(root_cause.cause for root_cause in playbook.root_causes),
+        inspection_steps=playbook.inspection_procedure,
+        corrective_actions=playbook.repair_procedure_sop,
+        preventive_actions=playbook.preventive_maintenance,
+        safety_risks=playbook.safety_risks,
+        quality_risks=playbook.quality_risks,
+        production_impact=playbook.production_impact,
+        checklist_items=tuple(dict.fromkeys(checklist_items)),
+        hashtags=playbook.hashtags,
+        match_groups=playbook.match_groups,
+        failure_mechanisms=playbook.failure_mechanism,
+        measurements=playbook.measurements,
+        engineering_calculations=playbook.acceptance_criteria,
+        verification_steps=playbook.verification_after_repair,
+        engineering_notes=playbook.lessons_learned,
+        common_mistakes=playbook.common_mistakes,
+        lessons_learned=playbook.lessons_learned,
+        standards=playbook.related_standards,
+    )
+
+
+def _profile_data_playbooks() -> tuple[DomainPlaybook, ...]:
     path = Path(__file__).resolve().parents[1] / "topic_intelligence_profiles.json"
     raw = json.loads(path.read_text(encoding="utf-8"))
     playbooks = []
@@ -427,6 +466,19 @@ def _data_playbooks() -> tuple[DomainPlaybook, ...]:
             )
         )
     return tuple(playbooks)
+
+
+def _data_playbooks() -> tuple[DomainPlaybook, ...]:
+    engineering_playbooks = tuple(
+        _domain_playbook_from_engineering(playbook)
+        for playbook in EngineeringKnowledgeLibrary().all()
+    )
+    legacy_profile_playbooks = tuple(
+        playbook
+        for playbook in _profile_data_playbooks()
+        if playbook.key not in {item.key for item in engineering_playbooks}
+    )
+    return (*engineering_playbooks, *legacy_profile_playbooks)
 
 
 DATA_PLAYBOOKS = _data_playbooks()
@@ -469,7 +521,7 @@ def match_playbook(topic: str, reasoning: ReasoningObject | None = None) -> Doma
             values.extend(reasoning.entities.get(category))
     haystack = _normalize(" ".join(values))
     best: tuple[int, DomainPlaybook] | None = None
-    for playbook in PLAYBOOKS:
+    for playbook in (*DATA_PLAYBOOKS, *PLAYBOOKS):
         score = 0
         for alias in playbook.aliases:
             normalized_alias = _normalize(alias)
@@ -536,34 +588,82 @@ def facts(reasoning: ReasoningObject) -> list[str]:
 
 
 def hashtags(reasoning: ReasoningObject) -> str:
-    tags = ["#LucidAuto", "#HGPTSteel", "#Engineering"]
+    tags = ["#MaithuyELEC", "#LucidAuto", "#BaoTriCongNghiep"]
+    playbook = playbook_for_reasoning(reasoning)
+    for tag in playbook.hashtags:
+        if tag not in tags:
+            tags.append(tag)
     for value in (
         *reasoning.entities.get("Process"),
         *reasoning.entities.get("Defect"),
         *reasoning.entities.get("Machine"),
+        *reasoning.entities.get("Equipment"),
+        *reasoning.entities.get("Component"),
     ):
         tag = "#" + "".join(part.capitalize() for part in value.replace("/", " ").split())
         if tag not in tags:
             tags.append(tag)
-    return " ".join(tags[:8])
+    return " ".join(tags[:10])
+
+
+def sanitize_user_output(text: str) -> str:
+    replacements = {
+        "TopicContext": "",
+        "Playbook": "",
+        "ReasoningObject": "",
+        "Problem Description": "Mô tả sự cố",
+        "Engineering Principle": "Nguyên lý kỹ thuật",
+        "Failure Mechanism": "Cơ chế hư hỏng",
+        "Failure Modes": "Dạng hư hỏng",
+        "Root Cause": "Nguyên nhân gốc",
+        "Cause Type": "Nhóm nguyên nhân",
+        "Symptoms": "Dấu hiệu nhận biết",
+        "Inspection": "Phương pháp kiểm tra",
+        "Measurement": "Đo kiểm",
+        "Tools": "Dụng cụ",
+        "Decision": "Tiêu chí kết luận",
+        "Corrective Action": "Hành động khắc phục",
+        "Preventive Action": "Phòng ngừa tái diễn",
+        "Risk If Ignored": "Rủi ro nếu bỏ qua",
+        "Confidence": "Mức độ tin cậy",
+        "release": "bàn giao",
+        "Release": "Bàn giao",
+        "pass/fail": "đạt/không đạt",
+        "material/equipment": "vật tư hoặc thiết bị",
+        "có thể": "có nguy cơ",
+        "Có thể": "Có nguy cơ",
+    }
+    for source, target in replacements.items():
+        text = text.replace(source, target)
+    return text
 
 
 class ChannelWriter:
     def write(self, reasoning: ReasoningObject, plan: ContentPlan) -> str:
+        trace_call(
+            "Channel Writer",
+            self,
+            selected_topic=reasoning.topic,
+            selected_domain=reasoning.topic_context.domain,
+            selected_playbook=reasoning.topic_context.playbook_key,
+            writer_selected=plan.channel,
+            writer_class=self.__class__.__name__,
+            knowledge_count=len(reasoning.knowledge_facts),
+        )
         if plan.channel == "hashtags":
             return hashtags(reasoning)
-        return "\n".join(
-            [
-                f"Hook: {reasoning.topic}",
-                "",
-                f"Body: {reasoning.decision}",
-                "",
-                "Controls:",
-                *bullets(reasoning.controls),
-                "",
-                "Verification:",
-                *bullets(reasoning.verification, 3),
-                "",
-                f"CTA: Kiểm tra bằng chứng trước khi bàn giao. {hashtags(reasoning)}",
-            ]
+        from hgpt_ai_os.topic_engine.writers.engineering_document_writer import EngineeringDocumentWriter
+
+        trace_call(
+            "Selected writer",
+            self,
+            selected_topic=reasoning.topic,
+            selected_playbook=reasoning.topic_context.playbook_key,
+            writer_selected="EngineeringDocumentWriter",
+            writer_class=EngineeringDocumentWriter.__name__,
         )
+        return EngineeringDocumentWriter().write(reasoning, plan)
+
+
+instrument_runtime_tracing(globals())
+module_loaded(__name__, __file__, ChannelWriter)

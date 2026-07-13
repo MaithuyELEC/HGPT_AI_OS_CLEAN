@@ -4,6 +4,8 @@ import re
 import unicodedata
 from dataclasses import dataclass
 
+from hgpt_ai_os.diagnostics import instrument_runtime_tracing
+
 
 STOP_WORDS = {
     "a",
@@ -95,3 +97,6 @@ class TopicParser:
             keywords=tuple(dict.fromkeys((*phrases, *useful_tokens))),
             phrases=phrases,
         )
+
+
+instrument_runtime_tracing(globals())

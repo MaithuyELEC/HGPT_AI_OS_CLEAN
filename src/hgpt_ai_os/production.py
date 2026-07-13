@@ -8,6 +8,7 @@ from pathlib import Path
 from hgpt_ai_os.content.generator import ContentGenerator
 from hgpt_ai_os.content.export.docx_exporter import DocxExporter
 from hgpt_ai_os.core.resource_path import resource_path
+from hgpt_ai_os.diagnostics import engine_loaded, instrument_runtime_tracing, module_loaded, trace_call
 from hgpt_ai_os.intelligence import KnowledgeSearch, TopicAnalyzer
 from hgpt_ai_os.knowledge.bundle import KnowledgeBundle
 from hgpt_ai_os.topic_engine import TopicIntelligenceEngine, compact_topic_context
@@ -24,6 +25,7 @@ OUTPUT_ROOT = (
 
 
 def build_outputs(day: int, topic: str, open_output_folder: bool = True) -> Path:
+    trace_call("Production.build_outputs", None, selected_topic=topic)
     start = time.time()
 
     print("=" * 60)
@@ -38,6 +40,17 @@ def build_outputs(day: int, topic: str, open_output_folder: bool = True) -> Path
     topic_engine = TopicIntelligenceEngine()
     topic_context = topic_engine.analyze(topic)
     analysis = topic_context.to_topic_analysis()
+    trace_call(
+        "Topic Engine.analyze",
+        topic_engine,
+        selected_topic=topic,
+        selected_domain=topic_context.domain,
+        selected_playbook=topic_context.playbook_key,
+        writer_selected="pending",
+        writer_class="pending",
+        knowledge_count="pending",
+        output_file="pending",
+    )
     print(f"Analysis  : {analysis.category} | {analysis.process}")
     print(f"Operation : {analysis.operation or 'Unknown'}")
     print(f"Risk      : {analysis.risk or 'None'}")
@@ -61,10 +74,31 @@ def build_outputs(day: int, topic: str, open_output_folder: bool = True) -> Path
     print("[04/08] Initialize Generator             PASS")
     generator = ContentGenerator()
     generator.prime_topic_context(topic_context)
+    trace_call(
+        "Generator initialized",
+        generator,
+        selected_topic=topic,
+        selected_domain=topic_context.domain,
+        selected_playbook=topic_context.playbook_key,
+        writer_selected="ContentGenerator",
+        writer_class=generator.__class__.__name__,
+        knowledge_count=len(items),
+        output_file="pending",
+    )
     if generator.free_desktop_mode:
         print("Mode : Free Desktop")
         print("Generator : Built-in")
         print("AI Provider : Disabled")
+
+    output_dir = OUTPUT_ROOT / f"Day{day:03d}"
+    engine_loaded(
+        generator,
+        selected_topic=topic,
+        selected_playbook=topic_context.playbook_key,
+        knowledge_count=len(items),
+        selected_writer="ContentGenerator",
+        output_folder=output_dir,
+    )
 
     print("[05/08] Generate Content                 PASS")
     files = {
@@ -78,12 +112,27 @@ def build_outputs(day: int, topic: str, open_output_folder: bool = True) -> Path
     }
 
     print("[06/08] Prepare Output Folder            PASS")
-    output_dir = OUTPUT_ROOT / f"Day{day:03d}"
     output_dir.mkdir(parents=True, exist_ok=True)
+    trace_call(
+        "Output folder selected",
+        None,
+        selected_topic=topic,
+        selected_domain=topic_context.domain,
+        selected_playbook=topic_context.playbook_key,
+        knowledge_count=len(items),
+        output_file=output_dir,
+    )
 
     print("[07/08] Export DOCX                      PASS")
     exporter = DocxExporter()
     for filename, content in files.items():
+        trace_call(
+            "DOCX Writer",
+            exporter,
+            selected_topic=topic,
+            output_file=output_dir / filename,
+            final_docx_writer=exporter.__class__.__name__,
+        )
         exporter.save(output_dir / filename, topic, content)
 
     print("[08/08] Production Completed             PASS")
@@ -150,3 +199,7 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
+
+instrument_runtime_tracing(globals())
+module_loaded(__name__, __file__, None)

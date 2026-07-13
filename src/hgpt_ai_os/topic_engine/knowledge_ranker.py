@@ -3,6 +3,8 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 
+from hgpt_ai_os.diagnostics import instrument_runtime_tracing
+
 
 @dataclass(frozen=True)
 class KnowledgeFact:
@@ -33,3 +35,6 @@ class KnowledgeRanker:
 
         scored.sort(key=lambda item: item.score, reverse=True)
         return tuple(scored[: max(0, min(limit, 3))])
+
+
+instrument_runtime_tracing(globals())

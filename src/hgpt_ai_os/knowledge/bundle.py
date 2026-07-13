@@ -2,6 +2,7 @@ from dataclasses import dataclass
 import re
 from typing import List
 
+from hgpt_ai_os.diagnostics import instrument_runtime_tracing
 from hgpt_ai_os.knowledge.models import KnowledgePackage, KnowledgeResult
 
 
@@ -68,3 +69,6 @@ REFERENCE NOTES:
 
         excerpt = "\n".join(lines)
         return excerpt[:_MAX_REFERENCE_CHARS].strip()
+
+
+instrument_runtime_tracing(globals())

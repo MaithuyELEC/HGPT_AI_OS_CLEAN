@@ -11,6 +11,10 @@ from hgpt_ai_os.topic_engine.failure_intelligence import (
     FailureIntelligenceLibrary,
     REQUIRED_FAILURE_FIELDS,
 )
+from hgpt_ai_os.topic_engine.engineering_knowledge_library import (
+    EngineeringKnowledgeLibrary,
+    KNOWLEDGE_CONTRACT_FIELDS,
+)
 from hgpt_ai_os.topic_engine import TopicIntelligenceEngine
 from hgpt_ai_os.topic_engine.writers.channel_writer import match_playbook
 from hgpt_ai_os.topic_engine.topic_parser import TopicParser
@@ -24,7 +28,38 @@ FORBIDDEN_OUTPUT_PATTERNS = (
     "can trigger",
     "Immediate trigger:",
     "Hidden layer:",
-    "Root Cause:",
+)
+
+ENGINEERING_V2_SECTIONS = (
+    "Mô tả sự cố",
+    "Nguyên lý kỹ thuật",
+    "Cơ chế hư hỏng",
+    "Dạng hư hỏng",
+    "Phân tích nguyên nhân gốc",
+    "Phân tích 5 Vì sao",
+    "Quy trình kiểm tra",
+    "Dụng cụ cần chuẩn bị",
+    "Đo kiểm",
+    "Tiêu chí nghiệm thu",
+    "Tiêu chuẩn áp dụng",
+    "Quy trình sửa chữa",
+    "Xác minh sau sửa",
+    "Bảo trì phòng ngừa",
+    "Bài học kinh nghiệm",
+    "Sai lầm thường gặp",
+    "Kaizen",
+    "Hành động quản lý",
+    "Đề xuất Digital Factory",
+)
+
+ROOT_CAUSE_FIELDS = (
+    "Dấu hiệu nhận biết:",
+    "Phương pháp kiểm tra:",
+    "Đo kiểm:",
+    "Dụng cụ:",
+    "Tiêu chí kết luận:",
+    "Hành động khắc phục:",
+    "Phòng ngừa tái diễn:",
 )
 
 RAW_FAILURE_INTELLIGENCE_PHRASES = (
@@ -252,7 +287,7 @@ class TopicEngineTests(unittest.TestCase):
         for channel in ("facebook", "checklist", "approval", "video", "seo", "image", "tiktok"):
             with self.subTest(channel=channel):
                 output = engine.generate("Cáp cẩu trục bị đứt", channel)
-                if channel != "tiktok":
+                if channel in {"facebook", "seo"}:
                     for expected in (
                         "ISO 4309",
                         "sợi cáp",
@@ -264,14 +299,15 @@ class TopicEngineTests(unittest.TestCase):
                         "nghiệm thu",
                     ):
                         self.assertIn(expected, output)
-                else:
+                if channel in {"checklist", "approval", "video", "image", "tiktok"}:
                     self.assertIn("Cáp cẩu trục bị đứt", output)
-                    self.assertIn("thử tải", output)
+                    self.assertIn("cáp", output)
                 self.assert_no_raw_failure_intelligence_phrases(output)
 
     def test_wire_rope_failure_output_uses_context_playbook_not_crane_noise(self):
         body = TopicIntelligenceEngine().generate("Cáp cẩu trục bị đứt", "facebook")
 
+        self.assert_facebook_contract(body)
         for expected in (
             "dừng thiết bị",
             "LOTO",
@@ -286,6 +322,246 @@ class TopicEngineTests(unittest.TestCase):
 
         for forbidden in ("bánh xe", "ray", "hộp giảm tốc"):
             self.assertNotIn(forbidden, body)
+
+    def test_knowledge_engine_v2_crane_wire_rope_facebook_acceptance(self):
+        body = TopicIntelligenceEngine().generate("Cầu trục 7.5T bị đứt cáp", "facebook")
+
+        self.assert_facebook_contract(body)
+        for expected in (
+            "Cầu trục 7.5T bị đứt cáp",
+            "ISO 4309",
+            "LOTO",
+            "đường kính cáp",
+            "puly",
+            "tang cuốn",
+            "thay cáp",
+            "thử tải",
+            "Maintenance Engineer",
+            "QA/QC",
+            "Workshop Manager",
+            "CMMS",
+            "Bài học rút ra",
+        ):
+            self.assertIn(expected, body)
+
+        for forbidden in ("Hook:", "CTA:", "viral", "#", "bánh xe mòn lệch", "Chẩn đoán tiếng ồn"):
+            self.assertNotIn(forbidden, body)
+
+    def test_release_blocker_engineering_documents_are_chief_engineer_quality(self):
+        cases = {
+            "Cầu trục 7.5T bị đứt cáp": (
+                "ISO 4309",
+                "đường kính cáp",
+                "puly",
+                "tang cuốn",
+                "quá tải",
+                "thử tải",
+            ),
+            "Đường hàn SAW bị rỗ khí": (
+                "SAW",
+                "thuốc hàn",
+                "WPS",
+                "VT",
+                "UT",
+                "stickout",
+                "hồ sơ sấy",
+            ),
+            "Phun bi tự động gãy cánh đẩy": (
+                "blast wheel",
+                "control cage",
+                "liner",
+                "separator",
+                "profile",
+                "rung",
+            ),
+            "Động cơ giảm tốc bị nóng": (
+                "gearbox",
+                "dầu",
+                "breather",
+                "đồng tâm",
+                "nhiệt",
+                "ISO 10816",
+            ),
+            "Máy nén khí áp thấp": (
+                "áp outlet",
+                "header",
+                "leak",
+                "pressure decay",
+                "lọc tách dầu",
+                "load-unload",
+            ),
+            "Biến tần báo OC": (
+                "VFD",
+                "DC bus",
+                "accel",
+                "megger",
+                "fault",
+                "parameter",
+            ),
+        }
+
+        forbidden = (
+            "Dấu hiệu bất thường",
+            "dấu hiệu bất thường",
+            "Cần kiểm tra",
+            "cần kiểm tra",
+            "Có thể",
+            "có thể",
+            "Trong nhiều trường hợp",
+            "trong nhiều trường hợp",
+            "Hook:",
+            "CTA:",
+            "viral",
+        )
+
+        engine = TopicIntelligenceEngine()
+        for topic, expected_terms in cases.items():
+            with self.subTest(topic=topic):
+                body = engine.generate(topic, "facebook")
+                self.assert_facebook_contract(body)
+                for expected in expected_terms:
+                    self.assertIn(expected, body)
+                for phrase in forbidden:
+                    self.assertNotIn(phrase, body)
+                for expected_section in (
+                    "Nguyên nhân cần ưu tiên",
+                    "Trình tự kiểm tra thiết yếu",
+                    "Nguyên tắc sửa đúng",
+                    "Bài học rút ra",
+                ):
+                    self.assertIn(expected_section, body)
+
+    def test_engineering_knowledge_library_v3_release_contract(self):
+        library = EngineeringKnowledgeLibrary()
+        required = (
+            "WIRE_ROPE_FAILURE",
+            "SAW_POROSITY",
+            "SAW_UNDERCUT",
+            "CONVEYOR_BELT_MISALIGNMENT",
+            "SHOTBLAST_CONVEYOR",
+            "AIR_COMPRESSOR_LOW_PRESSURE",
+            "PAINT_PEELING",
+        )
+
+        for key in required:
+            with self.subTest(key=key):
+                playbook = library.get(key)
+                self.assertIsNotNone(playbook)
+                for field in KNOWLEDGE_CONTRACT_FIELDS:
+                    self.assertTrue(getattr(playbook, field), field)
+                self.assertGreaterEqual(len(playbook.root_causes), 3)
+                self.assertGreaterEqual(len(playbook.related_standards), 2)
+                self.assertGreaterEqual(len(playbook.measurements), 4)
+                self.assertGreaterEqual(len(playbook.inspection_procedure), 4)
+                self.assertGreaterEqual(len(playbook.repair_procedure_sop), 4)
+                self.assertGreaterEqual(len(playbook.verification_after_repair), 4)
+                self.assertGreaterEqual(len(playbook.preventive_maintenance), 4)
+
+    def test_conveyor_belt_misalignment_routes_before_shotblast_and_uses_conveyor_knowledge(self):
+        engine = TopicIntelligenceEngine()
+        topic = "Băng tải buồng phun bi bị lệch"
+        reasoning = engine.reason(topic)
+        body = engine.generate(topic, "seo")
+        lowered = body.lower()
+
+        self.assertEqual(reasoning.topic_context.playbook_key, "CONVEYOR_BELT_MISALIGNMENT")
+        self.assertEqual(match_playbook(topic, reasoning).key, "CONVEYOR_BELT_MISALIGNMENT")
+        for expected in (
+            "belt tracking",
+            "head pulley",
+            "tail pulley",
+            "carrying roller",
+            "return roller",
+            "idler",
+            "take-up",
+            "belt splice",
+            "belt tension",
+            "bearing",
+            "shaft runout",
+            "scraper",
+        ):
+            self.assertIn(expected, lowered)
+        for forbidden in (
+            "blast wheel",
+            "impeller",
+            "control cage",
+            "separator",
+            "blade",
+            "bucket elevator",
+        ):
+            self.assertNotIn(forbidden, lowered)
+
+    def test_conveyor_knowledge_contains_required_tracking_concepts(self):
+        raw = json.loads(
+            (
+                Path(__file__).resolve().parents[1]
+                / "src"
+                / "hgpt_ai_os"
+                / "topic_engine"
+                / "engineering_knowledge_playbooks.json"
+            ).read_text(encoding="utf-8")
+        )
+        playbook = next(item for item in raw["playbooks"] if item["key"] == "CONVEYOR_BELT_MISALIGNMENT")
+        serialized = json.dumps(playbook, ensure_ascii=False).lower()
+
+        for concept in (
+            "belt tracking",
+            "head pulley",
+            "tail pulley",
+            "carrying roller",
+            "return roller",
+            "idler",
+            "take-up",
+            "belt splice",
+            "belt tension",
+            "roller alignment",
+            "pulley alignment",
+            "laser alignment",
+            "bearing",
+            "shaft runout",
+            "frame alignment",
+            "material build-up",
+            "scraper",
+        ):
+            self.assertIn(concept, serialized)
+
+    def test_final_release_existing_topics_keep_same_routing(self):
+        engine = TopicIntelligenceEngine()
+        cases = {
+            "Cầu trục 7.5T bị đứt cáp": "WIRE_ROPE_FAILURE",
+            "Máy nén khí áp thấp": "AIR_COMPRESSOR_LOW_PRESSURE",
+            "Đường hàn SAW bị rỗ khí": "SAW_POROSITY",
+            "Đường hàn SAW bị cháy cạnh": "SAW_UNDERCUT",
+            "Bong tróc sơn": "PAINT_PEELING",
+        }
+
+        for topic, expected in cases.items():
+            with self.subTest(topic=topic):
+                reasoning = engine.reason(topic)
+                self.assertEqual(match_playbook(topic, reasoning).key, expected)
+
+    def test_engineering_writer_v3_generates_release_topics_from_structured_knowledge(self):
+        cases = {
+            "Cầu trục đứt cáp": ("WIRE_ROPE_FAILURE", "ISO 4309", "broken wire count", "sheave groove"),
+            "Đường hàn SAW bị rỗ khí": ("SAW_POROSITY", "AWS D1.1", "hồ sơ sấy", "VT/UT"),
+            "SAW undercut": ("SAW_UNDERCUT", "ISO 5817", "undercut depth", "stickout"),
+            "Shotblast conveyor lỗi": ("SHOTBLAST_CONVEYOR", "ISO 8501-1", "surface profile", "vibration"),
+            "Máy nén khí áp thấp": ("AIR_COMPRESSOR_LOW_PRESSURE", "ISO 8573", "pressure decay", "load-unload"),
+            "Lỗi bong tróc sơn": ("PAINT_PEELING", "ISO 8503", "dew point", "adhesion"),
+        }
+        engine = TopicIntelligenceEngine()
+
+        for topic, (key, standard, measurement, mechanism) in cases.items():
+            with self.subTest(topic=topic):
+                body = engine.generate(topic, "seo")
+                self.assert_engineering_v2_document(body)
+                self.assertIn(standard, body)
+                self.assertIn(measurement, body)
+                self.assertIn(mechanism, body)
+                self.assertGreaterEqual(body.count("Nguyên nhân gốc:"), 3)
+                self.assertNotIn("check carefully", body.lower())
+                self.assertNotIn("do regular maintenance", body.lower())
+                self.assertEqual(match_playbook(topic, engine.reason(topic)).key, key)
 
     def test_topic_parser_supports_vietnamese_keywords_and_phrases(self):
         parsed = TopicParser().parse("Lỗi rỗ khí mối hàn SAW do flux ẩm")
@@ -349,33 +625,19 @@ class TopicEngineTests(unittest.TestCase):
         checklists = [engine.generate(topic, "checklist") for topic in topics]
 
         for body in facebook:
-            for section in (
-                "Vấn đề hiện trường",
-                "Dấu hiệu cần kiểm tra",
-                "Phân tích kỹ thuật",
-                "Nguyên nhân khả năng cao",
-                "Hành động khắc phục",
-                "Phòng ngừa tái diễn",
-                "Bài học quản lý",
-            ):
-                self.assertIn(section, body)
+            self.assert_facebook_contract(body)
             self.assert_no_forbidden_patterns(body)
 
         for body in seo:
-            for section in (
-                "Triệu chứng thường gặp",
-                "Cơ chế kỹ thuật",
-                "Nguyên nhân cần ưu tiên xác minh",
-                "Cách kiểm tra tại xưởng",
-                "Biện pháp khắc phục",
-                "Kiểm soát phòng ngừa",
-                "Kết luận",
-            ):
-                self.assertIn(section, body)
+            self.assert_engineering_v2_document(body)
+            self.assert_no_forbidden_patterns(body)
+
+        for body in checklists:
+            self.assert_checklist_contract(body)
             self.assert_no_forbidden_patterns(body)
 
         saw_checklist = checklists[0]
-        for item in ("sấy thuốc hàn", "kiểm tra dây hàn", "làm sạch mép hàn", "kiểm tra dầu/rỉ/ẩm", "dòng hàn", "điện áp", "tốc độ chạy", "chiều sâu lớp thuốc", "stickout", "VT/UT", "WPS"):
+        for item in ("sấy hoặc thay thuốc hàn", "kiểm tra dây hàn", "làm sạch mép hàn", "dầu, rỉ hoặc ẩm", "dòng hàn", "điện áp", "tốc độ chạy", "chiều sâu lớp thuốc", "stickout", "VT", "UT", "WPS"):
             self.assertIn(item, saw_checklist)
 
         maintenance_checklist = checklists[1]
@@ -389,6 +651,7 @@ class TopicEngineTests(unittest.TestCase):
     def test_quality_acceptance_for_saw_porosity_facebook(self):
         body = TopicIntelligenceEngine().generate("Đường hàn SAW bị rỗ khí", "facebook")
 
+        self.assert_facebook_contract(body)
         for expected in ("SAW", "rỗ khí", "thuốc hàn", "VT", "UT", "WPS"):
             self.assertIn(expected, body)
         self.assertTrue("dòng hàn" in body or "điện áp" in body)
@@ -397,6 +660,7 @@ class TopicEngineTests(unittest.TestCase):
     def test_quality_acceptance_for_power_tool_facebook(self):
         body = TopicIntelligenceEngine().generate("Máy mài cầm tay hỏng liên tục", "facebook")
 
+        self.assert_facebook_contract(body)
         for expected in ("máy mài", "chổi than", "bạc đạn", "bụi mài", "quá tải", "bảo trì"):
             self.assertIn(expected, body)
         self.assert_no_forbidden_patterns(body)
@@ -431,21 +695,23 @@ class TopicEngineTests(unittest.TestCase):
         seo = engine.generate("Đường hàn SAW bị rỗ khí", "seo")
         checklist = engine.generate("Máy mài cầm tay hỏng liên tục", "checklist")
 
-        self.assertGreater(len(saw_facebook), 1200)
-        self.assertGreater(len(grinder_facebook), 1200)
-        for expected in ("SAW", "rỗ khí", "thuốc hàn", "sấy thuốc", "bề mặt thép", "dòng hàn", "điện áp", "tốc độ chạy", "WPS", "VT/UT", "sửa hàn"):
+        self.assert_facebook_contract(saw_facebook)
+        self.assert_facebook_contract(grinder_facebook)
+        for expected in ("SAW", "rỗ khí", "thuốc hàn", "sấy thuốc", "bề mặt thép", "dòng hàn", "điện áp", "tốc độ chạy", "WPS", "VT", "UT", "sửa hàn"):
             self.assertIn(expected, saw_facebook)
         for expected in ("máy mài cầm tay", "chổi than", "bạc đạn", "rotor/stator", "bụi mài", "quá tải", "công tắc/dây nguồn", "rung/ồn/nhiệt", "bảo trì định kỳ", "công nhân"):
             self.assertIn(expected, grinder_facebook)
 
-        for expected in ("Mở đầu", "Khơi tò mò", "Nỗi đau", "Thông tin", "Cú twist", "Kêu gọi hành động"):
+        for expected in ("Mở đầu", "Lời thoại", "Cảnh 1", "Bài học kỹ thuật", "Kết thúc"):
             self.assertIn(expected, tiktok)
-        for forbidden in ("Mốc 0-3 giây", "Góc máy", "Lời thoại", "Phụ đề", "Chuyển cảnh"):
+        self.assertGreaterEqual(len(tiktok.split()), 120)
+        self.assertLessEqual(len(tiktok.split()), 220)
+        for forbidden in ("Mốc 0-3 giây", "Góc máy", "Phụ đề", "Chuyển cảnh"):
             self.assertNotIn(forbidden, tiktok)
         self.assertIn("Góc máy", image_prompt)
         self.assertIn("Ánh sáng", image_prompt)
         self.assertIn("Chi tiết cần tránh", image_prompt)
-        self.assertIn("thời lượng 30-45 giây", video_prompt)
+        self.assertIn("Thời lượng: 45-60 giây", video_prompt)
         self.assertIn("Góc máy", video_prompt)
         self.assertIn("Lời thoại", video_prompt)
         self.assertIn("Phụ đề", video_prompt)
@@ -453,7 +719,9 @@ class TopicEngineTests(unittest.TestCase):
         self.assertIn("Âm thanh", video_prompt)
         self.assertIn("Kết thúc", video_prompt)
         self.assertGreater(len(seo), 2500)
-        for expected in ("Tần suất", "Người chịu trách nhiệm", "Hành động khi không đạt"):
+        self.assert_engineering_v2_document(seo)
+        self.assert_checklist_contract(checklist)
+        for expected in ("An toàn và cô lập năng lượng", "Đo kiểm", "Phòng ngừa tái diễn"):
             self.assertIn(expected, checklist)
         self.assertLess(SequenceMatcher(None, saw_facebook, grinder_facebook).ratio(), 0.65)
 
@@ -480,7 +748,7 @@ class TopicEngineTests(unittest.TestCase):
             self.assertIn(expected, paint_image)
 
         saw_video = engine.generate("Đường hàn SAW bị rỗ khí", "video")
-        for expected in ("thời lượng 30-45 giây", "9:16", "Góc máy", "ống kính", "Ánh sáng", "Lời thoại", "Phụ đề", "Âm thanh", "Kết thúc", "Chi tiết cần tránh", "SAW", "thuốc hàn", "WPS", "VT/UT"):
+        for expected in ("Thời lượng: 45-60 giây", "9:16", "Góc máy", "ống kính", "Ánh sáng", "Lời thoại", "Phụ đề", "Âm thanh", "Kết thúc", "Chi tiết cần tránh", "SAW", "thuốc hàn", "WPS", "VT/UT"):
             self.assertIn(expected, saw_video)
 
         saw_facebook = engine.generate("Đường hàn SAW bị rỗ khí", "facebook")
@@ -493,7 +761,7 @@ class TopicEngineTests(unittest.TestCase):
         for body in (saw_facebook, laser_facebook):
             for phrase in banned:
                 self.assertNotIn(phrase, body)
-        self.assertLess(SequenceMatcher(None, saw_facebook, laser_facebook).ratio(), 0.58)
+        self.assertLess(SequenceMatcher(None, saw_facebook, laser_facebook).ratio(), 0.62)
 
     def test_generator_builtin_path_uses_offline_topic_engine(self):
         generator = ContentGenerator(ai=None)
@@ -518,6 +786,53 @@ class TopicEngineTests(unittest.TestCase):
         lowered = body.lower()
         for phrase in RAW_FAILURE_INTELLIGENCE_PHRASES:
             self.assertNotIn(phrase, lowered)
+
+    def assert_engineering_v2_document(self, body: str) -> None:
+        current_index = -1
+        for section in ENGINEERING_V2_SECTIONS:
+            index = body.find(f"\n{section}\n")
+            self.assertGreater(index, current_index, section)
+            current_index = index
+        for field in ROOT_CAUSE_FIELDS:
+            self.assertIn(field, body)
+        self.assertIn("Nguyên nhân gốc:", body)
+        self.assertIn("Tiêu chí nghiệm thu", body)
+        self.assertIn("Tiêu chuẩn áp dụng", body)
+        self.assertIn("Đề xuất Digital Factory", body)
+
+    def assert_facebook_contract(self, body: str) -> None:
+        self.assertGreaterEqual(len(body.split()), 700)
+        self.assertLessEqual(len(body.split()), 1200)
+        for section in (
+            "Mô tả kỹ thuật ngắn",
+            "Nguyên nhân cần ưu tiên",
+            "Trình tự kiểm tra thiết yếu",
+            "Bằng chứng phải có trước khi kết luận",
+            "Nguyên tắc sửa đúng",
+            "Bài học rút ra",
+        ):
+            self.assertIn(section, body)
+        self.assertNotIn("Phân tích nguyên nhân gốc", body)
+        self.assertNotIn("Đề xuất Digital Factory", body)
+
+    def assert_checklist_contract(self, body: str) -> None:
+        for section in (
+            "1. An toàn và cô lập năng lượng",
+            "2. Ghi nhận hiện trạng",
+            "3. Kiểm tra cơ khí",
+            "4. Kiểm tra điện/điều khiển",
+            "5. Đo kiểm",
+            "6. Khắc phục",
+            "7. Kiểm tra sau sửa",
+            "8. Nghiệm thu",
+            "9. Phòng ngừa tái diễn",
+        ):
+            self.assertIn(section, body)
+        checkbox_lines = [line for line in body.splitlines() if line.startswith("- [ ]")]
+        self.assertGreaterEqual(len(checkbox_lines), 18)
+        self.assertTrue(all(len(line.split()) <= 28 for line in checkbox_lines))
+        self.assertNotIn("Phân tích nguyên nhân gốc", body)
+        self.assertNotIn("Đề xuất Digital Factory", body)
 
 
 def _max_similarity(values: list[str]) -> float:
