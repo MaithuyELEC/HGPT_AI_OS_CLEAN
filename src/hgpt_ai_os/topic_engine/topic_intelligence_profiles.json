@@ -2555,7 +2555,7 @@
       "key": "SHOT_BLAST_IMPELLER_FAILURE",
       "domain": "Bảo trì thiết bị xử lý bề mặt",
       "process": "Phun bi tự động gãy cánh đẩy",
-      "equipment": "máy phun bi tự động, bánh văng bi, cánh đẩy, lồng định hướng, tấm lót, hạt bi, motor và hệ thu hồi hạt",
+      "equipment": "máy phun bi tự động, blast wheel, control cage, liner / tấm lót, separator, cánh đẩy, hạt bi, motor",
       "match": {
         "equipment": [
           "Shot Blasting Machine"
@@ -2568,15 +2568,15 @@
         ]
       },
       "typical_symptoms": [
-        "cánh đẩy bánh văng bi bị gãy hoặc mẻ cạnh",
+        "cánh đẩy blast wheel / bánh văng bi bị gãy hoặc mẻ cạnh",
         "máy rung mạnh và tiếng ồn tăng ngay khi phun",
-        "dòng motor bánh văng bi tăng hoặc dao động",
+        "dòng motor blast wheel / bánh văng bi tăng hoặc dao động",
         "mẫu phun không đều, biên dạng bề mặt không ổn định",
         "tấm lót/lồng định hướng có vết va đập bất thường"
       ],
-      "technical_mechanism": "Cánh đẩy phun bi chịu va đập hạt mài tốc độ cao và lực ly tâm lớn. Cánh gãy khi mòn lệch gây mất cân bằng, hạt bi sai cỡ hoặc lẫn vật cứng tạo va đập cục bộ, lồng định hướng định hướng sai làm bi đập vào cánh/tấm lót, tấm lót mòn làm dòng bi lệch, hoặc bolt/fitment lỏng tạo rung mỏi tại chân cánh.",
+      "technical_mechanism": "Cánh đẩy blast wheel chịu va đập hạt mài tốc độ cao và lực ly tâm lớn. Cánh gãy khi mòn lệch, hạt bi sai cỡ, vật cứng, lồng định hướng sai, tấm lót mòn hoặc bolt lỏng tạo rung mỏi tại chân cánh.",
       "likely_causes": [
-        "cánh đẩy mòn quá giới hạn làm mất cân bằng rotor",
+        "blast wheel blade / cánh đẩy mòn quá giới hạn làm mất cân bằng rotor",
         "hạt bi sai kích cỡ, quá sắc cạnh hoặc lẫn vật cứng",
         "lồng định hướng/bánh công tác lệch vị trí làm dòng bi đánh sai hướng",
         "tấm lót mòn thủng làm dòng hạt quay lại va vào cánh",
@@ -2585,18 +2585,18 @@
         "feed rate hạt quá lớn gây quá tải dòng bi"
       ],
       "inspection_steps": [
-        "LOTO motor bánh văng bi và khóa cấp hạt trước khi mở buồng phun",
-        "tháo nắp kiểm tra cánh đẩy, lồng định hướng, bánh công tác, tấm lót và bolt giữ cánh",
-        "đo độ mòn cánh theo chiều dày, khối lượng hoặc template OEM",
-        "kiểm tra kích cỡ hạt, tỷ lệ hạt vỡ, bụi và vật lạ trong hệ thu hồi",
+        "LOTO motor blast wheel / bánh văng bi và khóa cấp hạt trước khi mở buồng phun",
+        "tháo nắp kiểm tra cánh đẩy, control cage, liner / tấm lót và bolt giữ cánh",
+        "đo độ mòn cánh bằng template OEM",
+        "kiểm tra separator, kích cỡ hạt, tỷ lệ hạt vỡ, bụi và vật lạ",
         "đo rung motor/bánh văng bi và kiểm tra bạc đạn",
         "kiểm tra vị trí hot spot/mẫu phun trên chi tiết hoặc tấm thử"
       ],
       "measurements": [
-        "độ dày hoặc khối lượng từng cánh so với giới hạn OEM",
-        "độ rung bánh văng bi theo mm/s RMS trước và sau sửa",
+        "độ dày cánh so với giới hạn OEM",
+        "độ rung blast wheel / bánh văng bi theo mm/s RMS trước và sau sửa",
         "dòng motor khi không tải hạt và khi phun",
-        "kích cỡ hạt, tỷ lệ hạt vỡ và mức bụi trong bộ phân ly",
+        "kích cỡ hạt và mức bụi trong bộ phân ly",
         "khe hở, vị trí lồng định hướng và tình trạng tấm lót",
         "biên dạng bề mặt sau phun theo yêu cầu sơn"
       ],
@@ -2624,7 +2624,7 @@
       "verification_steps": [
         "chạy thử không cấp hạt để xác nhận rung và dòng motor ổn định",
         "chạy thử có hạt, đo dòng motor và nghe tiếng ồn bánh văng bi",
-        "kiểm tra dạng phân bố phun và biên dạng bề mặt trên tấm thử",
+        "kiểm tra blast profile / biên dạng bề mặt trên tấm thử",
         "mở kiểm tra nhanh sau thử để xác nhận cánh, tấm lót và bolt không có va đập mới",
         "QA/QC release khi biên dạng, độ sạch và log rung/dòng đạt tiêu chí ITP/OEM"
       ],
