@@ -1,14 +1,14 @@
-# LUCID AUTO v1.0.0 RC14 Release Notes
+# Lucid AI Studio v1.0.0 RC2 Release Notes
 
-LUCID AUTO v1.0.0 RC14 is the final packaging candidate for production desktop distribution.
+Lucid AI Studio v1.0.0 RC2 is the final packaging candidate for production desktop distribution.
 
 ## Scope
 
 - No new product features.
-- Runtime resources bundled for PyInstaller: knowledge, templates, planner, assets, config, outputs.
-- macOS one-command build creates `release/Mac/LUCID.app` and `release/Mac/LUCID-v1.0.0.dmg`.
-- Windows one-command build creates `release/Windows/LUCID.exe`, `release/Windows/LUCID`, and `installer/LUCID.iss`.
-- Inno Setup builds `release/Installer/LUCID Setup.exe` when detected.
+- Runtime resources bundled for release: knowledge, templates, planner, assets, config, outputs.
+- macOS one-command build creates `release/Mac/Lucid AI Studio.app` and `release/Mac/Lucid-AI-Studio-v1.0.0.dmg`.
+- Windows one-command build creates `dist/LUCID/LUCID.exe` and `release/Installer/Lucid-AI-Studio-Setup-v1.0.0.exe`.
+- Inno Setup builds `release/Installer/Lucid-AI-Studio-Setup-v1.0.0.exe` when detected.
 - Release staging folders prepared for macOS, Windows, installer assets, and release notes.
 - Application version centralized in `src/hgpt_ai_os/version.py`.
 

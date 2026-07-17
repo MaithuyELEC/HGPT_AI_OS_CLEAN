@@ -67,12 +67,12 @@ def test_facebook_has_required_topic_aware_sections():
     content = BuilderFactory.create("facebook").build("5S trong xưởng sản xuất kết cấu thép")
 
     for section in (
-        "Introduction",
-        "Main knowledge",
-        "Step-by-step actions",
-        "Practical advice",
-        "Common mistakes",
-        "Conclusion",
+        "Hook",
+        "Real shop scenario",
+        "Root cause analysis",
+        "Practical solution",
+        "Lesson learned",
+        "Call To Action",
     ):
         assert section in content
 
@@ -171,6 +171,15 @@ def test_release_output_contracts_are_independent_without_sentence_reuse():
                 assert label not in outputs["facebook"]
         else:
             for label in (
+                "Hook",
+                "Real shop scenario",
+                "Root cause analysis",
+                "Practical solution",
+                "Lesson learned",
+                "Call To Action",
+            ):
+                assert label in outputs["facebook"]
+            for label in (
                 "Introduction",
                 "Main knowledge",
                 "Step-by-step actions",
@@ -178,7 +187,7 @@ def test_release_output_contracts_are_independent_without_sentence_reuse():
                 "Common mistakes",
                 "Conclusion",
             ):
-                assert label in outputs["facebook"]
+                assert label not in outputs["facebook"]
         assert "Người đọc" not in outputs["facebook"]
         assert "Chủ đề thuộc" not in outputs["facebook"]
 
@@ -233,13 +242,13 @@ def test_release_output_contracts_are_independent_without_sentence_reuse():
             ]
             for label in (
                 "Tiêu đề:",
-                "Mở đầu:",
-                "Cảnh 1:",
-                "Cảnh 2:",
-                "Cảnh 3:",
+                "Cảnh 1 - Hook:",
+                "Cảnh 2 - Failure:",
+                "Cảnh 3 - Diagnosis:",
+                "Cảnh 4 - Repair:",
+                "Cảnh 5 - Result:",
                 "Góc máy:",
                 "Ánh sáng:",
-                "Lời thoại:",
                 "Phụ đề:",
                 "Âm thanh:",
                 "Kết thúc:",
@@ -250,7 +259,7 @@ def test_release_output_contracts_are_independent_without_sentence_reuse():
         seo_labels = (
             ("Tiêu đề SEO:", "Mô tả tìm kiếm:", "Từ khóa chính", "Dàn ý bài viết", "Câu hỏi thường gặp")
             if expected_general
-            else ("Title:", "Meta:", "Keywords:", "Outline:", "FAQ:", "Conclusion:")
+            else ("H1:", "Introduction", "H2:", "FAQ", "Summary")
         )
         for label in seo_labels:
             assert label in outputs["seo"]

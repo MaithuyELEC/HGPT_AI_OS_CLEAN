@@ -10,7 +10,6 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass, field
-from pathlib import Path
 from typing import Any, Union
 
 import certifi
@@ -32,28 +31,14 @@ def _env_flag(name: str) -> bool:
     return os.getenv(name, "").strip().lower() in {"1", "true", "yes", "on"}
 
 
-def _load_provider_env() -> None:
-    try:
-        from dotenv import load_dotenv
-    except ImportError:
-        return
-
-    repo_env = Path(__file__).resolve().parents[3] / ".env"
-    load_dotenv(repo_env, override=False)
-
-
-_load_provider_env()
-
-
 def _use_live_gemini() -> bool:
     return bool(_gemini_api_key())
 
 
 def _gemini_api_key() -> str:
-    return (
-        os.getenv("GOOGLE_API_KEY", "").strip()
-        or os.getenv("GEMINI_API_KEY", "").strip()
-    )
+    from hgpt_ai_os.ai.config_resolver import get_config_value
+
+    return get_config_value("GEMINI_API_KEY")
 
 
 @dataclass(frozen=True)
@@ -132,9 +117,12 @@ class GeminiClient:
                     timeout=self.timeout,
                     context=self.ssl_context,
                 ) as response:
+                    status_code = response.getcode()
                     response_body = response.read().decode("utf-8")
                 data = json.loads(response_body)
-                return self._parse_response(data)
+                parsed = self._parse_response(data)
+                parsed.metadata["status_code"] = status_code
+                return parsed
             except urllib.error.HTTPError as exc:
                 error_body = self._read_error_body(exc)
                 retryable = exc.code in {408, 429, 500, 502, 503, 504}
@@ -245,7 +233,10 @@ class GeminiClient:
                     "role": "user",
                     "parts": [{"text": user_prompt or ""}],
                 }
-            ]
+            ],
+            "generationConfig": {
+                "responseMimeType": "application/json",
+            },
         }
         if system_prompt:
             payload["systemInstruction"] = {

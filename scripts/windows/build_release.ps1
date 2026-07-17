@@ -2,6 +2,9 @@ $ErrorActionPreference = "Stop"
 
 Set-Location (Resolve-Path "$PSScriptRoot\..\..")
 
+$env:PYINSTALLER_CONFIG_DIR = if ($env:PYINSTALLER_CONFIG_DIR) { $env:PYINSTALLER_CONFIG_DIR } else { (Join-Path (Get-Location) "work\pyinstaller-config") }
+New-Item -ItemType Directory -Force -Path $env:PYINSTALLER_CONFIG_DIR | Out-Null
+
 function Read-LucidVersion {
     $versionFile = "src\hgpt_ai_os\version.py"
     $content = Get-Content -Raw -Path $versionFile
@@ -28,7 +31,7 @@ function Read-LucidVersion {
 $version = Read-LucidVersion
 $distDir = "dist\LUCID"
 $installerDir = "release\Installer"
-$installerName = "LUCID_Setup.exe"
+$installerName = "Lucid-AI-Studio-Setup-v$($version.InstallerVersion).exe"
 $installerPath = Join-Path $installerDir $installerName
 $checksumPath = "$installerPath.sha256"
 

@@ -8,6 +8,7 @@ from hgpt_ai_os.content.factory.general_domain import (
     GeneralDomainRouter,
     GeneralTopicBrief,
 )
+from hgpt_ai_os.content.prompt_libraries import image_prompt, video_storyboard
 
 
 @dataclass(frozen=True)
@@ -562,28 +563,81 @@ class TopicAwareBuiltInBuilder:
     def _build_facebook(self, p: TopicProfile) -> str:
         return "\n".join(
             [
-                f"Introduction",
-                f"{p.topic} cần được biến thành kiến thức dễ hiểu, có hành động rõ và có cách kiểm tra lại trong đời sống thực tế.",
-                "",
-                "Main knowledge",
-                f"{p.problem}. Trọng tâm của chủ đề là {p.subject}, trong đó cần chú ý đến {self._join(p.objects[:4])}.",
-                "",
-                "Step-by-step actions",
-                *self._numbered(p.actions),
-                "",
-                "Practical advice",
-                f"Hãy theo dõi các dấu hiệu như {self._join(p.signs[:3])}. Nếu thấy dấu hiệu lặp lại, quay lại kiểm tra {self._join(p.causes[:3])} trước khi đổi cách làm.",
-                "",
-                "Common mistakes",
-                *self._bullets(
-                    tuple(
-                        f"Chỉ chú ý đến {item} mà không kiểm tra toàn bộ bối cảnh."
-                        for item in p.objects[:3]
-                    )
+                "Hook",
+                (
+                    f"Có những ca trong xưởng nhìn qua tưởng chỉ là chuyện nhỏ: {p.signs[0]}. "
+                    f"Nhưng người làm hiện trường lâu năm đều biết, với {p.topic}, cái nguy hiểm không nằm ở tiếng ồn đầu tiên mà nằm ở quyết định cho chạy tiếp khi chưa hiểu vì sao nó xảy ra. "
+                    f"Một lỗi nhỏ có thể kéo theo {p.risks[0]}, làm cả tổ mất thời gian, mất nhịp sản xuất và đôi khi mất luôn niềm tin vào checklist."
+                ),
+                (
+                    "Tôi không sợ một sự cố được phát hiện sớm. Tôi sợ sự cố được giải thích quá nhanh. "
+                    "Khi một anh em nói: 'chắc thay cái này là xong', đó là lúc trưởng ca phải chậm lại vài phút. "
+                    "Một vài phút đo, nhìn, hỏi đúng người có thể tiết kiệm cả ngày sửa lại."
                 ),
                 "",
-                "Conclusion",
-                f"Khi {p.topic} được viết thành kiến thức, hành động và dấu hiệu kiểm tra, người đọc có thể áp dụng ngay mà không phụ thuộc vào lời khuyên chung chung.",
+                "Real shop scenario",
+                (
+                    f"Hãy hình dung ca sáng trong khu {p.domain}. Tổ sản xuất đang đẩy tiến độ, vật tư và thiết bị đã vào nhịp, thì người vận hành báo {p.signs[0]}. "
+                    f"Ở gần đó còn thấy {p.signs[1]} và {p.signs[2]}. Trên bàn giao ca trước chỉ ghi chung chung là đã kiểm tra, nhưng không có ảnh rõ, không có điểm đo lặp lại, không có người xác nhận điều kiện sau xử lý."
+                ),
+                (
+                    f"Lúc này có hai cách xử lý. Cách nhanh là nhảy ngay vào {p.actions[0].lower()}, rồi hy vọng mọi thứ ổn. "
+                    f"Cách đúng là dừng nhịp lại vừa đủ, nhìn toàn bộ chuỗi {self._join(p.objects[:4])}, hỏi lỗi xuất hiện khi nào, ở công đoạn nào, sau thao tác nào, và có lặp lại ở cùng điều kiện hay không. "
+                    "Một nhà máy trưởng thành không đo năng lực bằng việc sửa nhanh bao nhiêu, mà bằng việc lỗi có quay lại sau khi sửa hay không."
+                ),
+                "",
+                "Root cause analysis",
+                (
+                    f"Về bản chất, {p.problem}. Nếu chỉ nhìn triệu chứng, chúng ta dễ đổ lỗi cho người cuối cùng chạm vào thiết bị hoặc sản phẩm. "
+                    f"Nhưng gốc vấn đề thường nằm trong chuỗi nguyên nhân: {self._join(p.causes[:3])}. "
+                    "Nguyên nhân gốc không phải câu trả lời nghe hợp lý nhất; nó là điều kiện khi bị loại bỏ thì lỗi không còn tái diễn."
+                ),
+                (
+                    f"Ví dụ, nếu trọng tâm là {p.subject}, kỹ sư không chỉ hỏi 'hỏng ở đâu' mà phải hỏi 'điều kiện nào làm {p.objects[0]} đi ra khỏi trạng thái kiểm soát'. "
+                    f"Có thể nguyên nhân nằm ở {p.causes[0]}, nhưng cũng có thể {p.causes[1]} mới là yếu tố làm lỗi lặp lại. "
+                    "Vì vậy phải tách ba lớp bằng chứng: dấu hiệu mắt thấy, điều kiện vận hành hoặc công đoạn, và kết quả sau khi khắc phục."
+                ),
+                (
+                    f"Nếu thiếu một lớp bằng chứng, kết luận vẫn chỉ là giả thuyết. Với {p.topic}, giả thuyết sai thường dẫn đến {p.risks[1]} hoặc {p.risks[2]}. "
+                    "Đó là lý do người có kinh nghiệm không vội ký bàn giao chỉ vì máy chạy lại được, đường hàn nhìn đẹp hơn, hay khu vực đã gọn hơn. "
+                    "Chạy được không đồng nghĩa đã ổn. Ổn nghĩa là nguyên nhân đã bị khóa và cách kiểm tra lại đã rõ."
+                ),
+                "",
+                "Practical solution",
+                (
+                    "Workflow tôi muốn đội hiện trường dùng rất đơn giản. Một là giữ an toàn và giữ hiện trạng đủ lâu để đọc được dấu vết. "
+                    f"Đừng xóa mất bằng chứng trước khi ghi lại {self._join(p.signs[:3])}. Hai là xác định khu vực liên quan đến {self._join(p.objects[:4])}. "
+                    "Ba là chọn phép kiểm tra có thể lặp lại, để ca sau cũng kiểm được, không phụ thuộc trí nhớ của một người."
+                ),
+                *[f"{index}. {action}." for index, action in enumerate(p.actions, 1)],
+                (
+                    f"Sau khi làm các bước trên, đừng quên câu hỏi nghiệm thu: điều gì chứng minh {p.topic} đã được xử lý đúng? "
+                    f"Ít nhất phải có ảnh hoặc ghi nhận hiện trường, người chịu trách nhiệm, điều kiện trước/sau, và điểm kiểm tra liên quan đến {self._join(p.objects[:3])}. "
+                    "Nếu câu trả lời chỉ là 'em thấy ổn rồi', thì chưa đủ để bàn giao."
+                ),
+                (
+                    "Một mẹo nhỏ cho trưởng ca: yêu cầu người xử lý nói lại bằng một câu ngắn: 'Lỗi xuất hiện vì..., tôi đã kiểm bằng..., tôi đã sửa bằng..., và tôi xác nhận bằng...'. "
+                    "Nếu câu đó nói không trôi, nghĩa là hồ sơ hiện trường vẫn còn lỗ hổng."
+                ),
+                "",
+                "Lesson learned",
+                (
+                    f"Bài học lớn nhất của {p.topic} không phải là nhớ thêm một bước kiểm tra. "
+                    "Bài học là biến mỗi lỗi thành một điểm kiểm soát trong ca sau. "
+                    f"Nếu hôm nay thấy {p.signs[0]}, ngày mai checklist phải có cách nhận diện sớm dấu hiệu đó. "
+                    f"Nếu hôm nay nguyên nhân là {p.causes[0]}, tuần sau phải có owner theo dõi để nó không lặp lại."
+                ),
+                (
+                    f"Phòng ngừa tốt hơn sửa chữa ở chỗ nó không đợi {p.risks[0]} xảy ra rồi mới họp. "
+                    f"Nó đưa {p.objects[0]}, {p.objects[1]} và {p.objects[2]} vào thói quen quan sát hằng ngày. "
+                    "Khi cả tổ cùng nhìn một dấu hiệu theo cùng một cách, nhà máy bớt phụ thuộc vào 'người giỏi nhất' và bắt đầu vận hành bằng hệ thống."
+                ),
+                "",
+                "Call To Action",
+                (
+                    f"Trong ca của bạn, khi gặp {p.topic}, bạn sẽ kiểm điểm nào trước: {p.signs[0]}, {p.causes[0]}, hay {p.objects[0]}? "
+                    "Chia sẻ cách đội bạn đang làm, nhất là những bước nhỏ đã giúp lỗi không quay lại."
+                ),
                 "",
                 " ".join(self._hashtags(p)),
             ]
@@ -613,69 +667,117 @@ class TopicAwareBuiltInBuilder:
         )
 
     def _build_video(self, p: TopicProfile) -> str:
-        return "\n".join(
-            [
-                f"Tiêu đề: {p.topic}",
-                "",
-                f"Mở đầu: Video dọc 30 giây mở bằng tình huống {p.problem}.",
-                "",
-                f"Cảnh 1: Tập trung vào {self._join(p.objects[:3])}; làm rõ dấu hiệu {p.signs[0]}.",
-                f"Cảnh 2: Nhân vật kiểm tra nguyên nhân {p.causes[0]} và đối chiếu với {p.causes[1]}.",
-                f"Cảnh 3: Thực hiện {p.actions[0]}, sau đó ghi nhận kết quả bằng thao tác rõ ràng.",
-                "",
-                "Góc máy: Cận cảnh chi tiết chính, trung cảnh thao tác con người, khung cuối ổn định để thấy kết quả.",
-                "Ánh sáng: Tự nhiên, rõ vật thể, không tối, không làm mất chi tiết quan trọng.",
-                f"Lời thoại: \"Đừng xử lý {p.topic} bằng cảm tính. Nhìn dấu hiệu, kiểm tra nguyên nhân, rồi làm một bước có thể đo lại.\"",
-                f"Phụ đề: {p.topic} | Dấu hiệu | Nguyên nhân | Hành động | Kiểm tra lại",
-                "Âm thanh: Nhịp nền gọn, âm thanh môi trường thật, điểm nhấn nhẹ khi xuất hiện hành động chính.",
-                "",
-                f"Kết thúc: Hiển thị kết quả sau khi {p.actions[0]} và nhắc lại lợi ích giảm {p.risks[0]}.",
-                "Kêu gọi hành động: Lưu quy trình này để tạo video ngắn có hành động thực tế, không kể lan man.",
-            ]
+        return video_storyboard(
+            topic=p.topic,
+            subject=p.subject,
+            problem=p.problem,
+            objects=self._join(p.objects[:4]),
+            signs=self._join(p.signs[:3]),
+            action=p.actions[0],
+            equipment=p.domain,
+            repair=p.actions[1] if len(p.actions) > 1 else p.actions[0],
+            verification=p.actions[2] if len(p.actions) > 2 else "ghi nhận kết quả và xác nhận điều kiện an toàn",
         )
 
     def _build_image(self, p: TopicProfile) -> str:
-        return "\n".join(
-            [
-                f"Chủ thể: {p.subject}, trọng tâm là {self._join(p.objects[:3])}",
-                f"Bối cảnh: môi trường phù hợp với {p.domain}, có dấu hiệu {self._join(p.signs[:2])}",
-                f"Hành động: {p.actions[0]}",
-                "Trang phục: phù hợp nghề nghiệp, sạch, an toàn, không phô trương",
-                "Ánh sáng: rõ chi tiết, tự nhiên, không quá tối hoặc quá chói",
-                "Góc máy: ngang tầm mắt kết hợp cận cảnh chi tiết chính",
-                "Ống kính: 35mm cho bối cảnh, 85mm cho chi tiết",
-                "Màu sắc: chân thực, cân bằng, ưu tiên màu của vật thể và môi trường thật",
-                f"Chi tiết cần có: {self._join((*p.objects[:4], *p.signs[:2]))}",
-                "Chi tiết cần tránh: chữ sai tiếng Việt, vật thể méo, chi tiết không liên quan, bối cảnh giả",
-                "Phong cách: ảnh tư liệu chân thực, rõ nét, giàu chi tiết, có tính sản xuất",
-                "Tỷ lệ: 4:5",
-            ]
+        return image_prompt(
+            topic=p.topic,
+            subject=p.subject,
+            problem=p.problem,
+            objects=self._join(p.objects[:4]),
+            signs=self._join(p.signs[:3]),
+            action=p.actions[0],
+            equipment=p.domain,
+            evidence=self._join((*p.objects[:4], *p.signs[:3])),
         )
 
     def _build_seo(self, p: TopicProfile) -> str:
         keywords = self._keywords(p)
         return "\n".join(
             [
-                f"Title: {p.topic}: hướng dẫn thực tế để bắt đầu đúng",
+                f"H1: {p.topic}: nguyên nhân, kiểm tra, sửa chữa và phòng ngừa trong xưởng",
                 "",
-                f"Meta: Tìm hiểu {p.topic}, các dấu hiệu cần chú ý, nguyên nhân thường gặp và những bước thực tế để giảm {p.risks[0]}.",
+                "Introduction",
+                (
+                    f"{p.topic} là một chủ đề được tìm kiếm nhiều vì nó chạm trực tiếp vào an toàn, chất lượng và nhịp sản xuất. "
+                    f"Khi {p.signs[0]} hoặc {p.signs[1]} xuất hiện, đội hiện trường không chỉ cần biết sửa gì, mà cần hiểu vì sao lỗi xảy ra, kiểm tra bằng cách nào, điều kiện nào được xem là chấp nhận, và làm sao để lỗi không lặp lại."
+                ),
+                (
+                    f"Bài viết này tổng hợp cách tiếp cận thực tế cho {p.subject}: nhận diện root cause, inspection, repair, acceptance, prevention và applicable standards. "
+                    f"Các từ khóa như {', '.join(keywords[:4])} được dùng tự nhiên để người đọc dễ tìm đúng nội dung cần áp dụng trong nhà máy."
+                ),
                 "",
-                "Keywords:",
-                *self._bullets(keywords),
+                "H2: Dấu hiệu và root cause cần ưu tiên",
+                (
+                    f"Dấu hiệu ban đầu của {p.topic} thường gồm {self._join(p.signs[:3])}. "
+                    f"Những dấu hiệu này liên quan đến {self._join(p.objects[:4])}, nên không nên kết luận chỉ bằng quan sát một điểm riêng lẻ. "
+                    f"Root cause thường nằm trong các điều kiện như {self._join(p.causes[:3])}."
+                ),
+                (
+                    f"Về mặt kỹ thuật, {p.problem}. Nếu đội sửa chữa chỉ xử lý triệu chứng, rủi ro có thể chuyển thành {self._join(p.risks[:3])}. "
+                    "Cách làm đúng là tách triệu chứng, điều kiện vận hành, bằng chứng đo kiểm và kết quả xác nhận sau sửa."
+                ),
                 "",
-                "Outline:",
-                f"1. {p.topic} là gì và vì sao đáng quan tâm?",
-                f"2. Dấu hiệu chính: {self._join(p.signs[:3])}.",
-                f"3. Nguyên nhân cần kiểm tra: {self._join(p.causes[:3])}.",
-                f"4. Cách xử lý theo thứ tự: {self._join(p.actions[:3])}.",
-                f"5. Cách theo dõi để tránh {p.risks[0]} lặp lại.",
+                "H2: Quy trình inspection trước khi sửa",
+                (
+                    f"Inspection nên bắt đầu bằng việc giữ hiện trạng, ghi lại {p.signs[0]}, kiểm tra khu vực liên quan đến {p.objects[0]} và {p.objects[1]}, sau đó đối chiếu với tiêu chí đang áp dụng. "
+                    "Nếu cần đo kiểm, phải dùng cùng phương pháp trước và sau sửa để kết quả có thể so sánh được."
+                ),
+                *[f"- {action}." for action in p.actions[:3]],
+                (
+                    "Một hồ sơ inspection tối thiểu nên có ảnh hiện trường, vị trí kiểm tra, người kiểm tra, thời điểm phát hiện, điều kiện vận hành hoặc công đoạn, và kết luận tạm thời. "
+                    "Không nên sửa xóa dấu vết trước khi có bằng chứng, vì khi lỗi lặp lại đội sau sẽ mất dữ liệu truy vết."
+                ),
                 "",
-                "FAQ:",
-                f"- Khi nào cần ưu tiên {p.topic}? Khi xuất hiện {p.signs[0]} hoặc {p.signs[1]}.",
-                f"- Bước đầu tiên nên làm là gì? {p.actions[0]}.",
-                f"- Cần theo dõi yếu tố nào? {self._join(p.objects[:3])}.",
+                "H2: Repair workflow và acceptance",
+                (
+                    f"Repair cho {p.topic} phải đi sau chẩn đoán. Bước đầu tiên là {p.actions[0]}. "
+                    f"Sau đó đội thực hiện {p.actions[1] if len(p.actions) > 1 else p.actions[0]} và xác nhận lại bằng {p.actions[2] if len(p.actions) > 2 else 'kiểm tra sau sửa'}. "
+                    "Không bàn giao chỉ vì tình trạng nhìn có vẻ tốt hơn; acceptance phải dựa trên bằng chứng."
+                ),
+                (
+                    f"Acceptance nên trả lời bốn câu hỏi: dấu hiệu {p.signs[0]} đã hết chưa, nguyên nhân {p.causes[0]} đã được loại bỏ chưa, rủi ro {p.risks[0]} đã được kiểm soát chưa, và hồ sơ có đủ để ca sau hiểu quyết định không. "
+                    "Nếu một trong bốn câu hỏi chưa rõ, cần giữ trạng thái theo dõi hoặc kiểm tra bổ sung."
+                ),
                 "",
-                f"Conclusion: {p.topic} hiệu quả hơn khi được viết thành dấu hiệu cụ thể, nguyên nhân rõ và hành động có thể kiểm tra lại.",
+                "H2: Sai lầm thường gặp khi xử lý tại hiện trường",
+                (
+                    f"Sai lầm đầu tiên với {p.topic} là sửa phần dễ thấy nhất trước khi khóa nguyên nhân. "
+                    f"Khi đó {p.signs[0]} có thể biến mất tạm thời, nhưng {p.causes[0]} vẫn còn trong hệ thống và lỗi dễ quay lại ở ca sau."
+                ),
+                (
+                    f"Sai lầm thứ hai là để trách nhiệm mơ hồ giữa người vận hành, kỹ thuật viên và người nghiệm thu. "
+                    f"Người vận hành thường phát hiện {p.signs[1]}, kỹ thuật viên phải kiểm {self._join(p.objects[:3])}, còn người nghiệm thu cần xác nhận tiêu chí acceptance. "
+                    "Nếu ba vai trò không cùng nhìn một bằng chứng, kết luận sau sửa sẽ yếu."
+                ),
+                (
+                    "Sai lầm thứ ba là không biến bài học thành hành động phòng ngừa. "
+                    f"Sau mỗi lần xử lý, hãy ghi một dòng ngắn: triệu chứng là gì, root cause là gì, repair đã làm gì, acceptance dựa trên bằng chứng nào, và prevention giao cho ai. "
+                    "Đó là cách biến tri thức kỹ thuật thành thói quen vận hành."
+                ),
+                "",
+                "H2: Prevention và applicable standards",
+                (
+                    f"Prevention hiệu quả là đưa {p.topic} vào lịch kiểm tra định kỳ, checklist đầu ca/cuối ca, hoặc SOP thao tác liên quan đến {self._join(p.objects[:3])}. "
+                    f"Khi thấy {p.signs[1]}, tổ sản xuất cần biết báo ai, ghi gì và dừng ở mức nào để tránh {p.risks[1]}."
+                ),
+                (
+                    "Applicable standards phải được chọn theo loại việc thực tế: bản vẽ được phê duyệt, ITP, checklist QA/QC, hướng dẫn OEM, WPS/PQR nếu liên quan hàn, tiêu chí VT/MT/UT/PT/RT nếu liên quan NDT, hoặc quy trình bảo trì nội bộ nếu liên quan thiết bị. "
+                    "Không dùng tiêu chuẩn như khẩu hiệu; tiêu chuẩn chỉ có giá trị khi liên kết với điểm kiểm tra và bằng chứng nghiệm thu."
+                ),
+                "",
+                "FAQ",
+                f"Q: Khi nào cần ưu tiên {p.topic}?\nA: Khi xuất hiện {p.signs[0]} hoặc {p.signs[1]}, đặc biệt nếu lỗi lặp lại ở cùng thiết bị, công đoạn hoặc điều kiện vận hành.",
+                f"Q: Bước inspection đầu tiên là gì?\nA: {p.actions[0]}. Sau đó ghi lại bằng chứng liên quan đến {self._join(p.objects[:3])}.",
+                f"Q: Repair thế nào để tránh sửa theo cảm tính?\nA: Phải nối repair với root cause. Nếu nguyên nhân là {p.causes[0]}, hành động sửa phải loại bỏ điều kiện đó và có kiểm tra lại.",
+                f"Q: Acceptance cần có gì?\nA: Có bằng chứng trước/sau, người xác nhận, điều kiện kiểm tra và tiêu chí pass/fail rõ. Với {p.topic}, không nên bàn giao chỉ bằng cảm nhận.",
+                f"Q: Làm sao prevention tốt hơn?\nA: Đưa {p.signs[0]} và {p.causes[0]} vào checklist ca sau, phân owner theo dõi và xem lại dữ liệu nếu lỗi lặp lại.",
+                "",
+                "Summary",
+                (
+                    f"{p.topic} cần được xử lý như một chuỗi kỹ thuật hoàn chỉnh: nhận diện dấu hiệu, tìm root cause, inspection có bằng chứng, repair đúng nguyên nhân, acceptance rõ tiêu chí và prevention để không lặp lại. "
+                    f"Khi đội hiện trường làm đúng chuỗi này, {p.risks[0]} giảm xuống, {p.subject} ổn định hơn và nhà máy có dữ liệu tốt hơn cho cải tiến tiếp theo."
+                ),
             ]
         )
 

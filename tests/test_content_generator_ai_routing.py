@@ -1,7 +1,11 @@
 from __future__ import annotations
 
+import json
 import os
+import tempfile
 import unittest
+from contextlib import contextmanager
+from pathlib import Path
 from unittest import mock
 
 from hgpt_ai_os.ai.gemini_client import AIProviderError, AIResponse
@@ -30,23 +34,29 @@ class _FailingAI:
 
 
 class ContentGeneratorAIRoutingTests(unittest.TestCase):
-    def _offline_env(self, provider: str = "none") -> dict[str, str]:
-        return {
-            "AI_PROVIDER": provider,
-            "OPENAI_API_KEY": "",
-            "GEMINI_API_KEY": "",
-            "GOOGLE_API_KEY": "",
-            "ANTHROPIC_API_KEY": "",
-        }
-
-    def _online_env(self) -> dict[str, str]:
-        return {
-            "AI_PROVIDER": "openai",
-            "OPENAI_API_KEY": "test-key",
-            "GEMINI_API_KEY": "",
-            "GOOGLE_API_KEY": "",
-            "ANTHROPIC_API_KEY": "",
-        }
+    @contextmanager
+    def _config(self, provider: str, *, openai_key: str = ""):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            docs = root / "profile" / "Documents" / "LUCID"
+            docs.mkdir(parents=True)
+            (docs / "config.json").write_text(
+                json.dumps(
+                    {
+                        "provider": provider,
+                        "openai_api_key": openai_key,
+                        "gemini_api_key": "",
+                        "anthropic_api_key": "",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with mock.patch.dict(
+                os.environ,
+                {"USERPROFILE": str(root / "profile")},
+                clear=True,
+            ):
+                yield
 
     def _patch_topic_engine(self):
         return mock.patch(
@@ -57,7 +67,7 @@ class ContentGeneratorAIRoutingTests(unittest.TestCase):
     def test_free_desktop_mode_does_not_call_ai(self):
         ai = _FailingAI(exc=AssertionError("AI must not be called"))
         with (
-            mock.patch.dict(os.environ, self._offline_env("free_desktop"), clear=True),
+            self._config("free_desktop"),
             mock.patch(
                 "hgpt_ai_os.content.generator.LucidAI",
                 side_effect=AssertionError("LucidAI must not initialize"),
@@ -74,7 +84,7 @@ class ContentGeneratorAIRoutingTests(unittest.TestCase):
     def test_disabled_provider_does_not_call_ai(self):
         ai = _FailingAI(exc=AssertionError("AI must not be called"))
         with (
-            mock.patch.dict(os.environ, self._offline_env("disabled"), clear=True),
+            self._config("disabled"),
             mock.patch(
                 "hgpt_ai_os.content.generator.LucidAI",
                 side_effect=AssertionError("LucidAI must not initialize"),
@@ -97,7 +107,7 @@ class ContentGeneratorAIRoutingTests(unittest.TestCase):
             )
         )
         with (
-            mock.patch.dict(os.environ, self._online_env(), clear=True),
+            self._config("openai", openai_key="test-key"),
             self._patch_topic_engine() as topic_generate,
         ):
             output = ContentGenerator(ai=ai).generate("facebook", "5S trong xưởng")
@@ -109,7 +119,7 @@ class ContentGeneratorAIRoutingTests(unittest.TestCase):
     def test_ai_exception_falls_back_to_topic_intelligence(self):
         ai = _FailingAI(exc=TimeoutError("timeout"))
         with (
-            mock.patch.dict(os.environ, self._online_env(), clear=True),
+            self._config("openai", openai_key="test-key"),
             self._patch_topic_engine() as topic_generate,
         ):
             output = ContentGenerator(ai=ai).generate("seo", "5S trong xưởng")
@@ -127,7 +137,7 @@ class ContentGeneratorAIRoutingTests(unittest.TestCase):
             )
         )
         with (
-            mock.patch.dict(os.environ, self._online_env(), clear=True),
+            self._config("openai", openai_key="test-key"),
             self._patch_topic_engine() as topic_generate,
         ):
             output = ContentGenerator(ai=ai).generate("seo", "5S trong xưởng")
@@ -145,7 +155,7 @@ class ContentGeneratorAIRoutingTests(unittest.TestCase):
             )
         )
         with (
-            mock.patch.dict(os.environ, self._online_env(), clear=True),
+            self._config("openai", openai_key="test-key"),
             self._patch_topic_engine() as topic_generate,
         ):
             output = ContentGenerator(ai=ai).generate("seo", "5S trong xưởng")
@@ -167,7 +177,7 @@ class ContentGeneratorAIRoutingTests(unittest.TestCase):
             )
         )
         with (
-            mock.patch.dict(os.environ, self._online_env(), clear=True),
+            self._config("openai", openai_key="test-key"),
             self._patch_topic_engine() as topic_generate,
         ):
             output = ContentGenerator(ai=ai).generate("facebook", "5S trong xưởng")
@@ -191,7 +201,7 @@ class ContentGeneratorAIRoutingTests(unittest.TestCase):
                     )
                 )
                 with (
-                    mock.patch.dict(os.environ, self._online_env(), clear=True),
+                    self._config("openai", openai_key="test-key"),
                     self._patch_topic_engine() as topic_generate,
                 ):
                     output = ContentGenerator(ai=ai).generate(

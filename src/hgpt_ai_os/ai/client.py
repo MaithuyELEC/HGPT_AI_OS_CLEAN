@@ -76,22 +76,15 @@ def ollama_model() -> str:
 
 
 def gemini_api_key() -> str:
-    return (
-        get_config_value("GEMINI_API_KEY")
-        or os.getenv("GOOGLE_API_KEY", "").strip()
-        or os.getenv("GEMINI_API_KEY", "").strip()
-    )
+    return get_config_value("GEMINI_API_KEY")
 
 
 def openai_api_key() -> str:
-    return get_config_value("OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY", "").strip()
+    return get_config_value("OPENAI_API_KEY")
 
 
 def anthropic_api_key() -> str:
-    return (
-        get_config_value("ANTHROPIC_API_KEY")
-        or os.getenv("ANTHROPIC_API_KEY", "").strip()
-    )
+    return get_config_value("ANTHROPIC_API_KEY")
 
 
 def use_live_gemini() -> bool:
@@ -240,6 +233,7 @@ class OpenAIProvider:
                 {"role": "system", "content": system_prompt or ""},
                 {"role": "user", "content": user_prompt or ""},
             ],
+            "response_format": {"type": "json_object"},
         }
         body = json.dumps(payload).encode("utf-8")
         request = urllib.request.Request(
@@ -258,9 +252,12 @@ class OpenAIProvider:
                 timeout=self.timeout,
                 context=self.ssl_context,
             ) as response:
+                status_code = response.getcode()
                 response_body = response.read().decode("utf-8")
             data = json.loads(response_body)
-            return self._parse_response(data)
+            parsed = self._parse_response(data)
+            parsed.metadata["status_code"] = status_code
+            return parsed
         except urllib.error.HTTPError as exc:
             return self._error(
                 f"OpenAI HTTP error {exc.code}.",
@@ -418,9 +415,12 @@ class AnthropicProvider:
                 timeout=self.timeout,
                 context=self.ssl_context,
             ) as response:
+                status_code = response.getcode()
                 response_body = response.read().decode("utf-8")
             data = json.loads(response_body)
-            return self._parse_response(data)
+            parsed = self._parse_response(data)
+            parsed.metadata["status_code"] = status_code
+            return parsed
         except urllib.error.HTTPError as exc:
             return self._error(
                 f"Anthropic HTTP error {exc.code}.",
@@ -572,6 +572,7 @@ class OllamaProvider:
                 request,
                 timeout=self.timeout,
             ) as response:
+                status_code = response.getcode()
                 response_body = response.read().decode("utf-8")
             data = json.loads(response_body)
             return AIResponse(
@@ -588,7 +589,7 @@ class OllamaProvider:
                     "raw": data,
                 },
                 finish_reason="stop" if data.get("done") else None,
-                metadata={"mode": "Local"},
+                metadata={"mode": "Local", "status_code": status_code},
             )
         except urllib.error.HTTPError as exc:
             return self._error(
@@ -672,8 +673,8 @@ class AIManager:
 
     def __init__(self, providers: list | None = None) -> None:
         self.providers = providers or [
-            GeminiProvider(),
             OpenAIProvider(),
+            GeminiProvider(),
             OllamaProvider(),
         ]
 
@@ -702,10 +703,7 @@ class AIManager:
                 response.metadata,
             )
 
-            if (
-                response.provider == "Gemini"
-                and not self._should_retry_after_gemini(response)
-            ):
+            if not self._should_try_next_provider(response):
                 break
 
         return AIProviderError(
@@ -735,7 +733,7 @@ class AIManager:
             return ""
         return response.content
 
-    def _should_retry_after_gemini(self, error: AIProviderError) -> bool:
+    def _should_try_next_provider(self, error: AIProviderError) -> bool:
         status_code = error.metadata.get("status_code")
         if status_code in {401, 403, 429}:
             return True

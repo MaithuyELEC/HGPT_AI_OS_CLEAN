@@ -329,18 +329,14 @@ class TopicEngineTests(unittest.TestCase):
         self.assert_facebook_contract(body)
         for expected in (
             "Cầu trục 7.5T bị đứt cáp",
-            "ISO 4309",
             "LOTO",
             "đường kính cáp",
             "puly",
             "tang cuốn",
             "thay cáp",
             "thử tải",
-            "Maintenance Engineer",
-            "QA/QC",
-            "Workshop Manager",
-            "CMMS",
-            "Bài học rút ra",
+            "Lesson learned",
+            "Call To Action",
         ):
             self.assertIn(expected, body)
 
@@ -424,10 +420,12 @@ class TopicEngineTests(unittest.TestCase):
                 for phrase in forbidden:
                     self.assertNotIn(phrase, body)
                 for expected_section in (
-                    "Nguyên nhân cần ưu tiên",
-                    "Trình tự kiểm tra thiết yếu",
-                    "Nguyên tắc sửa đúng",
-                    "Bài học rút ra",
+                    "Hook",
+                    "Real shop scenario",
+                    "Root cause analysis",
+                    "Practical solution",
+                    "Lesson learned",
+                    "Call To Action",
                 ):
                     self.assertIn(expected_section, body)
 
@@ -801,17 +799,25 @@ class TopicEngineTests(unittest.TestCase):
         self.assertIn("Đề xuất Digital Factory", body)
 
     def assert_facebook_contract(self, body: str) -> None:
-        self.assertGreaterEqual(len(body.split()), 700)
-        self.assertLessEqual(len(body.split()), 1200)
+        self.assertGreaterEqual(len(body.split()), 900)
+        self.assertLessEqual(len(body.split()), 1400)
         for section in (
+            "Hook",
+            "Real shop scenario",
+            "Root cause analysis",
+            "Practical solution",
+            "Lesson learned",
+            "Call To Action",
+        ):
+            self.assertIn(section, body)
+        for forbidden in (
             "Mô tả kỹ thuật ngắn",
             "Nguyên nhân cần ưu tiên",
             "Trình tự kiểm tra thiết yếu",
             "Bằng chứng phải có trước khi kết luận",
             "Nguyên tắc sửa đúng",
-            "Bài học rút ra",
         ):
-            self.assertIn(section, body)
+            self.assertNotIn(forbidden, body)
         self.assertNotIn("Phân tích nguyên nhân gốc", body)
         self.assertNotIn("Đề xuất Digital Factory", body)
 

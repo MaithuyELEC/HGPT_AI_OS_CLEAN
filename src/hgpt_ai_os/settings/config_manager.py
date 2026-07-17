@@ -5,13 +5,10 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 
-from hgpt_ai_os.settings.provider_test import ConnectionTestResult, test_provider
-
-
 DEFAULT_CONFIG = {
-    "provider": "gemini",
-    "gemini_api_key": "",
+    "provider": "openai",
     "openai_api_key": "",
+    "gemini_api_key": "",
     "anthropic_api_key": "",
 }
 SUPPORTED_PROVIDERS = {"gemini", "openai", "anthropic", "none"}
@@ -25,6 +22,13 @@ ENV_KEY_MAP = {
     "gemini_api_key": "GEMINI_API_KEY",
     "openai_api_key": "OPENAI_API_KEY",
     "anthropic_api_key": "ANTHROPIC_API_KEY",
+}
+DOTENV_KEY_MAP = {
+    "AI_PROVIDER": "provider",
+    "GEMINI_API_KEY": "gemini_api_key",
+    "GOOGLE_API_KEY": "gemini_api_key",
+    "OPENAI_API_KEY": "openai_api_key",
+    "ANTHROPIC_API_KEY": "anthropic_api_key",
 }
 
 
@@ -60,24 +64,30 @@ class ConfigManager:
             data = {}
 
         self.config = self._normalize(data if isinstance(data, dict) else {})
+        if self._migrate_to_openai_source():
+            self._write_config()
         self._apply_environment()
         return self.config.copy()
 
     def save(self, config: dict[str, str] | None = None) -> dict[str, str]:
         self.config = self._normalize(config or self.config)
+        self._migrate_to_openai_source()
+        self._write_config()
+        self._apply_environment()
+        return self.config.copy()
+
+    def _write_config(self) -> None:
         self.config_path.parent.mkdir(parents=True, exist_ok=True)
         self.config_path.write_text(
             json.dumps(self.config, indent=4) + "\n",
             encoding="utf-8",
         )
-        self._apply_environment()
-        return self.config.copy()
 
     def exists(self) -> bool:
         return self.config_path.exists()
 
     def provider(self) -> str:
-        return self.config.get("provider", "gemini").strip().lower() or "gemini"
+        return self.config.get("provider", "openai").strip().lower() or "openai"
 
     def api_key(self, provider: str | None = None) -> str:
         provider_name = (provider or self.provider()).strip().lower()
@@ -121,17 +131,19 @@ class ConfigManager:
         )
 
     def test_connection(self) -> ConnectionTestResult:
+        from hgpt_ai_os.settings.provider_test import ConnectionTestResult, test_provider
+
         self.load()
         return test_provider(self.provider(), self.api_key())
 
     def _normalize(self, data: dict) -> dict[str, str]:
         return {
             "provider": str(
-                data.get("provider") or data.get("AI_PROVIDER") or "gemini"
+                data.get("provider") or data.get("AI_PROVIDER") or "openai"
             )
             .strip()
             .lower()
-            or "gemini",
+            or "openai",
             "gemini_api_key": str(
                 data.get("gemini_api_key")
                 or data.get("GEMINI_API_KEY")
@@ -145,6 +157,42 @@ class ConfigManager:
                 data.get("anthropic_api_key") or data.get("ANTHROPIC_API_KEY") or ""
             ).strip(),
         }
+
+    def _migrate_to_openai_source(self) -> bool:
+        before = self.config.copy()
+        dotenv_values = self._read_repo_dotenv()
+
+        if not self.config.get("openai_api_key", "").strip():
+            self.config["openai_api_key"] = dotenv_values.get("openai_api_key", "")
+
+        if self.config.get("openai_api_key", "").strip():
+            self.config["provider"] = "openai"
+
+        return self.config != before
+
+    def _read_repo_dotenv(self) -> dict[str, str]:
+        env_path = Path(__file__).resolve().parents[3] / ".env"
+        if not env_path.exists():
+            return {}
+
+        values: dict[str, str] = {}
+        try:
+            lines = env_path.read_text(encoding="utf-8").splitlines()
+        except OSError:
+            return values
+
+        for raw_line in lines:
+            line = raw_line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            field = DOTENV_KEY_MAP.get(key.strip())
+            if not field:
+                continue
+            if field == "provider":
+                continue
+            values.setdefault(field, value.strip().strip('"').strip("'"))
+        return values
 
     def _apply_environment(self) -> None:
         provider = self.provider()

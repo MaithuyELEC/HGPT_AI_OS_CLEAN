@@ -9,7 +9,7 @@ source .venv/bin/activate
 export PYTHONPATH=src
 
 echo "=================================="
-echo " LUCID AUTO - Development Mode"
+echo " Lucid AI Studio - Development Mode"
 echo "=================================="
 
 python3 -m hgpt_ai_os.gui.app

@@ -5,6 +5,7 @@ Follows Single Responsibility Principle through KnowledgeProvider.
 """
 
 from hgpt_ai_os.content.hook_selector import HookSelector
+from hgpt_ai_os.content.prompt_libraries import image_prompt, video_storyboard
 from hgpt_ai_os.content_context.models import ContentContext
 from hgpt_ai_os.content_context.knowledge_provider import KnowledgeProvider
 
@@ -64,20 +65,20 @@ class ContentContextEngine:
             lesson=self._knowledge.get_lesson(),
             action=self._knowledge.get_cta(),
             hashtags=self._knowledge.get_hashtags(),
-            image_prompt=f"""Create an ultra realistic industrial engineering photo.
-
-Topic:
-{topic}
-
-Knowledge:
-{problem}
-""",
-            video_prompt=f"""Create a 30-second industrial cinematic video.
-
-Topic:
-{topic}
-
-Knowledge:
-{problem}
-""",
+            image_prompt=image_prompt(
+                topic=topic,
+                subject="Vietnamese maintenance or QA/QC engineer",
+                problem=problem,
+                objects="machine component, steel structure, inspection point, checklist",
+                signs="visible field evidence related to the topic",
+                action="inspection, measurement, controlled correction, and documented handover",
+            ),
+            video_prompt=video_storyboard(
+                topic=topic,
+                subject="Vietnamese maintenance or QA/QC engineer",
+                problem=problem,
+                objects="machine component, steel structure, inspection point, checklist",
+                signs="visible field evidence related to the topic",
+                action="inspection, measurement, controlled correction, and documented handover",
+            ),
 )

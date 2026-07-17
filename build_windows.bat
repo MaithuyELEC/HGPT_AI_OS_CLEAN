@@ -3,6 +3,9 @@ setlocal enabledelayedexpansion
 
 cd /d "%~dp0"
 
+if not defined PYINSTALLER_CONFIG_DIR set PYINSTALLER_CONFIG_DIR=%CD%\work\pyinstaller-config
+if not exist "%PYINSTALLER_CONFIG_DIR%" mkdir "%PYINSTALLER_CONFIG_DIR%"
+
 set PYTHON_BIN=python
 if exist ".venv\Scripts\python.exe" set PYTHON_BIN=.venv\Scripts\python.exe
 
@@ -34,16 +37,18 @@ if %errorlevel%==0 (
     exit /b 1
 )
 
-if not exist release\Installer\LUCID_Setup.exe (
-    echo ERROR: expected installer missing: release\Installer\LUCID_Setup.exe
+set INSTALLER_NAME=Lucid-AI-Studio-Setup-v%APP_VERSION%.exe
+
+if not exist release\Installer\%INSTALLER_NAME% (
+    echo ERROR: expected installer missing: release\Installer\%INSTALLER_NAME%
     exit /b 1
 )
 
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$hash = Get-FileHash -Algorithm SHA256 -LiteralPath 'release\Installer\LUCID_Setup.exe'; ($hash.Hash.ToLowerInvariant() + '  LUCID_Setup.exe') | Set-Content -NoNewline -Encoding ascii -Path 'release\Installer\LUCID_Setup.exe.sha256'"
+powershell -NoProfile -ExecutionPolicy Bypass -Command "$installer = 'release\Installer\%INSTALLER_NAME%'; $hash = Get-FileHash -Algorithm SHA256 -LiteralPath $installer; ($hash.Hash.ToLowerInvariant() + '  %INSTALLER_NAME%') | Set-Content -NoNewline -Encoding ascii -Path ($installer + '.sha256')"
 if errorlevel 1 exit /b %errorlevel%
 
 echo Windows release ready: %APP_RELEASE%
 echo dist\LUCID\LUCID.exe
-echo release\Installer\LUCID_Setup.exe
-echo release\Installer\LUCID_Setup.exe.sha256
+echo release\Installer\%INSTALLER_NAME%
+echo release\Installer\%INSTALLER_NAME%.sha256
 echo installer\LUCID.iss

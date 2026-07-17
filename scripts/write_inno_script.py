@@ -20,10 +20,10 @@ def main() -> int:
     app_release = values["APP_RELEASE"]
     INSTALLER.parent.mkdir(exist_ok=True)
     INSTALLER.write_text(
-        f"""#define MyAppName "LUCID AUTO"
+        f"""#define MyAppName "Lucid AI Studio"
 #define MyAppVersion "{app_version}"
 #define MyAppRelease "{app_release}"
-#define MyAppPublisher "HGPT Steel"
+#define MyAppPublisher "MaithuyELEC"
 #define MyAppExeName "LUCID.exe"
 
 [Setup]
@@ -32,8 +32,8 @@ AppName={{#MyAppName}}
 AppVersion={{#MyAppVersion}}
 AppVerName={{#MyAppName}} {{#MyAppRelease}}
 AppPublisher={{#MyAppPublisher}}
-DefaultDirName={{autopf}}\\LUCID AUTO
-DefaultGroupName=LUCID AUTO
+DefaultDirName={{autopf}}\\Lucid AI Studio
+DefaultGroupName=Lucid AI Studio
 DisableProgramGroupPage=no
 UninstallDisplayIcon={{app}}\\{{#MyAppExeName}}
 UninstallDisplayName={{#MyAppName}} {{#MyAppRelease}}
@@ -44,7 +44,7 @@ VersionInfoProductName={{#MyAppName}}
 VersionInfoProductVersion={{#MyAppVersion}}
 VersionInfoCopyright=Copyright 2026 {{#MyAppPublisher}}. All rights reserved.
 OutputDir=..\\release\\Installer
-OutputBaseFilename=LUCID_Setup
+OutputBaseFilename=Lucid-AI-Studio-Setup-v{{#MyAppVersion}}
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -60,12 +60,12 @@ Name: "desktopicon"; Description: "{{cm:CreateDesktopIcon}}"; GroupDescription: 
 Source: "..\\dist\\LUCID\\*"; DestDir: "{{app}}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{{group}}\\LUCID AUTO"; Filename: "{{app}}\\{{#MyAppExeName}}"
-Name: "{{group}}\\Uninstall LUCID AUTO"; Filename: "{{uninstallexe}}"
-Name: "{{autodesktop}}\\LUCID AUTO"; Filename: "{{app}}\\{{#MyAppExeName}}"; Tasks: desktopicon
+Name: "{{group}}\\Lucid AI Studio"; Filename: "{{app}}\\{{#MyAppExeName}}"
+Name: "{{group}}\\Uninstall Lucid AI Studio"; Filename: "{{uninstallexe}}"
+Name: "{{autodesktop}}\\Lucid AI Studio"; Filename: "{{app}}\\{{#MyAppExeName}}"; Tasks: desktopicon
 
 [Run]
-Filename: "{{app}}\\{{#MyAppExeName}}"; Description: "{{cm:LaunchProgram,LUCID AUTO}}"; Flags: nowait postinstall skipifsilent
+Filename: "{{app}}\\{{#MyAppExeName}}"; Description: "{{cm:LaunchProgram,Lucid AI Studio}}"; Flags: nowait postinstall skipifsilent
 """,
         encoding="utf-8",
     )

@@ -1,12 +1,12 @@
 # -*- mode: python ; coding: utf-8 -*-
 
 from pathlib import Path
-from PyInstaller.utils.hooks import collect_all, collect_data_files
+from PyInstaller.utils.hooks import collect_all, collect_data_files, collect_submodules
 
 block_cipher = None
 
 APP_NAME = "LUCID"
-APP_BUNDLE = "LUCID.app"
+APP_BUNDLE = "Lucid AI Studio.app"
 ICON_ICNS = "assets/LUCID.icns" if Path("assets/LUCID.icns").exists() else None
 ICON_ICO = "assets/LUCID.ico" if Path("assets/LUCID.ico").exists() else None
 version_ns = {}
@@ -33,6 +33,9 @@ for path in sorted(Path("src/hgpt_ai_os/topic_engine").glob("*.json")):
     
 
 qt_datas, qt_binaries, qt_hiddenimports = collect_all("PySide6")
+engineering_pipeline_hiddenimports = collect_submodules(
+    "hgpt_ai_os.engineering_pipeline"
+)
 qt_datas += collect_data_files(
     "PySide6",
     includes=[
@@ -47,7 +50,7 @@ a = Analysis(
     pathex=['src'],
     binaries=qt_binaries,
     datas=datas + qt_datas,
-    hiddenimports=qt_hiddenimports,
+    hiddenimports=qt_hiddenimports + engineering_pipeline_hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
@@ -82,8 +85,8 @@ app = BUNDLE(
     icon=ICON_ICNS,
     bundle_identifier="com.lucidauto.desktop",
     info_plist={
-        "CFBundleDisplayName": "LUCID AUTO",
-        "CFBundleName": "LUCID AUTO",
+        "CFBundleDisplayName": "Lucid AI Studio",
+        "CFBundleName": "Lucid AI Studio",
         "CFBundleShortVersionString": APP_VERSION,
         "CFBundleVersion": APP_BUILD,
         "LSApplicationCategoryType": "public.app-category.productivity",

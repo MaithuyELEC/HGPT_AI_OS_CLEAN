@@ -40,6 +40,7 @@ from hgpt_ai_os.settings.settings_dialog import SettingsDialog
 from hgpt_ai_os.version import APP_BUILD as RELEASE_BUILD
 from hgpt_ai_os.version import APP_VERSION as RELEASE_VERSION
 
+from .branding import APP_DISPLAY_NAME, APP_POWERED_BY, app_icon
 from .worker import ProductionWorker
 
 
@@ -51,13 +52,14 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("LUCID AUTO")
+        self.setWindowTitle(APP_DISPLAY_NAME)
+        self.setWindowIcon(app_icon())
         self.resize(1040, 720)
         self.setMinimumSize(960, 660)
 
         self.worker = None
         self.production_result = None
-        self.settings = QSettings("MaithuyELEC", "LUCID AUTO")
+        self.settings = QSettings("MaithuyELEC", "Lucid AI Studio")
         self.topic_history = self._load_topic_history()
         self.last_output_folder = self.settings.value("last_output_folder", "", str)
         self.auto_open_output_folder = self.settings.value(
@@ -115,7 +117,7 @@ class MainWindow(QMainWindow):
 
         help_menu = self.menuBar().addMenu("Help")
 
-        about_action = QAction("About LUCID", self)
+        about_action = QAction(f"About {APP_DISPLAY_NAME}", self)
         about_action.triggered.connect(self.show_about_dialog)
         help_menu.addAction(about_action)
 
@@ -129,7 +131,7 @@ class MainWindow(QMainWindow):
         header_layout.setHorizontalSpacing(18)
         header_layout.setVerticalSpacing(6)
 
-        title = QLabel("LUCID AUTO")
+        title = QLabel(APP_DISPLAY_NAME)
         title.setObjectName("appTitle")
         title.setMinimumHeight(42)
         title.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
@@ -140,7 +142,7 @@ class MainWindow(QMainWindow):
         platform_label.setMinimumHeight(20)
         platform_label.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
 
-        powered_by = QLabel("Powered by MaithuyELEC · HGPT Steel Digital Factory")
+        powered_by = QLabel(APP_POWERED_BY)
         powered_by.setObjectName("poweredBy")
         powered_by.setMinimumHeight(18)
         powered_by.setAlignment(Qt.AlignLeft | Qt.AlignVCenter)
@@ -237,7 +239,7 @@ class MainWindow(QMainWindow):
         self.console.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         self._set_console_text(
             "==================================================\n"
-            f"LUCID AUTO {self.APP_VERSION}\n"
+            f"Lucid AI Studio {self.APP_VERSION}\n"
             "Production Ready\n"
             "\n"
             "Ready to generate production content.\n"
@@ -326,7 +328,7 @@ class MainWindow(QMainWindow):
         label = QLabel("Output Root")
         label.setObjectName("fieldLabel")
 
-        self.output_path = QLabel("~/Documents/LUCID/outputs/marketing")
+        self.output_path = QLabel("~/Documents/Lucid AI Studio/outputs/marketing")
         self.output_path.setObjectName("outputPath")
 
         self.output_btn = QPushButton("📂  Open Output Folder")
@@ -670,15 +672,12 @@ class MainWindow(QMainWindow):
     def show_about_dialog(self):
         QMessageBox.about(
             self,
-            "About LUCID",
+            f"About {APP_DISPLAY_NAME}",
             "\n".join(
                 (
-                    "LUCID AUTO",
-                    f"Version: {self.APP_VERSION}",
-                    f"Build: {self.APP_BUILD}",
-                    f"Python version: {sys.version.split()[0]}",
-                    f"Qt version: {qVersion()}",
-                    "Production Ready",
+                    APP_DISPLAY_NAME,
+                    "Version 1.0.0",
+                    APP_POWERED_BY,
                 )
             ),
         )
@@ -690,11 +689,10 @@ class MainWindow(QMainWindow):
             self._refresh_ai_status()
 
     def _log_configuration_status(self):
-        config = self.config_manager.load()
         validation = self.config_manager.validate()
         self.append_console("")
         self.append_console("Loading configuration...")
-        self.append_console(f"Provider: {config.get('provider', 'gemini').title()}")
+        self.append_console(f"Provider: {validation.provider.title()}")
         if validation.ok:
             self.append_console("Connection OK")
         else:
@@ -703,7 +701,11 @@ class MainWindow(QMainWindow):
     def _refresh_ai_status(self):
         validation = self.config_manager.validate()
         if validation.ok:
-            self._set_status_badge(self.engine_status, "connected", "Connected")
+            self._set_status_badge(
+                self.engine_status,
+                "connected",
+                validation.provider.title(),
+            )
         else:
             self._set_status_badge(self.engine_status, "disconnected", "Disconnected")
 
@@ -769,10 +771,14 @@ class MainWindow(QMainWindow):
         self.summary_panel.hide()
         self.files_panel.hide()
         self.production_result = None
-        self._set_status_badge(self.engine_status, "connected", "Connected")
+        self._set_status_badge(
+            self.engine_status,
+            "connected",
+            validation.provider.title(),
+        )
         self._set_status_badge(self.run_status, "generating", "Generating")
         self.append_console("Loading configuration...")
-        self.append_console(f"Provider: {self.config_manager.provider().title()}")
+        self.append_console(f"Provider: {validation.provider.title()}")
         self.append_console("Connection OK")
         self.append_console("Generation Started")
 
@@ -843,7 +849,7 @@ class MainWindow(QMainWindow):
         self.console.clear()
         self._set_console_text(
             "==================================================\n"
-            f"LUCID AUTO {self.APP_VERSION}\n"
+            f"Lucid AI Studio {self.APP_VERSION}\n"
             "Production Ready\n"
             "\n"
             "Ready to generate production content.\n"

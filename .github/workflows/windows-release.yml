@@ -42,7 +42,7 @@ jobs:
       - name: Upload installer artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: LUCID-AUTO-${{ steps.release.outputs.version }}-windows-installer
+          name: Lucid-AI-Studio-${{ steps.release.outputs.version }}-windows-installer
           if-no-files-found: error
           path: |
             ${{ steps.release.outputs.installer }}
@@ -61,5 +61,5 @@ jobs:
           if ($LASTEXITCODE -eq 0) {
             gh release upload $tag $installer $checksum --clobber
           } else {
-            gh release create $tag $installer $checksum --verify-tag --title "LUCID AUTO $tag" --notes-file RELEASE_NOTES.md
+            gh release create $tag $installer $checksum --verify-tag --title "Lucid AI Studio $tag" --notes-file RELEASE_NOTES.md
           }

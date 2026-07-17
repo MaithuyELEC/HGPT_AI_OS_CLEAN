@@ -90,7 +90,7 @@ class LucidOrchestrator:
         )
 
         print("=" * 60)
-        print("HGPT LUCID AUTO")
+        print("HGPT Lucid AI Studio")
         print("=" * 60)
         print("Task :", task["topic"])
         print("Knowledge :", len(items))

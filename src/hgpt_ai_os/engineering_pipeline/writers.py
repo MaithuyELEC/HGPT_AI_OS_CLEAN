@@ -5,6 +5,9 @@ import json
 import re
 import unicodedata
 from collections.abc import Iterable
+from dataclasses import dataclass
+
+from hgpt_ai_os.content.prompt_libraries import CAMERA_LIBRARY, LIGHTING_LIBRARY, VOICE_LIBRARY, choose
 
 from .record import EngineeringRecord
 
@@ -108,6 +111,34 @@ _GENERIC_FIELD_FALLBACKS = {
 }
 
 _GENERIC_TERM_REPLACEMENTS = (
+    ("Root Cause Analysis", "Phân tích nguyên nhân gốc"),
+    ("root cause analysis", "phân tích nguyên nhân gốc"),
+    ("Root Causes", "Nguyên nhân gốc"),
+    ("Root causes", "Nguyên nhân gốc"),
+    ("root causes", "nguyên nhân gốc"),
+    ("Root cause", "Nguyên nhân gốc"),
+    ("root cause", "nguyên nhân gốc"),
+    ("Practical solution", "Cách xử lý thực tế"),
+    ("Real shop scenario", "Tình huống hiện trường"),
+    ("Lesson learned", "Bài học rút ra"),
+    ("Call To Action", "Câu hỏi thảo luận"),
+    ("Inspection", "Kiểm tra"),
+    ("inspection", "kiểm tra"),
+    ("Repair", "Sửa chữa"),
+    ("repair", "sửa chữa"),
+    ("Acceptance", "Nghiệm thu"),
+    ("acceptance", "nghiệm thu"),
+    ("Prevention", "Phòng ngừa"),
+    ("prevention", "phòng ngừa"),
+    ("Workflow", "Quy trình"),
+    ("workflow", "quy trình"),
+    ("Summary", "Tóm tắt"),
+    ("article", "bài viết"),
+    ("search keywords", "từ khóa tìm kiếm"),
+    ("keyword", "từ khóa"),
+    ("release", "bàn giao"),
+    ("pass/fail", "đạt/không đạt"),
+    ("hold point", "điểm dừng kiểm soát"),
     ("AI provider", "nguồn dữ liệu kỹ thuật"),
     ("AI Provider", "nguồn dữ liệu kỹ thuật"),
     ("provider", "nguồn dữ liệu"),
@@ -129,189 +160,348 @@ _GENERIC_TERM_REPLACEMENTS = (
 
 def render_all(record: EngineeringRecord) -> dict[str, str]:
     rendered = _RenderedRecord(record)
+    content = ContentTransformation.from_record(rendered)
     return {
-        "facebook.docx": render_facebook(rendered),
-        "tiktok.docx": render_tiktok(rendered),
-        "image_prompt.docx": render_image_prompt(rendered),
-        "video_prompt.docx": render_video_prompt(rendered),
-        "seo.docx": render_seo(rendered),
-        "hashtags.docx": render_hashtags(rendered),
-        "approval_checklist.docx": render_checklist(rendered),
+        "facebook.docx": render_facebook(content),
+        "tiktok.docx": render_tiktok(content),
+        "image_prompt.docx": render_image_prompt(content),
+        "video_prompt.docx": render_video_prompt(content),
+        "seo.docx": render_seo(content),
+        "hashtags.docx": render_hashtags(content),
+        "approval_checklist.docx": render_checklist(content),
     }
 
 
-def render_facebook(record: "_RenderedRecord") -> str:
-    return _render_knowledge_reference(record, "Hồ sơ kỹ thuật hiện trường", "dùng cho tổ bảo trì, QA/QC và ca sản xuất")
+@dataclass(frozen=True)
+class ContentTransformation:
+    topic: str
+    pain_points: tuple[str, ...]
+    shop_story: str
+    root_causes: tuple[str, ...]
+    inspection_steps: tuple[str, ...]
+    repair_steps: tuple[str, ...]
+    acceptance: tuple[str, ...]
+    prevention: tuple[str, ...]
+    lesson_learned: tuple[str, ...]
+    cta: str
+    seo_keywords: tuple[str, ...]
+    visual_subject: str
+    visual_scene: str
+    camera: str
+    lighting: str
+    composition: str
+    video_storyboard: tuple[str, ...]
+    voice: str
+    ambient: str
+    emotion: str
+    equipment: str
+    component: str
+    working_principle: str
+    visual_materials: str
+    visual_motion: str
+    visual_negative_prompt: str
+
+    @classmethod
+    def from_record(cls, record: "_RenderedRecord") -> "ContentTransformation":
+        topic = _content_text(record.topic, "sự cố kỹ thuật trong xưởng")
+        equipment = _content_text(_join(record.equipment[:4], record.main_entity or topic), topic)
+        component = _content_text(_join(record.component[:4], "cụm chi tiết liên quan"), "cụm chi tiết liên quan")
+        pain_points = _content_items(record.failure_symptom, record.problem, 4)
+        root_causes = _content_items(record.root_causes or record.failure_mechanisms, record.problem, 5)
+        inspection_steps = _content_items(record.inspection_procedure, "ghi nhận hiện trạng và kiểm tra tại điểm lỗi", 6)
+        repair_steps = _content_items(record.repair_procedure, "sửa đúng nguyên nhân đã xác nhận", 5)
+        acceptance = _content_items(record.acceptance_criteria or record.verification, "chạy thử ổn định và ghi kết quả sau sửa", 5)
+        prevention = _content_items(record.preventive_maintenance or record.kaizen, "đưa dấu hiệu sớm vào lịch kiểm tra định kỳ", 5)
+        lesson_learned = _content_items(record.lessons_learned, "khóa nguyên nhân bằng dữ liệu trước khi bàn giao", 4)
+        keywords = tuple(dict.fromkeys(_items((topic, record.domain, record.topic_type, equipment, component), limit=8)))
+        symptoms = _join(pain_points[:3], topic)
+        shop_story = (
+            f"Ca sản xuất đang chạy, {equipment} bắt đầu xuất hiện {symptoms.lower()}. "
+            "Tổ vận hành muốn xử lý thật nhanh, nhưng trưởng ca giữ hiện trạng, ghi dấu vết, đo lại điểm nghi ngờ và chỉ cho sửa khi nguyên nhân đã rõ."
+        )
+        visual_subject = f"kỹ sư bảo trì hoặc QA/QC Việt Nam kiểm tra {component}"
+        visual_scene = f"xưởng kết cấu thép với {equipment}, khu vực được cô lập an toàn, dấu vết lỗi nhìn rõ"
+        storyboard = (
+            f"Opening Hook: dừng nhịp sản xuất khi thấy {symptoms.lower()} trên {equipment}.",
+            f"Failure: máy hoặc cụm chi tiết bộc lộ dấu hiệu bất thường tại {component}.",
+            f"Diagnosis: đội kỹ thuật kiểm tra {', '.join(inspection_steps[:3])}.",
+            f"Repair: thực hiện {', '.join(repair_steps[:3])} theo nguyên nhân đã xác nhận.",
+            f"Verification: xác nhận {', '.join(acceptance[:3])} trước khi bàn giao.",
+            f"Ending: lưu bài học {', '.join(lesson_learned[:2])} để ca sau không lặp lỗi.",
+        )
+        return cls(
+            topic=topic,
+            pain_points=pain_points,
+            shop_story=shop_story,
+            root_causes=root_causes,
+            inspection_steps=inspection_steps,
+            repair_steps=repair_steps,
+            acceptance=acceptance,
+            prevention=prevention,
+            lesson_learned=lesson_learned,
+            cta=f"Bạn sẽ kiểm điểm nào đầu tiên khi gặp {topic.lower()} trong ca thật?",
+            seo_keywords=keywords,
+            visual_subject=visual_subject,
+            visual_scene=visual_scene,
+            camera=choose(CAMERA_LIBRARY, f"ct:{topic}:{equipment}"),
+            lighting=choose(LIGHTING_LIBRARY, f"ct:{topic}:{equipment}", 1),
+            composition="rule of thirds, foreground tool, middle-ground evidence, background production line, clear handover space",
+            video_storyboard=storyboard,
+            voice=choose(VOICE_LIBRARY, f"ct:{topic}:{equipment}", 2),
+            ambient="factory ambience, gauge beep, ventilation, restrained machine hum, pen mark on checklist",
+            emotion="focused, disciplined, calm under production pressure",
+            equipment=equipment,
+            component=component,
+            working_principle=_content_text(record.working_principle, "thiết bị phải làm việc đúng tải, đúng căn chỉnh và đúng điều kiện vận hành"),
+            visual_materials="painted steel, scratched bare metal, weld beads, bolts, hoses, gauges, LOTO tag, paper checklist, worn concrete",
+            visual_motion="operator pauses, engineer measures, supervisor confirms, team steps back before restart",
+            visual_negative_prompt="no unsafe action, no missing PPE, no fake text, no watermark, no cartoon, no unrelated equipment, no disaster scene",
+        )
 
 
-def render_tiktok(record: "_RenderedRecord") -> str:
-    return _render_knowledge_reference(record, "Bài học kỹ thuật đầu ca", "dùng để huấn luyện nhanh trước khi thao tác")
-
-
-def render_image_prompt(record: "_RenderedRecord") -> str:
-    equipment = ", ".join(record.equipment[:4]) or record.domain
-    components = ", ".join(record.component[:5]) or "cụm chi tiết liên quan"
-    symptoms = ", ".join(record.failure_symptom[:4]) or record.problem
-    measurements = ", ".join(record.measurements[:4]) or "thông số đo tại hiện trường"
-    tools = ", ".join(record.tools_required[:6]) or "dụng cụ đo, phiếu kiểm, nhãn khóa an toàn"
-    inspection = ", ".join(record.inspection_procedure[:4]) or "kiểm tra trực quan và đo kiểm theo phiếu kiểm"
-    repair = ", ".join(record.repair_procedure[:3]) or "xử lý nguyên nhân, kiểm tra lại và bàn giao có kiểm soát"
-    safety = ", ".join(record.safety_controls[:4]) or "cô lập năng lượng, rào chắn và PPE đầy đủ"
-    missing = ", ".join(record.missing_information[:3]) or "không bịa số đo, nhãn, giá trị hoặc tiêu chuẩn khi hồ sơ chưa cung cấp"
+def render_facebook(content: ContentTransformation) -> str:
+    signs = _join(content.pain_points[:3], content.topic)
+    causes = content.root_causes[:4]
+    inspections = content.inspection_steps[:5]
+    repairs = content.repair_steps[:4]
+    verification = content.acceptance[:3]
+    prevention = content.prevention[:4] or content.lesson_learned[:4]
+    equipment = content.equipment
+    component = content.component
+    risk = _first(content.acceptance, "không bàn giao khi thiếu kết quả kiểm tra lại")
     return "\n".join(
         [
-            "## Prompt hình ảnh kỹ thuật",
-            "",
-            f"Mục tiêu hình ảnh: tạo ảnh tài liệu công nghiệp cho chủ đề {record.topic}, giúp kỹ sư HGPT Steel nhìn đúng đối tượng, bằng chứng kỹ thuật, thao tác kiểm tra và trạng thái an toàn; ảnh không được biến chủ đề này thành thiết bị hoặc lỗi khác.",
-            f"Chủ thể chính: kỹ sư bảo trì hoặc QA/QC đang xử lý {record.main_entity or record.topic}; nét mặt tập trung, thao tác tự nhiên, ghi nhận bằng chứng thay vì tạo dáng quảng cáo.",
-            f"Thiết bị/cấu kiện chính: {equipment}; thể hiện rõ {components}, đúng bối cảnh nhà máy kết cấu thép, không thay bằng máy dân dụng hoặc thiết bị không liên quan.",
-            f"Hiện tượng kỹ thuật cần thể hiện: {symptoms}; nếu hiện tượng chưa đo được thì thể hiện hành động kiểm chứng thay vì bịa số đo.",
-            f"Hành động kiểm tra hoặc sửa chữa: {inspection}; sau đó thể hiện logic {repair} ở mức trực quan, có kiểm soát hiện trường.",
-            f"Dụng cụ đo kiểm: {tools}; mặt đồng hồ hoặc màn hình chỉ được gợi ý trạng thái đo, không hiển thị giá trị cụ thể khi hồ sơ chưa cung cấp.",
-            "PPE: mũ bảo hộ, kính bảo hộ, găng tay đúng thao tác, giày an toàn, áo phản quang hoặc đồng phục xưởng; PPE phải khớp rủi ro điện, thủy lực, khí nén, hàn, cắt, nhiệt hoặc nâng hạ nếu có.",
-            "Bối cảnh nhà xưởng kết cấu thép: nền bê tông có vạch phân luồng, bảng 5S, tủ dụng cụ, tủ điện, pallet vật tư, dầm thép, khu vực hàn/cắt/sơn hoặc bảo trì đúng ngữ cảnh.",
-            "Tiền cảnh: điểm bất thường, dụng cụ đo, phiếu kiểm hoặc tag LOTO nằm rõ trong khung; không để chữ hoặc tay che mất bằng chứng kỹ thuật.",
-            "Trung cảnh: 1-2 kỹ thuật viên Việt Nam thao tác đúng quy trình, một người đo hoặc quan sát, một người ghi nhận hồ sơ, khoảng cách an toàn được giữ rõ.",
-            "Hậu cảnh: dây chuyền hoặc khu vực sản xuất kết cấu thép đang được kiểm soát, có biển cảnh báo, kệ dụng cụ và hồ sơ hiện trường nhưng không lấn át chủ thể.",
-            "Góc máy: góc 3/4 ngang tầm ngực, có thêm insert macro cho chi tiết kỹ thuật; bố cục phải cho thấy quan hệ giữa người, thiết bị, dụng cụ đo và vùng nguy hiểm.",
-            "Tiêu cự: góc tài liệu công nghiệp cho cảnh chính, macro cho chi tiết; độ sâu trường ảnh vừa phải để thiết bị chính rõ nhưng vẫn đọc được bối cảnh nhà máy.",
-            "Bố cục: rule of thirds, nhiều lớp tiền cảnh - trung cảnh - hậu cảnh, đường nhìn đi từ tay kỹ thuật viên tới điểm kiểm tra; ảnh phải dùng được cho bài kỹ thuật, không giống ảnh stock chung chung.",
-            "Ánh sáng: ánh sáng nhà xưởng chân thực, có thể bổ sung đèn kiểm tra cầm tay, highlight mềm trên kim loại, không tối, không cháy sáng, không dùng neon hoặc ánh sáng sân khấu.",
-            "Chất liệu bề mặt: thép sơn công nghiệp, kim loại xước nhẹ, cao su, dây cáp, ống dầu/khí, bụi kim loại hoặc dầu mỡ đúng mức; texture PPE và giấy checklist rõ.",
-            f"Dấu hiệu kỹ thuật nhìn thấy: {measurements}; nếu cần giá trị thì ghi chú {missing}.",
-            f"Yêu cầu an toàn: {safety}; thể hiện LOTO, rào chắn, biển cảnh báo, khoảng cách an toàn và trạng thái máy/cấu kiện đã được kiểm soát.",
-            "Đồng phục HGPT Steel: logo nhỏ, sạch, chuyên nghiệp trên mũ, áo hoặc clipboard; chữ ít, rõ, không che chi tiết kỹ thuật.",
-            "Phong cách ảnh: photorealistic industrial documentary, cảm giác ảnh hiện trường thật trong nhà máy kết cấu thép, sắc nét ở bằng chứng kỹ thuật.",
-            "Nội dung loại trừ cho prompt: chữ sai tiếng Việt, chữ méo, số đo bịa, tiêu chuẩn giả, màn hình vô nghĩa, thiết bị sai ngành, thao tác mất an toàn, thiếu PPE, bypass liên động, tay thừa, mặt biến dạng, watermark, logo lạ, cảnh showroom quá sạch, hoạt hình, CGI, blur, overexposed, underexposed, nội dung trái với chủ đề.",
-            f"Đây là gì? {record.topic} trong bối cảnh {equipment}.",
-            f"Vì sao xảy ra? {_first(record.root_causes, 'cần khóa nguyên nhân bằng bằng chứng đo kiểm')}",
-            f"Cần bằng chứng gì trước khi kết luận? {', '.join(record.evidence_required[:3]) or 'ảnh hiện trường, số đo và hồ sơ kỹ thuật liên quan'}.",
-        ]
-    )
-
-
-def render_video_prompt(record: "_RenderedRecord") -> str:
-    equipment = ", ".join(record.equipment[:4]) or record.domain
-    symptoms = ", ".join(record.failure_symptom[:4]) or record.problem
-    inspection = ", ".join(record.inspection_procedure[:4]) or "kiểm tra trực quan và đo kiểm tại hiện trường"
-    measurements = ", ".join(record.measurements[:4]) or "thông số đo trước và sau sửa"
-    tools = ", ".join(record.tools_required[:5]) or "dụng cụ đo, phiếu kiểm và nhãn khóa an toàn"
-    repair = ", ".join(record.repair_procedure[:4]) or "sửa đúng nguyên nhân và kiểm tra lại"
-    verification = ", ".join(record.verification[:4]) or "xác nhận lại bằng cùng phương pháp phát hiện lỗi"
-    safety = ", ".join(record.safety_controls[:4]) or "cô lập năng lượng, rào chắn và PPE đầy đủ"
-    return "\n".join(
-        [
-            "## Prompt video kỹ thuật",
-            "",
-            f"Mục tiêu video: video tài liệu công nghiệp cho {record.topic}, cho thấy đúng chủ thể {record.main_entity or equipment}, bằng chứng kỹ thuật, hành động an toàn và kết quả kiểm chứng; không biến thành slideshow hoặc quảng cáo.",
-            "Thời lượng: đúng 10 giây.",
-            "Nhân vật: 1 người vận hành và 1 kỹ sư bảo trì/QA/QC Việt Nam, thao tác tự nhiên, không nhìn camera, ưu tiên ghi bằng chứng hơn diễn xuất.",
-            "PPE continuity: mũ, kính, găng, giày an toàn, áo phản quang hoặc đồng phục xưởng phải xuất hiện liên tục; PPE thay đổi theo rủi ro điện, thủy lực, khí nén, hàn, cắt, nhiệt hoặc nâng hạ.",
-            f"Thiết bị/cấu kiện: {equipment}; quay đúng {record.main_entity or record.topic}, chi tiết {', '.join(record.component[:4]) or 'liên quan đến chủ đề'}, không dùng thiết bị khác ngành.",
-            f"0-2 giây: Hook - cận cảnh {symptoms} hoặc điểm cần kiểm chứng; người vận hành dừng thao tác, chỉ vị trí bất thường, âm thanh xưởng giảm nhẹ để người xem chú ý.",
-            f"2-5 giây: Evidence/diagnosis - kỹ sư cô lập khu vực, dùng {tools} để thực hiện {inspection}; camera thấy phiếu kiểm, tag LOTO hoặc dụng cụ đo nhưng không bịa số đo.",
-            f"5-8 giây: Correct action - thực hiện {repair}; thao tác ngắn, đúng trình tự, không bypass liên động, không đặt tay vào vùng kẹp/cắt/nóng/đang có năng lượng.",
-            f"8-10 giây: Result/closing - xác nhận {verification}; quay hồ sơ ghi nhận và khu vực được trả lại trạng thái an toàn có kiểm soát.",
-            "Camera movement: handheld ổn định kiểu documentary, push-in nhanh vào chi tiết lỗi, macro insert cho dụng cụ đo, over-the-shoulder khi đọc checklist, pull-back cuối để thấy khu vực an toàn.",
-            f"Equipment movement: chỉ cho chuyển động nếu đã an toàn; nếu cần chạy thử thì thể hiện trạng thái kiểm soát và khoảng cách an toàn theo {safety}.",
-            "Worker actions: dừng, báo lỗi, LOTO/rào chắn, đo kiểm, ghi ảnh hiện trường, sửa đúng nguyên nhân đã xác nhận, ký hoặc tích phiếu nghiệm thu.",
-            f"Voice-over: 'Với {record.topic}, đừng sửa theo cảm tính. Khóa an toàn, đo đúng điểm, xử lý đúng nguyên nhân và nghiệm thu bằng dữ liệu.'",
-            "On-screen text: 'Dừng - Đo - Xử lý - Xác nhận' xuất hiện nhỏ, rõ, không che thiết bị; không hiển thị thông số khi chưa có nguồn.",
-            "Ambient sound: tiếng xưởng nhẹ, tiếng dụng cụ kim loại, tiếng bíp đồng hồ đo, tiếng giấy checklist; nhạc nền thấp, nghiêm túc.",
-            "Chuyển cảnh: cắt theo hành động thật ở mốc 2 giây, 5 giây, 8 giây; không dùng glitch, neon, hiệu ứng slideshow hoặc khung tĩnh kéo dài.",
-            "Ánh sáng: ánh sáng nhà xưởng overhead, có thể thêm đèn kiểm tra cầm tay; màu tự nhiên, không tối, không cháy sáng.",
-            "Lời kêu gọi cuối: chữ cuối nhỏ 'Lưu để dùng trong họp đầu ca' và giọng đọc kết thúc 'Có bằng chứng rồi mới bàn giao.'",
-            "Nội dung loại trừ cho prompt: slideshow, ảnh tĩnh ghép lại, video dài hơn 10 giây, thiếu PPE, thao tác mất an toàn, bypass liên động, số đo bịa, tiêu chuẩn giả, thiết bị sai ngành, chữ méo, tiếng Việt sai, logo lạ, watermark, CGI rẻ, hoạt hình, camera rung mạnh, motion blur quá mức, cảnh tối, neon, quảng cáo lố.",
-            f"Đây là gì? {record.topic} trong bối cảnh {equipment}.",
-            f"Vì sao xảy ra? {_first(record.root_causes, 'cần khóa nguyên nhân bằng bằng chứng đo kiểm')}",
-            f"Cần bằng chứng gì trước khi kết luận? {', '.join(record.evidence_required[:3]) or 'ảnh hiện trường, số đo và hồ sơ kỹ thuật liên quan'}.",
-        ]
-    )
-
-
-def render_seo(record: "_RenderedRecord") -> str:
-    slug = _slug(record.topic)
-    return "\n".join(
-        [
-            f"## Mục lục tra cứu kỹ thuật: {record.topic}",
-            "",
-            f"Mã tra cứu: {slug}",
-            f"Mục đích: giúp kỹ sư sau này tìm lại định nghĩa, cơ chế, bằng chứng, đo kiểm, sửa chữa, xác nhận và phòng ngừa cho {record.topic}.",
-            "",
-            "### Từ khóa tra cứu",
-            *_bullets(
-                (
-                    record.topic,
-                    record.domain,
-                    *record.failure_symptom[:3],
-                    *record.equipment[:2],
-                ),
-                8,
+            "Mở đầu",
+            (
+                f"{content.topic}: đừng để một dấu hiệu nhỏ biến thành quyết định sai của cả ca. "
+                f"Khi hiện trường xuất hiện {signs.lower()}, điều nguy hiểm không chỉ là lỗi trước mắt. "
+                f"Điều nguy hiểm là đội sản xuất tiếp tục chạy khi chưa hiểu vì sao {equipment} đi ra khỏi trạng thái kiểm soát."
+            ),
+            (
+                "Tôi luôn nhắc anh em một câu: sửa nhanh chưa chắc là sửa đúng. "
+                "Sửa đúng là khi người sau nhìn hồ sơ, ảnh, điểm đo và cách bàn giao vẫn hiểu được vì sao mình cho phép chạy lại. "
+                "Nếu câu trả lời chỉ là 'em thấy ổn rồi', đó chưa phải ngôn ngữ của một xưởng trưởng thành. "
+                "Một ca tốt phải để lại bằng chứng đủ rõ cho ca sau."
             ),
             "",
-            "### Cấu trúc hồ sơ kiến thức",
-            "- Định nghĩa và phạm vi áp dụng",
-            "- Nguyên lý làm việc hoặc cơ chế quá trình",
-            "- Hiện tượng, cơ chế lỗi và nguyên nhân gốc",
-            "- Bằng chứng cần thu thập trước khi kết luận",
-            "- Quy trình kiểm tra, đo kiểm, dụng cụ và logic chẩn đoán",
-            "- Sửa chữa, xác nhận sau sửa, tiêu chí bàn giao và phòng ngừa tái diễn",
-            "- Tiêu chuẩn áp dụng, dữ liệu còn thiếu và giả định bị cấm",
+            "Tình huống hiện trường",
+            content.shop_story,
+            (
+                f"Việc đầu tiên không phải là tranh luận ai đúng. Việc đầu tiên là giữ hiện trạng đủ lâu để đọc dấu vết trên {component}. "
+                f"Nếu xóa mất dấu vết trước khi ghi lại, chúng ta sẽ không còn biết {content.topic.lower()} bắt đầu từ đâu, xảy ra khi nào, và điều kiện nào làm nó lặp lại."
+            ),
+            (
+                f"Trong tình huống thật, trưởng ca nên yêu cầu ba thứ trước khi cho sửa: ảnh hoặc ghi nhận tại vị trí lỗi, điều kiện vận hành hoặc công đoạn lúc phát hiện, và điểm kiểm tra dùng để xác nhận sau sửa. "
+                f"Chỉ riêng bước này đã giúp đội tránh được kiểu sửa theo thói quen trên {equipment}."
+            ),
             "",
-            "### Trích yếu kỹ thuật",
-            *_knowledge_question_lines(record),
+            "Phân tích nguyên nhân gốc",
+            (
+                f"Về kỹ thuật, vấn đề không nằm ở tên lỗi. Vấn đề nằm ở cơ chế làm lỗi quay lại. "
+                f"Nguyên lý cần nhớ là: {content.working_principle}. "
+                "Nếu nguyên lý hoặc cơ chế chưa được xác nhận, mọi kết luận đều phải được xem là giả thuyết."
+            ),
+            *[f"- Giả thuyết nguyên nhân: {cause}. Cách kiểm không được dừng ở cảm giác; phải nối với bằng chứng hiện trường." for cause in causes],
+            (
+                f"Nguyên nhân gốc không phải câu trả lời nghe hay nhất trong phòng họp. Nó là điều kiện khi bị loại bỏ thì {signs.lower()} không còn quay lại trong cùng điều kiện làm việc. "
+                f"Vì vậy đội phải tách triệu chứng, cơ chế lỗi, hành động sửa và nghiệm thu thành bốn câu hỏi khác nhau."
+            ),
+            (
+                f"Nếu chỉ xử lý triệu chứng, rủi ro vẫn còn: {risk}. "
+                "Nếu chỉ thay vật tư, chỉnh máy hoặc mài sửa mà không khóa điều kiện tạo lỗi, ca sau sẽ gặp lại cùng một câu chuyện với tên người khác."
+            ),
+            "",
+            "Cách xử lý thực tế",
+            (
+                "Workflow cho kỹ thuật viên nên đi theo năm nhịp: an toàn, giữ bằng chứng, kiểm nguyên nhân, sửa đúng điểm tạo lỗi, rồi xác nhận lại. "
+                "Đây không phải thủ tục cho đẹp hồ sơ; đây là cách bảo vệ người vận hành và bảo vệ quyết định bàn giao."
+            ),
+            *[f"{index}. {step}." for index, step in enumerate(inspections, 1)],
+            *[f"{index + len(inspections)}. {step}." for index, step in enumerate(repairs, 1)],
+            *[f"- Sau sửa: {step}." for step in verification],
+            (
+                "Trước khi bàn giao, người phụ trách nên nói lại được một câu đầy đủ: lỗi được phát hiện bằng gì, nguyên nhân nào đã bị loại bỏ, sửa bằng hành động nào, và bằng chứng sau sửa nằm ở đâu. "
+                "Nếu câu đó nói không trôi, chưa nên ký bàn giao."
+            ),
+            "",
+            "Bài học rút ra",
+            (
+                f"Bài học của {content.topic.lower()} là biến sự cố thành điểm kiểm soát mới. "
+                "Sau khi sửa xong, đội không chỉ lưu hồ sơ để đủ thủ tục. Đội phải đưa dấu hiệu sớm vào checklist, đưa điểm đo vào lịch kiểm tra, và giao owner theo dõi đến khi chắc chắn lỗi không lặp lại."
+            ),
+            *[f"- {item}." for item in prevention],
+            (
+                f"Khi cả tổ cùng nhìn {component} bằng cùng một tiêu chí, nhà máy bớt phụ thuộc vào người giỏi nhất trong ca. "
+                "Tri thức kỹ thuật lúc đó trở thành thói quen vận hành."
+            ),
+            "",
+            "Câu hỏi thảo luận",
+            (
+                f"Nếu gặp {content.topic.lower()} trong ca thật, bạn sẽ kiểm điểm nào trước: dấu hiệu hiện trường, điều kiện vận hành, hay lịch sử sửa chữa? "
+                "Chia sẻ cách đội bạn đang khóa lỗi để lần sau không phải sửa lại cùng một vấn đề."
+            ),
         ]
     )
 
 
-def render_checklist(record: "_RenderedRecord") -> str:
+def render_tiktok(content: ContentTransformation) -> str:
+    return "\n".join(
+        [
+            f"Mở đầu - {content.topic}",
+            f"Nỗi đau hiện trường - {_join(content.pain_points[:2], content.topic)}.",
+            f"Câu chuyện trong xưởng - {content.shop_story}",
+            f"Nguyên nhân gốc - {_join(content.root_causes[:2], 'điều kiện tạo lỗi chưa bị khóa')}.",
+            f"Hành động sửa - {_join(content.repair_steps[:3], 'sửa theo nguyên nhân đã xác nhận')}.",
+            f"Xác nhận sau sửa - {_join(content.acceptance[:2], 'kiểm tra lại trước bàn giao')}.",
+            f"Kết thúc thảo luận - {content.cta}",
+        ]
+    )
+
+
+def render_image_prompt(content: ContentTransformation) -> str:
+    return "\n".join(
+        [
+            f"subject - {content.visual_subject}",
+            f"scene - {content.visual_scene}",
+            f"camera - {content.camera}",
+            f"lighting - {content.lighting}",
+            f"composition - {content.composition}",
+            f"materials - {content.visual_materials}",
+            f"motion - {content.visual_motion}",
+            f"negative prompt - {content.visual_negative_prompt}",
+        ]
+    )
+
+
+def render_video_prompt(content: ContentTransformation) -> str:
+    return "\n\n".join(
+        [
+            content.video_storyboard[0],
+            content.video_storyboard[1],
+            content.video_storyboard[2],
+            content.video_storyboard[3],
+            content.video_storyboard[4],
+            content.video_storyboard[5],
+            f"Lời thoại: {content.voice}. Âm thanh nền: {content.ambient}. Cảm xúc: {content.emotion}. Góc máy: {content.camera}. Ánh sáng: {content.lighting}.",
+        ]
+    )
+
+
+def render_seo(content: ContentTransformation) -> str:
+    slug = _slug(content.topic)
+    return "\n".join(
+        [
+            f"H1: {content.topic}: nguyên nhân, kiểm tra, sửa chữa và phòng ngừa",
+            "",
+            "Mở đầu",
+            (
+                f"{content.topic} là một truy vấn kỹ thuật quan trọng vì nó ảnh hưởng trực tiếp đến an toàn, chất lượng và tiến độ trong xưởng. "
+                f"Khi người vận hành hoặc QA/QC thấy {_join(content.pain_points[:3], content.topic).lower()}, câu hỏi không chỉ là sửa gì cho nhanh. "
+                "Câu hỏi đúng là nguyên nhân nào tạo ra lỗi, kiểm tra bằng chứng ra sao, điều kiện nào được chấp nhận, và phòng ngừa thế nào để lỗi không quay lại."
+            ),
+            (
+                f"Bài viết này chuyển tri thức kỹ thuật thành nội dung dễ tra cứu cho kỹ sư, tổ bảo trì và quản lý ca. "
+                f"Nội dung dùng các từ khóa tự nhiên như {', '.join(content.seo_keywords[:5])}, nguyên nhân gốc, kiểm tra, sửa chữa, nghiệm thu, phòng ngừa và {slug}. "
+                "Mục tiêu là giúp người đọc hiểu đúng việc cần làm trước khi chạm vào thiết bị hoặc ký nghiệm thu."
+            ),
+            "",
+            "H2: Nguyên nhân gốc",
+            (
+                f"Dấu hiệu thường gặp gồm {_join(content.pain_points[:4], content.topic)}. "
+                f"Các dấu hiệu này liên quan đến {content.equipment} và {content.component}. "
+                "Không nên kết luận chỉ bằng một quan sát, vì cùng một triệu chứng có thể đến từ nhiều điều kiện khác nhau."
+            ),
+            (
+                f"Về cơ chế, {content.working_principle}. "
+                "Nguyên nhân gốc chỉ đủ mạnh khi có bằng chứng quan sát, kết quả ghi nhận và xác nhận sau sửa."
+            ),
+            *_bullets(content.root_causes, 6),
+            "",
+            "H2: Kiểm tra",
+            (
+                "Kiểm tra phải được thực hiện trước khi sửa để không xóa mất dấu vết hiện trường. "
+                "Đội kỹ thuật cần ghi vị trí lỗi, điều kiện vận hành, ảnh hiện trường, thông số đo và người xác nhận. "
+                "Nếu thiếu dữ liệu, phải giữ trạng thái giả thuyết thay vì biến giả thuyết thành kết luận."
+            ),
+            *_bullets(content.inspection_steps, 8),
+            "",
+            "H2: Sửa chữa",
+            (
+                "Sửa chữa phải đi sau nguyên nhân gốc. Nếu chỉ xử lý phần dễ thấy nhất, lỗi có thể biến mất trong vài giờ rồi quay lại khi tải, nhiệt, rung, áp suất hoặc điều kiện công đoạn thay đổi. "
+                "Quy trình sửa đúng cần loại bỏ điều kiện tạo lỗi, không chỉ làm đẹp triệu chứng."
+            ),
+            *_bullets(content.repair_steps, 8),
+            "",
+            "H2: Nghiệm thu",
+            (
+                f"Nghiệm thu là điểm phân biệt sửa xong và sửa đúng. Với {content.topic}, nghiệm thu cần dựa trên bằng chứng trước/sau, tiêu chí đạt/không đạt, người xác nhận, và điều kiện vận hành khi kiểm tra lại."
+            ),
+            *_bullets(content.acceptance, 8),
+            "",
+            "H2: Phòng ngừa",
+            (
+                f"Phòng ngừa cho {content.topic} nên biến bài học thành phiếu kiểm, lịch bảo trì, điểm dừng kiểm soát, SOP hoặc điểm kiểm trong ITP. "
+                "Nếu lỗi đã xảy ra một lần, hệ thống phải giúp người sau nhận diện sớm hơn."
+            ),
+            *_bullets(content.prevention, 7),
+            *_bullets(content.lesson_learned, 4),
+            (
+                f"Với {content.topic}, dữ liệu nên được lưu theo ba nhóm: dấu hiệu phát hiện, phép kiểm hoặc phép đo, và kết quả sau sửa. "
+                "Ba nhóm này giúp bài viết không chỉ có từ khóa mà còn có khả năng hướng dẫn thực tế cho người tìm kiếm."
+            ),
+            "",
+            "Câu hỏi thường gặp",
+            f"Hỏi: Dấu hiệu nào cho thấy cần ưu tiên {content.topic}?\nĐáp: Khi xuất hiện {_join(content.pain_points[:3], content.topic)}, đặc biệt nếu lỗi lặp lại ở cùng thiết bị, công đoạn hoặc điều kiện vận hành.",
+            f"Hỏi: Kiểm tra đầu tiên nên làm gì?\nĐáp: Ghi hiện trạng, cô lập rủi ro nếu cần, sau đó kiểm {_join(content.inspection_steps[:2], 'điểm kiểm tra chính')}.",
+            f"Hỏi: Sửa chữa có thể làm ngay không?\nĐáp: Có thể kiểm soát an toàn ngay, nhưng sửa chữa chính thức nên đi sau bằng chứng nguyên nhân gốc để tránh sửa sai điểm tạo lỗi.",
+            f"Hỏi: Nghiệm thu cần gì?\nĐáp: Cần {_join(content.acceptance[:3], 'kết quả trước/sau, tiêu chí đạt/không đạt và người xác nhận')}.",
+            f"Hỏi: Làm sao phòng ngừa hiệu quả hơn?\nĐáp: Đưa {_join(content.lesson_learned[:2], 'bài học sau sửa')} vào phiếu kiểm, lịch kiểm tra hoặc SOP ca sau.",
+            "",
+            "Tóm tắt",
+            (
+                f"{content.topic} cần được xử lý như một chuỗi hoàn chỉnh: nguyên nhân gốc, kiểm tra, sửa chữa, nghiệm thu và phòng ngừa. "
+                "Khi đội hiện trường giữ đúng chuỗi này, tri thức nguồn được chuyển thành hướng dẫn tìm kiếm, đọc hiểu và áp dụng trong ca sản xuất."
+            ),
+            "",
+        ]
+    )
+
+
+def render_checklist(content: ContentTransformation) -> str:
     return "\n".join(
         [
             "## Phiếu kiểm phê duyệt kỹ thuật",
             "",
             "### Thông tin đầu vào",
-            f"- Chủ đề: {record.topic}",
-            f"- Lĩnh vực: {record.domain}",
-            f"- Thiết bị/khu vực: {', '.join(record.equipment) or 'cần xác nhận thêm'}",
+            f"- Chủ đề: {content.topic}",
+            f"- Thiết bị/khu vực: {content.equipment}",
             "",
             "### Kiểm tra bắt buộc",
-            *_checkboxes(record.inspection_procedure, 8),
-            "",
-            "### Đo kiểm và bằng chứng",
-            *_checkboxes(record.measurements, 6),
-            *_checkboxes(record.evidence_required, 4),
+            *_checkboxes(content.inspection_steps, 8),
             "",
             "### Quyết định sửa chữa",
-            *_checkboxes(record.decision_logic, 5),
-            *_checkboxes(record.repair_procedure, 6),
+            *_checkboxes(content.root_causes, 5),
+            *_checkboxes(content.repair_steps, 6),
             "",
             "### Xác nhận sau sửa",
-            *_checkboxes(record.verification, 6),
-            *_checkboxes(record.acceptance_criteria, 5),
+            *_checkboxes(content.acceptance, 6),
             "",
             "### Không được quên",
-            *_checkboxes(record.common_mistakes, 4),
-            *_checkboxes(record.safety_controls, 4),
-            "",
-            "### Phụ lục tri thức bắt buộc",
-            *_knowledge_question_lines(record),
+            *_checkboxes(content.prevention, 4),
+            *_checkboxes(content.lesson_learned, 4),
         ]
     )
 
 
-def render_hashtags(record: "_RenderedRecord") -> str:
+def render_hashtags(content: ContentTransformation) -> str:
     tags = tuple(
         dict.fromkeys(
             (
                 "LucidAuto",
                 "HGPTSteelKnowledgeBase",
-                record.topic,
-                record.domain,
-                record.topic_type,
-                record.main_entity,
-                *record.equipment[:3],
-                *record.component[:3],
-                *record.applicable_standards[:3],
+                "HGPT Steel",
+                content.topic,
+                *content.seo_keywords[:6],
             )
         )
     )
@@ -320,85 +510,8 @@ def render_hashtags(record: "_RenderedRecord") -> str:
             "## Thẻ phân loại kiến thức",
             "",
             *_bullets(tuple(tag for tag in tags if tag), 16),
-            "",
-            "### Phụ lục tri thức bắt buộc",
-            *_knowledge_question_lines(record),
         ]
     )
-
-
-def _render_knowledge_reference(record: "_RenderedRecord", title: str, audience: str) -> str:
-    return "\n".join(
-        [
-            f"## {title}: {record.topic}",
-            "",
-            f"Đối tượng sử dụng: {audience}. Hồ sơ này là tài liệu kỹ thuật dài hạn cho HGPT Steel, không phải nội dung marketing hoặc câu trả lời tạm thời.",
-            "",
-            *_knowledge_question_lines(record),
-            "",
-            "### Logic quyết định tại hiện trường",
-            *_bullets(record.decision_logic, 6),
-            "",
-            "### Bài học lưu vào tri thức nhà máy",
-            *_bullets(record.lessons_learned, 5),
-            *_bullets(record.common_mistakes, 4),
-            "",
-            "### Khuyến nghị số hóa",
-            *_bullets(record.digital_factory_recommendations, 5),
-        ]
-    )
-
-
-def _knowledge_question_lines(record: "_RenderedRecord") -> list[str]:
-    standards = record.applicable_standards or ("Chưa xác nhận tiêu chuẩn áp dụng; cần đối chiếu bản vẽ, ITP, WPS, OEM manual hoặc quy định hiện hành.",)
-    unknowns = record.missing_information or ("Không đủ dữ liệu để kết luận. Cần đo và bổ sung bằng chứng hiện trường trước khi chốt nguyên nhân.",)
-    evidence = record.evidence_required or ("Ảnh hiện trường, log vận hành, số đo trước/sau sửa và hồ sơ kỹ thuật liên quan.",)
-    return [
-        "### 1. Đây là gì?",
-        f"- Chủ đề: {record.topic}",
-        f"- Lĩnh vực: {record.domain}",
-        f"- Thiết bị/quá trình: {', '.join(record.equipment) or record.main_entity or 'cần xác nhận từ hồ sơ kỹ thuật'}",
-        "",
-        "### 2. Vì sao xảy ra?",
-        *_bullets(record.root_causes, 5),
-        "",
-        "### 3. Cơ chế hoạt động hoặc cơ chế lỗi",
-        f"- Nguyên lý: {record.working_principle}",
-        *_bullets(record.failure_mechanisms, 5),
-        "",
-        "### 4. Kiểm tra như thế nào?",
-        *_bullets(record.inspection_procedure, 8),
-        "",
-        "### 5. Đo kiểm gì?",
-        *_bullets(record.measurements, 8),
-        *_bullets(record.tools_required, 6),
-        "",
-        "### 6. Chẩn đoán như thế nào?",
-        *_bullets(record.decision_logic, 6),
-        "",
-        "### 7. Sửa chữa như thế nào?",
-        *_bullets(record.repair_procedure, 8),
-        "",
-        "### 8. Xác nhận và nghiệm thu như thế nào?",
-        *_bullets(record.verification, 6),
-        *_bullets(record.acceptance_criteria, 6),
-        "",
-        "### 9. Ngăn tái diễn như thế nào?",
-        *_bullets(record.preventive_maintenance, 6),
-        *_bullets(record.kaizen, 4),
-        "",
-        "### 10. Tiêu chuẩn nào áp dụng?",
-        *_bullets(standards, 6),
-        "",
-        "### 11. Thông tin nào còn thiếu?",
-        *_bullets(unknowns, 6),
-        "",
-        "### 12. Cần bằng chứng gì trước khi kết luận?",
-        *_bullets(evidence, 6),
-        "",
-        "### 13. Kiểm soát an toàn",
-        *_bullets(record.safety_controls, 6),
-    ]
 
 
 def _bullets(values: tuple[str, ...], limit: int) -> list[str]:
@@ -411,6 +524,87 @@ def _checkboxes(values: tuple[str, ...], limit: int) -> list[str]:
 
 def _first(values: tuple[str, ...], fallback: str) -> str:
     return values[0] if values else fallback
+
+
+def _join(values: tuple[str, ...], fallback: str) -> str:
+    cleaned = [value for value in values if value]
+    return ", ".join(cleaned) if cleaned else fallback
+
+
+def _visual_join(values: tuple[str, ...], fallback: str) -> str:
+    cleaned = [_visual_text(value, "") for value in values]
+    cleaned = [value for value in cleaned if value]
+    return ", ".join(cleaned) if cleaned else fallback
+
+
+def _visual_text(value: str, fallback: str) -> str:
+    text = (value or "").strip()
+    if not text:
+        return fallback
+    lowered = text.lower()
+    blocked = (
+        "không đủ dữ liệu",
+        "chưa đủ bằng chứng",
+        "không sử dụng",
+        "missing data",
+        "unsupported numeric",
+        "engineeringrecord",
+        "internal system",
+    )
+    if any(term in lowered for term in blocked):
+        return fallback
+    return text
+
+
+_FORBIDDEN_CONTENT_TERMS = (
+    "Đây là gì",
+    "Vì sao xảy ra",
+    "Thông tin còn thiếu",
+    "Cần bằng chứng",
+    "Engineering Record",
+    "EngineeringRecord",
+    "Mục lục tra cứu",
+    "Cấu trúc hồ sơ",
+    "Trích yếu",
+    "Đo kiểm",
+    "Tiêu chuẩn",
+)
+
+_SOURCE_LABEL_PATTERNS = (
+    r"\bHạng\s+\d+\s*-\s*",
+    r"\bVì sao xảy ra\s*:\s*",
+    r"\bCơ chế vật lý\s*:\s*",
+    r"\bCơ chế hoạt động hoặc cơ chế lỗi\s*:\s*",
+    r"\bKiểm tra\s*:\s*",
+    r"\bĐo kiểm\s*:\s*",
+    r"\bDụng cụ\s*:\s*",
+    r"\bLogic quyết định\s*:\s*",
+    r"\bSửa chữa\s*:\s*",
+    r"\bXác nhận\s*:\s*",
+    r"\bTiêu chí nhận\s*:\s*",
+    r"\bTiêu chuẩn\s*:\s*",
+)
+
+
+def _content_items(values: tuple[str, ...], fallback: str, limit: int) -> tuple[str, ...]:
+    cleaned = tuple(_content_text(value, "") for value in values)
+    cleaned = tuple(value for value in cleaned if value)
+    if not cleaned:
+        cleaned = (_content_text(fallback, "điểm kỹ thuật cần xác nhận tại hiện trường"),)
+    return tuple(dict.fromkeys(cleaned))[:limit]
+
+
+def _content_text(value: str, fallback: str) -> str:
+    text = _clean_text(value or "")
+    for pattern in _SOURCE_LABEL_PATTERNS:
+        text = re.sub(pattern, "", text, flags=re.IGNORECASE)
+    text = re.sub(r"\bhồ sơ kỹ thuật(?: nguồn)?\b", "tri thức hiện trường", text, flags=re.IGNORECASE)
+    text = re.sub(r"\bKhông đủ dữ liệu để kết luận\.?\s*", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"\bCần đo(?: và bổ sung)?\b", "nên ghi", text, flags=re.IGNORECASE)
+    for term in _FORBIDDEN_CONTENT_TERMS:
+        text = re.sub(re.escape(term), "", text, flags=re.IGNORECASE)
+    text = re.sub(r"\s+", " ", text).strip(" ;,.:-")
+    return text or fallback
 
 
 def _slug(value: str) -> str:

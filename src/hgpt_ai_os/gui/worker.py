@@ -70,11 +70,11 @@ class ProductionWorker(QThread):
             stream.flush()
             self.finished.emit(result)
 
-        except Exception:
+        except Exception as exc:
             logger.exception("Production failed")
             self.log.emit(traceback.format_exc())
             self.log.emit("STATUS : PRODUCTION FAILED")
-            self.log.emit("ERROR  : Production could not be completed.")
+            self.log.emit(f"ERROR  : {exc}")
             self.finished.emit(service.failed_result())
 
 

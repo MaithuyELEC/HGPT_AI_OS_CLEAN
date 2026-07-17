@@ -42,14 +42,14 @@ _GENERATION_SPECS = {
     "facebook": GenerationSpec(
         key="facebook",
         content_type="Facebook educational post",
-        target_audience="the audience implied by the user's topic",
-        writing_goal="educate readers with a practical topic-specific problem, risks, actions, examples, and clear takeaway",
-        format_notes="Write in Vietnamese. Use a strong hook, short sections, practical bullet points, and a clear CTA.",
-        reasoning_focus="field consequence, root cause, decision points, inspection evidence, corrective workflow",
+        target_audience="factory technicians, shift leaders, QA/QC, maintenance, and practical engineering readers on Facebook",
+        writing_goal="transform engineering knowledge into a 900-1400 word senior-chief-engineer field story with hook, real shop scenario, root-cause analysis, practical workflow, lesson learned, and reader discussion",
+        format_notes="Write in Vietnamese. Do not use report headings such as What is it, Why, Inspection, Measurement, Standards, Mô tả kỹ thuật ngắn, Nguyên nhân cần ưu tiên, or Trình tự kiểm tra thiết yếu. Use only these reader-facing sections: Hook, Real shop scenario, Root cause analysis, Practical solution, Lesson learned, Call To Action. Sound like a senior chief engineer speaking from factory experience, not an engineering report.",
+        reasoning_focus="human shop-floor pain, danger, cause-and-effect engineering, technician workflow, prevention habit, discussion prompt",
         structure_options=(
-            "open with a site observation, then diagnose causes, then give controls and reviewer checks",
-            "open with a risky decision, then contrast wrong vs right practice, then close with action steps",
-            "open with a measured symptom, then explain why it matters, then provide a prevention sequence",
+            "open with pain or danger, enter a real factory scene, diagnose why it happened, then give a technician workflow and lesson",
+            "open with a question from the shop floor, show a shift-level mistake, explain the root cause chain, then close with prevention",
+            "open with a near-miss, follow the crew through evidence and repair, then ask readers how they would decide",
         ),
     ),
     "tiktok": GenerationSpec(
@@ -69,9 +69,9 @@ _GENERATION_SPECS = {
         key="image_prompt",
         content_type="Image generation prompt",
         target_audience="AI image model and visual designer",
-        writing_goal="describe a realistic image that visualizes the topic accurately",
-        format_notes="Write in Vietnamese with structured labels only: Chủ thể, Bối cảnh, Hành động, Trang phục, Ánh sáng, Góc máy, Ống kính, Màu sắc, Chi tiết cần có, Chi tiết cần tránh, Phong cách chất lượng, Tỷ lệ khung hình. Do not output paragraphs.",
-        reasoning_focus="visible subject, physical setting, measurable details, inspection context, visual exclusions",
+        writing_goal="transform engineering knowledge into a clean visual-only prompt for Gemini image generation: subject, factory setting, visible action, motion, camera, lighting, composition, industrial realism, and visual exclusions",
+        format_notes="Write a 350-700 word copy-paste-ready image prompt. Use DOCX-safe Vietnamese labels only: Chủ thể, Bối cảnh, Hành động chính, Chuyển động phụ, Góc máy, Ánh sáng, Vật liệu, Hiệu ứng công nghiệp, Bố cục, Phong cách hình ảnh, Chất lượng hình ảnh. Keep only visual information. Do not mention EngineeringRecord, missing data, unsupported numeric value, internal system messages, source records, hidden reasoning, report fields, or anything not useful for an image model.",
+        reasoning_focus="visual subject identity, safe factory context, motion cues, camera/lens logic, lighting, material realism, composition, industrial visual exclusions",
         structure_options=(
             "compose from foreground subject to background context, then camera, lighting, and negative prompts",
             "compose from inspection action to material details, then environment, camera, and exclusions",
@@ -82,9 +82,9 @@ _GENERATION_SPECS = {
         key="video_prompt",
         content_type="Video generation prompt",
         target_audience="AI video model and video producer",
-        writing_goal="describe a cinematic topic-specific sequence that explains the issue and practical action",
-        format_notes="Write in Vietnamese as a production-ready Gemini Veo/Veo3/Kling prompt with labels: Tiêu đề, Mở đầu, Cảnh 1, Cảnh 2, Cảnh 3, Góc máy, Ánh sáng, Lời thoại, Phụ đề, Âm thanh / SFX, Kết thúc, Kêu gọi hành động, Chi tiết cần tránh. It must be copy-paste ready and not a long article.",
-        reasoning_focus="sequence logic, motion, inspection handoff, correction workflow, final verification",
+        writing_goal="transform engineering knowledge into a cinematic mini documentary video prompt with five scenes: strong hook, failure, diagnosis, repair, and result",
+        format_notes="Write a production-ready mini documentary prompt, not a checklist and not one paragraph. Use DOCX-safe Vietnamese labels only: Tiêu đề, Thời lượng, Cảnh 1 - Hook, Cảnh 2 - Failure, Cảnh 3 - Diagnosis, Cảnh 4 - Repair, Cảnh 5 - Result, Kết thúc. Each scene must include camera movement, worker movement, machine movement, ambient sound, voice, and emotion. Do not mention EngineeringRecord, missing data, unsupported numeric value, internal system messages, source records, hidden reasoning, or report fields.",
+        reasoning_focus="cinematic documentary arc, camera movement, worker movement, machine movement, ambient sound, narration, emotion, final proof",
         structure_options=(
             "sequence from establishing shot to close-up evidence, correction action, and final sign-off",
             "sequence from unsafe assumption to measurement, team response, and approved condition",
@@ -93,15 +93,15 @@ _GENERATION_SPECS = {
     ),
     "seo": GenerationSpec(
         key="seo",
-        content_type="SEO article brief",
+        content_type="SEO article",
         target_audience="readers searching for guidance on the user's topic",
-        writing_goal="create search-optimized educational content with keywords, title, meta description, outline, and FAQs",
-        format_notes="Write in Vietnamese. Keep it distinct from social posts and focus on search intent and technical discoverability.",
-        reasoning_focus="search intent, technical entities, practical questions, buyer/engineer concerns, answer hierarchy",
+        writing_goal="write a complete 1200-2000 word search article that transforms engineering knowledge into useful guidance with root cause, inspection, repair, acceptance, prevention, applicable standards, FAQ, and summary",
+        format_notes="Write in Vietnamese. Use article structure: H1, Introduction, at least three H2 sections, FAQ, Summary. Include root cause, inspection, repair, acceptance, prevention, and applicable standards naturally. Use search keywords naturally. Do not output a knowledge database, engineering record, outline-only brief, or raw source notes.",
+        reasoning_focus="search intent, root-cause explanation, inspection workflow, repair decisions, acceptance evidence, prevention, applicable standards, natural keywords",
         structure_options=(
-            "start from search intent, then title/meta, keyword clusters, outline, FAQs, and internal-link ideas",
-            "start from reader problem, then keyword map, article promise, outline, FAQs, and conversion angle",
-            "start from technical entity extraction, then SERP angle, headings, FAQs, and evidence needs",
+            "start with search intent and shop-floor consequence, then explain causes, inspection, repair, acceptance, prevention, standards, FAQ, and summary",
+            "start from reader problem, then move through diagnosis, repair workflow, pass/fail evidence, prevention system, standards, FAQ, and summary",
+            "start from common symptoms, then build a complete how-to article with keywords embedded naturally in headings and answers",
         ),
     ),
     "checklist": GenerationSpec(
@@ -179,25 +179,7 @@ _EVIDENCE_RHYTHMS = (
 
 _FORBIDDEN_OUTPUT_TERMS = (
     "Timeline",
-    "Scene",
-    "Camera",
-    "Voice",
-    "Caption",
-    "Transition",
-    "Negative prompt",
-    "Duration",
-    "Aspect ratio",
-    "Lens",
-    "Lighting",
-    "Composition",
-    "Mood",
     "Texture",
-    "Hook:",
-    "CTA:",
-    "Voice Over",
-    "Camera Angle",
-    "Scene-by-scene",
-    "Industrial environment",
     "Engineering checklist",
     "Inspection item",
     "Acceptance criteria",
@@ -276,6 +258,7 @@ Diversity Control:
 {retry_block}
 Instructions:
 - Generate original final content only.
+- Engineering Record is source material only. Transform it for the selected audience; never output it directly.
 - Reason from the topic semantics before writing; do not fill a preset template.
 - Use only the topic, AI reasoning, and retrieved knowledge context.
 - Do not invent citations or claim retrieved knowledge exists when it is empty.

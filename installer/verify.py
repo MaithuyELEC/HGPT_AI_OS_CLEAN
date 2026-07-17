@@ -11,7 +11,7 @@ exec((ROOT / "src" / "hgpt_ai_os" / "version.py").read_text(), version_ns)
 APP_VERSION = version_ns["APP_VERSION"].removeprefix("v")
 APP_BUILD = version_ns["APP_BUILD"].removeprefix("RC")
 MAC_DMG_ROOT = ROOT / "release" / "Mac" / "dmg"
-MAC_APP = MAC_DMG_ROOT / "LUCID.app"
+MAC_APP = MAC_DMG_ROOT / "Lucid AI Studio.app"
 ISS_PATH = ROOT / "installer" / "LUCID.iss"
 WINDOWS_DIST = ROOT / "dist" / "LUCID"
 WINDOWS_APP = WINDOWS_DIST / "LUCID.exe"
@@ -43,11 +43,11 @@ def verify_macos() -> None:
         plist = plistlib.load(plist_file)
 
     expected = {
-        "CFBundleDisplayName": "LUCID AUTO",
+        "CFBundleDisplayName": "Lucid AI Studio",
         "CFBundleExecutable": "LUCID",
         "CFBundleIconFile": "LUCID.icns",
         "CFBundleIdentifier": "com.lucidauto.desktop",
-        "CFBundleName": "LUCID AUTO",
+        "CFBundleName": "Lucid AI Studio",
         "CFBundleShortVersionString": APP_VERSION,
         "CFBundleVersion": APP_BUILD,
         "LSApplicationCategoryType": "public.app-category.productivity",
@@ -67,11 +67,11 @@ def verify_windows() -> None:
         "UninstallDisplayName={#MyAppName} {#MyAppRelease}",
         "VersionInfoVersion={#MyAppVersion}",
         "VersionInfoCompany={#MyAppPublisher}",
-        "OutputBaseFilename=LUCID_Setup",
+        "OutputBaseFilename=Lucid-AI-Studio-Setup-v{#MyAppVersion}",
         'Source: "..\\dist\\LUCID\\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs',
-        'Name: "{group}\\LUCID AUTO"; Filename: "{app}\\{#MyAppExeName}"',
-        'Name: "{group}\\Uninstall LUCID AUTO"; Filename: "{uninstallexe}"',
-        'Name: "{autodesktop}\\LUCID AUTO"; Filename: "{app}\\{#MyAppExeName}"; Tasks: desktopicon',
+        'Name: "{group}\\Lucid AI Studio"; Filename: "{app}\\{#MyAppExeName}"',
+        'Name: "{group}\\Uninstall Lucid AI Studio"; Filename: "{uninstallexe}"',
+        'Name: "{autodesktop}\\Lucid AI Studio"; Filename: "{app}\\{#MyAppExeName}"; Tasks: desktopicon',
     ]
     for fragment in required_fragments:
         require(fragment in text, f"Inno Setup script missing {fragment}")
@@ -89,7 +89,7 @@ def verify_windows() -> None:
     )
 
     if any(WINDOWS_INSTALLER_ROOT.glob("*.exe")):
-        require((WINDOWS_INSTALLER_ROOT / "LUCID_Setup.exe").is_file(), "expected Windows installer output is missing")
+        require((WINDOWS_INSTALLER_ROOT / f"Lucid-AI-Studio-Setup-v{APP_VERSION}.exe").is_file(), "expected Windows installer output is missing")
 
 
 def main() -> None:
