@@ -1,0 +1,2 @@
+PROMPT_VERSION = "3.0.0"
+BRAIN_NAME = "Lucid GPT Brain"
