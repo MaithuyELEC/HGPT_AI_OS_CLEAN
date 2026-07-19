@@ -605,6 +605,7 @@ wording could fit a different machine/process without rewriting.
             topic=topic,
         )
 
+
         if self.ai is not None:
             response = self.ai.generate(prompt.system_prompt, prompt.user_prompt)
         else:
