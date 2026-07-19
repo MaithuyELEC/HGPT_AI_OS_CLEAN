@@ -11,6 +11,7 @@ from hgpt_ai_os.ai.gemini_client import AIProviderError
 from hgpt_ai_os.knowledge.models import KnowledgeResult
 from hgpt_ai_os.providers import ProviderManager
 from hgpt_ai_os.topic_engine import TopicContext
+from hgpt_ai_os.ai_brain.brain_enricher import BrainEnricher
 
 from .quality_gate import EngineeringQualityGate
 from .prompt_composer import PromptComposer, PromptComposerInput
@@ -598,6 +599,12 @@ wording could fit a different machine/process without rewriting.
                 rejected_record=rejected_record,
             )
         )
+
+        prompt = BrainEnricher.enrich(
+            prompt=prompt,
+            topic=topic,
+        )
+
         if self.ai is not None:
             response = self.ai.generate(prompt.system_prompt, prompt.user_prompt)
         else:
