@@ -1,33 +1,17 @@
-# Python
-.venv/
+work/
+dist/
+build/
+release/
 __pycache__/
 *.pyc
-
-# macOS
-.DS_Store
-
-# Build artifacts
-build/
-dist/
-
-# Generated outputs
-outputs/
-!outputs/.gitkeep
-
-# Local data
-data/
-.env
-
-# Backup files
-*.bak
-*.before_*
-
-# Development tools
-codex/
-
-# Build artifacts
-build/
-dist/
-release/
+*.pyo
+*.pyd
+*.log
+*.tmp
+*.cache
+.pytest_cache/
+.mypy_cache/
+.pyinstaller/
 *.dmg
 *.exe
+*.app
