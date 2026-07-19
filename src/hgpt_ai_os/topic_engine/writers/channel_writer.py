@@ -97,7 +97,7 @@ def _fallback_playbook(reasoning: ReasoningObject) -> DomainPlaybook:
         quality_risks=("nguy cơ lỗi lặp lại nếu thiếu bằng chứng nghiệm thu",),
         production_impact="Làm tăng thời gian chờ, thời gian sửa lại và rủi ro trễ bàn giao.",
         checklist_items=inspections,
-        hashtags=("#LucidAuto", "#KyThuatSanXuat", "#Qaqc"),
+        hashtags=("#LucidAIStudio", "#KyThuatSanXuat", "#Qaqc"),
         failure_mechanisms=("Sai lệch nhỏ tích lũy thành lỗi hệ thống khi không có điểm dừng kiểm tra và tiêu chí pass/fail rõ.",),
         measurements=("ghi kích thước, thông số vận hành hoặc ảnh lỗi trước/sau sửa",),
         engineering_calculations=("so sánh giá trị đo với giới hạn bản vẽ, WPS, ITP hoặc hướng dẫn OEM đang áp dụng",),
@@ -178,7 +178,7 @@ def _context_playbook(reasoning: ReasoningObject) -> DomainPlaybook | None:
                 )
             )
         ),
-        hashtags=base.hashtags if base is not None else ("#LucidAuto", "#FailureIntelligence", "#BaoTri"),
+        hashtags=base.hashtags if base is not None else ("#LucidAIStudio", "#FailureIntelligence", "#BaoTri"),
         match_groups=base.match_groups if base is not None else (),
         extra_corrective_actions=base.extra_corrective_actions if base is not None else (),
         video_subject=base.video_subject if base is not None else "",
@@ -588,7 +588,7 @@ def facts(reasoning: ReasoningObject) -> list[str]:
 
 
 def hashtags(reasoning: ReasoningObject) -> str:
-    tags = ["#MaithuyELEC", "#LucidAuto", "#BaoTriCongNghiep"]
+    tags = ["#MaithuyELEC", "#LucidAIStudio", "#BaoTriCongNghiep"]
     playbook = playbook_for_reasoning(reasoning)
     for tag in playbook.hashtags:
         if tag not in tags:

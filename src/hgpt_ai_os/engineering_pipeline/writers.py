@@ -497,7 +497,7 @@ def render_hashtags(content: ContentTransformation) -> str:
     tags = tuple(
         dict.fromkeys(
             (
-                "LucidAuto",
+                "LucidAIStudio",
                 "HGPTSteelKnowledgeBase",
                 "HGPT Steel",
                 content.topic,

@@ -13,6 +13,7 @@ from hgpt_ai_os.providers import ProviderManager
 from hgpt_ai_os.topic_engine import TopicContext
 
 from .quality_gate import EngineeringQualityGate
+from .prompt_composer import PromptComposer, PromptComposerInput
 from .record import EngineeringRecord
 from .intent import TopicIntent, analyze_topic_intent
 from .writers import render_all
@@ -22,6 +23,10 @@ logger = logging.getLogger(__name__)
 
 
 class EngineeringGenerationError(RuntimeError):
+    pass
+
+
+class EngineeringQualityError(EngineeringGenerationError):
     pass
 
 
@@ -398,10 +403,19 @@ wording could fit a different machine/process without rewriting.
     ) -> None:
         self.quality_gate = quality_gate or EngineeringQualityGate()
         self.provider_manager = provider_manager or ProviderManager()
+        self.prompt_composer = PromptComposer(
+            self.TOPIC_TYPE_CONTRACTS,
+            self.RECORD_SCHEMA,
+            self.FIELD_CONTRACTS,
+        )
         self.validation = validate_ai_provider_config()
         self._ai_supplied = ai is not None
         self.ai = ai
-        self.provider = self.validation.config.provider if not self.validation.config.free_desktop_mode else "Disabled"
+        self.free_desktop_mode = (
+            self.validation.config.free_desktop_mode
+            or self.validation.status == "Free Desktop"
+        )
+        self.provider = self.validation.config.provider if not self.free_desktop_mode else "Disabled"
         self.model = ""
         self.http_status = ""
         self.error = ""
@@ -441,7 +455,9 @@ wording could fit a different machine/process without rewriting.
             )
             record_report = self.quality_gate.validate_record(record, topic_intent)
             if not record_report.accepted:
-                self.error = "Safe limitation record: " + "; ".join(record_report.issues)
+                self.error = "Quality Gate failed: " + "; ".join(record_report.issues)
+                if not self.free_desktop_mode:
+                    raise EngineeringQualityError(self.error)
                 record = self._safe_failure_record(topic_intent, record_report.issues)
 
         documents = render_all(record)
@@ -458,16 +474,24 @@ wording could fit a different machine/process without rewriting.
             )
             record_report = self.quality_gate.validate_record(record, topic_intent)
             if not record_report.accepted:
-                self.error = "Safe limitation record: " + "; ".join(record_report.issues)
+                self.error = "Quality Gate failed: " + "; ".join(record_report.issues)
+                if not self.free_desktop_mode:
+                    raise EngineeringQualityError(self.error)
                 record = self._safe_failure_record(topic_intent, record_report.issues)
                 documents = render_all(record)
                 return record, documents
             documents = render_all(record)
             document_report = self.quality_gate.validate_documents(documents, topic_intent)
             if not document_report.accepted:
-                self.error = "Safe limitation record: " + "; ".join(document_report.issues)
+                self.error = "Quality Gate failed: " + "; ".join(document_report.issues)
+                if not self.free_desktop_mode:
+                    raise EngineeringQualityError(self.error)
                 record = self._safe_failure_record(topic_intent, document_report.issues)
                 documents = render_all(record)
+                final_report = self.quality_gate.validate_documents(documents, topic_intent)
+                if not final_report.accepted:
+                    self.error = "Quality Gate failed: " + "; ".join(final_report.issues)
+                    raise EngineeringQualityError(self.error)
         return record, documents
 
     def _record_or_safe_failure(
@@ -493,10 +517,34 @@ wording could fit a different machine/process without rewriting.
                     rejected = None
                     continue
         issues = tuple(failures) or ("EngineeringRecord incomplete.",)
-        self.error = "Safe limitation record: " + "; ".join(issues)
+        self.error = "Generation failed after retry: " + "; ".join(issues)
+        if not self.free_desktop_mode and not self._is_no_internet_failure(issues):
+            raise EngineeringGenerationError(self.error)
+        if self._is_no_internet_failure(issues):
+            print("⚠ Offline Mode")
+            print("No internet connection to OpenAI. Using Local Generator.")
+            self.error = "Offline Mode: no internet connection to OpenAI."
+            self.provider = "Offline"
+            self.model = ""
+            self.http_status = ""
         self.engineering_record_created = True
-        self.engineering_record_source = "SAFE_LIMITATION_RECORD"
+        self.engineering_record_source = "OFFLINE_LOCAL_GENERATOR"
         return self._safe_failure_record(topic_intent, issues)
+
+    def _is_no_internet_failure(self, issues: tuple[str, ...]) -> bool:
+        if not issues:
+            return False
+        network_markers = (
+            "network error",
+            "request timed out",
+            "timeout",
+            "ssl_error",
+            "connection_error",
+        )
+        return all(
+            any(marker in issue.lower() for marker in network_markers)
+            for issue in issues
+        )
 
     def build_record(
         self,
@@ -523,16 +571,37 @@ wording could fit a different machine/process without rewriting.
         quality_feedback: tuple[str, ...] = (),
         rejected_record: EngineeringRecord | None = None,
     ) -> EngineeringRecord:
-        if self.ai is None and self.validation.config.free_desktop_mode:
+        if self.ai is None and self.free_desktop_mode:
             self.error = self.error or "AI_PROVIDER_DISABLED"
             raise EngineeringGenerationError(self.error)
 
-        system_prompt = self._system_prompt()
-        user_prompt = self._user_prompt(topic, context, knowledge_items, topic_context, topic_intent, quality_feedback, rejected_record)
+        prompt = self.prompt_composer.compose(
+            PromptComposerInput(
+                topic=topic,
+                domain=topic_intent.primary_domain,
+                intent=topic_intent,
+                audience=(
+                    "Vietnamese practical learners and operators"
+                    if topic_intent.primary_domain == "GENERAL_KNOWLEDGE"
+                    else "HGPT Steel factory engineers, maintenance leaders, QA/QC, and production supervisors"
+                ),
+                tone=(
+                    "Vietnamese practical guide, concise, safe, evidence-aware"
+                    if topic_intent.primary_domain == "GENERAL_KNOWLEDGE"
+                    else "Vietnamese factory SOP, concise, technical, evidence-driven"
+                ),
+                knowledge_blocks=context,
+                knowledge_items=knowledge_items,
+                output_type="EngineeringRecord JSON",
+                topic_context=topic_context,
+                quality_feedback=quality_feedback,
+                rejected_record=rejected_record,
+            )
+        )
         if self.ai is not None:
-            response = self.ai.generate(system_prompt, user_prompt)
+            response = self.ai.generate(prompt.system_prompt, prompt.user_prompt)
         else:
-            response = self.provider_manager.generate_real_ai(system_prompt, user_prompt)
+            response = self.provider_manager.generate_real_ai(prompt.system_prompt, prompt.user_prompt)
         if isinstance(response, AIProviderError):
             self.provider = response.provider
             self.model = response.model
@@ -564,69 +633,6 @@ wording could fit a different machine/process without rewriting.
             raise EngineeringGenerationError(self.error)
         self.engineering_record_source = "AI_PROVIDER"
         return record
-
-    def _system_prompt(self) -> str:
-        return "\n\n".join(
-            (
-                self.ENGINEERING_ROLE_PROMPT,
-                "Hard output contract: return valid JSON only, with exactly one top-level EngineeringRecord object.",
-                "Do not wrap the object in markdown, prose, code fences, or an extra engineering_record key.",
-            )
-        )
-
-    def _user_prompt(
-        self,
-        topic: str,
-        context: str,
-        knowledge_items: list[KnowledgeResult],
-        topic_context: TopicContext,
-        topic_intent: TopicIntent,
-        quality_feedback: tuple[str, ...] = (),
-        rejected_record: EngineeringRecord | None = None,
-    ) -> str:
-        source_names = [result.item.title for result in knowledge_items[:5] if getattr(result, "item", None)]
-        return json.dumps(
-            {
-                "task": "Build one canonical EngineeringRecord JSON object for exactly one engineering topic.",
-                "engineering_record_prompt": self.ENGINEERING_RECORD_PROMPT,
-                "engineering_schema": self.RECORD_SCHEMA,
-                "field_contracts": self.FIELD_CONTRACTS,
-                "topic_intent": topic_intent.to_dict(),
-                "content_contract_for_topic_type": self.TOPIC_TYPE_CONTRACTS[topic_intent.topic_type],
-                "topic": topic,
-                "topic_context": topic_context.to_topic_analysis().__dict__,
-                "retrieved_sources": source_names,
-                "retrieved_context": context[:6000],
-                "quality_feedback_from_rejected_draft": list(quality_feedback),
-                "rejected_record": rejected_record.to_dict() if rejected_record is not None else None,
-                "rules": [
-                    "Return exactly one top-level JSON object matching engineering_schema.",
-                    "Do not wrap the record in another key.",
-                    "Every array field in engineering_schema must be an array of Vietnamese strings. Do not return nested objects inside arrays.",
-                    "Follow field_contracts for purpose, Vietnamese language, minimum useful depth, unsupported-content limits, and uncertainty wording for every field.",
-                    "Use arrays of strings for every array field.",
-                    "Use a number from 0.0 to 1.0 for confidence; never use words like low, medium, moderate, or high.",
-                    "Root causes must have at least 3 items and must be ranked by probability.",
-                    "For MANAGEMENT_METHOD, PROCESS_GUIDE, INVESTMENT_EVALUATION, and TECHNICAL_EXPLANATION, do not force an equipment-failure template; map the required contract sections into the closest EngineeringRecord fields.",
-                    "The primary_domain, secondary_domain, topic_type, main_entity, observed_condition, expected_user_goal, safety_level, request_id, topic_fingerprint, ambiguity_flags, and prohibited_assumptions fields must match topic_intent exactly.",
-                    "Each root cause item must include why it happens, physical mechanism, inspection method, measurement, required tools, expected values if known, decision logic, repair procedure, verification after repair, and acceptance criteria.",
-                    "Write natural Vietnamese in factory SOP style, not blog style and not ChatGPT style.",
-                    "All user-facing strings must be Vietnamese except approved acronyms/standards such as LOTO, OEM, VFD, PLC, ISO, IEC, AWS, QA/QC, CMMS, SCADA, RMS, and MPa.",
-                    "Include symptoms, danger level, 5 Why when useful, inspection sequence, tools, measuring instruments, measurements, reference values only if known, repair, post-repair check, trial run, acceptance, prevention, field experience, common mistakes, checklist-ready actions, and technical summary.",
-                    "Make every item equipment-specific; generic maintenance sentences are not acceptable.",
-                    "Keep every channel writer downstream dependent on this record only.",
-                    "Do not use a local playbook, generic template, or similar-topic mapping.",
-                    "Do not invent standards or numeric measurements.",
-                    "Reject any numeric value unless it comes from user input, retrieved_context, manufacturer manual, or a cited verified standard.",
-                    "For MHI/HMI or control-interface lock topics, never provide password bypass, access-code cracking, or disabling safety interlocks.",
-                    "If evidence is missing, return inspection items in missing_information and evidence_required.",
-                    "When data is insufficient, include exactly: Không đủ dữ liệu để kết luận. Cần đo...",
-                    "Reject and rewrite internally before returning if inspection, repair, verification, lessons_learned, or preventive_maintenance is missing.",
-                    "If quality_feedback_from_rejected_draft is not empty, use rejected_record only as the rejected draft, correct only the listed failures, keep the original topic_intent, do not add unrelated equipment, and return a corrected full EngineeringRecord, not a patch and not an explanation.",
-                ],
-            },
-            ensure_ascii=False,
-        )
 
     def _extract_json(self, content: str) -> dict[str, Any] | None:
         text = content.strip()
@@ -728,10 +734,14 @@ wording could fit a different machine/process without rewriting.
         )
 
     def _safe_failure_record(self, topic_intent: TopicIntent, issues: tuple[str, ...]) -> EngineeringRecord:
+        sanitized_issues = tuple(
+            issue.replace("nội dung chung", "nội dung không đạt kiểm tra")
+            for issue in issues
+        )
         missing = (
             "Không đủ dữ liệu để kết luận. Cần đo thực tế trước khi quyết định.",
             "Đối chiếu tài liệu nhà sản xuất, bản vẽ, WPS/ITP hoặc tiêu chuẩn áp dụng trước khi đặt tiêu chí nghiệm thu.",
-            "Các lỗi kiểm tra chất lượng: " + "; ".join(issues[:6]),
+            "Các lỗi kiểm tra chất lượng: " + "; ".join(sanitized_issues[:6]),
         )
         return EngineeringRecord(
             topic=topic_intent.original_topic,
@@ -750,11 +760,23 @@ wording could fit a different machine/process without rewriting.
             equipment=(topic_intent.main_entity,),
             subsystem=topic_intent.component,
             component=(topic_intent.component,) if topic_intent.component else (),
-            failure_symptom=(topic_intent.observed_condition,),
+            failure_symptom=(
+                topic_intent.observed_condition or "Chưa có hiện tượng đo kiểm được xác nhận.",
+                "Thiếu ảnh hiện trường, log vận hành hoặc dữ liệu đo trực tiếp.",
+                "Thiếu tiêu chí nghiệm thu từ OEM, bản vẽ, WPS/ITP hoặc chuẩn nội bộ.",
+            ),
             operating_context="Chỉ ghi nhận phạm vi có thể xác nhận từ chủ đề đầu vào.",
             working_principle="Không suy diễn nguyên lý, thông số hoặc model thiết bị khi thiếu hồ sơ kỹ thuật.",
-            failure_mechanisms=("Chưa xác nhận cơ chế lỗi; cần kiểm tra thực tế và hồ sơ kỹ thuật.",),
-            root_causes=("Chưa kết luận nguyên nhân gốc khi thiếu bằng chứng đo kiểm.",),
+            failure_mechanisms=(
+                "Chưa xác nhận cơ chế lỗi; cần kiểm tra thực tế và hồ sơ kỹ thuật.",
+                "Thiếu dữ liệu đo làm cho quan hệ giữa triệu chứng, nguyên nhân và hành động sửa chữa chưa đủ tin cậy.",
+                "Thiếu nguồn tiêu chí nghiệm thu có thể làm nội dung đưa ra sai phạm vi an toàn hoặc chất lượng.",
+            ),
+            root_causes=(
+                "Hạng 1 - Thiếu dữ liệu hiện trường. Vì sao xảy ra: chủ đề chưa cung cấp ảnh, log vận hành hoặc số đo trực tiếp nên không thể khóa cơ chế lỗi. Cơ chế kỹ thuật: quyết định sửa chữa thiếu bằng chứng có thể xử lý sai cụm chi tiết. Kiểm tra: cô lập khu vực, ghi hiện tượng, đo thông số liên quan và đối chiếu hồ sơ. Dụng cụ: phiếu LOTO, máy ảnh, dụng cụ đo phù hợp, biểu mẫu kiểm tra. Logic quyết định: nếu dữ liệu chưa đủ thì chỉ giữ trạng thái an toàn và chưa bàn giao. Sửa chữa: không sửa suy đoán. Xác nhận: chỉ xác nhận sau khi có phép đo lặp lại. Tiêu chí nhận: tiêu chí phải lấy từ OEM, bản vẽ, WPS/ITP hoặc chuẩn nội bộ đã phê duyệt.",
+                "Hạng 2 - Thiếu hồ sơ kỹ thuật áp dụng. Vì sao xảy ra: chưa xác định model, bản vẽ, tiêu chuẩn hoặc quy trình đang điều khiển quyết định nghiệm thu. Cơ chế kỹ thuật: dùng thông số chung dễ tạo sai lệch an toàn và chất lượng. Kiểm tra: thu thập tài liệu hãng sản xuất, bản vẽ, WPS/ITP, lịch sử bảo trì hoặc NCR liên quan. Dụng cụ: hồ sơ thiết bị, CMMS, biểu mẫu QA/QC và người phê duyệt kỹ thuật. Logic quyết định: nếu không có nguồn tiêu chí thì chưa kết luận đạt. Sửa chữa: chỉ thực hiện hành động bảo toàn hiện trường. Xác nhận: đối chiếu lại tiêu chí trước khi chạy thử hoặc bàn giao. Tiêu chí nhận: nguồn tiêu chí phải được xác nhận.",
+                "Hạng 3 - Rủi ro suy diễn sai phạm vi chủ đề. Vì sao xảy ra: thông tin đầu vào có thể là sự cố, quy trình, quản trị, giáo dục hoặc kiến thức chung nhưng chưa đủ bối cảnh để chọn quy trình chuyên sâu. Cơ chế kỹ thuật: ép một mẫu lỗi thiết bị vào chủ đề khác sẽ làm sai đối tượng kiểm tra. Kiểm tra: xác định mục tiêu người dùng, đối tượng chính, điều kiện vận hành và dữ liệu còn thiếu. Dụng cụ: checklist phân loại chủ đề, phỏng vấn vận hành, ảnh hiện trường và hồ sơ liên quan. Logic quyết định: nếu phạm vi chưa rõ thì chỉ xuất bản nội dung giới hạn kỹ thuật. Sửa chữa: yêu cầu bổ sung dữ liệu thay vì bịa nguyên nhân. Xác nhận: người phụ trách xác nhận lại phạm vi trước khi dùng nội dung. Tiêu chí nhận: nội dung không chứa thông số hoặc tiêu chuẩn tự suy diễn.",
+            ),
             evidence_required=(
                 "Ảnh hiện trường trước xử lý",
                 "Dữ liệu đo thực tế liên quan đến chủ đề",
@@ -778,12 +800,36 @@ wording could fit a different machine/process without rewriting.
                 "Nếu thiếu hồ sơ hoặc dữ liệu đo thì không kết luận nguyên nhân.",
                 "Nếu phát hiện rủi ro an toàn thì dừng và escalates cho người có thẩm quyền.",
             ),
-            repair_procedure=("Không thực hiện sửa chữa suy đoán; chỉ làm hành động an toàn và bảo toàn hiện trường.",),
-            verification=("Xác nhận lại bằng cùng phương pháp đo sau khi có hành động khắc phục được phê duyệt.",),
-            acceptance_criteria=("Chỉ bàn giao khi tiêu chí nghiệm thu có nguồn xác nhận.",),
-            lessons_learned=("Không ép chủ đề vào mẫu sự cố thiết bị khi topic_type không phải FAULT_DIAGNOSIS.",),
-            common_mistakes=("Bịa thông số hoặc tiêu chuẩn để hoàn thành biểu mẫu.",),
-            preventive_maintenance=("Cập nhật danh mục dữ liệu cần thu thập cho chủ đề tương tự.",),
+            repair_procedure=(
+                "Dừng mọi hành động sửa chữa suy đoán khi chưa có bằng chứng.",
+                "Bảo toàn hiện trường, đánh dấu khu vực và lưu ảnh trước xử lý.",
+                "Chỉ thực hiện hành động an toàn được người có thẩm quyền phê duyệt.",
+            ),
+            verification=(
+                "Xác nhận lại bằng cùng phương pháp đo sau khi có hành động khắc phục được phê duyệt.",
+                "Đối chiếu kết quả với tài liệu nguồn hoặc tiêu chí nội bộ đã duyệt.",
+                "Ghi lại người kiểm tra, thời điểm, dụng cụ và trạng thái sau xác nhận.",
+            ),
+            acceptance_criteria=(
+                "Chỉ bàn giao khi tiêu chí nghiệm thu có nguồn xác nhận.",
+                "Không dùng giá trị tham khảo chưa được OEM, bản vẽ hoặc quy trình phê duyệt.",
+                "Nội dung chỉ được xuất khi không còn lỗi kiểm tra chất lượng.",
+            ),
+            lessons_learned=(
+                "Không ép chủ đề vào mẫu sự cố thiết bị khi topic_type không phải FAULT_DIAGNOSIS.",
+                "Khóa nguyên nhân bằng dữ liệu trước khi sửa hoặc xuất bản hướng dẫn.",
+                "Tách phần biết chắc, phần cần đo và phần cần phê duyệt.",
+            ),
+            common_mistakes=(
+                "Bịa thông số hoặc tiêu chuẩn để hoàn thành biểu mẫu.",
+                "Dùng cùng một bài cho nhiều chủ đề khác nhau.",
+                "Bỏ qua bước xác nhận an toàn trước khi kiểm tra.",
+            ),
+            preventive_maintenance=(
+                "Cập nhật danh mục dữ liệu cần thu thập cho chủ đề tương tự.",
+                "Chuẩn hóa biểu mẫu ảnh, log vận hành, phép đo và nguồn tiêu chí.",
+                "Đưa điều kiện dừng xuất bản vào quy trình kiểm duyệt nội dung.",
+            ),
             safety_controls=("Dừng công việc khi chưa kiểm soát năng lượng nguy hiểm.", "Không bypass liên động an toàn.", "Dùng PPE đúng rủi ro."),
             missing_information=missing,
             ambiguity_flags=topic_intent.ambiguity_flags,

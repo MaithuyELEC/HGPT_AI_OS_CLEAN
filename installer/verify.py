@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import plistlib
+import platform
 import sys
 from pathlib import Path
 
@@ -57,6 +58,10 @@ def verify_macos() -> None:
 
 
 def verify_windows() -> None:
+    if platform.system() != "Windows":
+        print("SKIPPED: Windows packaging verification requires Windows")
+        return
+
     require(ISS_PATH.is_file(), "missing Inno Setup script")
     text = ISS_PATH.read_text(encoding="utf-8")
 

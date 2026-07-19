@@ -16,6 +16,7 @@ SUPPORTED_DOMAINS = (
     "CRANE_LIFTING",
     "PRODUCTION_EQUIPMENT",
     "TPM_LEAN_KAIZEN",
+    "GENERAL_KNOWLEDGE",
 )
 
 TOPIC_TYPES = (
@@ -108,7 +109,7 @@ def _classify_domain(text: str) -> tuple[str, str]:
     scores = {domain: sum(1 for term in terms if term in text) for domain, terms in _DOMAIN_TERMS.items()}
     primary = max(scores, key=scores.get)
     if scores[primary] <= 0:
-        primary = "MECHANICAL_MAINTENANCE"
+        primary = "GENERAL_KNOWLEDGE"
     secondary = ""
     ranked = sorted(scores.items(), key=lambda item: item[1], reverse=True)
     if len(ranked) > 1 and ranked[1][1] > 0:
@@ -117,6 +118,8 @@ def _classify_domain(text: str) -> tuple[str, str]:
 
 
 def _classify_topic_type(text: str, domain: str) -> str:
+    if domain == "GENERAL_KNOWLEDGE":
+        return "PROCESS_GUIDE"
     if any(term in text for term in ("dau tu", "so sanh", "lua chon", "mua ", "roi", "hoan von")):
         return "INVESTMENT_EVALUATION"
     if any(term in text for term in ("khong ra khi", "bi khoa", "bao loi", "mat ap", "bi nong", "bi keu")):
@@ -380,6 +383,7 @@ _DOMAIN_ENTITY = {
     "CRANE_LIFTING": "crane and lifting equipment",
     "PRODUCTION_EQUIPMENT": "steel fabrication production equipment",
     "TPM_LEAN_KAIZEN": "factory management system",
+    "GENERAL_KNOWLEDGE": "general topic",
 }
 
 _ENTITY_TERMS = (

@@ -116,19 +116,19 @@ class ContentGeneratorAIRoutingTests(unittest.TestCase):
         self.assertEqual(ai.calls, 1)
         topic_generate.assert_not_called()
 
-    def test_ai_exception_falls_back_to_topic_intelligence(self):
+    def test_ai_exception_does_not_call_topic_intelligence_in_ai_mode(self):
         ai = _FailingAI(exc=TimeoutError("timeout"))
         with (
             self._config("openai", openai_key="test-key"),
             self._patch_topic_engine() as topic_generate,
         ):
-            output = ContentGenerator(ai=ai).generate("seo", "5S trong xưởng")
+            with self.assertRaises(TimeoutError):
+                ContentGenerator(ai=ai).generate("seo", "5S trong xưởng")
 
-        self.assertEqual(output, "Offline Topic Intelligence content")
         self.assertEqual(ai.calls, 1)
-        topic_generate.assert_called_once()
+        topic_generate.assert_not_called()
 
-    def test_ai_provider_error_falls_back_to_topic_intelligence(self):
+    def test_ai_provider_error_does_not_call_topic_intelligence_in_ai_mode(self):
         ai = _FailingAI(
             response=AIProviderError(
                 provider="OpenAI",
@@ -140,13 +140,13 @@ class ContentGeneratorAIRoutingTests(unittest.TestCase):
             self._config("openai", openai_key="test-key"),
             self._patch_topic_engine() as topic_generate,
         ):
-            output = ContentGenerator(ai=ai).generate("seo", "5S trong xưởng")
+            with self.assertRaises(RuntimeError):
+                ContentGenerator(ai=ai).generate("seo", "5S trong xưởng")
 
-        self.assertEqual(output, "Offline Topic Intelligence content")
         self.assertEqual(ai.calls, 1)
-        topic_generate.assert_called_once()
+        topic_generate.assert_not_called()
 
-    def test_empty_ai_response_falls_back_to_topic_intelligence(self):
+    def test_empty_ai_response_does_not_call_topic_intelligence_in_ai_mode(self):
         ai = _FailingAI(
             response=AIResponse(
                 provider="OpenAI",
@@ -158,11 +158,11 @@ class ContentGeneratorAIRoutingTests(unittest.TestCase):
             self._config("openai", openai_key="test-key"),
             self._patch_topic_engine() as topic_generate,
         ):
-            output = ContentGenerator(ai=ai).generate("seo", "5S trong xưởng")
+            with self.assertRaises(RuntimeError):
+                ContentGenerator(ai=ai).generate("seo", "5S trong xưởng")
 
-        self.assertEqual(output, "Offline Topic Intelligence content")
         self.assertEqual(ai.calls, 1)
-        topic_generate.assert_called_once()
+        topic_generate.assert_not_called()
 
     def test_engineering_terms_are_valid_ai_content(self):
         ai = _FailingAI(
@@ -190,7 +190,7 @@ class ContentGeneratorAIRoutingTests(unittest.TestCase):
         self.assertEqual(ai.calls, 1)
         topic_generate.assert_not_called()
 
-    def test_old_provider_failure_messages_fall_back(self):
+    def test_old_provider_failure_messages_are_not_local_fallback_in_ai_mode(self):
         for message in OLD_PROVIDER_FAILURE_MESSAGES:
             with self.subTest(message=message):
                 ai = _FailingAI(
@@ -204,14 +204,14 @@ class ContentGeneratorAIRoutingTests(unittest.TestCase):
                     self._config("openai", openai_key="test-key"),
                     self._patch_topic_engine() as topic_generate,
                 ):
-                    output = ContentGenerator(ai=ai).generate(
-                        "facebook",
-                        "5S trong xưởng",
-                    )
+                    with self.assertRaises(RuntimeError):
+                        ContentGenerator(ai=ai).generate(
+                            "facebook",
+                            "5S trong xưởng",
+                        )
 
-                self.assertEqual(output, "Offline Topic Intelligence content")
                 self.assertEqual(ai.calls, 1)
-                topic_generate.assert_called_once()
+                topic_generate.assert_not_called()
 
 
 if __name__ == "__main__":

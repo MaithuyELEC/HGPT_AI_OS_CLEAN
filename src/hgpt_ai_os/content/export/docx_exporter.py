@@ -47,11 +47,16 @@ class DocxExporter:
         doc.add_heading(title, level=1)
         self._add_markdown_content(doc, str(content))
         doc.save(path)
+        self.validate_rendered_docx(path)
         trace_call("DOCX save completed", self, selected_topic=title, output_file=path, final_docx_writer=self.__class__.__name__)
 
     def validate_content(self, content: str) -> None:
+        if not content.strip():
+            raise ValueError("DOCX export blocked: empty content.")
         if content.encode("utf-8").decode("utf-8") != content:
             raise ValueError("DOCX export blocked: invalid UTF-8 content.")
+        if self._has_duplicate_paragraphs(content):
+            raise ValueError("DOCX export blocked: duplicated paragraphs.")
         forbidden = self._FORBIDDEN_TEMPLATE_LABEL_RE.search(content)
         if forbidden:
             label = forbidden.group(1)
@@ -68,6 +73,23 @@ class DocxExporter:
             raise ValueError(
                 f"DOCX export blocked: broken Vietnamese text '{broken.group(0)}'."
             )
+
+    def validate_rendered_docx(self, path: Path) -> None:
+        try:
+            doc = Document(path)
+        except Exception as exc:
+            raise ValueError(f"DOCX export blocked: incomplete rendering: {exc}") from exc
+        text = "\n".join(paragraph.text for paragraph in doc.paragraphs).strip()
+        if not text:
+            raise ValueError("DOCX export blocked: rendered DOCX is empty.")
+
+    def _has_duplicate_paragraphs(self, content: str) -> bool:
+        paragraphs = [
+            re.sub(r"\s+", " ", paragraph.strip().lower())
+            for paragraph in re.split(r"\n{2,}", content)
+            if len(paragraph.strip()) > 80
+        ]
+        return len(paragraphs) != len(set(paragraphs))
 
     def _set_vietnamese_font(self, doc: Document) -> None:
         for style_name in ("Normal", "Heading 1", "Heading 2", "Heading 3"):

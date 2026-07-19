@@ -1,4 +1,5 @@
 import json
+import os
 import tempfile
 import unittest
 from pathlib import Path
@@ -7,6 +8,8 @@ from unittest.mock import patch
 from hgpt_ai_os.ai.gemini_client import AIProviderError, AIResponse
 from hgpt_ai_os.engineering_pipeline import (
     EngineeringGenerationPipeline,
+    EngineeringGenerationError,
+    EngineeringQualityError,
     analyze_topic_intent,
 )
 from hgpt_ai_os.topic_engine import TopicIntelligenceEngine
@@ -46,12 +49,14 @@ def record_payload(topic: str) -> str:
                 "nhiệt vỏ máy tăng so với nền vận hành",
                 "rung tại gối đỡ hoặc thân máy",
                 "dòng điện hoặc áp suất dao động khi có tải",
+                "tần suất dừng máy tăng khi điều kiện tải thay đổi",
             ],
             "failure_symptom": [
                 "tiếng kêu tăng theo tốc độ quay",
                 "nhiệt vỏ máy tăng so với nền vận hành",
                 "rung tại gối đỡ hoặc thân máy",
                 "dòng điện hoặc áp suất dao động khi có tải",
+                "tần suất dừng máy tăng khi điều kiện tải thay đổi",
             ],
             "operating_context": "Thiết bị đang phục vụ sản xuất liên tục; cần ghi tải, tốc độ, nhiệt độ và lịch bảo trì trước khi tháo.",
             "working_principle": "Cụm quay phải giữ đồng tâm, bôi trơn đúng và tải ổn định; sai lệch cơ khí hoặc điện làm tăng ma sát, nhiệt và rung.",
@@ -59,6 +64,7 @@ def record_payload(topic: str) -> str:
                 "ma sát tăng tại ổ bi hoặc bề mặt làm việc làm nhiệt và rung tăng theo tốc độ",
                 "lệch tâm khớp nối tạo tải hướng kính bất thường lên cụm quay",
                 "điều kiện tải hoặc nguồn cấp không ổn định làm thiết bị làm việc ngoài vùng thiết kế",
+                "thiếu dữ liệu baseline làm đội bảo trì khó tách lỗi cơ khí khỏi lỗi vận hành",
             ],
             "root_causes": [
                 "Hạng 1 - nguyên nhân gốc thứ nhất từ hồ sơ kỹ thuật. Vì sao xảy ra: điều kiện vận hành tạo tải bất thường. Cơ chế vật lý: ma sát hoặc quá tải làm tăng nhiệt và rung. Kiểm tra: cô lập thiết bị, quan sát dấu hiệu, đo thông số liên quan. Đo kiểm: Không đủ dữ liệu để kết luận. Cần đo thông số vận hành thực tế. Dụng cụ: thiết bị đo chuyên dụng, phiếu kiểm, ảnh hiện trường. Logic quyết định: chỉ sửa khi bằng chứng đo khớp triệu chứng. Sửa chữa: xử lý đúng nguyên nhân đã xác nhận. Xác nhận: chạy thử có kiểm soát và đo lại cùng phương pháp. Tiêu chí nhận: triệu chứng không tái diễn trong điều kiện thử đã ghi nhận.",
@@ -72,6 +78,7 @@ def record_payload(topic: str) -> str:
                 "kiểm nhiệt, rung, dòng điện hoặc áp suất tại các điểm chuẩn",
                 "kiểm bôi trơn, độ rơ, đồng tâm, dấu mòn và dấu quá nhiệt",
                 "đối chiếu lịch bảo trì, phụ tùng đã thay và cảnh báo vận hành",
+                "lập biên bản nguyên nhân khả nghi trước khi tháo chi tiết hoặc thay phụ tùng",
             ],
             "inspection_procedure": [
                 "LOTO nguồn điện, nguồn áp và xác nhận thiết bị dừng an toàn",
@@ -79,22 +86,23 @@ def record_payload(topic: str) -> str:
                 "kiểm nhiệt, rung, dòng điện hoặc áp suất tại các điểm chuẩn",
                 "kiểm bôi trơn, độ rơ, đồng tâm, dấu mòn và dấu quá nhiệt",
                 "đối chiếu lịch bảo trì, phụ tùng đã thay và cảnh báo vận hành",
+                "lập biên bản nguyên nhân khả nghi trước khi tháo chi tiết hoặc thay phụ tùng",
             ],
-            "measurements": ["nhiệt độ vỏ máy", "rung mm/s RMS", "dòng điện từng pha", "áp suất làm việc hoặc tải vận hành"],
+            "measurements": ["nhiệt độ vỏ máy", "rung RMS", "dòng điện từng pha", "áp suất làm việc hoặc tải vận hành", "độ lệch đồng tâm hoặc độ rơ cụm quay"],
             "tools_required": ["camera nhiệt", "máy đo rung", "ampe kìm", "đồng hồ so", "phiếu LOTO"],
             "decision_logic": [
                 "nếu nhiệt và rung cùng tăng theo tốc độ thì ưu tiên kiểm cụm quay và bôi trơn",
                 "nếu dòng hoặc áp dao động theo tải thì kiểm nguồn cấp, tải và phần điều khiển",
                 "nếu số đo chưa đủ thì chưa thay phụ tùng hàng loạt",
             ],
-            "repair": ["cô lập thiết bị", "vệ sinh điểm kiểm", "căn chỉnh hoặc thay chi tiết đã xác nhận hỏng", "chạy thử có tải"],
-            "repair_procedure": ["cô lập thiết bị", "vệ sinh điểm kiểm", "căn chỉnh hoặc thay chi tiết đã xác nhận hỏng", "chạy thử có tải"],
-            "verification": ["đo lại nhiệt độ sau chạy thử", "đo lại rung hoặc áp suất bằng cùng điểm đo", "ghi nhận không còn tiếng kêu/rung bất thường"],
-            "acceptance_criteria": ["thiết bị chạy ổn định dưới tải sản xuất", "không còn cảnh báo an toàn", "số đo sau sửa phù hợp tiêu chí OEM hoặc tiêu chí nội bộ đã phê duyệt"],
-            "prevention": ["bổ sung điểm đo vào PM", "lưu trend nhiệt-rung-dòng", "kiểm phụ tùng thay thế theo mã kỹ thuật"],
-            "preventive_maintenance": ["bổ sung điểm đo vào PM", "lưu trend nhiệt-rung-dòng", "kiểm phụ tùng thay thế theo mã kỹ thuật"],
-            "lessons_learned": ["khóa nguyên nhân bằng số đo trước khi thay phụ tùng", "ghi baseline sau sửa để ca sau so sánh", "liên kết lỗi với điều kiện tải thực tế"],
-            "common_mistakes": ["bỏ qua dữ liệu đo trước sửa", "thay phụ tùng khi chưa kiểm đồng tâm", "chạy thử không tải rồi bàn giao ngay"],
+            "repair": ["cô lập thiết bị", "vệ sinh điểm kiểm", "căn chỉnh hoặc thay chi tiết đã xác nhận hỏng", "chuẩn hóa lại điểm đo sau lắp", "chạy thử có tải"],
+            "repair_procedure": ["cô lập thiết bị", "vệ sinh điểm kiểm", "căn chỉnh hoặc thay chi tiết đã xác nhận hỏng", "chuẩn hóa lại điểm đo sau lắp", "chạy thử có tải"],
+            "verification": ["đo lại nhiệt độ sau chạy thử", "đo lại rung hoặc áp suất bằng cùng điểm đo", "ghi nhận không còn tiếng kêu/rung bất thường", "đối chiếu biên bản sau sửa với tiêu chí OEM hoặc tiêu chí nội bộ"],
+            "acceptance_criteria": ["thiết bị chạy ổn định dưới tải sản xuất", "không còn cảnh báo an toàn", "số đo sau sửa phù hợp tiêu chí OEM hoặc tiêu chí nội bộ đã phê duyệt", "người phụ trách xác nhận dữ liệu bàn giao đủ để theo dõi tái phát"],
+            "prevention": ["bổ sung điểm đo vào PM", "lưu trend nhiệt-rung-dòng", "kiểm phụ tùng thay thế theo mã kỹ thuật", "đào tạo ca vận hành ghi triệu chứng trước khi báo sửa"],
+            "preventive_maintenance": ["bổ sung điểm đo vào PM", "lưu trend nhiệt-rung-dòng", "kiểm phụ tùng thay thế theo mã kỹ thuật", "đào tạo ca vận hành ghi triệu chứng trước khi báo sửa"],
+            "lessons_learned": ["khóa nguyên nhân bằng số đo trước khi thay phụ tùng", "ghi baseline sau sửa để ca sau so sánh", "liên kết lỗi với điều kiện tải thực tế", "giữ bằng chứng tháo lắp để tránh lặp lại chẩn đoán cảm tính"],
+            "common_mistakes": ["bỏ qua dữ liệu đo trước sửa", "thay phụ tùng khi chưa kiểm đồng tâm", "chạy thử không tải rồi bàn giao ngay", "không ghi lại điều kiện vận hành lúc lỗi xuất hiện"],
             "safety_controls": ["LOTO nguồn điện", "xả áp trước tháo đường ống", "barricade khu vực chạy thử"],
             "kaizen": ["chuẩn hóa phản ứng sự cố"],
             "digital_factory_recommendations": ["lưu ảnh trước và sau sửa"],
@@ -119,7 +127,53 @@ class FakeAI:
         return self.response
 
 
+class FakeProviderManager:
+    def __init__(self, topic: str):
+        self.topic = topic
+        self.calls = 0
+        self.system_prompt = ""
+        self.user_prompt = ""
+
+    def generate_real_ai(self, system_prompt, user_prompt):
+        self.calls += 1
+        self.system_prompt = system_prompt
+        self.user_prompt = user_prompt
+        return AIResponse(
+            provider="OpenAI",
+            model="gpt-test",
+            content=record_payload(self.topic),
+            metadata={"status_code": 200},
+        )
+
+
 class EngineeringPipelineV21Tests(unittest.TestCase):
+    def setUp(self):
+        self._profile_dir = tempfile.TemporaryDirectory()
+        root = Path(self._profile_dir.name)
+        docs = root / "profile" / "Documents" / "LUCID"
+        docs.mkdir(parents=True)
+        (docs / "config.json").write_text(
+            json.dumps(
+                {
+                    "provider": "openai",
+                    "openai_api_key": "test-key",
+                    "gemini_api_key": "",
+                    "anthropic_api_key": "",
+                }
+            ),
+            encoding="utf-8",
+        )
+        self._env_patch = patch.dict(
+            os.environ,
+            {"USERPROFILE": str(root / "profile")},
+            clear=False,
+        )
+        self._env_patch.start()
+
+    def tearDown(self):
+        self._env_patch.stop()
+        self._profile_dir.cleanup()
+
     def test_topic_intent_classifies_supported_domain_and_topic_type(self):
         cases = {
             "Vòng bi động cơ bị kêu": ("MECHANICAL_MAINTENANCE", "FAULT_DIAGNOSIS"),
@@ -194,22 +248,22 @@ class EngineeringPipelineV21Tests(unittest.TestCase):
             for filename in transformed_channels:
                 for label in forbidden:
                     self.assertNotIn(label, documents[filename], filename)
-            self.assertIn("Hook", documents["facebook.docx"])
-            self.assertIn("Real shop scenario", documents["facebook.docx"])
-            self.assertIn("Root cause analysis", documents["facebook.docx"])
-            self.assertIn("Practical solution", documents["facebook.docx"])
-            self.assertIn("Lesson learned", documents["facebook.docx"])
-            self.assertIn("Call To Action", documents["facebook.docx"])
+            self.assertIn("Mở đầu", documents["facebook.docx"])
+            self.assertIn("Tình huống hiện trường", documents["facebook.docx"])
+            self.assertIn("Phân tích nguyên nhân gốc", documents["facebook.docx"])
+            self.assertIn("Cách xử lý thực tế", documents["facebook.docx"])
+            self.assertIn("Bài học rút ra", documents["facebook.docx"])
+            self.assertIn("Câu hỏi thảo luận", documents["facebook.docx"])
             for label in (
                 "H1:",
-                "Introduction",
-                "H2: Root Causes",
-                "H2: Inspection",
-                "H2: Repair",
-                "H2: Acceptance",
-                "H2: Prevention",
-                "FAQ",
-                "Summary",
+                "Mở đầu",
+                "H2: Nguyên nhân gốc",
+                "H2: Kiểm tra",
+                "H2: Sửa chữa",
+                "H2: Nghiệm thu",
+                "H2: Phòng ngừa",
+                "Câu hỏi thường gặp",
+                "Tóm tắt",
             ):
                 self.assertIn(label, documents["seo.docx"])
             self.assertTrue(documents["image_prompt.docx"].startswith("subject -"))
@@ -226,10 +280,12 @@ class EngineeringPipelineV21Tests(unittest.TestCase):
             self.assertIn("Chief Mechanical Engineer of HGPT Steel", ai.system_prompt)
             self.assertIn("Root causes must have at least 3 items", ai.user_prompt)
             self.assertIn("Không đủ dữ liệu để kết luận. Cần đo...", ai.user_prompt)
+            self.assertIn("knowledge_blocks", ai.user_prompt)
+            self.assertIn("output_type", ai.user_prompt)
             self.assertIn("topic_intent", ai.user_prompt)
             self.assertIn("content_contract_for_topic_type", ai.user_prompt)
 
-    def test_semantic_failure_returns_safe_limitation_record_and_seven_docs(self):
+    def test_semantic_failure_returns_clear_error_and_zero_docs_in_ai_mode(self):
         topic = "Bảo trì tự quản"
         topic_engine = TopicIntelligenceEngine()
         ai = FakeAI(
@@ -242,20 +298,18 @@ class EngineeringPipelineV21Tests(unittest.TestCase):
         )
         pipeline = EngineeringGenerationPipeline(ai=ai)
 
-        record, documents = pipeline.generate_documents(
-            topic=topic,
-            context="",
-            knowledge_items=[],
-            topic_context=topic_engine.analyze(topic),
-        )
+        with self.assertRaises(EngineeringQualityError):
+            pipeline.generate_documents(
+                topic=topic,
+                context="",
+                knowledge_items=[],
+                topic_context=topic_engine.analyze(topic),
+            )
 
-        self.assertTrue(record.safe_failure)
-        self.assertEqual(record.topic_type, "MANAGEMENT_METHOD")
-        self.assertEqual(len(documents), 7)
-        self.assertIn("Safe limitation record", pipeline.error)
-        self.assertIn("Không đủ dữ liệu để kết luận", "\n".join(record.missing_information))
+        self.assertIn("Quality Gate failed", pipeline.error)
+        self.assertFalse(pipeline.docx_created)
 
-    def test_provider_failure_returns_safe_limitation_documents(self):
+    def test_provider_failure_returns_clear_error_and_zero_docs_in_ai_mode(self):
         topic_engine = TopicIntelligenceEngine()
         pipeline = EngineeringGenerationPipeline(
             ai=FakeAI(
@@ -269,20 +323,45 @@ class EngineeringPipelineV21Tests(unittest.TestCase):
             )
         )
 
-        record, documents = pipeline.generate_documents(
-            topic="Bơm thủy lực bị mất áp",
-            context="",
-            knowledge_items=[],
-            topic_context=topic_engine.analyze("Bơm thủy lực bị mất áp"),
-        )
+        with self.assertRaises(EngineeringGenerationError):
+            pipeline.generate_documents(
+                topic="Bơm thủy lực bị mất áp",
+                context="",
+                knowledge_items=[],
+                topic_context=topic_engine.analyze("Bơm thủy lực bị mất áp"),
+            )
 
-        self.assertTrue(pipeline.engineering_record_created)
-        self.assertTrue(record.safe_failure)
-        self.assertEqual(pipeline.engineering_record_source, "SAFE_LIMITATION_RECORD")
-        self.assertEqual(len(documents), 7)
+        self.assertFalse(pipeline.engineering_record_created)
+        self.assertEqual(pipeline.engineering_record_source, "NONE")
         self.assertFalse(pipeline.docx_created)
         self.assertEqual(pipeline.http_status, "429")
-        self.assertIn("Safe limitation record", pipeline.error)
+        self.assertIn("Generation failed after retry", pipeline.error)
+
+    def test_ai_mode_uses_provider_manager_without_local_generator(self):
+        topic = "Vòng bi động cơ bị kêu"
+        topic_engine = TopicIntelligenceEngine()
+        provider_manager = FakeProviderManager(topic)
+        pipeline = EngineeringGenerationPipeline(provider_manager=provider_manager)
+
+        with patch(
+            "hgpt_ai_os.topic_engine.TopicIntelligenceEngine.generate",
+            side_effect=AssertionError("Local generator must not run in AI mode."),
+        ):
+            record, documents = pipeline.generate_documents(
+                topic=topic,
+                context="knowledge block",
+                knowledge_items=[],
+                topic_context=topic_engine.analyze(topic),
+            )
+
+        self.assertEqual(provider_manager.calls, 1)
+        self.assertEqual(pipeline.provider, "OpenAI")
+        self.assertEqual(pipeline.model, "gpt-test")
+        self.assertEqual(pipeline.engineering_record_source, "AI_PROVIDER")
+        self.assertEqual(record.title, f"Xử lý {topic}")
+        self.assertEqual(len(documents), 7)
+        self.assertIn("knowledge_blocks", provider_manager.user_prompt)
+        self.assertIn("Output type: EngineeringRecord JSON.", provider_manager.system_prompt)
 
     def test_production_failure_creates_zero_docx(self):
         import hgpt_ai_os.production as production
@@ -297,19 +376,21 @@ class EngineeringPipelineV21Tests(unittest.TestCase):
                         AIProviderError(
                             provider="Gemini",
                             model="gemini-test",
-                            message="Gemini request timed out.",
-                            error_type="timeout",
+                            message="Gemini HTTP error 429.",
+                            error_type="http_error",
+                            metadata={"status_code": 429},
                         )
                     )
                 ),
             ):
-                production.build_outputs(
-                    1,
-                    "Vòng bi động cơ bị kêu",
-                    open_output_folder=False,
-                )
+                with self.assertRaises(EngineeringGenerationError):
+                    production.build_outputs(
+                        1,
+                        "Vòng bi động cơ bị kêu",
+                        open_output_folder=False,
+                    )
 
-            self.assertEqual(len(list(output_root.rglob("*.docx"))), 7)
+            self.assertEqual(len(list(output_root.rglob("*.docx"))), 0)
 
 
 if __name__ == "__main__":

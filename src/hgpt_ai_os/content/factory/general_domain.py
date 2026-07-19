@@ -323,7 +323,7 @@ class GeneralDomainWriter:
         return "\n".join(self._hashtags())
 
     def _hashtags(self) -> list[str]:
-        tags = ["#MaithuyELEC", "#LucidAuto", "#KienThucThucTe", *self.b.hashtags]
+        tags = ["#MaithuyELEC", "#LucidAIStudio", "#KienThucThucTe", *self.b.hashtags]
         tags.extend(GeneralTextTools.hashtag(word) for word in GeneralTextTools.topic_words(self.b.topic))
         deduped = []
         for tag in tags:

@@ -50,7 +50,7 @@ class TopicProfileDefinition:
 
 BASE_HASHTAGS = (
     "#MaithuyELEC",
-    "#LucidAuto",
+    "#LucidAIStudio",
     "#KetCauThep",
     "#KienThucXuong",
     "#NhaMaySo",
@@ -58,7 +58,7 @@ BASE_HASHTAGS = (
 
 GENERAL_BASE_HASHTAGS = (
     "#MaithuyELEC",
-    "#LucidAuto",
+    "#LucidAIStudio",
     "#KienThucThucTe",
 )
 
@@ -515,11 +515,11 @@ class TopicAwareBuiltInBuilder:
     def build(self, topic: str = "", context: str = "") -> str:
         profile = self.classifier.classify(topic)
         if self.classifier.is_out_of_scope(topic):
-            return self._build_engineering_scope_notice(profile.topic)
+            return self.general_router.build(self.output_type, topic)
         if self.general_router.can_handle(topic):
-            return self._build_engineering_scope_notice(profile.topic)
+            return self.general_router.build(self.output_type, topic)
         if self.classifier.uses_general_builder(topic):
-            return self._build_engineering_scope_notice(profile.topic)
+            return self.general_router.build(self.output_type, topic)
         return getattr(self, f"_build_{self.output_type}")(profile)
 
     def _build_engineering_scope_notice(self, topic: str) -> str:
@@ -541,11 +541,11 @@ class TopicAwareBuiltInBuilder:
             "Vui lòng nhập một chủ đề kỹ thuật như: lỗi hàn SAW rỗ khí, bu lông neo sai vị trí, máy nén khí quá nhiệt, bạc đạn hỏng, kiểm tra DFT, VT/UT/MT/PT/RT hoặc checklist QA/QC.",
         ]
         if self.output_type == "hashtags":
-            return "#LucidAuto #EngineeringAI #MechanicalEngineering #QAQC #Maintenance #Welding"
+            return "#LucidAIStudio #EngineeringAI #MechanicalEngineering #QAQC #Maintenance #Welding"
         if self.output_type == "image":
             return "\n".join([
                 "Prompt Gemini tạo ảnh",
-                f"Chủ thể: màn hình thông báo phạm vi kỹ thuật LUCID AUTO Engineering AI Platform cho chủ đề {title}",
+                f"Chủ thể: màn hình thông báo phạm vi kỹ thuật Lucid AI Studio Engineering AI Platform cho chủ đề {title}",
                 "Bối cảnh: văn phòng QA/QC trong xưởng cơ khí, có bản vẽ kỹ thuật và checklist kiểm tra, chủ đề được đánh dấu ngoài phạm vi",
                 "Hành động: kỹ sư chọn lại chủ đề thuộc cơ khí, hàn, kết cấu thép hoặc bảo trì",
                 "Chi tiết cần tránh: minh họa đời sống, nấu ăn, du lịch, tài chính, thú cưng, cây cảnh",

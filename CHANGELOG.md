@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.0
+
+- Initial Public Release.
+
 ## v1.0.0 RC14
 
 - Bundled PyInstaller runtime resources for `knowledge/`, `templates/`, `planner/`, `assets/`, config resources, and `outputs/`.

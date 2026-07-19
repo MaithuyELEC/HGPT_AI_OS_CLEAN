@@ -11,17 +11,16 @@ logger = logging.getLogger(__name__)
 
 FREE_DESKTOP_MODE = "free_desktop"
 DISABLED_PROVIDERS = {"none", "disabled", "disable", "off", FREE_DESKTOP_MODE}
-SUPPORTED_PROVIDERS = {"openai", "gemini", "anthropic", *DISABLED_PROVIDERS}
+SUPPORTED_PROVIDERS = {"openai", *DISABLED_PROVIDERS}
 CONFIG_KEYS = (
     "AI_PROVIDER",
     "OPENAI_API_KEY",
     "GEMINI_API_KEY",
     "ANTHROPIC_API_KEY",
+    "OLLAMA_API_KEY",
 )
 PROVIDER_KEY_MAP = {
     "openai": "OPENAI_API_KEY",
-    "gemini": "GEMINI_API_KEY",
-    "anthropic": "ANTHROPIC_API_KEY",
 }
 GUI_CONFIG_ERROR_MESSAGE = (
     "AI Provider is not configured. Please set AI_PROVIDER and API key in "
@@ -65,6 +64,7 @@ def resolve_ai_config() -> AIConfig:
         "OPENAI_API_KEY": config.get("openai_api_key", "").strip(),
         "GEMINI_API_KEY": config.get("gemini_api_key", "").strip(),
         "ANTHROPIC_API_KEY": config.get("anthropic_api_key", "").strip(),
+        "OLLAMA_API_KEY": config.get("ollama_api_key", "").strip(),
     }
     return _resolved(str(manager.config_path), values, (manager.config_path,))
 

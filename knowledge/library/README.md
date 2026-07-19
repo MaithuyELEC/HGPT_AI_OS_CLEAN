@@ -1,6 +1,6 @@
 # HGPT Steel Knowledge Library
 
-Nguồn tri thức chính của Lucid Auto.
+Nguồn tri thức chính của Lucid AI Studio.
 
 Quy tắc:
 

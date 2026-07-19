@@ -49,6 +49,8 @@ Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
 SetupIconFile=..\\assets\\LUCID.ico
+WizardImageFile=..\\assets\\installer_banner.bmp
+WizardSmallImageFile=..\\assets\\installer_small.bmp
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"

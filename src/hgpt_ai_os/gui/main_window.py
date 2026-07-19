@@ -6,11 +6,12 @@ import subprocess
 import sys
 from pathlib import Path
 
-from PySide6.QtCore import QSize, QSettings, Qt, qVersion
+from PySide6.QtCore import QSize, QSettings, Qt, QTimer, qVersion
 from PySide6.QtGui import (
     QAction,
     QFont,
     QKeySequence,
+    QPixmap,
     QShortcut,
     QTextBlockFormat,
     QTextCursor,
@@ -36,11 +37,13 @@ from PySide6.QtWidgets import (
 from hgpt_ai_os.core.production_result import ProductionResult
 from hgpt_ai_os.diagnostics import module_loaded, trace_call
 from hgpt_ai_os.settings import ConfigManager
+from hgpt_ai_os.settings.ai_setup_wizard import AISetupWizard
+from hgpt_ai_os.settings.provider_registry import provider_info, provider_label
 from hgpt_ai_os.settings.settings_dialog import SettingsDialog
 from hgpt_ai_os.version import APP_BUILD as RELEASE_BUILD
 from hgpt_ai_os.version import APP_VERSION as RELEASE_VERSION
 
-from .branding import APP_DISPLAY_NAME, APP_POWERED_BY, app_icon
+from .branding import APP_DISPLAY_NAME, APP_POWERED_BY, app_icon, bundled_asset_path
 from .worker import ProductionWorker
 
 
@@ -100,20 +103,21 @@ class MainWindow(QMainWindow):
         self._restore_window_state()
         self._log_configuration_status()
         self._refresh_ai_status()
+        QTimer.singleShot(250, self._show_setup_wizard_if_required)
 
     def _build_menu(self):
-        preferences_menu = self.menuBar().addMenu("Preferences")
+        settings_menu = self.menuBar().addMenu("Settings")
 
-        ai_settings_action = QAction("AI Settings", self)
+        ai_settings_action = QAction("AI Provider", self)
         ai_settings_action.triggered.connect(self.open_ai_settings)
-        preferences_menu.addAction(ai_settings_action)
-        preferences_menu.addSeparator()
+        settings_menu.addAction(ai_settings_action)
+        settings_menu.addSeparator()
 
         self.auto_open_action = QAction("Auto Open Output Folder", self)
         self.auto_open_action.setCheckable(True)
         self.auto_open_action.setChecked(self.auto_open_output_folder)
         self.auto_open_action.toggled.connect(self._set_auto_open_output_folder)
-        preferences_menu.addAction(self.auto_open_action)
+        settings_menu.addAction(self.auto_open_action)
 
         help_menu = self.menuBar().addMenu("Help")
 
@@ -532,6 +536,11 @@ class MainWindow(QMainWindow):
                 background: #e7f4ec;
                 border: 1px solid #a7d7bd;
             }
+            QLabel#engineStatus[status="not_configured"] {
+                color: #6f3f00;
+                background: #fff1d6;
+                border: 1px solid #e3b45b;
+            }
             QLabel#engineStatus[status="disconnected"],
             QLabel#engineStatus[status="config_error"] {
                 color: #7a1f1f;
@@ -670,17 +679,23 @@ class MainWindow(QMainWindow):
         super().closeEvent(event)
 
     def show_about_dialog(self):
-        QMessageBox.about(
-            self,
-            f"About {APP_DISPLAY_NAME}",
+        dialog = QMessageBox(self)
+        dialog.setWindowTitle(f"About {APP_DISPLAY_NAME}")
+        dialog.setText(
             "\n".join(
                 (
                     APP_DISPLAY_NAME,
                     "Version 1.0.0",
                     APP_POWERED_BY,
                 )
-            ),
+            )
         )
+        logo = QPixmap(str(bundled_asset_path("about_logo.png")))
+        if not logo.isNull():
+            dialog.setIconPixmap(
+                logo.scaled(220, 80, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            )
+        dialog.exec()
 
     def open_ai_settings(self):
         dialog = SettingsDialog(self.config_manager, self)
@@ -688,26 +703,39 @@ class MainWindow(QMainWindow):
             self._log_configuration_status()
             self._refresh_ai_status()
 
+    def _show_setup_wizard_if_required(self):
+        if self.config_manager.is_configured():
+            return
+        dialog = AISetupWizard(self.config_manager, self)
+        if dialog.exec() == AISetupWizard.Accepted:
+            self._log_configuration_status()
+            self._refresh_ai_status()
+        else:
+            self._refresh_ai_status()
+
     def _log_configuration_status(self):
         validation = self.config_manager.validate()
         self.append_console("")
         self.append_console("Loading configuration...")
-        self.append_console(f"Provider: {validation.provider.title()}")
+        self.append_console(f"Provider: {provider_label(validation.provider)}")
         if validation.ok:
             self.append_console("Connection OK")
         else:
-            self.append_console("Connection Error")
+            self.append_console(validation.status)
 
     def _refresh_ai_status(self):
         validation = self.config_manager.validate()
         if validation.ok:
+            info = provider_info(validation.provider)
             self._set_status_badge(
                 self.engine_status,
                 "connected",
-                validation.provider.title(),
+                f"🟢 AI Mode ({info.label})",
             )
+        elif validation.status == "Not Configured":
+            self._set_status_badge(self.engine_status, "not_configured", "🟡 Offline Mode")
         else:
-            self._set_status_badge(self.engine_status, "disconnected", "Disconnected")
+            self._set_status_badge(self.engine_status, "disconnected", "🟡 Offline Mode")
 
     def generate(self):
         trace_call(
@@ -747,19 +775,23 @@ class MainWindow(QMainWindow):
             self._set_status_badge(self.engine_status, "config_error", "Configuration Error")
             self.append_console("Loading configuration...")
             self.append_console(validation.message)
-            self.append_console("Status: Configuration Error")
+            self.append_console("Status: ⚠ Offline Mode")
+            self.append_console("You are using the Local Engine.")
+            self.append_console("AI-quality generation is unavailable.")
+            self.append_console("Generated content quality will be lower.")
             if validation.reason:
                 self.append_console(f"Reason: {validation.reason}")
-            self.append_console(f"Provider: {validation.provider.title()}")
+            self.append_console(f"Provider: {provider_label(validation.provider)}")
             reply = QMessageBox.question(
                 self,
                 "AI is not configured.",
-                "AI is not configured.\n\nOpen Settings now?",
+                "AI is not configured.\n\nOpen AI Setup Wizard now?",
                 QMessageBox.Yes | QMessageBox.No,
                 QMessageBox.Yes,
             )
             if reply == QMessageBox.Yes:
-                self.open_ai_settings()
+                dialog = AISetupWizard(self.config_manager, self)
+                dialog.exec()
                 validation = self.config_manager.validate()
                 if not validation.ok:
                     return
@@ -774,11 +806,12 @@ class MainWindow(QMainWindow):
         self._set_status_badge(
             self.engine_status,
             "connected",
-            validation.provider.title(),
+            f"🟢 AI Mode ({provider_label(validation.provider)})",
         )
         self._set_status_badge(self.run_status, "generating", "Generating")
         self.append_console("Loading configuration...")
-        self.append_console(f"Provider: {validation.provider.title()}")
+        self.append_console(f"Provider: {provider_label(validation.provider)}")
+        self.append_console(f"Status: 🟢 AI Mode ({provider_label(validation.provider)})")
         self.append_console("Connection OK")
         self.append_console("Generation Started")
 

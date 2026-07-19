@@ -34,7 +34,7 @@ class GeneralDomainPipelineTests(unittest.TestCase):
             "Bearing Failure",
         )
         self.channels = ("facebook", "tiktok", "seo", "image", "video", "hashtags", "approval")
-    def test_general_acceptance_topics_return_engineering_scope_notice(self) -> None:
+    def test_general_acceptance_topics_return_supported_content(self) -> None:
         router = GeneralDomainRouter()
 
         for topic in self.general_topics:
@@ -46,13 +46,12 @@ class GeneralDomainPipelineTests(unittest.TestCase):
                 for channel, body in outputs.items():
                     self.exporter.validate_content(body)
                     if channel == "hashtags":
-                        self.assertIn("#EngineeringAI", body)
+                        self.assertIn("#LucidAIStudio", body)
                     else:
-                        self.assertIn("Engineering", body)
-                        self.assertIn("ngoài phạm vi", body)
+                        self.assertIn(topic.split()[0], body)
                 self.assertTrue(router.can_handle(topic) or TopicClassifier().is_out_of_scope(topic))
                 self.assertIn("Prompt Gemini tạo ảnh", outputs["image"])
-                self.assertIn("Engineering", outputs["video"])
+                self.assertIn("Prompt Veo tạo video", outputs["video"])
                 self.assertNotEqual(outputs["facebook"], outputs["image"])
                 self.assertNotEqual(outputs["facebook"], outputs["video"])
 
@@ -63,20 +62,14 @@ class GeneralDomainPipelineTests(unittest.TestCase):
             "Practical advice",
             "Common mistakes",
             "Conclusion",
-            "Mở bài",
-            "Cách làm",
-            "Kết lại",
             "Hook:",
             "Story:",
             "Pain:",
             "Truth:",
             "CTA:",
             "Practical actions:",
-            "tưới",
-            "công thức",
-            "khẩu phần",
-            "điểm hòa vốn",
-            "ETF",
+            "ngoài phạm vi",
+            "Engineering Scope",
         )
 
         for topic in self.general_topics:
@@ -87,21 +80,20 @@ class GeneralDomainPipelineTests(unittest.TestCase):
                     for label in forbidden:
                         self.assertNotIn(label, body)
 
-    def test_general_prompt_outputs_are_scope_notices(self) -> None:
+    def test_general_prompt_outputs_are_channel_specific(self) -> None:
         image = BuilderFactory.create("image").build("Cách chăm sóc mai")
         video = BuilderFactory.create("video").build("Du lịch Đà Lạt")
 
         for field in (
             "Prompt Gemini tạo ảnh",
-            "Chủ thể:",
-            "Bối cảnh:",
-            "Hành động:",
-            "Chi tiết cần tránh:",
-            "phạm vi kỹ thuật",
+            "Chủ thể -",
+            "Bối cảnh -",
+            "Hành động -",
+            "Chi tiết cần tránh -",
         ):
             self.assertIn(field, image)
 
-        for field in ("Tiêu đề:", "Mở đầu:", "Cảnh 1:", "Cảnh 2:", "Kết thúc:", "Engineering AI Platform"):
+        for field in ("Prompt Veo tạo video", "Mở đầu -", "Cảnh một -", "Cảnh hai -", "Kết thúc -"):
             self.assertIn(field, video)
 
     def test_mechanical_acceptance_topics_do_not_use_general_builder(self) -> None:

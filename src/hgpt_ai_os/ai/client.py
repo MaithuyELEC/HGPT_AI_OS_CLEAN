@@ -38,8 +38,8 @@ PROVIDER_UNAVAILABLE_MESSAGE = (
     "configuration."
 )
 ALL_PROVIDERS_FAILED_MESSAGE = (
-    "AI providers are unavailable. Please check Gemini, OpenAI, Ollama, "
-    "network, SSL, and provider configuration, then try again."
+    "OpenAI is unavailable. Please check API key, network, SSL, and provider "
+    "configuration, then try again."
 )
 
 
@@ -99,19 +99,12 @@ def provider_status() -> dict[str, str]:
         "provider": config.provider,
         "mode": "Live" if validation.ok else validation.status,
         "source": config.source,
-        "gemini": "Configured" if gemini_api_key() else "Unavailable",
         "openai": "Configured" if openai_api_key() else "Unavailable",
-        "anthropic": "Configured" if anthropic_api_key() else "Unavailable",
-        "ollama": "Disabled",
         "model": _selected_model(config.provider),
     }
 
 
 def _selected_model(provider: str) -> str:
-    if provider == "gemini":
-        return gemini_model()
-    if provider == "anthropic":
-        return anthropic_model()
     return openai_model()
 
 
@@ -773,13 +766,5 @@ class ProviderFactory:
         provider_name = provider.lower()
         if provider_name in {"openai"}:
             return OpenAIProvider()
-        if provider_name == "gemini":
-            return GeminiProvider()
-        if provider_name == "anthropic":
-            return AnthropicProvider()
-        if provider_name == "ollama":
-            return OllamaProvider()
-        if provider_name in {"manager", "ai", "lucid"}:
-            return AIManager()
         logger.warning("Unsupported provider requested: %s", provider)
         return OpenAIProvider()

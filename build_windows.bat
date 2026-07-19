@@ -15,6 +15,9 @@ if errorlevel 1 exit /b %errorlevel%
 %PYTHON_BIN% -m PyInstaller --clean --noconfirm lucid.spec
 if errorlevel 1 exit /b %errorlevel%
 
+%PYTHON_BIN% scripts\classify_pyinstaller_warnings.py
+if errorlevel 1 exit /b %errorlevel%
+
 if not exist dist\LUCID\LUCID.exe (
     echo ERROR: expected PyInstaller OneDir executable missing: dist\LUCID\LUCID.exe
     exit /b 1

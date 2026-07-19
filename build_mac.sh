@@ -19,6 +19,7 @@ APP_BUNDLE="Lucid AI Studio.app"
 
 "$PYTHON_BIN" scripts/ensure_release_icons.py
 "$PYTHON_BIN" -m PyInstaller --clean --noconfirm lucid.spec
+"$PYTHON_BIN" scripts/classify_pyinstaller_warnings.py
 
 mkdir -p release/Mac release/Windows release/Installer release/ReleaseNotes
 rm -rf "release/Mac/${APP_BUNDLE}"

@@ -122,7 +122,7 @@ def test_static_hashtags_are_kept_with_topic_specific_hashtags():
 
     for tag in (
         "#MaithuyELEC",
-        "#LucidAuto",
+        "#LucidAIStudio",
         "#KetCauThep",
         "#KienThucXuong",
         "#NhaMaySo",

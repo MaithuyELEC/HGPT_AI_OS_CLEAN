@@ -17,6 +17,7 @@ from hgpt_ai_os.content.factory.general_domain import GeneralDomainRouter
 from hgpt_ai_os.content.factory.topic_aware import TopicClassifier
 from hgpt_ai_os.content.template_engine import TemplateEngine
 from hgpt_ai_os.diagnostics import fallback, instrument_runtime_tracing, module_loaded, trace_call
+from hgpt_ai_os.providers import ProviderManager
 from hgpt_ai_os.topic_engine import (
     TopicContext,
     TopicIntelligenceEngine,
@@ -337,24 +338,15 @@ class ContentGenerator:
     _recent_openings: deque[str] = deque(maxlen=80)
     _recent_structures: deque[str] = deque(maxlen=80)
 
-    def __init__(self, ai: LucidAI | None = None):
+    def __init__(self, ai: LucidAI | None = None, provider_manager: ProviderManager | None = None):
         trace_call("Generator.__init__", self)
         self.template = TemplateEngine()
         validation = validate_ai_provider_config()
-        self.free_desktop_mode = validation.config.free_desktop_mode
-        self.ai = None
+        self.free_desktop_mode = validation.config.free_desktop_mode or validation.status == "Free Desktop"
+        self.ai = ai
+        self.provider_manager = provider_manager or ProviderManager()
         if self.free_desktop_mode:
             logger.info("Mode: Offline Topic Intelligence")
-        elif ai is not None:
-            self.ai = ai
-        else:
-            try:
-                self.ai = LucidAI()
-            except Exception:
-                fallback("AI initialization failed; switching to offline topic intelligence.")
-                logger.exception(
-                    "AI initialization failed; switching to offline topic intelligence."
-                )
         self.prompt_builder = PromptBuilder()
         self.topic_engine = TopicIntelligenceEngine()
         self._topic_context = None
@@ -393,7 +385,7 @@ class ContentGenerator:
             f"{self._run_variation}:{spec.key}:{topic}:{self._generation_sequence}"
         )
         prompt = self._build_prompt(topic, context, spec, variation, topic_context=topic_context)
-        if self.free_desktop_mode or self.ai is None:
+        if self.free_desktop_mode:
             fallback("Free Desktop mode or AI provider unavailable; using built-in generator.")
             return self._generate_with_builtin(spec, topic, context, topic_context=topic_context)
         return self._generate_with_llm(prompt, spec, topic, context, variation, topic_context=topic_context)
@@ -490,42 +482,49 @@ class ContentGenerator:
         )
         for attempt in range(2):
             try:
-                response = self.ai.generate(system_prompt, user_prompt)
+                if self.ai is not None:
+                    response = self.ai.generate(system_prompt, user_prompt)
+                else:
+                    response = self.provider_manager.generate_real_ai(system_prompt, user_prompt)
             except Exception:
-                fallback(f"AI generation raised for {spec.key}; switching to offline topic intelligence.")
                 logger.exception(
-                    "AI generation raised for %s, switching to offline topic intelligence.",
+                    "AI generation raised for %s.",
                     spec.key,
                 )
-                return self._generate_with_builtin(spec, topic, context, topic_context=topic_context)
+                raise
 
             if isinstance(response, AIProviderError):
+                if response.error_type in {"network_error", "connection_error", "timeout"}:
+                    fallback(f"No Internet or provider timeout for {spec.key}; switching to offline topic intelligence.")
+                    logger.info(
+                        "Provider network failure for %s, switching to offline topic intelligence.",
+                        spec.key,
+                    )
+                    return self._generate_with_builtin(spec, topic, context, topic_context=topic_context)
                 fallback(f"AIProviderError for {spec.key}; switching to offline topic intelligence.")
                 logger.info(
-                    "AI unavailable for %s, switching to offline topic intelligence.",
+                    "AI provider failed for %s; local generator is blocked in AI mode.",
                     spec.key,
                 )
-                return self._generate_with_builtin(spec, topic, context, topic_context=topic_context)
+                raise RuntimeError(response.message or response.error_type)
 
             content = getattr(response, "content", "") or ""
             metadata: dict[str, Any] = getattr(response, "metadata", {}) or {}
 
             if metadata.get("mock"):
-                fallback(f"Mock provider detected for {spec.key}; switching to offline topic intelligence.")
                 logger.info(
-                    "Mock provider detected for %s, switching to offline topic intelligence.",
+                    "Mock provider detected for %s; local generator is blocked in AI mode.",
                     spec.key,
                 )
-                return self._generate_with_builtin(spec, topic, context, topic_context=topic_context)
+                raise RuntimeError("Mock provider response is not valid AI-mode content.")
 
             final_text = self._validate_response(content)
             if not final_text:
-                fallback(f"Invalid or empty AI response for {spec.key}; switching to offline topic intelligence.")
                 logger.info(
-                    "Invalid or empty AI response for %s, switching to offline topic intelligence.",
+                    "Invalid or empty AI response for %s; local generator is blocked in AI mode.",
                     spec.key,
                 )
-                return self._generate_with_builtin(spec, topic, context, topic_context=topic_context)
+                raise RuntimeError("Invalid or empty AI response.")
 
             if self._is_duplicate_shape(final_text) and attempt == 0:
                 retry_variation = self._new_variation(f"{variation}:retry")

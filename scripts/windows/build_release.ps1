@@ -2,6 +2,11 @@ $ErrorActionPreference = "Stop"
 
 Set-Location (Resolve-Path "$PSScriptRoot\..\..")
 
+if (-not $IsWindows) {
+    Write-Host "SKIPPED: Windows packaging requires Windows"
+    exit 0
+}
+
 $env:PYINSTALLER_CONFIG_DIR = if ($env:PYINSTALLER_CONFIG_DIR) { $env:PYINSTALLER_CONFIG_DIR } else { (Join-Path (Get-Location) "work\pyinstaller-config") }
 New-Item -ItemType Directory -Force -Path $env:PYINSTALLER_CONFIG_DIR | Out-Null
 
@@ -39,6 +44,7 @@ python scripts\ensure_release_icons.py
 python -m pip install -r requirements.txt
 python -c "from PySide6.QtWidgets import QApplication; import PySide6; print('PySide6 ready:', PySide6.__file__)"
 python -m PyInstaller --clean --noconfirm lucid.spec
+python scripts\classify_pyinstaller_warnings.py
 
 if (-not (Test-Path -LiteralPath (Join-Path $distDir "LUCID.exe") -PathType Leaf)) {
     throw "expected PyInstaller OneDir executable was not created: dist\LUCID\LUCID.exe"

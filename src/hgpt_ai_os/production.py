@@ -91,13 +91,15 @@ def build_outputs(day: int, topic: str, open_output_folder: bool = True) -> Path
         knowledge_count=len(items),
         output_file="pending",
     )
-    if pipeline.validation.config.free_desktop_mode:
-        print("Mode : Free Desktop")
-        print("Generator : AI Engineering Pipeline")
-        print("AI Provider : Disabled")
+    if pipeline.free_desktop_mode:
+        print("Mode : Offline Mode")
+        print("⚠ Offline Mode")
+        print("You are using the Local Engine.")
+        print("AI-quality generation is unavailable.")
+        print("Generated content quality will be lower.")
     else:
-        print("Mode : AI Provider")
-        print(f"AI Provider : {pipeline.validation.config.provider}")
+        print(f"Mode : AI Mode ({pipeline.validation.config.provider.title()})")
+        print(f"Active Provider : {pipeline.validation.config.provider.title()}")
 
     output_dir = OUTPUT_ROOT / f"Day{day:03d}"
     engine_loaded(
