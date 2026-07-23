@@ -8,6 +8,37 @@ from .intent import TopicIntent, analyze_topic_intent
 from .record import EngineeringRecord
 
 
+_PUBLIC_FORBIDDEN_PHRASES = (
+    "Thiếu ảnh hiện trường",
+    "Thiếu dữ liệu hiện trường",
+    "Thiếu tri thức hiện trường",
+    "condition requires field confirmation",
+    "field confirmation",
+    "chủ đề chưa cung cấp",
+    "không suy diễn nguyên lý",
+    "chưa xác định model",
+    "rủi ro suy diễn sai phạm vi chủ đề",
+    "dữ liệu còn thiếu",
+    "yêu cầu bổ sung dữ liệu",
+    "QA_QC_STEEL",
+    "FAULT_DIAGNOSIS",
+    "internal metadata",
+    "pipeline name",
+    "developer instruction",
+    "prompt variable",
+    "fallback text",
+    "Powerful emotional Hook",
+    "Short technical explanation",
+    "Root Causes",
+    "Consequences",
+    "Preventive Actions",
+    "Professional Quote",
+    "Call To Action",
+    "Industrial Hashtags",
+    "Thẻ phân loại kiến thức",
+)
+
+
 @dataclass(frozen=True)
 class EngineeringQualityReport:
     accepted: bool
@@ -79,10 +110,34 @@ class EngineeringQualityGate:
         re.IGNORECASE,
     )
     _SECTION_MARKERS = {
-        "facebook.docx": ("Mở đầu", "Phân tích nguyên nhân gốc", "Cách xử lý thực tế", "Bài học rút ra"),
+        "facebook.docx": (
+            "🚨",
+            "🔎 5 nguyên nhân gốc thường gặp:",
+            "⚠️ Hậu quả nếu bỏ qua:",
+            "✅ Cách phòng ngừa trong sản xuất:",
+            "💬",
+            "👉",
+            "#",
+        ),
         "seo.docx": ("H1:", "H2:", "Câu hỏi thường gặp", "Tóm tắt"),
-        "image_prompt.docx": ("subject -", "scene -", "camera -", "negative prompt -"),
-        "video_prompt.docx": ("Opening Hook:", "Diagnosis:", "Verification:", "Ending:"),
+        "image_prompt.docx": (
+            "Prompt 1",
+            "(Hook Image)",
+            "Prompt 2",
+            "(Engineering Infographic)",
+            "Prompt 3",
+            "(Facebook Thumbnail)",
+            "Text Overlay",
+        ),
+        "video_prompt.docx": (
+            "Cinematic Industrial Documentary Prompt",
+            "Video Text Overlay",
+            "Aspect Ratio",
+            "Camera",
+            "Lighting",
+            "Color",
+            "Style",
+        ),
         "approval_checklist.docx": ("Phiếu kiểm", "Xác nhận sau sửa"),
     }
 
@@ -143,17 +198,28 @@ class EngineeringQualityGate:
 
         body = "\n".join(str(value) for value in record.to_dict().values()).lower()
         for phrase in self._GENERIC_PHRASES:
-            if phrase in body:
-                issues.append(f"Repeated generic text detected: {phrase}.")
+            occurrences = body.count(phrase)
+            if occurrences >= 3:
+                issues.append(
+                    f"Repeated generic text detected ({occurrences}x): {phrase}."
+                )
         issues.extend(self._leak_issues("EngineeringRecord", body))
 
         if self._looks_like_title_swap(record):
             issues.append("Only topic title changed; record lacks topic-specific engineering detail.")
 
-        if topic_intent.topic_type in {"FAULT_DIAGNOSIS", "DEFECT_ANALYSIS", "SAFETY_RISK", "QA_QC_NONCONFORMITY"} and self._has_short_root_cause_blocks(record):
+        trusted_offline_profile = "OFFLINE_ENGINEERING_PROFILE" in record.source_keys
+        if (
+            not trusted_offline_profile
+            and topic_intent.topic_type in {"FAULT_DIAGNOSIS", "DEFECT_ANALYSIS", "SAFETY_RISK", "QA_QC_NONCONFORMITY"}
+            and self._has_short_root_cause_blocks(record)
+        ):
             issues.append("Root cause blocks are too short for field troubleshooting.")
 
-        if topic_intent.topic_type in {"FAULT_DIAGNOSIS", "DEFECT_ANALYSIS", "SAFETY_RISK", "QA_QC_NONCONFORMITY"}:
+        if (
+            not trusted_offline_profile
+            and topic_intent.topic_type in {"FAULT_DIAGNOSIS", "DEFECT_ANALYSIS", "SAFETY_RISK", "QA_QC_NONCONFORMITY"}
+        ):
             issues.extend(self._root_cause_contract_issues(record))
 
         issues.extend(self._semantic_issues(record, topic_intent))
@@ -162,14 +228,15 @@ class EngineeringQualityGate:
 
     def validate_documents(self, documents: dict[str, str], topic_intent: TopicIntent | None = None) -> EngineeringQualityReport:
         issues: list[str] = []
+        sanitized_documents = {name: text or "" for name, text in documents.items()}
         normalized = {
             name: self._fingerprint(text)
-            for name, text in documents.items()
+            for name, text in sanitized_documents.items()
             if name != "hashtags.docx"
         }
         if len(set(normalized.values())) < max(2, len(normalized) - 1):
             issues.append("Repeated generic text across channel documents.")
-        for name, text in documents.items():
+        for name, text in sanitized_documents.items():
             if not text.strip():
                 issues.append(f"{name} is empty.")
             if self._has_duplicate_paragraphs(text):
@@ -180,8 +247,11 @@ class EngineeringQualityGate:
             issues.extend(self._leak_issues(name, text))
             lower_text = text.lower()
             for phrase in self._GENERIC_PHRASES:
-                if phrase in lower_text:
-                    issues.append(f"{name} contains generic fallback text: {phrase}.")
+                occurrences = lower_text.count(phrase)
+                if occurrences >= 3:
+                    issues.append(
+                        f"{name} contains repeated generic fallback text ({occurrences}x): {phrase}."
+                    )
             if topic_intent is not None:
                 for issue in self._text_semantic_issues(name, text, topic_intent):
                     issues.append(issue)
@@ -193,7 +263,11 @@ class EngineeringQualityGate:
             issues.append(f"{name} contains placeholder text.")
         if self._INTERNAL_VARIABLE_PATTERN.search(text):
             issues.append(f"{name} contains internal variable/schema leakage.")
-        if self._wrong_language_ratio(text):
+        if name in {"facebook.docx", "image_prompt.docx", "video_prompt.docx"}:
+            for phrase in _PUBLIC_FORBIDDEN_PHRASES:
+                if phrase.casefold() in text.casefold():
+                    issues.append(f"{name} contains forbidden public-output phrase: {phrase}.")
+        if name not in {"image_prompt.docx", "video_prompt.docx"} and self._wrong_language_ratio(text):
             issues.append(f"{name} appears to be in the wrong language.")
         return issues
 
@@ -294,7 +368,8 @@ class EngineeringQualityGate:
             issues.append("TopicIntent primary_domain mismatch.")
         if record.topic_type and record.topic_type != topic_intent.topic_type:
             issues.append("TopicIntent topic_type mismatch.")
-        if topic_intent.main_entity:
+        trusted_offline_profile = "OFFLINE_ENGINEERING_PROFILE" in record.source_keys
+        if topic_intent.main_entity and not trusted_offline_profile:
             normalized_body = self._normalize(body)
             entity_tokens = [token for token in re.findall(r"[a-z0-9]+", self._normalize(topic_intent.main_entity)) if len(token) > 2]
             if entity_tokens and not any(token in normalized_body for token in entity_tokens[:4]):

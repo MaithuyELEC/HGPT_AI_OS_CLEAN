@@ -6,9 +6,10 @@ from dataclasses import dataclass
 
 from hgpt_ai_os.content.factory.general_domain import (
     GeneralDomainRouter,
-    GeneralTopicBrief,
 )
-from hgpt_ai_os.content.prompt_libraries import image_prompt, video_storyboard
+from hgpt_ai_os.content_brain.facebook_brain import render_facebook_content
+from hgpt_ai_os.content_brain.image_brain import render_image_prompt
+from hgpt_ai_os.content_brain.video_brain import render_video_prompt
 
 
 @dataclass(frozen=True)
@@ -561,87 +562,7 @@ class TopicAwareBuiltInBuilder:
         return "\n".join(lines)
 
     def _build_facebook(self, p: TopicProfile) -> str:
-        return "\n".join(
-            [
-                "Hook",
-                (
-                    f"Có những ca trong xưởng nhìn qua tưởng chỉ là chuyện nhỏ: {p.signs[0]}. "
-                    f"Nhưng người làm hiện trường lâu năm đều biết, với {p.topic}, cái nguy hiểm không nằm ở tiếng ồn đầu tiên mà nằm ở quyết định cho chạy tiếp khi chưa hiểu vì sao nó xảy ra. "
-                    f"Một lỗi nhỏ có thể kéo theo {p.risks[0]}, làm cả tổ mất thời gian, mất nhịp sản xuất và đôi khi mất luôn niềm tin vào checklist."
-                ),
-                (
-                    "Tôi không sợ một sự cố được phát hiện sớm. Tôi sợ sự cố được giải thích quá nhanh. "
-                    "Khi một anh em nói: 'chắc thay cái này là xong', đó là lúc trưởng ca phải chậm lại vài phút. "
-                    "Một vài phút đo, nhìn, hỏi đúng người có thể tiết kiệm cả ngày sửa lại."
-                ),
-                "",
-                "Real shop scenario",
-                (
-                    f"Hãy hình dung ca sáng trong khu {p.domain}. Tổ sản xuất đang đẩy tiến độ, vật tư và thiết bị đã vào nhịp, thì người vận hành báo {p.signs[0]}. "
-                    f"Ở gần đó còn thấy {p.signs[1]} và {p.signs[2]}. Trên bàn giao ca trước chỉ ghi chung chung là đã kiểm tra, nhưng không có ảnh rõ, không có điểm đo lặp lại, không có người xác nhận điều kiện sau xử lý."
-                ),
-                (
-                    f"Lúc này có hai cách xử lý. Cách nhanh là nhảy ngay vào {p.actions[0].lower()}, rồi hy vọng mọi thứ ổn. "
-                    f"Cách đúng là dừng nhịp lại vừa đủ, nhìn toàn bộ chuỗi {self._join(p.objects[:4])}, hỏi lỗi xuất hiện khi nào, ở công đoạn nào, sau thao tác nào, và có lặp lại ở cùng điều kiện hay không. "
-                    "Một nhà máy trưởng thành không đo năng lực bằng việc sửa nhanh bao nhiêu, mà bằng việc lỗi có quay lại sau khi sửa hay không."
-                ),
-                "",
-                "Root cause analysis",
-                (
-                    f"Về bản chất, {p.problem}. Nếu chỉ nhìn triệu chứng, chúng ta dễ đổ lỗi cho người cuối cùng chạm vào thiết bị hoặc sản phẩm. "
-                    f"Nhưng gốc vấn đề thường nằm trong chuỗi nguyên nhân: {self._join(p.causes[:3])}. "
-                    "Nguyên nhân gốc không phải câu trả lời nghe hợp lý nhất; nó là điều kiện khi bị loại bỏ thì lỗi không còn tái diễn."
-                ),
-                (
-                    f"Ví dụ, nếu trọng tâm là {p.subject}, kỹ sư không chỉ hỏi 'hỏng ở đâu' mà phải hỏi 'điều kiện nào làm {p.objects[0]} đi ra khỏi trạng thái kiểm soát'. "
-                    f"Có thể nguyên nhân nằm ở {p.causes[0]}, nhưng cũng có thể {p.causes[1]} mới là yếu tố làm lỗi lặp lại. "
-                    "Vì vậy phải tách ba lớp bằng chứng: dấu hiệu mắt thấy, điều kiện vận hành hoặc công đoạn, và kết quả sau khi khắc phục."
-                ),
-                (
-                    f"Nếu thiếu một lớp bằng chứng, kết luận vẫn chỉ là giả thuyết. Với {p.topic}, giả thuyết sai thường dẫn đến {p.risks[1]} hoặc {p.risks[2]}. "
-                    "Đó là lý do người có kinh nghiệm không vội ký bàn giao chỉ vì máy chạy lại được, đường hàn nhìn đẹp hơn, hay khu vực đã gọn hơn. "
-                    "Chạy được không đồng nghĩa đã ổn. Ổn nghĩa là nguyên nhân đã bị khóa và cách kiểm tra lại đã rõ."
-                ),
-                "",
-                "Practical solution",
-                (
-                    "Workflow tôi muốn đội hiện trường dùng rất đơn giản. Một là giữ an toàn và giữ hiện trạng đủ lâu để đọc được dấu vết. "
-                    f"Đừng xóa mất bằng chứng trước khi ghi lại {self._join(p.signs[:3])}. Hai là xác định khu vực liên quan đến {self._join(p.objects[:4])}. "
-                    "Ba là chọn phép kiểm tra có thể lặp lại, để ca sau cũng kiểm được, không phụ thuộc trí nhớ của một người."
-                ),
-                *[f"{index}. {action}." for index, action in enumerate(p.actions, 1)],
-                (
-                    f"Sau khi làm các bước trên, đừng quên câu hỏi nghiệm thu: điều gì chứng minh {p.topic} đã được xử lý đúng? "
-                    f"Ít nhất phải có ảnh hoặc ghi nhận hiện trường, người chịu trách nhiệm, điều kiện trước/sau, và điểm kiểm tra liên quan đến {self._join(p.objects[:3])}. "
-                    "Nếu câu trả lời chỉ là 'em thấy ổn rồi', thì chưa đủ để bàn giao."
-                ),
-                (
-                    "Một mẹo nhỏ cho trưởng ca: yêu cầu người xử lý nói lại bằng một câu ngắn: 'Lỗi xuất hiện vì..., tôi đã kiểm bằng..., tôi đã sửa bằng..., và tôi xác nhận bằng...'. "
-                    "Nếu câu đó nói không trôi, nghĩa là hồ sơ hiện trường vẫn còn lỗ hổng."
-                ),
-                "",
-                "Lesson learned",
-                (
-                    f"Bài học lớn nhất của {p.topic} không phải là nhớ thêm một bước kiểm tra. "
-                    "Bài học là biến mỗi lỗi thành một điểm kiểm soát trong ca sau. "
-                    f"Nếu hôm nay thấy {p.signs[0]}, ngày mai checklist phải có cách nhận diện sớm dấu hiệu đó. "
-                    f"Nếu hôm nay nguyên nhân là {p.causes[0]}, tuần sau phải có owner theo dõi để nó không lặp lại."
-                ),
-                (
-                    f"Phòng ngừa tốt hơn sửa chữa ở chỗ nó không đợi {p.risks[0]} xảy ra rồi mới họp. "
-                    f"Nó đưa {p.objects[0]}, {p.objects[1]} và {p.objects[2]} vào thói quen quan sát hằng ngày. "
-                    "Khi cả tổ cùng nhìn một dấu hiệu theo cùng một cách, nhà máy bớt phụ thuộc vào 'người giỏi nhất' và bắt đầu vận hành bằng hệ thống."
-                ),
-                "",
-                "Call To Action",
-                (
-                    f"Trong ca của bạn, khi gặp {p.topic}, bạn sẽ kiểm điểm nào trước: {p.signs[0]}, {p.causes[0]}, hay {p.objects[0]}? "
-                    "Chia sẻ cách đội bạn đang làm, nhất là những bước nhỏ đã giúp lỗi không quay lại."
-                ),
-                "",
-                " ".join(self._hashtags(p)),
-            ]
-        )
+        return render_facebook_content(p, self._hashtags(p))
 
     def _build_tiktok(self, p: TopicProfile) -> str:
         return "\n".join(
@@ -667,29 +588,10 @@ class TopicAwareBuiltInBuilder:
         )
 
     def _build_video(self, p: TopicProfile) -> str:
-        return video_storyboard(
-            topic=p.topic,
-            subject=p.subject,
-            problem=p.problem,
-            objects=self._join(p.objects[:4]),
-            signs=self._join(p.signs[:3]),
-            action=p.actions[0],
-            equipment=p.domain,
-            repair=p.actions[1] if len(p.actions) > 1 else p.actions[0],
-            verification=p.actions[2] if len(p.actions) > 2 else "ghi nhận kết quả và xác nhận điều kiện an toàn",
-        )
+        return render_video_prompt(p)
 
     def _build_image(self, p: TopicProfile) -> str:
-        return image_prompt(
-            topic=p.topic,
-            subject=p.subject,
-            problem=p.problem,
-            objects=self._join(p.objects[:4]),
-            signs=self._join(p.signs[:3]),
-            action=p.actions[0],
-            equipment=p.domain,
-            evidence=self._join((*p.objects[:4], *p.signs[:3])),
-        )
+        return render_image_prompt(p)
 
     def _build_seo(self, p: TopicProfile) -> str:
         keywords = self._keywords(p)

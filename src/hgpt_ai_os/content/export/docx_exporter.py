@@ -22,8 +22,8 @@ class DocxExporter:
     _FORBIDDEN_LEAKAGE_PHRASE_RE = re.compile(
         r"\b("
         r"Manager's job|Quality release|Hold the product|The topic belongs to|"
-        r"Root cause analysis|Root Causes|"
-        r"Call To Action|Lesson learned|Real shop scenario|Practical solution"
+        r"Root cause analysis|"
+        r"Lesson learned|Real shop scenario|Practical solution"
         r")\b",
         re.IGNORECASE,
     )
