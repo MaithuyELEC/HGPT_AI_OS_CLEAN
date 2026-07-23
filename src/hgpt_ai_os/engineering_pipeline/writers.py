@@ -7,6 +7,9 @@ import unicodedata
 from collections.abc import Iterable
 from dataclasses import dataclass
 
+from hgpt_ai_os.content_brain.facebook_brain import render_facebook_content as render_facebook_brain
+from hgpt_ai_os.content_brain.image_brain import render_image_prompt as render_image_brain
+from hgpt_ai_os.content_brain.video_brain import render_video_prompt as render_video_brain
 from hgpt_ai_os.content.prompt_libraries import CAMERA_LIBRARY, LIGHTING_LIBRARY, VOICE_LIBRARY, choose
 
 from .record import EngineeringRecord
@@ -211,7 +214,7 @@ class ContentTransformation:
         inspection_steps = _content_items(record.inspection_procedure, "ghi nhận hiện trạng và kiểm tra tại điểm lỗi", 6)
         repair_steps = _content_items(record.repair_procedure, "sửa đúng nguyên nhân đã xác nhận", 5)
         acceptance = _content_items(record.acceptance_criteria or record.verification, "chạy thử ổn định và ghi kết quả sau sửa", 5)
-        prevention = _content_items(record.preventive_maintenance or record.kaizen, "đưa dấu hiệu sớm vào lịch kiểm tra định kỳ", 5)
+        prevention = _content_items(record.preventive_maintenance or record.kaizen, "đưa dấu hiệu sớm vào lịch kiểm tra định kỳ", 6)
         lesson_learned = _content_items(record.lessons_learned, "khóa nguyên nhân bằng dữ liệu trước khi bàn giao", 4)
         keywords = tuple(dict.fromkeys(_items((topic, record.domain, record.topic_type, equipment, component), limit=8)))
         symptoms = _join(pain_points[:3], topic)
@@ -222,12 +225,12 @@ class ContentTransformation:
         visual_subject = f"kỹ sư bảo trì hoặc QA/QC Việt Nam kiểm tra {component}"
         visual_scene = f"xưởng kết cấu thép với {equipment}, khu vực được cô lập an toàn, dấu vết lỗi nhìn rõ"
         storyboard = (
-            f"Opening Hook: dừng nhịp sản xuất khi thấy {symptoms.lower()} trên {equipment}.",
-            f"Failure: máy hoặc cụm chi tiết bộc lộ dấu hiệu bất thường tại {component}.",
-            f"Diagnosis: đội kỹ thuật kiểm tra {', '.join(inspection_steps[:3])}.",
-            f"Repair: thực hiện {', '.join(repair_steps[:3])} theo nguyên nhân đã xác nhận.",
-            f"Verification: xác nhận {', '.join(acceptance[:3])} trước khi bàn giao.",
-            f"Ending: lưu bài học {', '.join(lesson_learned[:2])} để ca sau không lặp lỗi.",
+            f"Mở đầu: dừng nhịp sản xuất khi thấy {symptoms.lower()} trên {equipment}.",
+            f"Biểu hiện lỗi: máy hoặc cụm chi tiết bộc lộ dấu hiệu bất thường tại {component}.",
+            f"Chẩn đoán: đội kỹ thuật kiểm tra {', '.join(inspection_steps[:3])}.",
+            f"Khắc phục: thực hiện {', '.join(repair_steps[:3])} theo nguyên nhân đã xác nhận.",
+            f"Xác nhận: xác nhận {', '.join(acceptance[:3])} trước khi bàn giao.",
+            f"Kết thúc: lưu bài học {', '.join(lesson_learned[:2])} để ca sau không lặp lỗi.",
         )
         return cls(
             topic=topic,
@@ -259,89 +262,38 @@ class ContentTransformation:
         )
 
 
+@dataclass(frozen=True)
+class BrainTopicAdapter:
+    topic: str
+    domain: str
+    subject: str
+    problem: str
+    objects: tuple[str, ...]
+    risks: tuple[str, ...]
+    causes: tuple[str, ...]
+    actions: tuple[str, ...]
+    signs: tuple[str, ...]
+    hashtags: tuple[str, ...]
+
+    @classmethod
+    def from_content(cls, content: ContentTransformation) -> "BrainTopicAdapter":
+        return cls(
+            topic=content.topic,
+            domain=content.equipment,
+            subject=content.component,
+            problem=content.working_principle,
+            objects=_ensure_items((content.equipment, content.component, *content.seo_keywords), 5),
+            risks=_ensure_items(content.acceptance, 4),
+            causes=_ensure_items(content.root_causes, 5),
+            actions=_ensure_items(content.prevention, 6),
+            signs=_ensure_items(content.pain_points, 3),
+            hashtags=_facebook_hashtags(content),
+        )
+
+
 def render_facebook(content: ContentTransformation) -> str:
-    signs = _join(content.pain_points[:3], content.topic)
-    causes = content.root_causes[:4]
-    inspections = content.inspection_steps[:5]
-    repairs = content.repair_steps[:4]
-    verification = content.acceptance[:3]
-    prevention = content.prevention[:4] or content.lesson_learned[:4]
-    equipment = content.equipment
-    component = content.component
-    risk = _first(content.acceptance, "không bàn giao khi thiếu kết quả kiểm tra lại")
-    return "\n".join(
-        [
-            "Mở đầu",
-            (
-                f"{content.topic}: đừng để một dấu hiệu nhỏ biến thành quyết định sai của cả ca. "
-                f"Khi hiện trường xuất hiện {signs.lower()}, điều nguy hiểm không chỉ là lỗi trước mắt. "
-                f"Điều nguy hiểm là đội sản xuất tiếp tục chạy khi chưa hiểu vì sao {equipment} đi ra khỏi trạng thái kiểm soát."
-            ),
-            (
-                "Tôi luôn nhắc anh em một câu: sửa nhanh chưa chắc là sửa đúng. "
-                "Sửa đúng là khi người sau nhìn hồ sơ, ảnh, điểm đo và cách bàn giao vẫn hiểu được vì sao mình cho phép chạy lại. "
-                "Nếu câu trả lời chỉ là 'em thấy ổn rồi', đó chưa phải ngôn ngữ của một xưởng trưởng thành. "
-                "Một ca tốt phải để lại bằng chứng đủ rõ cho ca sau."
-            ),
-            "",
-            "Tình huống hiện trường",
-            content.shop_story,
-            (
-                f"Việc đầu tiên không phải là tranh luận ai đúng. Việc đầu tiên là giữ hiện trạng đủ lâu để đọc dấu vết trên {component}. "
-                f"Nếu xóa mất dấu vết trước khi ghi lại, chúng ta sẽ không còn biết {content.topic.lower()} bắt đầu từ đâu, xảy ra khi nào, và điều kiện nào làm nó lặp lại."
-            ),
-            (
-                f"Trong tình huống thật, trưởng ca nên yêu cầu ba thứ trước khi cho sửa: ảnh hoặc ghi nhận tại vị trí lỗi, điều kiện vận hành hoặc công đoạn lúc phát hiện, và điểm kiểm tra dùng để xác nhận sau sửa. "
-                f"Chỉ riêng bước này đã giúp đội tránh được kiểu sửa theo thói quen trên {equipment}."
-            ),
-            "",
-            "Phân tích nguyên nhân gốc",
-            (
-                f"Về kỹ thuật, vấn đề không nằm ở tên lỗi. Vấn đề nằm ở cơ chế làm lỗi quay lại. "
-                f"Nguyên lý cần nhớ là: {content.working_principle}. "
-                "Nếu nguyên lý hoặc cơ chế chưa được xác nhận, mọi kết luận đều phải được xem là giả thuyết."
-            ),
-            *[f"- Giả thuyết nguyên nhân: {cause}. Cách kiểm không được dừng ở cảm giác; phải nối với bằng chứng hiện trường." for cause in causes],
-            (
-                f"Nguyên nhân gốc không phải câu trả lời nghe hay nhất trong phòng họp. Nó là điều kiện khi bị loại bỏ thì {signs.lower()} không còn quay lại trong cùng điều kiện làm việc. "
-                f"Vì vậy đội phải tách triệu chứng, cơ chế lỗi, hành động sửa và nghiệm thu thành bốn câu hỏi khác nhau."
-            ),
-            (
-                f"Nếu chỉ xử lý triệu chứng, rủi ro vẫn còn: {risk}. "
-                "Nếu chỉ thay vật tư, chỉnh máy hoặc mài sửa mà không khóa điều kiện tạo lỗi, ca sau sẽ gặp lại cùng một câu chuyện với tên người khác."
-            ),
-            "",
-            "Cách xử lý thực tế",
-            (
-                "Workflow cho kỹ thuật viên nên đi theo năm nhịp: an toàn, giữ bằng chứng, kiểm nguyên nhân, sửa đúng điểm tạo lỗi, rồi xác nhận lại. "
-                "Đây không phải thủ tục cho đẹp hồ sơ; đây là cách bảo vệ người vận hành và bảo vệ quyết định bàn giao."
-            ),
-            *[f"{index}. {step}." for index, step in enumerate(inspections, 1)],
-            *[f"{index + len(inspections)}. {step}." for index, step in enumerate(repairs, 1)],
-            *[f"- Sau sửa: {step}." for step in verification],
-            (
-                "Trước khi bàn giao, người phụ trách nên nói lại được một câu đầy đủ: lỗi được phát hiện bằng gì, nguyên nhân nào đã bị loại bỏ, sửa bằng hành động nào, và bằng chứng sau sửa nằm ở đâu. "
-                "Nếu câu đó nói không trôi, chưa nên ký bàn giao."
-            ),
-            "",
-            "Bài học rút ra",
-            (
-                f"Bài học của {content.topic.lower()} là biến sự cố thành điểm kiểm soát mới. "
-                "Sau khi sửa xong, đội không chỉ lưu hồ sơ để đủ thủ tục. Đội phải đưa dấu hiệu sớm vào checklist, đưa điểm đo vào lịch kiểm tra, và giao owner theo dõi đến khi chắc chắn lỗi không lặp lại."
-            ),
-            *[f"- {item}." for item in prevention],
-            (
-                f"Khi cả tổ cùng nhìn {component} bằng cùng một tiêu chí, nhà máy bớt phụ thuộc vào người giỏi nhất trong ca. "
-                "Tri thức kỹ thuật lúc đó trở thành thói quen vận hành."
-            ),
-            "",
-            "Câu hỏi thảo luận",
-            (
-                f"Nếu gặp {content.topic.lower()} trong ca thật, bạn sẽ kiểm điểm nào trước: dấu hiệu hiện trường, điều kiện vận hành, hay lịch sử sửa chữa? "
-                "Chia sẻ cách đội bạn đang khóa lỗi để lần sau không phải sửa lại cùng một vấn đề."
-            ),
-        ]
-    )
+    topic = BrainTopicAdapter.from_content(content)
+    return render_facebook_brain(topic, list(topic.hashtags))
 
 
 def render_tiktok(content: ContentTransformation) -> str:
@@ -359,32 +311,11 @@ def render_tiktok(content: ContentTransformation) -> str:
 
 
 def render_image_prompt(content: ContentTransformation) -> str:
-    return "\n".join(
-        [
-            f"subject - {content.visual_subject}",
-            f"scene - {content.visual_scene}",
-            f"camera - {content.camera}",
-            f"lighting - {content.lighting}",
-            f"composition - {content.composition}",
-            f"materials - {content.visual_materials}",
-            f"motion - {content.visual_motion}",
-            f"negative prompt - {content.visual_negative_prompt}",
-        ]
-    )
+    return render_image_brain(BrainTopicAdapter.from_content(content))
 
 
 def render_video_prompt(content: ContentTransformation) -> str:
-    return "\n\n".join(
-        [
-            content.video_storyboard[0],
-            content.video_storyboard[1],
-            content.video_storyboard[2],
-            content.video_storyboard[3],
-            content.video_storyboard[4],
-            content.video_storyboard[5],
-            f"Lời thoại: {content.voice}. Âm thanh nền: {content.ambient}. Cảm xúc: {content.emotion}. Góc máy: {content.camera}. Ánh sáng: {content.lighting}.",
-        ]
-    )
+    return render_video_brain(BrainTopicAdapter.from_content(content))
 
 
 def render_seo(content: ContentTransformation) -> str:
@@ -494,17 +425,38 @@ def render_checklist(content: ContentTransformation) -> str:
 
 
 def render_hashtags(content: ContentTransformation) -> str:
-    tags = tuple(
-        dict.fromkeys(
-            (
-                "LucidAIStudio",
-                "HGPTSteelKnowledgeBase",
-                "HGPT Steel",
-                content.topic,
-                *content.seo_keywords[:6],
-            )
+    return "\n".join(_facebook_hashtags(content))
+
+
+def _facebook_hashtags(content: ContentTransformation) -> tuple[str, ...]:
+    normalized = _ascii_words(content.topic)
+    if "saw" in normalized or "han" in normalized or "weld" in normalized:
+        base = (
+            "#LucidAIStudio",
+            "#HGPTSteel",
+            "#KetCauThep",
+            "#Welding",
+            "#SAW",
+            "#QAQC",
+            "#NDT",
+            "#UT",
+            "#RT",
+            "#WPS",
         )
-    )
+    elif "cau truc" in normalized or "phanh" in normalized or "crane" in normalized:
+        base = ("#LucidAIStudio", "#HGPTSteel", "#CauTruc", "#BaoTri", "#ThietBiNang", "#AnToanNangHa")
+    elif "son" in normalized or "paint" in normalized or "coating" in normalized:
+        base = ("#LucidAIStudio", "#HGPTSteel", "#SonPhu", "#KetCauThep", "#QAQC", "#DFT")
+    elif "vong bi" in normalized or "bearing" in normalized:
+        base = ("#LucidAIStudio", "#HGPTSteel", "#BaoTri", "#DongCo", "#VongBi", "#BaoTriPhongNgua")
+    else:
+        base = ("#LucidAIStudio", "#HGPTSteel", "#KetCauThep", "#KienThucXuong")
+    topic_tags = tuple(_hashtag(value) for value in (content.topic, content.equipment, content.component))
+    tags: list[str] = []
+    for tag in (*base, *topic_tags):
+        if tag and tag not in tags:
+            tags.append(tag)
+    return tuple(tags[:12])
     return "\n".join(
         [
             "## Thẻ phân loại kiến thức",
@@ -568,7 +520,10 @@ _FORBIDDEN_CONTENT_TERMS = (
     "Trích yếu",
     "Đo kiểm",
     "Tiêu chuẩn",
+    "condition requires field confirmation",
 )
+
+_INTERNAL_ENUM_RE = re.compile(r"\b[A-Z][A-Z0-9]+(?:_[A-Z0-9]+)+\b")
 
 _SOURCE_LABEL_PATTERNS = (
     r"\bHạng\s+\d+\s*-\s*",
@@ -603,6 +558,7 @@ def _content_text(value: str, fallback: str) -> str:
     text = re.sub(r"\bCần đo(?: và bổ sung)?\b", "nên ghi", text, flags=re.IGNORECASE)
     for term in _FORBIDDEN_CONTENT_TERMS:
         text = re.sub(re.escape(term), "", text, flags=re.IGNORECASE)
+    text = _INTERNAL_ENUM_RE.sub("", text)
     text = re.sub(r"\s+", " ", text).strip(" ;,.:-")
     return text or fallback
 
@@ -667,6 +623,18 @@ def _items(values: Iterable[object], limit: int | None = None, field: str = "") 
     return tuple(dict.fromkeys(item for item in items if item))[:limit]
 
 
+def _ensure_items(values: Iterable[object], size: int) -> tuple[str, ...]:
+    fallback = (
+        "ghi nhận hiện trạng bằng ảnh và điểm đo",
+        "xác nhận điều kiện vận hành trước khi sửa",
+        "đối chiếu kết quả với tiêu chí nghiệm thu",
+        "phân người chịu trách nhiệm theo dõi sau bàn giao",
+        "cập nhật checklist để ngăn lỗi lặp lại",
+    )
+    merged = _items((*values, *fallback), limit=size)
+    return merged[:size]
+
+
 def _flatten_value(value: object, field: str = "") -> list[str]:
     if value is None:
         return []
@@ -682,6 +650,11 @@ def _flatten_value(value: object, field: str = "") -> list[str]:
             items.extend(_flatten_value(item, field=field))
         return items
     text = _clean_text(str(parsed))
+    text = _INTERNAL_ENUM_RE.sub("", text).strip(" ;,.:-")
+    for term in _FORBIDDEN_CONTENT_TERMS:
+        text = re.sub(re.escape(term), "", text, flags=re.IGNORECASE).strip(" ;,.:-")
+    if not text:
+        return []
     if _has_unapproved_english(text):
         fallback = _generic_fallback(field)
         return [fallback] if fallback else []

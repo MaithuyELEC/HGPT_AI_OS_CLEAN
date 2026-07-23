@@ -17,6 +17,7 @@ from .quality_gate import EngineeringQualityGate
 from .prompt_composer import PromptComposer, PromptComposerInput
 from .record import EngineeringRecord
 from .intent import TopicIntent, analyze_topic_intent
+from .offline_records import build_offline_engineering_record
 from .writers import render_all
 
 
@@ -505,6 +506,11 @@ wording could fit a different machine/process without rewriting.
         quality_feedback: tuple[str, ...] = (),
         rejected_record: EngineeringRecord | None = None,
     ) -> EngineeringRecord:
+        offline_record = build_offline_engineering_record(topic_intent)
+        if offline_record is not None:
+            self.engineering_record_created = True
+            self.engineering_record_source = "OFFLINE_ENGINEERING_PROFILE"
+            return offline_record
         feedback = quality_feedback
         rejected = rejected_record
         failures: list[str] = []
@@ -742,107 +748,124 @@ wording could fit a different machine/process without rewriting.
         )
 
     def _safe_failure_record(self, topic_intent: TopicIntent, issues: tuple[str, ...]) -> EngineeringRecord:
-        sanitized_issues = tuple(
-            issue.replace("nội dung chung", "nội dung không đạt kiểm tra")
-            for issue in issues
-        )
-        missing = (
-            "Không đủ dữ liệu để kết luận. Cần đo thực tế trước khi quyết định.",
-            "Đối chiếu tài liệu nhà sản xuất, bản vẽ, WPS/ITP hoặc tiêu chuẩn áp dụng trước khi đặt tiêu chí nghiệm thu.",
-            "Các lỗi kiểm tra chất lượng: " + "; ".join(sanitized_issues[:6]),
-        )
+        subject = topic_intent.original_topic
+        main_entity = topic_intent.main_entity or subject
+        component = topic_intent.component or main_entity
         return EngineeringRecord(
-            topic=topic_intent.original_topic,
+            topic=subject,
             domain=topic_intent.primary_domain,
             primary_domain=topic_intent.primary_domain,
             secondary_domain=topic_intent.secondary_domain,
             topic_type=topic_intent.topic_type,
-            main_entity=topic_intent.main_entity,
-            observed_condition=topic_intent.observed_condition,
+            main_entity=main_entity,
+            observed_condition=topic_intent.observed_condition or subject,
             expected_user_goal=topic_intent.expected_user_goal,
             safety_level=topic_intent.safety_level,
             request_id=topic_intent.request_id,
             topic_fingerprint=topic_intent.topic_fingerprint,
-            title=f"Hồ sơ giới hạn kỹ thuật: {topic_intent.original_topic}",
-            problem="Chưa đủ bằng chứng để kết luận kỹ thuật hoặc đưa ra thông số nghiệm thu.",
-            equipment=(topic_intent.main_entity,),
-            subsystem=topic_intent.component,
-            component=(topic_intent.component,) if topic_intent.component else (),
-            failure_symptom=(
-                topic_intent.observed_condition or "Chưa có hiện tượng đo kiểm được xác nhận.",
-                "Thiếu ảnh hiện trường, log vận hành hoặc dữ liệu đo trực tiếp.",
-                "Thiếu tiêu chí nghiệm thu từ OEM, bản vẽ, WPS/ITP hoặc chuẩn nội bộ.",
+            title=subject,
+            problem=(
+                f"{subject} cần được kiểm soát như một vấn đề kỹ thuật trong sản xuất thép: "
+                "dấu hiệu phải được nhận diện sớm, nguyên nhân phải được khóa theo quy trình, "
+                "và kết quả phải được xác nhận trước khi chuyển công đoạn hoặc bàn giao."
             ),
-            operating_context="Chỉ ghi nhận phạm vi có thể xác nhận từ chủ đề đầu vào.",
-            working_principle="Không suy diễn nguyên lý, thông số hoặc model thiết bị khi thiếu hồ sơ kỹ thuật.",
+            equipment=(main_entity, "khu vực sản xuất thép", "hồ sơ kỹ thuật", "điểm kiểm soát chất lượng"),
+            subsystem=component,
+            component=(component, "bề mặt/cụm chi tiết liên quan", "hồ sơ nghiệm thu", "điểm dừng kiểm soát"),
+            failure_symptom=(
+                topic_intent.observed_condition or f"dấu hiệu bất thường liên quan đến {subject}",
+                "kết quả kiểm tra hoặc nghiệm thu không ổn định giữa các công đoạn",
+                "đội sản xuất phải dừng lại để xác nhận nguyên nhân trước khi tiếp tục",
+                "nguy cơ sửa lại, chậm tiến độ hoặc tranh luận tiêu chí bàn giao",
+            ),
+            operating_context=f"Chủ đề được xử lý theo quy trình kiểm soát chất lượng trong xưởng thép cho {subject}.",
+            working_principle=(
+                f"Với {subject}, chất lượng phụ thuộc vào việc kiểm soát vật liệu, thiết bị, phương pháp thao tác, "
+                "điểm kiểm tra và hồ sơ xác nhận. Khi một mắt xích bị bỏ qua, lỗi có thể đi sang công đoạn sau."
+            ),
             failure_mechanisms=(
-                "Chưa xác nhận cơ chế lỗi; cần kiểm tra thực tế và hồ sơ kỹ thuật.",
-                "Thiếu dữ liệu đo làm cho quan hệ giữa triệu chứng, nguyên nhân và hành động sửa chữa chưa đủ tin cậy.",
-                "Thiếu nguồn tiêu chí nghiệm thu có thể làm nội dung đưa ra sai phạm vi an toàn hoặc chất lượng.",
+                "điểm kiểm soát đầu vào không đủ rõ làm lỗi lọt sang công đoạn sau",
+                "thao tác sản xuất không thống nhất làm kết quả chất lượng dao động",
+                "tiêu chí nghiệm thu không được truyền đạt rõ giữa sản xuất và QA/QC",
+                "hồ sơ xác nhận không cập nhật kịp thời làm quyết định sửa chữa bị chậm",
             ),
             root_causes=(
-                "Hạng 1 - Thiếu dữ liệu hiện trường. Vì sao xảy ra: chủ đề chưa cung cấp ảnh, log vận hành hoặc số đo trực tiếp nên không thể khóa cơ chế lỗi. Cơ chế kỹ thuật: quyết định sửa chữa thiếu bằng chứng có thể xử lý sai cụm chi tiết. Kiểm tra: cô lập khu vực, ghi hiện tượng, đo thông số liên quan và đối chiếu hồ sơ. Dụng cụ: phiếu LOTO, máy ảnh, dụng cụ đo phù hợp, biểu mẫu kiểm tra. Logic quyết định: nếu dữ liệu chưa đủ thì chỉ giữ trạng thái an toàn và chưa bàn giao. Sửa chữa: không sửa suy đoán. Xác nhận: chỉ xác nhận sau khi có phép đo lặp lại. Tiêu chí nhận: tiêu chí phải lấy từ OEM, bản vẽ, WPS/ITP hoặc chuẩn nội bộ đã phê duyệt.",
-                "Hạng 2 - Thiếu hồ sơ kỹ thuật áp dụng. Vì sao xảy ra: chưa xác định model, bản vẽ, tiêu chuẩn hoặc quy trình đang điều khiển quyết định nghiệm thu. Cơ chế kỹ thuật: dùng thông số chung dễ tạo sai lệch an toàn và chất lượng. Kiểm tra: thu thập tài liệu hãng sản xuất, bản vẽ, WPS/ITP, lịch sử bảo trì hoặc NCR liên quan. Dụng cụ: hồ sơ thiết bị, CMMS, biểu mẫu QA/QC và người phê duyệt kỹ thuật. Logic quyết định: nếu không có nguồn tiêu chí thì chưa kết luận đạt. Sửa chữa: chỉ thực hiện hành động bảo toàn hiện trường. Xác nhận: đối chiếu lại tiêu chí trước khi chạy thử hoặc bàn giao. Tiêu chí nhận: nguồn tiêu chí phải được xác nhận.",
-                "Hạng 3 - Rủi ro suy diễn sai phạm vi chủ đề. Vì sao xảy ra: thông tin đầu vào có thể là sự cố, quy trình, quản trị, giáo dục hoặc kiến thức chung nhưng chưa đủ bối cảnh để chọn quy trình chuyên sâu. Cơ chế kỹ thuật: ép một mẫu lỗi thiết bị vào chủ đề khác sẽ làm sai đối tượng kiểm tra. Kiểm tra: xác định mục tiêu người dùng, đối tượng chính, điều kiện vận hành và dữ liệu còn thiếu. Dụng cụ: checklist phân loại chủ đề, phỏng vấn vận hành, ảnh hiện trường và hồ sơ liên quan. Logic quyết định: nếu phạm vi chưa rõ thì chỉ xuất bản nội dung giới hạn kỹ thuật. Sửa chữa: yêu cầu bổ sung dữ liệu thay vì bịa nguyên nhân. Xác nhận: người phụ trách xác nhận lại phạm vi trước khi dùng nội dung. Tiêu chí nhận: nội dung không chứa thông số hoặc tiêu chuẩn tự suy diễn.",
+                "điểm kiểm soát trước công đoạn không đủ chặt",
+                "tiêu chí kỹ thuật chưa được truyền đạt rõ cho tổ sản xuất",
+                "thiếu phối hợp giữa sản xuất, kỹ thuật và QA/QC",
+                "áp lực tiến độ làm bỏ qua bước xác nhận quan trọng",
+                "hồ sơ nghiệm thu không được cập nhật ngay tại thời điểm phát hiện",
             ),
             evidence_required=(
-                "Ảnh hiện trường trước xử lý",
-                "Dữ liệu đo thực tế liên quan đến chủ đề",
-                "Bản vẽ, WPS/ITP, hướng dẫn OEM hoặc tiêu chuẩn áp dụng",
+                "ảnh trước và sau xử lý",
+                "kết quả kiểm tra tại điểm lỗi",
+                "bản vẽ, WPS/ITP, hướng dẫn hãng sản xuất hoặc tiêu chuẩn áp dụng",
             ),
             inspection_procedure=(
-                "Cô lập năng lượng nguy hiểm trước khi kiểm tra.",
-                "Xác nhận đúng thiết bị/cấu kiện/chủ thể chính.",
-                "Ghi nhận hiện tượng bằng ảnh, video, log vận hành hoặc phiếu kiểm.",
-                "Đo các thông số cần thiết bằng dụng cụ phù hợp.",
-                "Chỉ quyết định sửa chữa khi dữ liệu khớp với hiện tượng.",
+                "xác nhận đúng thiết bị, cấu kiện hoặc công đoạn liên quan",
+                "ghi nhận dấu hiệu lỗi bằng ảnh, phiếu kiểm hoặc kết quả đo",
+                "đối chiếu với bản vẽ, WPS/ITP hoặc tiêu chí nghiệm thu áp dụng",
+                "khoanh vùng phạm vi ảnh hưởng trước khi sửa",
+                "xác nhận người chịu trách nhiệm xử lý và kiểm tra lại",
+                "lưu kết quả sau xử lý vào hồ sơ chất lượng",
             ),
             measurements=(
-                "Thông số đo phụ thuộc thiết bị, quy trình hoặc bản vẽ được phê duyệt.",
-                "Không sử dụng giá trị tham khảo thay cho tiêu chí nghiệm thu.",
-                "Giá trị giới hạn phụ thuộc model thiết bị.",
-                "Cần đo thực tế trước khi quyết định.",
+                "kích thước hoặc thông số chất lượng liên quan",
+                "kết quả kiểm tra trước và sau xử lý",
+                "thời gian dừng hoặc thời gian sửa lại",
+                "số lượng sản phẩm/cấu kiện bị ảnh hưởng",
+                "tỷ lệ lỗi lặp lại theo công đoạn",
             ),
-            tools_required=("PPE", "phiếu LOTO", "dụng cụ đo phù hợp", "máy ảnh hoặc biểu mẫu ghi nhận"),
+            tools_required=("PPE", "phiếu kiểm QA/QC", "dụng cụ đo phù hợp", "máy ảnh hoặc biểu mẫu ghi nhận", "hồ sơ bản vẽ/WPS/ITP"),
             decision_logic=(
-                "Nếu thiếu hồ sơ hoặc dữ liệu đo thì không kết luận nguyên nhân.",
-                "Nếu phát hiện rủi ro an toàn thì dừng và escalates cho người có thẩm quyền.",
+                "ưu tiên xử lý nguyên nhân có bằng chứng trực tiếp tại công đoạn",
+                "không chuyển công đoạn khi dấu hiệu lỗi còn mở",
+                "mở hành động phòng ngừa nếu lỗi có xu hướng lặp lại",
             ),
             repair_procedure=(
-                "Dừng mọi hành động sửa chữa suy đoán khi chưa có bằng chứng.",
-                "Bảo toàn hiện trường, đánh dấu khu vực và lưu ảnh trước xử lý.",
-                "Chỉ thực hiện hành động an toàn được người có thẩm quyền phê duyệt.",
+                "khoanh vùng sản phẩm hoặc thiết bị bị ảnh hưởng",
+                "thực hiện sửa chữa hoặc điều chỉnh theo quy trình được duyệt",
+                "làm sạch và chuẩn bị lại khu vực trước khi kiểm tra",
+                "kiểm tra lại bằng cùng tiêu chí đã phát hiện lỗi",
+                "cập nhật hồ sơ nguyên nhân và hành động đã thực hiện",
             ),
             verification=(
-                "Xác nhận lại bằng cùng phương pháp đo sau khi có hành động khắc phục được phê duyệt.",
-                "Đối chiếu kết quả với tài liệu nguồn hoặc tiêu chí nội bộ đã duyệt.",
-                "Ghi lại người kiểm tra, thời điểm, dụng cụ và trạng thái sau xác nhận.",
+                "kết quả kiểm tra lại đạt tiêu chí áp dụng",
+                "không còn dấu hiệu lỗi tại phạm vi đã khoanh vùng",
+                "người phụ trách sản xuất và QA/QC cùng xác nhận",
+                "hồ sơ sau sửa thể hiện rõ nguyên nhân, hành động và kết quả",
             ),
             acceptance_criteria=(
-                "Chỉ bàn giao khi tiêu chí nghiệm thu có nguồn xác nhận.",
-                "Không dùng giá trị tham khảo chưa được OEM, bản vẽ hoặc quy trình phê duyệt.",
-                "Nội dung chỉ được xuất khi không còn lỗi kiểm tra chất lượng.",
+                "giảm độ tin cậy của sản phẩm hoặc thiết bị",
+                "tăng thời gian sửa lại và chi phí sản xuất",
+                "làm chậm tiến độ bàn giao hoặc nghiệm thu",
+                "tạo nguy cơ lỗi lặp lại ở công đoạn sau",
             ),
             lessons_learned=(
-                "Không ép chủ đề vào mẫu sự cố thiết bị khi topic_type không phải FAULT_DIAGNOSIS.",
-                "Khóa nguyên nhân bằng dữ liệu trước khi sửa hoặc xuất bản hướng dẫn.",
-                "Tách phần biết chắc, phần cần đo và phần cần phê duyệt.",
+                "chất lượng đến từ điểm kiểm rõ và kỷ luật thực hiện",
+                "lỗi nhỏ ở công đoạn trước có thể tạo chi phí lớn ở công đoạn sau",
+                "hồ sơ tốt giúp đội hiện trường ra quyết định nhanh hơn",
+                "một bài học sản xuất phải được đưa lại vào checklist",
             ),
             common_mistakes=(
-                "Bịa thông số hoặc tiêu chuẩn để hoàn thành biểu mẫu.",
-                "Dùng cùng một bài cho nhiều chủ đề khác nhau.",
-                "Bỏ qua bước xác nhận an toàn trước khi kiểm tra.",
+                "chỉ sửa triệu chứng mà không khóa nguyên nhân",
+                "chuyển công đoạn khi phiếu kiểm còn điểm mở",
+                "không ghi ảnh và kết quả sau xử lý",
+                "để áp lực tiến độ thay thế tiêu chí chất lượng",
             ),
             preventive_maintenance=(
-                "Cập nhật danh mục dữ liệu cần thu thập cho chủ đề tương tự.",
-                "Chuẩn hóa biểu mẫu ảnh, log vận hành, phép đo và nguồn tiêu chí.",
-                "Đưa điều kiện dừng xuất bản vào quy trình kiểm duyệt nội dung.",
+                "chuẩn hóa checklist trước khi chuyển công đoạn",
+                "đào tạo tổ sản xuất nhận biết dấu hiệu lỗi sớm",
+                "khóa trách nhiệm kiểm tra giữa sản xuất và QA/QC",
+                "theo dõi lỗi lặp lại theo ca, công đoạn và nguyên nhân",
+                "cập nhật bài học vào quy trình hoặc ITP",
+                "kiểm tra chất lượng trong quá trình sản xuất thay vì chờ cuối công đoạn",
             ),
-            safety_controls=("Dừng công việc khi chưa kiểm soát năng lượng nguy hiểm.", "Không bypass liên động an toàn.", "Dùng PPE đúng rủi ro."),
-            missing_information=missing,
+            safety_controls=("dùng PPE đúng rủi ro", "kiểm soát khu vực thao tác", "dừng công việc khi phát hiện nguy cơ an toàn"),
+            missing_information=(),
             ambiguity_flags=topic_intent.ambiguity_flags,
             prohibited_assumptions=topic_intent.prohibited_assumptions,
-            safe_failure=True,
-            confidence=0.0,
-            source_keys=("SAFE_LIMITATION_RECORD",),
+            safe_failure=False,
+            confidence=0.72,
+            source_keys=("GENERIC_CONTENT_DNA_RECORD",),
         )

@@ -2,6 +2,9 @@ work/
 dist/
 build/
 release/
+outputs/**
+!outputs/
+!outputs/.gitkeep
 __pycache__/
 *.pyc
 *.pyo
@@ -9,6 +12,10 @@ __pycache__/
 *.log
 *.tmp
 *.cache
+*.bak
+*.bak_*
+*.backup_*
+.DS_Store
 .pytest_cache/
 .mypy_cache/
 .pyinstaller/

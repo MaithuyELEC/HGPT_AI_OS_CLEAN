@@ -221,6 +221,9 @@ class PromptBuilder:
             else self._semantic_brief(topic)
         )
         structure = self._structure(spec, variation, sequence_number)
+        persona = self._select_persona(spec.key, variation)
+        channel_dna = self._channel_dna(spec.key)
+        communication_driver = self._communication_driver(spec.key, variation)
         retry_block = f"\nRevision Constraint:\n{retry_note}\n" if retry_note else ""
 
         return f"""Topic:
@@ -247,8 +250,28 @@ Writing Goal:
 Knowledge Injection:
 {reference}
 
+Writer Persona:
+{persona}
+
+Channel DNA:
+{channel_dna}
+
+Communication Driver:
+{communication_driver}
+
 Narrative Shape:
 {structure}
+
+Human Writing Control:
+- Write as a real practitioner communicating from direct field experience.
+- Use natural Vietnamese sentence rhythm; mix short decisive sentences with deeper explanation.
+- Show a clear professional point of view instead of neutral AI-style summarization.
+- Prefer concrete workshop situations, observable evidence, decisions, consequences, and actions.
+- Do not announce the structure, reasoning process, persona, narrative mode, or writing technique.
+- Avoid textbook openings such as "Trong bối cảnh...", "Ngày nay...", "Có thể thấy rằng...", or generic definitions.
+- Do not repeat the topic as the first sentence unless the selected channel genuinely requires it.
+- Avoid mechanical transitions, symmetrical paragraph patterns, and repetitive list rhythms.
+- Every paragraph must advance the argument, reveal evidence, change the reader's understanding, or lead to action.
 
 Diversity Control:
 - Variation token: {variation}
@@ -267,6 +290,141 @@ Instructions:
 - Keep this output independent from the other output types.
 - {spec.format_notes}
 """
+
+    def _select_persona(self, key: str, variation: str) -> str:
+        personas = {
+            "facebook": (
+                "Một kỹ sư sản xuất kết cấu thép giàu trải nghiệm, nói thẳng, hiểu nỗi đau tại xưởng và biết biến vấn đề kỹ thuật thành bài viết khiến người đọc phải dừng lại.",
+                "Một quản lý bảo trì thực chiến, từng trực tiếp xử lý sự cố, viết bằng giọng điềm tĩnh nhưng sắc bén, ưu tiên bằng chứng hiện trường.",
+                "Một chuyên gia QA/QC kết cấu thép, có quan điểm rõ ràng, phân tích sai lệch từ dấu hiệu thực tế và liên hệ đến chất lượng toàn hệ thống.",
+                "Một người làm Kaizen tại nhà máy, nhìn vấn đề qua lãng phí, hành vi vận hành và tác động dây chuyền đến năng suất.",
+            ),
+            "tiktok": (
+                "Một kỹ sư hiện trường nói nhanh, rõ, mạnh; mở đầu bằng chi tiết gây chú ý và kết thúc bằng một bài học dễ nhớ.",
+                "Một chuyên gia kỹ thuật giải thích vấn đề khó bằng ngôn ngữ ngắn, trực diện và giàu hình ảnh.",
+                "Một quản lý xưởng cảnh báo rủi ro bằng giọng khẩn trương, thực tế và không lên lớp.",
+            ),
+            "seo": (
+                "Một chuyên gia kỹ thuật biên soạn tài liệu chuyên sâu, logic, dễ tra cứu và có giá trị áp dụng tại hiện trường.",
+                "Một kỹ sư QA/QC viết bài hướng dẫn kỹ thuật có hệ thống, phân biệt rõ dấu hiệu, nguyên nhân, kiểm tra và xử lý.",
+                "Một chuyên gia bảo trì công nghiệp viết cho người cần tìm câu trả lời chính xác và có thể hành động ngay.",
+            ),
+            "image": (
+                "Một đạo diễn hình ảnh công nghiệp am hiểu nhà máy kết cấu thép, ánh sáng điện ảnh, an toàn lao động và bằng chứng kỹ thuật.",
+                "Một nhiếp ảnh gia công nghiệp chuyên tạo khung hình chân thực, có chiều sâu, đúng thiết bị và đúng hành động kỹ thuật.",
+            ),
+            "video": (
+                "Một đạo diễn video công nghiệp chuyên xây dựng cảnh quay ngắn, chuyển động rõ, hành động liên tục và kết thúc có thông điệp.",
+                "Một biên kịch quảng cáo kỹ thuật, biến sự cố nhà máy thành câu chuyện trực quan có mở đầu, cao trào và kết thúc.",
+            ),
+            "checklist": (
+                "Một trưởng nhóm QA/QC lập checklist để người hiện trường kiểm tra được, ký xác nhận được và không bỏ sót rủi ro.",
+                "Một quản lý bảo trì xây dựng danh mục công việc theo đúng trình tự cô lập, kiểm tra, xử lý và nghiệm thu.",
+            ),
+            "hashtags": (
+                "Một chiến lược gia nội dung công nghiệp chọn hashtag sát chủ đề, thương hiệu và đúng hành vi tìm kiếm.",
+            ),
+        }
+
+        choices = personas.get(
+            key,
+            (
+                "Một chuyên gia thực hành am hiểu chủ đề, giao tiếp rõ ràng, có quan điểm và ưu tiên khả năng áp dụng.",
+            ),
+        )
+        seed = int(variation[:8], 16)
+        return choices[seed % len(choices)]
+
+    def _channel_dna(self, key: str) -> str:
+        rules = {
+            "facebook": (
+                "- Viết như một bài chia sẻ thực chiến, không phải báo cáo kỹ thuật hay bài SEO.\n"
+                "- Mở bằng một tình huống, nghịch lý, hậu quả, quan sát hoặc quan điểm mạnh liên quan trực tiếp đến chủ đề.\n"
+                "- Tạo sự đồng cảm bằng nỗi đau thật tại xưởng: dừng máy, sửa đi sửa lại, mất năng suất, mất an toàn hoặc mất niềm tin.\n"
+                "- Giải thích kỹ thuật vừa đủ để người quản lý, kỹ sư và công nhân đều hiểu.\n"
+                "- Có một quan điểm đáng nhớ và một câu kết thúc thúc đẩy bình luận hoặc thay đổi hành động.\n"
+                "- Không dùng giọng quảng cáo sáo rỗng và không chia bài thành quá nhiều đề mục cứng."
+            ),
+            "tiktok": (
+                "- Nội dung ngắn, nghe tự nhiên khi đọc thành voice.\n"
+                "- Câu đầu phải tạo chú ý ngay bằng rủi ro, sai lầm hoặc sự thật bất ngờ.\n"
+                "- Chỉ giữ một thông điệp chính, một chuỗi nguyên nhân-hậu quả và một hành động rõ ràng.\n"
+                "- Không dùng đoạn văn dài, không mở bài kiểu định nghĩa và không nhồi checklist."
+            ),
+            "seo": (
+                "- Viết như tài liệu chuyên môn có thể tra cứu và áp dụng.\n"
+                "- Trả lời đúng ý định tìm kiếm trước, sau đó mới mở rộng nguyên nhân, kiểm tra, xử lý và phòng ngừa.\n"
+                "- Dùng tiêu đề rõ nghĩa, từ khóa tự nhiên và không lặp câu để nhồi SEO.\n"
+                "- Phân biệt dữ kiện đã biết, giả thuyết cần kiểm tra và thông tin còn thiếu.\n"
+                "- Không dùng hook giật gân kiểu Facebook."
+            ),
+            "image": (
+                "- Chỉ tạo prompt hình ảnh hoàn chỉnh, giàu chi tiết thị giác và có thể dùng trực tiếp.\n"
+                "- Mô tả rõ chủ thể, đồng phục, tư thế, thiết bị, dấu hiệu sự cố, hành động, bố cục, góc máy, ánh sáng và môi trường xưởng.\n"
+                "- Mỗi chi tiết phải phục vụ đúng chủ đề; không dùng vật thể trang trí vô nghĩa.\n"
+                "- Ưu tiên tính chân thực công nghiệp, đúng PPE và không tạo chữ sai trên hình."
+            ),
+            "video": (
+                "- Chỉ tạo prompt video hoàn chỉnh theo trình tự thời gian.\n"
+                "- Phải có mở đầu thu hút, diễn biến kỹ thuật nhìn thấy được, cao trào và khung hình kết thúc rõ thông điệp.\n"
+                "- Mô tả chuyển động của người, máy, camera, ánh sáng, vật liệu và dấu hiệu sự cố.\n"
+                "- Không viết cảnh tĩnh hoặc liệt kê cảnh rời rạc; mọi hành động phải nối tiếp hợp lý.\n"
+                "- Voice và text màn hình phải ngắn, dễ nghe và khớp đúng hình ảnh."
+            ),
+            "checklist": (
+                "- Trình bày theo trình tự hiện trường: chuẩn bị, an toàn, kiểm tra, đo, xử lý, chạy thử và nghiệm thu.\n"
+                "- Mỗi mục phải kiểm chứng được, không viết các câu chung chung như kiểm tra tổng quát.\n"
+                "- Nêu rõ đối tượng kiểm, bằng chứng cần ghi nhận và điều kiện quyết định."
+            ),
+            "hashtags": (
+                "- Chọn hashtag thương hiệu trước, sau đó đến ngành, chủ đề cụ thể và mục tiêu nội dung.\n"
+                "- Không tạo hashtag dài khó đọc, không lặp biến thể vô nghĩa."
+            ),
+        }
+        return rules.get(
+            key,
+            "- Chọn cấu trúc và giọng viết phù hợp chính xác với loại đầu ra; không dùng cùng một DNA cho mọi kênh.",
+        )
+
+    def _communication_driver(self, key: str, variation: str) -> str:
+        drivers = {
+            "facebook": (
+                "Phá một định kiến phổ biến bằng bằng chứng hiện trường.",
+                "Bắt đầu từ hậu quả mà nhiều nhà máy đang âm thầm chịu đựng.",
+                "Kể lại một tình huống tại xưởng rồi rút ra nguyên nhân hệ thống.",
+                "Đặt hai cách làm đối lập và chỉ ra vì sao một cách khiến hệ thống thất bại.",
+                "Mở bằng một câu hỏi khó mà người làm nghề buộc phải suy nghĩ.",
+                "Cảnh báo một sai lầm nhỏ nhưng gây hậu quả lớn.",
+            ),
+            "tiktok": (
+                "Cảnh báo nhanh: dấu hiệu, hậu quả, hành động.",
+                "Một hiểu lầm phổ biến và sự thật kỹ thuật phía sau.",
+                "Một cảnh sự cố, một nguyên nhân chính, một bài học.",
+            ),
+            "seo": (
+                "Giải đáp trực tiếp rồi triển khai theo bằng chứng và quyết định kỹ thuật.",
+                "Đi từ dấu hiệu đến chẩn đoán, xử lý và phòng ngừa.",
+                "Phân loại nguyên nhân theo xác suất và phương pháp xác minh.",
+            ),
+            "image": (
+                "Khung hình bằng chứng hiện trường có chủ thể đang thực hiện thao tác kỹ thuật.",
+                "Khoảnh khắc cao trào của sự cố được thể hiện chân thực và an toàn.",
+            ),
+            "video": (
+                "Diễn tiến từ dấu hiệu bất thường đến hành động kiểm soát và kết quả cuối.",
+                "Mở bằng nguy cơ, chuyển sang phản ứng kỹ thuật, kết thúc bằng bài học.",
+                "So sánh trực quan trước và sau khi áp dụng đúng biện pháp.",
+            ),
+        }
+
+        choices = drivers.get(
+            key,
+            (
+                "Đi thẳng vào vấn đề, dùng bằng chứng cụ thể và kết thúc bằng hành động rõ ràng.",
+            ),
+        )
+        seed = int(variation[8:16], 16)
+        return choices[seed % len(choices)]
 
     def _knowledge_pack(self, context: str) -> str:
         reference = context.strip()
